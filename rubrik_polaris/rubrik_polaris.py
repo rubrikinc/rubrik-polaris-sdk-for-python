@@ -31,7 +31,7 @@ class PolarisClient:
     from .lib.common.core import get_snapshots
     from .lib.accounts import get_accounts_azure, get_accounts_gcp
     from .lib.accounts import get_accounts_aws, get_accounts_aws_detail, get_account_aws_native_id
-    from .lib.accounts import add_account_aws, delete_account_aws
+    from .lib.accounts import add_account_aws, delete_account_aws, add_project_gcp
     from .lib.compute import get_compute_object_ids_azure, get_compute_object_ids_ec2, get_compute_object_ids_gce
     from .lib.compute import get_compute_azure, get_compute_ec2, get_compute_gce
     from .lib.compute import submit_compute_restore_ec2, submit_compute_restore_azure, submit_compute_restore_gce

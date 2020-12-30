@@ -406,7 +406,6 @@ def _update_account_aws_initiate(self, _feature, _polaris_account_id):
             "polaris_account_id": _polaris_account_id,
             "aws_native_protection_feature": [_feature]
         }
-        self._pp.pprint(_variables)
         _request = self._query(_query_name, _variables)
         return self._dump_nodes(_request, _query_name)
     except Exception as e:
@@ -430,3 +429,26 @@ def _update_account_aws(self, profile=None, aws_id=None, aws_secret=None,  _aws_
                     self._pp.pprint(_update_info)
                 if _feature['status'] == 'DISCONNECTED':
                     print("account needs to be recreated")
+
+
+def add_project_gcp(self, creds=None, gcp_native_project_id=None, gcp_native_project_name=None, gcp_native_project_number=None, is_shared_vpc=False, organization_name=None, service_account_auth_key=None):
+    required_input = False
+    if gcp_native_project_name and gcp_native_project_number and gcp_native_project_id:
+        required_input = True
+
+    if not creds and not required_input:
+        raise Exception("No credentials to look up Google Resources")
+
+    if required_input:
+        try:
+            _query_name = "accounts_gcp_project_add"
+            _variables = {
+                "gcp_native_project_id": gcp_native_project_id,
+                "gcp_native_project_name": gcp_native_project_name,
+                "gcp_native_project_number": gcp_native_project_number,
+                "is_shared_vpc": is_shared_vpc
+            }
+            _request = self._query(_query_name, _variables)
+            self._pp.pprint(_request)
+        except Exception as e:
+            print(e)

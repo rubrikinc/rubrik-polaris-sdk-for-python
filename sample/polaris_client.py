@@ -29,13 +29,16 @@ except Exception as err:
 # bronze_sla_domain_id = rubrik.get_sla_domains("Bronze")['id']
 # pp.pprint(rubrik.submit_on_demand(rubrik.get_object_ids_ebs(volumeId = "vol-077d1df3538afe5dd"), bronze_sla_domain_id, wait=True))
 
+### Add GCE Project
+rubrik.add_project_gcp(creds=None, gcp_native_project_id="1", gcp_native_project_name="1", gcp_native_project_number="1", is_shared_vpc=False, organization_name=None, service_account_auth_key=None)
+
 ### Add AWS Acct (local profile must be configured, specify list of profiles _or_ set all=True.
-rubrik.add_account_aws(regions = ["us-east-1"], profiles = ["peterm-profile"])
+# rubrik.add_account_aws(regions = ["us-east-1"], profiles = ["peterm-profile"])
 # rubrik.add_account_aws(regions = ["us-east-1"], aws_access_key_id='blah', aws_secret_access_key='blah')
 # rubrik.add_account_aws(regions = ["us-west-2"], all = True )
 
 ### Remove AWS Acct (local profile must be configured, specify list of profiles _or_ set all=True.
-rubrik.delete_account_aws(profiles = ['peterm-profile'])
+# rubrik.delete_account_aws(profiles = ['peterm-profile'])
 # rubrik.delete_account_aws(aws_access_key_id='blah', aws_secret_access_key='blah')
 # rubrik.delete_account_aws(all = True )
 
