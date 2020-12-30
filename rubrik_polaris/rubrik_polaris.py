@@ -44,7 +44,7 @@ class PolarisClient:
     from .lib.common.graphql import _dump_nodes, _get_query_names_from_graphql_query
     from .lib.accounts import _invoke_account_delete_aws, _invoke_aws_stack, _commit_account_delete_aws, _update_account_aws
     from .lib.accounts import _destroy_aws_stack, _disable_account_aws, _get_aws_profiles, _add_account_aws, _delete_account_aws
-    from .lib.accounts import _update_account_aws_initiate
+    from .lib.accounts import _update_account_aws_initiate, _get_gcp_native_projects
 
     def __init__(self, _domain=None, _username=None, _password=None, **kwargs):
         from .lib.common.graphql import _build_graphql_maps
