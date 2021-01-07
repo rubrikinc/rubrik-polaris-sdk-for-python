@@ -64,16 +64,26 @@ def _get_query_names_from_graphql_query(self, graphql_query_text):
 
 def _dump_nodes(self, request):
     nodes = []
-
     if 'data' in request and len(request['data']) > 0:
         query_result = list(request['data'].values())[0]
-
-        if 'edges' in query_result:
+        if 'states' in query_result:
+            for state in query_result['states']:
+                nodes.append(state['name'])
+        elif 'edges' in query_result:
             for edge in query_result['edges']:
                 nodes.append(edge['node'])
         else:
             return query_result
     else:
         return request
-
     return nodes
+
+
+def get_enum_values(self, name=None):
+    """ Retrieve Enum Values via Introspection """
+    try:
+        query_name = "graphql_enum_values"
+        variables = {"enum_name": name}
+        return self._query(query_name, variables)
+    except Exception:
+        raise
