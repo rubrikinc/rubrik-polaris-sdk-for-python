@@ -1,0 +1,7 @@
+query RubrikPolarisSDKRequest($enum_name:String!) {
+    __type(name: $enum_name) {
+        states: enumValues {
+            name
+        }
+    }
+}
