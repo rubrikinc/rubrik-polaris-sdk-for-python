@@ -182,7 +182,7 @@ def get_snapshots(self, snappable_id, **kwargs):
         raise
 
 
-def get_event_series_list(self, object_type=[], status=[], activity_type=[], severity=[], cluster_ids=[], start_date=None, end_date = None):
+def get_event_series_list(self, object_type=[], status=[], activity_type=[], severity=[], cluster_ids=[], start_time=None, end_time = None):
     """Retrieve Events from Polaris
 
     Arguments:
@@ -208,8 +208,8 @@ def get_event_series_list(self, object_type=[], status=[], activity_type=[], sev
                 "cluster": {
                     "id": cluster_ids,
                 },
-                "lastUpdated_gt": start_date,
-                "lastUpdated_lt": end_date,
+                "lastUpdated_gt": start_time,
+                "lastUpdated_lt": end_time,
                 "objectName": ""
             }
         }
