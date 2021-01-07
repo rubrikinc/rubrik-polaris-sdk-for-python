@@ -4,16 +4,21 @@ This project provides a Python package that makes it easy to interact with the R
 
 The SDK has been tested against Python 3.6.4.
 
+Currently available in beta branch!
+
 ## Installation
 
 Install from pip:
 
-`pip install rubrik_polaris`
+```
+Pending
+```
 
 Install from source:
 ```
 $ git clone https://github.com/rubrikinc/rubrik-polaris-sdk-for-python
 $ cd rubrik-polaris-sdk-for-python
+$ git checkout beta
 $ python setup.py install
 ```
 ## Quick Start
