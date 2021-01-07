@@ -6,24 +6,24 @@ import setuptools
 long_description = """
 # Rubrik SDK for Polaris
 
-This project provides a Python package that makes it easy to interact with the Rubrik CDM API.
+This project provides a Python package that makes it easy to interact with the Rubrik Polaris API.
 
-The SDK has been tested against Python 2.7.6 and Python 3.6.4.
+The SDK has been tested against Python 3.6.4.
 
 ## Installation
 
 Install from pip:
 
-`pip install rubrik_polaris`
+`Pending`
 
 Install from source:
 ```
 $ git clone https://github.com/rubrikinc/rubrik-polaris-sdk-for-python
 $ cd rubrik-polaris-sdk-for-python
+$ git checkout beta
 $ python setup.py install
 ```
 ## Quick Start
-
 
 ## Documentation
 
@@ -35,7 +35,7 @@ $ python setup.py install
 
 setuptools.setup(
     name="rubrik_polaris",
-    version=".01",
+    version="0.10.00",
     author="Rubrik Inc",
     description="A Python package for interacting with the Rubrik Polaris API.",
     long_description=long_description,
