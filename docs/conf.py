@@ -17,7 +17,7 @@ sys.path.insert(0, os.path.abspath('..'))
 
 # -- Project information -----------------------------------------------------
 
-project = 'rubrik_polaris'
+project = 'Rubrik Polaris SDK for Python'
 copyright = '2021, Rubrik Inc'
 author = 'Rubrik Inc'
 
