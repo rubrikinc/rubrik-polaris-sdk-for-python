@@ -92,12 +92,15 @@ def submit_on_demand(self, object_ids, sla_id, wait=False):
         raise
 
 
-def submit_assign_sla(self, object_ids, sla_id):
+def submit_assign_sla(self, object_ids, sla_id, apply_to_existing_snapshots, existing_snapshot_retention, global_sla_assign_type ):
     """Submits a Rubrik SLA change for objects
 
     Arguments:
         object_ids {[str]} -- Array of Rubrik Object IDs
+        global_sla_assign_type {str} -- Define assignment type noAssignment/doNotProtect/protectWithSlaId
         sla_id {str} -- Rubrik SLA Domain ID
+        apply_to_existing_snapshots {bool} -- Apply retention policy to pre-existing snapshots
+        existing_snapshot_retention {str} -- Snapshot handling on doNotProtect RETAIN_SNAPSHOTS/KEEP_FOREVER/EXPIRE_IMMEDIATELY
     
     Returns:
         list -- List of objects assigned the SLA
@@ -107,6 +110,9 @@ def submit_assign_sla(self, object_ids, sla_id):
     try:
         mutation_name = "core_sla_assign"
         variables = {
+            "shouldApplyToExistingSnapshots": apply_to_existing_snapshots,
+            "existingSnapshotRetention": existing_snapshot_retention,
+            "globalSlaAssignType": global_sla_assign_type,
             "objectIds": object_ids,
             "slaId": sla_id
         }
@@ -217,3 +223,24 @@ def get_event_series_list(self, object_type=[], status=[], activity_type=[], sev
     except Exception:
         raise
 
+
+def get_report_data(self, object_type=[], cluster_ids=[]):
+    """Retrieve Report Data from Polaris
+    """
+    try:
+        query_name = "core_report_data"
+        variables = {
+            "first": 1000,
+            "filters": {
+                "objectType": object_type,
+                "complianceStatus": [],
+                "protectionStatus": [],
+                "cluster": {
+                    "id": cluster_ids,
+                },
+            },
+        }
+        response = self._query(query_name, variables)
+        return response
+    except Exception:
+        raise
