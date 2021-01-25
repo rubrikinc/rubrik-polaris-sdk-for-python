@@ -1,8 +1,7 @@
-Getting Started
+Rubrik Polaris SDK for Python
 =======================
 
-
-rubrik\_polaris package
+Package Functions
 =======================
 
 Core Rubrik Functions

@@ -15,9 +15,7 @@ Welcome to rubrik_polaris's documentation!
 
 
 
-Indices and tables
+Module Index
 ==================
 
-* :ref:`genindex`
 * :ref:`modindex`
-* :ref:`search`
