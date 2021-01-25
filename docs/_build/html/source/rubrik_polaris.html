@@ -1,7 +1,7 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html4" lang="en" >
 <head>
   <meta charset="utf-8" />
   
@@ -28,10 +28,20 @@
   <![endif]-->
   
     
-      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
-        <script src="../_static/doctools.js"></script>
+      <script type="text/javascript">
+          var DOCUMENTATION_OPTIONS = {
+              URL_ROOT:'../',
+              VERSION:'2021.01.08',
+              LANGUAGE:'None',
+              COLLAPSE_INDEX:false,
+              FILE_SUFFIX:'.html',
+              HAS_SOURCE:  true,
+              SOURCELINK_SUFFIX: '.txt'
+          };
+      </script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -168,111 +178,131 @@
 <div class="section" id="module-rubrik_polaris.lib.common.core">
 <span id="core-rubrik-functions"></span><h2>Core Rubrik Functions<a class="headerlink" href="#module-rubrik_polaris.lib.common.core" title="Permalink to this headline">¶</a></h2>
 <p>Collection of methods that interact with Polaris primitives.</p>
-<dl class="py function">
+<dl class="function">
 <dt id="rubrik_polaris.lib.common.core.get_event_series_list">
-<code class="sig-prename descclassname">rubrik_polaris.lib.common.core.</code><code class="sig-name descname">get_event_series_list</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">object_type</span><span class="o">=</span><span class="default_value">[]</span></em>, <em class="sig-param"><span class="n">status</span><span class="o">=</span><span class="default_value">[]</span></em>, <em class="sig-param"><span class="n">activity_type</span><span class="o">=</span><span class="default_value">[]</span></em>, <em class="sig-param"><span class="n">severity</span><span class="o">=</span><span class="default_value">[]</span></em>, <em class="sig-param"><span class="n">cluster_ids</span><span class="o">=</span><span class="default_value">[]</span></em>, <em class="sig-param"><span class="n">start_time</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">end_time</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.lib.common.core.get_event_series_list" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">rubrik_polaris.lib.common.core.</code><code class="descname">get_event_series_list</code><span class="sig-paren">(</span><em>self</em>, <em>object_type=[]</em>, <em>status=[]</em>, <em>activity_type=[]</em>, <em>severity=[]</em>, <em>cluster_ids=[]</em>, <em>start_time=None</em>, <em>end_time=None</em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.lib.common.core.get_event_series_list" title="Permalink to this definition">¶</a></dt>
 <dd><p>Retrieve Events from Polaris</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>{</strong><strong>[</strong><strong>str</strong><strong>]</strong><strong>} -- Array of Object Types</strong> (<em>object_type</em>) – </p></li>
-<li><p><strong>{</strong><strong>[</strong><strong>str</strong><strong>]</strong><strong>} -- Array of Event Status</strong> (<em>status</em>) – </p></li>
-<li><p><strong>{</strong><strong>[</strong><strong>str</strong><strong>]</strong><strong>} -- Array of Activity Types</strong> (<em>activity_type</em>) – </p></li>
-<li><p><strong>{</strong><strong>[</strong><strong>str</strong><strong>]</strong><strong>} -- Array of severities</strong> (<em>severity</em>) – </p></li>
-<li><p><strong>{</strong><strong>[</strong><strong>UUID</strong><strong>]</strong><strong>} -- Array of Cluster IDs</strong> (<em>cluster_ids</em>) – </p></li>
-<li><p><strong>{datetime} -- Timestamp to start return set from</strong> (<em>start_date</em>) – </p></li>
-<li><p><strong>{datetime} -- Timestamp to end return set from</strong> (<em>end_date</em>) – </p></li>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>{</strong><strong>[</strong><strong>str</strong><strong>]</strong><strong>} -- Array of Object Types</strong> (<em>object_type</em>) – </li>
+<li><strong>{</strong><strong>[</strong><strong>str</strong><strong>]</strong><strong>} -- Array of Event Status</strong> (<em>status</em>) – </li>
+<li><strong>{</strong><strong>[</strong><strong>str</strong><strong>]</strong><strong>} -- Array of Activity Types</strong> (<em>activity_type</em>) – </li>
+<li><strong>{</strong><strong>[</strong><strong>str</strong><strong>]</strong><strong>} -- Array of severities</strong> (<em>severity</em>) – </li>
+<li><strong>{</strong><strong>[</strong><strong>UUID</strong><strong>]</strong><strong>} -- Array of Cluster IDs</strong> (<em>cluster_ids</em>) – </li>
+<li><strong>{datetime} -- Timestamp to start return set from</strong> (<em>start_date</em>) – </li>
+<li><strong>{datetime} -- Timestamp to end return set from</strong> (<em>end_date</em>) – </li>
 </ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>arr of dict – An array of dictionaries of Event Data</p>
-</dd>
-</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">arr of dict – An array of dictionaries of Event Data</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
-<dl class="py function">
+<dl class="function">
 <dt id="rubrik_polaris.lib.common.core.get_sla_domains">
-<code class="sig-prename descclassname">rubrik_polaris.lib.common.core.</code><code class="sig-name descname">get_sla_domains</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">sla_domain_name</span><span class="o">=</span><span class="default_value">''</span></em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.lib.common.core.get_sla_domains" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">rubrik_polaris.lib.common.core.</code><code class="descname">get_sla_domains</code><span class="sig-paren">(</span><em>self</em>, <em>sla_domain_name=''</em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.lib.common.core.get_sla_domains" title="Permalink to this definition">¶</a></dt>
 <dd><p>Retrieves dictionary of SLA Domain Names and Identifiers.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Keyword Arguments</dt>
-<dd class="field-odd"><p><strong>{str} -- Rubrik SLA Domain name</strong><strong> (</strong><strong>default</strong> (<em>sla_domain_name</em>) – {‘’})</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>str – ID for the given SLA Domain name as given by <cite>sla_domain_name</cite>
-dict – The complete set of SLA domains or a one element dict if a non-empty <cite>sla_domain_name</cite> is given and found.</p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Keyword Arguments:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><strong>{str} -- Rubrik SLA Domain name</strong><strong> (</strong><strong>default</strong> (<em>sla_domain_name</em>) – {‘’})</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">str – ID for the given SLA Domain name as given by <cite>sla_domain_name</cite>
+dict – The complete set of SLA domains or a one element dict if a non-empty <cite>sla_domain_name</cite> is given and found.</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
-<dl class="py function">
+<dl class="function">
 <dt id="rubrik_polaris.lib.common.core.get_snapshots">
-<code class="sig-prename descclassname">rubrik_polaris.lib.common.core.</code><code class="sig-name descname">get_snapshots</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">snappable_id</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.lib.common.core.get_snapshots" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">rubrik_polaris.lib.common.core.</code><code class="descname">get_snapshots</code><span class="sig-paren">(</span><em>self</em>, <em>snappable_id</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.lib.common.core.get_snapshots" title="Permalink to this definition">¶</a></dt>
 <dd><p>Retrieve Snapshots for a Snappable from Polaris</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>{str} -- Object UUID</strong> (<em>snappable_id</em>) – </p></li>
-<li><p><strong>{str} -- Optional datetime of snapshot to return</strong> (<em>recovery_point</em>) – </p></li>
-<li><p><strong>'latest'</strong> (<em>or</em>) – </p></li>
-<li><p><strong>not defined to return all</strong> (<em>or</em>) – </p></li>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>{str} -- Object UUID</strong> (<em>snappable_id</em>) – </li>
+<li><strong>{str} -- Optional datetime of snapshot to return</strong><strong>, or </strong><strong>'latest'</strong><strong>, or </strong><strong>not defined to return all</strong> (<em>recovery_point</em>) – </li>
 </ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>dict – A dictionary of snapshots or a single snapshot if ‘latest’ was passed as <cite>recovery_point</cite>. If no snapshots are found, an empty dict is returned.</p>
-</dd>
-</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">dict – A dictionary of snapshots or a single snapshot if ‘latest’ was passed as <cite>recovery_point</cite>. If no snapshots are found, an empty dict is returned.</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
-<dl class="py function">
+<dl class="function">
 <dt id="rubrik_polaris.lib.common.core.get_task_status">
-<code class="sig-prename descclassname">rubrik_polaris.lib.common.core.</code><code class="sig-name descname">get_task_status</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">task_chain_id</span></em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.lib.common.core.get_task_status" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">rubrik_polaris.lib.common.core.</code><code class="descname">get_task_status</code><span class="sig-paren">(</span><em>self</em>, <em>task_chain_id</em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.lib.common.core.get_task_status" title="Permalink to this definition">¶</a></dt>
 <dd><p>Retrieve task status from Polaris</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>{str} -- Task Chain UUID from request</strong> (<em>task_chain_id</em>) – </p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>str – Task state</p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>{str} -- Task Chain UUID from request</strong> (<em>task_chain_id</em>) – </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">str – Task state</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
-<dl class="py function">
+<dl class="function">
 <dt id="rubrik_polaris.lib.common.core.submit_assign_sla">
-<code class="sig-prename descclassname">rubrik_polaris.lib.common.core.</code><code class="sig-name descname">submit_assign_sla</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">object_ids</span></em>, <em class="sig-param"><span class="n">sla_id</span></em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.lib.common.core.submit_assign_sla" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">rubrik_polaris.lib.common.core.</code><code class="descname">submit_assign_sla</code><span class="sig-paren">(</span><em>self</em>, <em>object_ids</em>, <em>sla_id</em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.lib.common.core.submit_assign_sla" title="Permalink to this definition">¶</a></dt>
 <dd><p>Submits a Rubrik SLA change for objects</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>{</strong><strong>[</strong><strong>str</strong><strong>]</strong><strong>} -- Array of Rubrik Object IDs</strong> (<em>object_ids</em>) – </p></li>
-<li><p><strong>{str} -- Rubrik SLA Domain ID</strong> (<em>sla_id</em>) – </p></li>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>{</strong><strong>[</strong><strong>str</strong><strong>]</strong><strong>} -- Array of Rubrik Object IDs</strong> (<em>object_ids</em>) – </li>
+<li><strong>{str} -- Rubrik SLA Domain ID</strong> (<em>sla_id</em>) – </li>
 </ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>list – List of objects assigned the SLA</p>
-</dd>
-</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">list – List of objects assigned the SLA</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
-<dl class="py function">
+<dl class="function">
 <dt id="rubrik_polaris.lib.common.core.submit_on_demand">
-<code class="sig-prename descclassname">rubrik_polaris.lib.common.core.</code><code class="sig-name descname">submit_on_demand</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">object_ids</span></em>, <em class="sig-param"><span class="n">sla_id</span></em>, <em class="sig-param"><span class="n">wait</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.lib.common.core.submit_on_demand" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">rubrik_polaris.lib.common.core.</code><code class="descname">submit_on_demand</code><span class="sig-paren">(</span><em>self</em>, <em>object_ids</em>, <em>sla_id</em>, <em>wait=False</em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.lib.common.core.submit_on_demand" title="Permalink to this definition">¶</a></dt>
 <dd><p>Submits On Demand Snapshot request for the given set of object id’s and assign the given SLA to the snapshots.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>{</strong><strong>[</strong><strong>str</strong><strong>]</strong><strong>} -- Array of Rubrik Object IDs</strong> (<em>object_ids</em>) – </p></li>
-<li><p><strong>{str} -- Rubrik SLA Domain ID</strong> (<em>sla_id</em>) – </p></li>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>{</strong><strong>[</strong><strong>str</strong><strong>]</strong><strong>} -- Array of Rubrik Object IDs</strong> (<em>object_ids</em>) – </li>
+<li><strong>{str} -- Rubrik SLA Domain ID</strong> (<em>sla_id</em>) – </li>
 </ul>
-</dd>
-<dt class="field-even">Keyword Arguments</dt>
-<dd class="field-even"><p><strong>{bool} -- Threaded wait for all processes to complete</strong><strong> (</strong><strong>default</strong> (<em>wait</em>) – {False})</p>
-</dd>
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>list – List of errors if any occurred</p>
-</dd>
-</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Keyword Arguments:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><p class="first"><strong>{bool} -- Threaded wait for all processes to complete</strong><strong> (</strong><strong>default</strong> (<em>wait</em>) – {False})</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">list – List of errors if any occurred</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </div>
@@ -283,308 +313,370 @@ dict – The complete set of SLA domains or a one element dict if a non-empty <c
 <div class="section" id="module-rubrik_polaris.lib.accounts">
 <span id="account-functions"></span><h2>Account Functions<a class="headerlink" href="#module-rubrik_polaris.lib.accounts" title="Permalink to this headline">¶</a></h2>
 <p>Collection of functions that manipulate account components.</p>
-<dl class="py function">
+<dl class="function">
 <dt id="rubrik_polaris.lib.accounts.add_account_aws">
-<code class="sig-prename descclassname">rubrik_polaris.lib.accounts.</code><code class="sig-name descname">add_account_aws</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">regions</span><span class="o">=</span><span class="default_value">[]</span></em>, <em class="sig-param"><span class="n">all</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">profiles</span><span class="o">=</span><span class="default_value">[]</span></em>, <em class="sig-param"><span class="n">aws_access_key_id</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">aws_secret_access_key</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.lib.accounts.add_account_aws" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">rubrik_polaris.lib.accounts.</code><code class="descname">add_account_aws</code><span class="sig-paren">(</span><em>self</em>, <em>regions=[]</em>, <em>all=False</em>, <em>profiles=[]</em>, <em>aws_access_key_id=None</em>, <em>aws_secret_access_key=None</em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.lib.accounts.add_account_aws" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adds AWS account to Polaris</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>{list} -- List of AWS regions to configure</strong> (<em>regions</em>) – </p></li>
-<li><p><strong>{bool} -- If true import all available profiles</strong><strong> (</strong><strong>Default</strong> (<em>all</em>) – False)</p></li>
-<li><p><strong>{list} -- List of explicit profiles to add</strong> (<em>profiles</em>) – </p></li>
-<li><p><strong>{str} -- AWS Access Key ID</strong> (<em>aws_access_key_id</em>) – </p></li>
-<li><p><strong>{str} -- AWS Access Key Secret</strong> (<em>aws_secret_access_key</em>) – </p></li>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>{list} -- List of AWS regions to configure</strong> (<em>regions</em>) – </li>
+<li><strong>{bool} -- If true import all available profiles</strong><strong> (</strong><strong>Default</strong> (<em>all</em>) – False)</li>
+<li><strong>{list} -- List of explicit profiles to add</strong> (<em>profiles</em>) – </li>
+<li><strong>{str} -- AWS Access Key ID</strong> (<em>aws_access_key_id</em>) – </li>
+<li><strong>{str} -- AWS Access Key Secret</strong> (<em>aws_secret_access_key</em>) – </li>
 </ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>bool – <cite>True</cite> if the account was added successfully, otherwise <cite>False</cite>.</p>
-</dd>
-</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">bool – <cite>True</cite> if the account was added successfully, otherwise <cite>False</cite>.</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
-<dl class="py function">
+<dl class="function">
 <dt id="rubrik_polaris.lib.accounts.delete_account_aws">
-<code class="sig-prename descclassname">rubrik_polaris.lib.accounts.</code><code class="sig-name descname">delete_account_aws</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">profiles</span><span class="o">=</span><span class="default_value">[]</span></em>, <em class="sig-param"><span class="n">all</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">aws_access_key_id</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">aws_secret_access_key</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.lib.accounts.delete_account_aws" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">rubrik_polaris.lib.accounts.</code><code class="descname">delete_account_aws</code><span class="sig-paren">(</span><em>self</em>, <em>profiles=[]</em>, <em>all=False</em>, <em>aws_access_key_id=None</em>, <em>aws_secret_access_key=None</em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.lib.accounts.delete_account_aws" title="Permalink to this definition">¶</a></dt>
 <dd><p>Commits  Delete AWS Account in Polaris, relies on local .aws</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>{bool} -- If true import all available profiles</strong><strong> (</strong><strong>Default</strong> (<em>all</em>) – False)</p></li>
-<li><p><strong>{list} -- List of explicit profiles to add</strong> (<em>profiles</em>) – </p></li>
-<li><p><strong>{str} -- AWS Access Key ID</strong> (<em>aws_access_key_id</em>) – </p></li>
-<li><p><strong>{str} -- AWS Access Key Secret</strong> (<em>aws_secret_access_key</em>) – </p></li>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>{bool} -- If true import all available profiles</strong><strong> (</strong><strong>Default</strong> (<em>all</em>) – False)</li>
+<li><strong>{list} -- List of explicit profiles to add</strong> (<em>profiles</em>) – </li>
+<li><strong>{str} -- AWS Access Key ID</strong> (<em>aws_access_key_id</em>) – </li>
+<li><strong>{str} -- AWS Access Key Secret</strong> (<em>aws_secret_access_key</em>) – </li>
 </ul>
-</dd>
-</dl>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
-<dl class="py function">
+<dl class="function">
 <dt id="rubrik_polaris.lib.accounts.get_account_aws_native_id">
-<code class="sig-prename descclassname">rubrik_polaris.lib.accounts.</code><code class="sig-name descname">get_account_aws_native_id</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">profile</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">aws_id</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">aws_secret</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.lib.accounts.get_account_aws_native_id" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">rubrik_polaris.lib.accounts.</code><code class="descname">get_account_aws_native_id</code><span class="sig-paren">(</span><em>self</em>, <em>profile=''</em>, <em>aws_id=None</em>, <em>aws_secret=None</em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.lib.accounts.get_account_aws_native_id" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns AWS Account ID from local config</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>str – AWS Account ID, AWS Account Name (if applicable)</p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">str – AWS Account ID, AWS Account Name (if applicable)</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
-<dl class="py function">
+<dl class="function">
 <dt id="rubrik_polaris.lib.accounts.get_accounts_aws">
-<code class="sig-prename descclassname">rubrik_polaris.lib.accounts.</code><code class="sig-name descname">get_accounts_aws</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">filter</span><span class="o">=</span><span class="default_value">''</span></em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.lib.accounts.get_accounts_aws" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">rubrik_polaris.lib.accounts.</code><code class="descname">get_accounts_aws</code><span class="sig-paren">(</span><em>self</em>, <em>filter=''</em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.lib.accounts.get_accounts_aws" title="Permalink to this definition">¶</a></dt>
 <dd><p>Retrieves AWS account information from Polaris</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>{str} -- Search string to filter results</strong> (<em>filter</em>) – </p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>list – List of AWS accounts in Polaris</p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>{str} -- Search string to filter results</strong> (<em>filter</em>) – </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">list – List of AWS accounts in Polaris</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
-<dl class="py function">
+<dl class="function">
 <dt id="rubrik_polaris.lib.accounts.get_accounts_aws_detail">
-<code class="sig-prename descclassname">rubrik_polaris.lib.accounts.</code><code class="sig-name descname">get_accounts_aws_detail</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">filter</span></em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.lib.accounts.get_accounts_aws_detail" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">rubrik_polaris.lib.accounts.</code><code class="descname">get_accounts_aws_detail</code><span class="sig-paren">(</span><em>self</em>, <em>filter</em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.lib.accounts.get_accounts_aws_detail" title="Permalink to this definition">¶</a></dt>
 <dd><p>Retrieves deployment details for AWS from Polaris</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>{str} -- Search AWS native account ID to filter results</strong> (<em>filter</em>) – </p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>list – List of AWS account details</p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>{str} -- Search AWS native account ID to filter results</strong> (<em>filter</em>) – </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">list – List of AWS account details</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
-<dl class="py function">
+<dl class="function">
 <dt id="rubrik_polaris.lib.accounts.get_accounts_azure">
-<code class="sig-prename descclassname">rubrik_polaris.lib.accounts.</code><code class="sig-name descname">get_accounts_azure</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">filter</span><span class="o">=</span><span class="default_value">''</span></em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.lib.accounts.get_accounts_azure" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">rubrik_polaris.lib.accounts.</code><code class="descname">get_accounts_azure</code><span class="sig-paren">(</span><em>self</em>, <em>filter=''</em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.lib.accounts.get_accounts_azure" title="Permalink to this definition">¶</a></dt>
 <dd><p>Retrieves Azure account information from Polaris</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>{str} -- Search string to filter results</strong> (<em>filter</em>) – </p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>list – List of Azure accounts in Polaris</p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>{str} -- Search string to filter results</strong> (<em>filter</em>) – </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">list – List of Azure accounts in Polaris</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
-<dl class="py function">
+<dl class="function">
 <dt id="rubrik_polaris.lib.accounts.get_accounts_gcp">
-<code class="sig-prename descclassname">rubrik_polaris.lib.accounts.</code><code class="sig-name descname">get_accounts_gcp</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">filter</span><span class="o">=</span><span class="default_value">''</span></em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.lib.accounts.get_accounts_gcp" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">rubrik_polaris.lib.accounts.</code><code class="descname">get_accounts_gcp</code><span class="sig-paren">(</span><em>self</em>, <em>filter=''</em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.lib.accounts.get_accounts_gcp" title="Permalink to this definition">¶</a></dt>
 <dd><p>Retrieves GCP account information from Polaris</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>{str} -- Search string to filter results</strong> (<em>filter</em>) – </p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>list – List of GCP accounts in Polaris</p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>{str} -- Search string to filter results</strong> (<em>filter</em>) – </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">list – List of GCP accounts in Polaris</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
-<dl class="py function">
+<dl class="function">
 <dt id="rubrik_polaris.lib.accounts.update_account_aws">
-<code class="sig-prename descclassname">rubrik_polaris.lib.accounts.</code><code class="sig-name descname">update_account_aws</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">regions</span><span class="o">=</span><span class="default_value">[]</span></em>, <em class="sig-param"><span class="n">all</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">profiles</span><span class="o">=</span><span class="default_value">[]</span></em>, <em class="sig-param"><span class="n">aws_access_key_id</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">aws_secret_access_key</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.lib.accounts.update_account_aws" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">rubrik_polaris.lib.accounts.</code><code class="descname">update_account_aws</code><span class="sig-paren">(</span><em>self</em>, <em>regions=[]</em>, <em>all=False</em>, <em>profiles=[]</em>, <em>aws_access_key_id=None</em>, <em>aws_secret_access_key=None</em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.lib.accounts.update_account_aws" title="Permalink to this definition">¶</a></dt>
 <dd><p>Updates AWS account if configured in Polaris</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>{bool} -- If true import all available profiles</strong><strong> (</strong><strong>Default</strong> (<em>all</em>) – False)</p></li>
-<li><p><strong>{list} -- List of explicit profiles to add</strong> (<em>profiles</em>) – </p></li>
-<li><p><strong>{str} -- AWS Access Key ID</strong> (<em>aws_access_key_id</em>) – </p></li>
-<li><p><strong>{str} -- AWS Access Key Secret</strong> (<em>aws_secret_access_key</em>) – </p></li>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>{bool} -- If true import all available profiles</strong><strong> (</strong><strong>Default</strong> (<em>all</em>) – False)</li>
+<li><strong>{list} -- List of explicit profiles to add</strong> (<em>profiles</em>) – </li>
+<li><strong>{str} -- AWS Access Key ID</strong> (<em>aws_access_key_id</em>) – </li>
+<li><strong>{str} -- AWS Access Key Secret</strong> (<em>aws_secret_access_key</em>) – </li>
 </ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>bool – <cite>True</cite> if the account was added successfully, otherwise <cite>False</cite>.</p>
-</dd>
-</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">bool – <cite>True</cite> if the account was added successfully, otherwise <cite>False</cite>.</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </div>
 <div class="section" id="module-rubrik_polaris.lib.compute">
 <span id="compute-functions"></span><h2>Compute Functions<a class="headerlink" href="#module-rubrik_polaris.lib.compute" title="Permalink to this headline">¶</a></h2>
 <p>Collection of functions that manipulate compute components</p>
-<dl class="py function">
+<dl class="function">
 <dt id="rubrik_polaris.lib.compute.get_compute_azure">
-<code class="sig-prename descclassname">rubrik_polaris.lib.compute.</code><code class="sig-name descname">get_compute_azure</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.lib.compute.get_compute_azure" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">rubrik_polaris.lib.compute.</code><code class="descname">get_compute_azure</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.lib.compute.get_compute_azure" title="Permalink to this definition">¶</a></dt>
 <dd><p>Retrieve all Azure instances from Polaris</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>list – List of all Azure VM instances</p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">list – List of all Azure VM instances</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
-<dl class="py function">
+<dl class="function">
 <dt id="rubrik_polaris.lib.compute.get_compute_ec2">
-<code class="sig-prename descclassname">rubrik_polaris.lib.compute.</code><code class="sig-name descname">get_compute_ec2</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">object_id</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.lib.compute.get_compute_ec2" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">rubrik_polaris.lib.compute.</code><code class="descname">get_compute_ec2</code><span class="sig-paren">(</span><em>self</em>, <em>object_id=None</em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.lib.compute.get_compute_ec2" title="Permalink to this definition">¶</a></dt>
 <dd><p>Retrieve all AWS EC2 instances from Polaris</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>{str} -- A specific Object ID to retrieve</strong> (<em>object_id</em>) – </p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>list – List of all the AWS EC2 instances or the specific instance if the <cite>object_id</cite> is passed.</p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>{str} -- A specific Object ID to retrieve</strong> (<em>object_id</em>) – </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">list – List of all the AWS EC2 instances or the specific instance if the <cite>object_id</cite> is passed.</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
-<dl class="py function">
+<dl class="function">
 <dt id="rubrik_polaris.lib.compute.get_compute_gce">
-<code class="sig-prename descclassname">rubrik_polaris.lib.compute.</code><code class="sig-name descname">get_compute_gce</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.lib.compute.get_compute_gce" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">rubrik_polaris.lib.compute.</code><code class="descname">get_compute_gce</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.lib.compute.get_compute_gce" title="Permalink to this definition">¶</a></dt>
 <dd><p>Retrieve all GCE instances from Polaris</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>list – List of all GCE instances</p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">list – List of all GCE instances</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
-<dl class="py function">
+<dl class="function">
 <dt id="rubrik_polaris.lib.compute.get_compute_object_ids_azure">
-<code class="sig-prename descclassname">rubrik_polaris.lib.compute.</code><code class="sig-name descname">get_compute_object_ids_azure</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">match_all</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.lib.compute.get_compute_object_ids_azure" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">rubrik_polaris.lib.compute.</code><code class="descname">get_compute_object_ids_azure</code><span class="sig-paren">(</span><em>self</em>, <em>match_all=True</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.lib.compute.get_compute_object_ids_azure" title="Permalink to this definition">¶</a></dt>
 <dd><p>Retrieves all Azure VM object IDs that match query</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>{bool} -- Set to false to match ANY defined criteria</strong> (<em>match_all</em>) – </p></li>
-<li><p><strong>{} -- Any top level object from the get_compute_azure call</strong> (<em>kwargs</em>) – </p></li>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>{bool} -- Set to false to match ANY defined criteria</strong> (<em>match_all</em>) – </li>
+<li><strong>{} -- Any top level object from the get_compute_azure call</strong> (<em>kwargs</em>) – </li>
 </ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>list – List of all the Azure VM object id’s</p>
-</dd>
-</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">list – List of all the Azure VM object id’s</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
-<dl class="py function">
+<dl class="function">
 <dt id="rubrik_polaris.lib.compute.get_compute_object_ids_ec2">
-<code class="sig-prename descclassname">rubrik_polaris.lib.compute.</code><code class="sig-name descname">get_compute_object_ids_ec2</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">match_all</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.lib.compute.get_compute_object_ids_ec2" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">rubrik_polaris.lib.compute.</code><code class="descname">get_compute_object_ids_ec2</code><span class="sig-paren">(</span><em>self</em>, <em>match_all=True</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.lib.compute.get_compute_object_ids_ec2" title="Permalink to this definition">¶</a></dt>
 <dd><p>Retrieves all AWS EC2 object IDs that match query</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>{bool} -- Set to false to match ANY defined criteria</strong> (<em>match_all</em>) – </p></li>
-<li><p><strong>{name</strong> (<em>tags</em>) – value} – Allows simple qualification of tags</p></li>
-<li><p><strong>{} -- Any top level object from the get_compute_ec2 call</strong> (<em>kwargs</em>) – </p></li>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>{bool} -- Set to false to match ANY defined criteria</strong> (<em>match_all</em>) – </li>
+<li><strong>{name</strong> (<em>tags</em>) – value} – Allows simple qualification of tags</li>
+<li><strong>{} -- Any top level object from the get_compute_ec2 call</strong> (<em>kwargs</em>) – </li>
 </ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>list – List of all the EC2 object id’s</p>
-</dd>
-</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">list – List of all the EC2 object id’s</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
-<dl class="py function">
+<dl class="function">
 <dt id="rubrik_polaris.lib.compute.get_compute_object_ids_gce">
-<code class="sig-prename descclassname">rubrik_polaris.lib.compute.</code><code class="sig-name descname">get_compute_object_ids_gce</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">match_all</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.lib.compute.get_compute_object_ids_gce" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">rubrik_polaris.lib.compute.</code><code class="descname">get_compute_object_ids_gce</code><span class="sig-paren">(</span><em>self</em>, <em>match_all=True</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.lib.compute.get_compute_object_ids_gce" title="Permalink to this definition">¶</a></dt>
 <dd><p>Retrieves all GCE object IDs that match query</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>{bool} -- Set to False to match ANY defined criteria</strong> (<em>match_all</em>) – </p></li>
-<li><p><strong>{} -- Any top level object from the get_compute_gce call</strong> (<em>kwargs</em>) – </p></li>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>{bool} -- Set to False to match ANY defined criteria</strong> (<em>match_all</em>) – </li>
+<li><strong>{} -- Any top level object from the get_compute_gce call</strong> (<em>kwargs</em>) – </li>
 </ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>list – List of all the GCE object id’s</p>
-</dd>
-</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">list – List of all the GCE object id’s</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
-<dl class="py function">
+<dl class="function">
 <dt id="rubrik_polaris.lib.compute.submit_compute_restore_azure">
-<code class="sig-prename descclassname">rubrik_polaris.lib.compute.</code><code class="sig-name descname">submit_compute_restore_azure</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">snapshot_id</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.lib.compute.submit_compute_restore_azure" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">rubrik_polaris.lib.compute.</code><code class="descname">submit_compute_restore_azure</code><span class="sig-paren">(</span><em>self</em>, <em>snapshot_id</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.lib.compute.submit_compute_restore_azure" title="Permalink to this definition">¶</a></dt>
 <dd><p>Submits a Restore of an Azure VM instance</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>{str} -- Snapshot ID to be restored</strong> (<em>snapshot_id</em>) – </p></li>
-<li><p><strong>{bool} -- Defaults to False</strong> (<em>should_restore_tags</em>) – </p></li>
-<li><p><strong>{bool} -- Defaults to False</strong> – </p></li>
-<li><p><strong>{bool} -- Return once complete Defaults to False</strong> (<em>wait</em>) – </p></li>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>{str} -- Snapshot ID to be restored</strong> (<em>snapshot_id</em>) – </li>
+<li><strong>{bool} -- Defaults to False</strong> (<em>should_restore_tags</em>) – </li>
+<li><strong>{bool} -- Defaults to False</strong> – </li>
+<li><strong>{bool} -- Return once complete Defaults to False</strong> (<em>wait</em>) – </li>
 </ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>list – List of errors if any occurred during the restore</p>
-</dd>
-</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">list – List of errors if any occurred during the restore</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
-<dl class="py function">
+<dl class="function">
 <dt id="rubrik_polaris.lib.compute.submit_compute_restore_ec2">
-<code class="sig-prename descclassname">rubrik_polaris.lib.compute.</code><code class="sig-name descname">submit_compute_restore_ec2</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">snapshot_id</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.lib.compute.submit_compute_restore_ec2" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">rubrik_polaris.lib.compute.</code><code class="descname">submit_compute_restore_ec2</code><span class="sig-paren">(</span><em>self</em>, <em>snapshot_id</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.lib.compute.submit_compute_restore_ec2" title="Permalink to this definition">¶</a></dt>
 <dd><p>Submits a Restore of an EC2 instance</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>{str} -- Snapshot ID to be restored</strong> (<em>snapshot_id</em>) – </p></li>
-<li><p><strong>{bool} -- Defaults to False</strong> (<em>should_restore_tags</em>) – </p></li>
-<li><p><strong>{bool} -- Defaults to False</strong> – </p></li>
-<li><p><strong>{bool} -- Return once complete Defaults to False</strong> (<em>wait</em>) – </p></li>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>{str} -- Snapshot ID to be restored</strong> (<em>snapshot_id</em>) – </li>
+<li><strong>{bool} -- Defaults to False</strong> (<em>should_restore_tags</em>) – </li>
+<li><strong>{bool} -- Defaults to False</strong> – </li>
+<li><strong>{bool} -- Return once complete Defaults to False</strong> (<em>wait</em>) – </li>
 </ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>list – List of errors if any occurred during the restore</p>
-</dd>
-</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">list – List of errors if any occurred during the restore</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
-<dl class="py function">
+<dl class="function">
 <dt id="rubrik_polaris.lib.compute.submit_compute_restore_gce">
-<code class="sig-prename descclassname">rubrik_polaris.lib.compute.</code><code class="sig-name descname">submit_compute_restore_gce</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">snapshot_id</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.lib.compute.submit_compute_restore_gce" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">rubrik_polaris.lib.compute.</code><code class="descname">submit_compute_restore_gce</code><span class="sig-paren">(</span><em>self</em>, <em>snapshot_id</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.lib.compute.submit_compute_restore_gce" title="Permalink to this definition">¶</a></dt>
 <dd><p>Submits a Restore of a GCE instance</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>{str} -- Snapshot ID to be restored</strong> (<em>snapshot_id</em>) – </p></li>
-<li><p><strong>{bool} -- Defaults to False</strong> (<em>should_restore_tags</em>) – </p></li>
-<li><p><strong>{bool} -- Defaults to False</strong> – </p></li>
-<li><p><strong>{bool} -- Return once complete Defaults to False</strong> (<em>wait</em>) – </p></li>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>{str} -- Snapshot ID to be restored</strong> (<em>snapshot_id</em>) – </li>
+<li><strong>{bool} -- Defaults to False</strong> (<em>should_restore_tags</em>) – </li>
+<li><strong>{bool} -- Defaults to False</strong> – </li>
+<li><strong>{bool} -- Return once complete Defaults to False</strong> (<em>wait</em>) – </li>
 </ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>list – List of errors if any occurred during the restore</p>
-</dd>
-</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">list – List of errors if any occurred during the restore</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </div>
 <div class="section" id="module-rubrik_polaris.lib.storage">
 <span id="storage-functions"></span><h2>Storage Functions<a class="headerlink" href="#module-rubrik_polaris.lib.storage" title="Permalink to this headline">¶</a></h2>
 <p>Collection of functions that manipulate storage components.</p>
-<dl class="py function">
+<dl class="function">
 <dt id="rubrik_polaris.lib.storage.get_storage_ebs">
-<code class="sig-prename descclassname">rubrik_polaris.lib.storage.</code><code class="sig-name descname">get_storage_ebs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.lib.storage.get_storage_ebs" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">rubrik_polaris.lib.storage.</code><code class="descname">get_storage_ebs</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.lib.storage.get_storage_ebs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Retrieve all AWS EBS volumes from Polaris</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>list – List of all the AWS EBS volumes.</p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">list – List of all the AWS EBS volumes.</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
-<dl class="py function">
+<dl class="function">
 <dt id="rubrik_polaris.lib.storage.get_storage_object_ids_ebs">
-<code class="sig-prename descclassname">rubrik_polaris.lib.storage.</code><code class="sig-name descname">get_storage_object_ids_ebs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">match_all</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.lib.storage.get_storage_object_ids_ebs" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">rubrik_polaris.lib.storage.</code><code class="descname">get_storage_object_ids_ebs</code><span class="sig-paren">(</span><em>self</em>, <em>match_all=True</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.lib.storage.get_storage_object_ids_ebs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Retrieves all AWS EBS object IDs that match query</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>{bool} -- Set to False to match ANY defined criteria</strong> (<em>match_all</em>) – </p></li>
-<li><p><strong>{name</strong> (<em>tags</em>) – value} – Allows simple qualification of tags</p></li>
-<li><p><strong>{} -- Any top level object from the get_storage_ebs call</strong> (<em>kwargs</em>) – </p></li>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>{bool} -- Set to False to match ANY defined criteria</strong> (<em>match_all</em>) – </li>
+<li><strong>{name</strong> (<em>tags</em>) – value} – Allows simple qualification of tags</li>
+<li><strong>{} -- Any top level object from the get_storage_ebs call</strong> (<em>kwargs</em>) – </li>
 </ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>list – List of all the EBS object id’s</p>
-</dd>
-</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">list – List of all the EBS object id’s</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </div>

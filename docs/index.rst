@@ -9,8 +9,6 @@ Welcome to rubrik_polaris's documentation!
 .. automodule:: rubrik_polaris
    :members:
 
-.. no-index:: source/rubrik_polaris
-
 .. toctree::
    :maxdepth: 2
    :caption: Contents:

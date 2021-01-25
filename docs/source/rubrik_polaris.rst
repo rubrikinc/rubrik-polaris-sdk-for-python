@@ -1,5 +1,5 @@
 Getting Started
-=======================rc install
+=======================
 
 
 rubrik\_polaris package
