@@ -68,7 +68,6 @@ def submit_on_demand(self, object_ids, sla_id, wait=False):
         list -- List of errors if any occurred
     """
     from rubrik_polaris.exceptions import RequestException
-    print(object_ids)
     try:
         mutation_name = "core_snappable_on_demand"
         variables = {

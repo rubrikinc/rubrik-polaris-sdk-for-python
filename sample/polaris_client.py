@@ -41,8 +41,8 @@ except Exception as err:
 # rubrik.delete_account_aws(all = True )
 
 ### Run ODS for machines in a region using Bronze retention, monitor to complete via threads
-# bronze_sla_domain_id = rubrik.get_sla_domains("Bronze")['id']
-# pp.pprint(rubrik.submit_on_demand(rubrik.get_compute_object_ids_azure(region="EastUS2"), bronze_sla_domain_id, wait=True))
+bronze_sla_domain_id = rubrik.get_sla_domains("Bronze")['id']
+pp.pprint(rubrik.submit_on_demand(rubrik.get_compute_object_ids_azure(region="EastUS2"), bronze_sla_domain_id, wait=True))
 
 ### Returns all objectIDs matching arbitrary available inputs. ec2 tags have special treatment
 # pp.pprint(rubrik.get_compute_object_ids_ec2(tags = {"Name": "Puppet Master"}))

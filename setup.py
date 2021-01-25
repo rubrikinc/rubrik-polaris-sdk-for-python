@@ -35,7 +35,7 @@ $ python setup.py install
 
 setuptools.setup(
     name="rubrik_polaris",
-    version="0.10.00",
+    version="21.01.08",
     author="Rubrik Inc",
     description="A Python package for interacting with the Rubrik Polaris API.",
     long_description=long_description,
@@ -50,12 +50,12 @@ setuptools.setup(
         "Programming Language :: Python :: 3.6"
     ],
     install_requires=[
-        'requests >= 2.18.4, != 2.22.0',
+        'requests >= 2.23.0',
         'python-dateutil',
         'pytz',
         'zulu',
         'boto3',
-        'botocore'
+        'botocore<1.20.0,>=1.19.59'
     ],
     include_package_data=True,
     data_files = [
