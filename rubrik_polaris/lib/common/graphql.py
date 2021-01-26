@@ -64,7 +64,7 @@ def _get_query_names_from_graphql_query(self, graphql_query_text):
 
 def _dump_nodes(self, request):
     nodes = []
-    if 'data' in request and len(request['data']) > 0:
+    if 'data' in request and request['data'] and len(request['data']) > 0:
         query_result = list(request['data'].values())[0]
         if 'states' in query_result:
             for state in query_result['states']:

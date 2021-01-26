@@ -92,7 +92,7 @@ def submit_on_demand(self, object_ids, sla_id, wait=False):
         raise
 
 
-def submit_assign_sla(self, object_ids, sla_id, apply_to_existing_snapshots, existing_snapshot_retention, global_sla_assign_type ):
+def submit_assign_sla(self, object_ids, sla_id=None, apply_to_existing_snapshots=None, existing_snapshot_retention=None, global_sla_assign_type="protectWithSlaId"):
     """Submits a Rubrik SLA change for objects
 
     Arguments:
@@ -116,7 +116,7 @@ def submit_assign_sla(self, object_ids, sla_id, apply_to_existing_snapshots, exi
             "objectIds": object_ids,
             "slaId": sla_id
         }
-        response = self._query(None, self._graphql_query[mutation_name], variables)
+        response = self._query(mutation_name, variables)
         return response
     except Exception:
         raise

@@ -49,7 +49,6 @@ def _query(self, query_name=None, variables=None, timeout=60):
                 timeout=timeout
             )
             api_response = api_request.json()
-
             if 'code' in api_response and 'message' in api_response and api_response['code'] >= 400:
                 raise RequestException(api_response['message'])
             else:
