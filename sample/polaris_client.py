@@ -129,6 +129,14 @@ except Exception as err:
 ### Get accepted ENUM values
 # pp.pprint(rubrik.get_enum_values(name="ActivityTypeEnum"))
 
-# pp.pprint(rubrik.update_account_aws(all=True))
+### Get Report Data
+#  report_data = rubrik.get_report_data()
 
-# pp.pprint(rubrik.get_report_data())
+### Basic report summaries
+#  summary = {}
+# for object in report_data:
+#     if object['objectType'] in summary:
+#         summary[object['objectType']] += 1
+#     else:
+#         summary[object['objectType']] = 1
+# pp.pprint(summary)
