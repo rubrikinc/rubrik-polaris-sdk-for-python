@@ -41,8 +41,8 @@ except Exception as err:
 # rubrik.delete_account_aws(all = True )
 
 ### Run ODS for machines in a region using Bronze retention, monitor to complete via threads
-bronze_sla_domain_id = rubrik.get_sla_domains("Bronze")['id']
-pp.pprint(rubrik.submit_on_demand(rubrik.get_compute_object_ids_azure(region="EastUS2"), bronze_sla_domain_id, wait=True))
+# bronze_sla_domain_id = rubrik.get_sla_domains("Bronze")['id']
+# pp.pprint(rubrik.submit_on_demand(rubrik.get_compute_object_ids_azure(region="EastUS2"), bronze_sla_domain_id, wait=True))
 
 ### Returns all objectIDs matching arbitrary available inputs. ec2 tags have special treatment
 # pp.pprint(rubrik.get_compute_object_ids_ec2(tags = {"Name": "Puppet Master"}))
@@ -66,8 +66,8 @@ pp.pprint(rubrik.submit_on_demand(rubrik.get_compute_object_ids_azure(region="Ea
 #     pp.pprint(result)
 
 ### Search for a set of objects and get their details
-# for i in rubrik.get_object_ids_ec2(region = 'US_WEST_2'):
-#      pp.pprint(rubrik.get_compute_ec2(i))
+# for i in rubrik.get_compute_object_ids_ec2(region = 'US_WEST_2'):
+#     pp.pprint(rubrik.get_compute_ec2(i))
 
 ### Returns all instances
 # pp.pprint(rubrik.get_compute_ec2())
@@ -89,9 +89,10 @@ pp.pprint(rubrik.submit_on_demand(rubrik.get_compute_object_ids_azure(region="Ea
 # pp.pprint(rubrik.update_account_aws())
 
 ### Query objects, set sla_domain
-# gold_sla_domain_id = rubrik.get_sla_domains("Gold")
-# pp.pprint(gold_sla_domain_id)
-# pp.pprint(rubrik.submit_assign_sla( rubrik.get_compute_object_ids_ec2(region = "US_WEST_2"), gold_sla_domain_id))
+# gold_sla_domain_id = rubrik.get_sla_domains("Silver")['id']
+# object_ids = rubrik.get_compute_object_ids_ec2(instanceName="tm2-aws-w1")
+# pp.pprint(rubrik.submit_assign_sla(object_ids=object_ids, sla_id=gold_sla_domain_id))
+# pp.pprint(rubrik.submit_assign_sla(object_ids=object_ids, global_sla_assign_type="doNotProtect", existing_snapshot_retention="KEEP_FOREVER"))
 
 ### Event interface
 # end_time = datetime.datetime.now().isoformat()
@@ -130,3 +131,4 @@ pp.pprint(rubrik.submit_on_demand(rubrik.get_compute_object_ids_azure(region="Ea
 
 # pp.pprint(rubrik.update_account_aws(all=True))
 
+# pp.pprint(rubrik.get_report_data())

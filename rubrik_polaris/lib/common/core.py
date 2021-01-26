@@ -92,7 +92,7 @@ def submit_on_demand(self, object_ids, sla_id, wait=False):
         raise
 
 
-def submit_assign_sla(self, object_ids, sla_id=None, apply_to_existing_snapshots=None, existing_snapshot_retention=None, global_sla_assign_type="protectWithSlaId"):
+def submit_assign_sla(self, object_ids=[], sla_id=None, apply_to_existing_snapshots=None, existing_snapshot_retention=None, global_sla_assign_type="protectWithSlaId"):
     """Submits a Rubrik SLA change for objects
 
     Arguments:
