@@ -55,7 +55,10 @@ setuptools.setup(
         'pytz',
         'zulu',
         'boto3',
-        'botocore<1.20.0,>=1.19.59'
+        'botocore<1.20.0,>=1.19.59',
+        'google-api-python-client',
+        'oauth2client',
+        'httplib2 <1dev, >=0.15.0'
     ],
     include_package_data=True,
     data_files = [

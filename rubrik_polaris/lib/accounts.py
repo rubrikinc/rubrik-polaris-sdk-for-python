@@ -403,7 +403,6 @@ def _update_account_aws_initiate(self, _feature, _polaris_account_id):
     except Exception as e:
         print(e)
 
-
 def _update_account_aws(self, profile=None, aws_id=None, aws_secret=None,  _aws_account_id = '', _aws_account_name = None):
     if profile:
         _aws_account_id, _aws_account_name = self.get_account_aws_native_id(profile=profile)
@@ -439,3 +438,48 @@ def _get_account_map_aws(self):
                     o[i['awsCloudAccount']['nativeId']]['regions'][r] = {}
     return o
 
+
+def add_project_gcp(self, creds=None, gcp_native_project_id=None, gcp_native_project_name=None, gcp_native_project_number=None, is_shared_vpc=False, organization_name=None, service_account_auth_key=None):
+    required_input = False
+    if gcp_native_project_name and gcp_native_project_number and gcp_native_project_id:
+        required_input = True
+
+    if not creds and not required_input:
+        raise Exception("No credentials to look up Google Resources")
+
+    if required_input:
+        # Check to see if project exists
+        self._get_gcp_native_projects()
+
+        # Add Project if not
+        try:
+            _query_name = "accounts_gcp_project_add"
+            _variables = {
+                "gcp_native_project_id": gcp_native_project_id,
+                "gcp_native_project_name": gcp_native_project_name,
+                "gcp_native_project_number": gcp_native_project_number,
+                "is_shared_vpc": is_shared_vpc
+            }
+            _request = self._query(_query_name, _variables)
+            self._pp.pprint(_request)
+        except Exception as e:
+            print(e)
+
+
+def _get_gcp_native_projects(self):
+    from googleapiclient import discovery
+    from oauth2client.client import GoogleCredentials
+    credentials = GoogleCredentials.get_application_default()
+    service = discovery.build('cloudresourcemanager', 'v1', credentials=credentials)
+    request = service.projects().list()
+    response = request.execute()
+    for project in response.get('projects', []):
+        gcp_native_project_name = project['name']
+        gcp_native_project_id = project['projectId']
+        gcp_native_project_number = project['projectNumber']
+        if project['parent']['type'] == 'organization':
+            name = 'organizations/{}'.format(project['parent']['id'])
+            request = service.organizations().get(name=name)
+            response = request.execute()
+            if 'displayName' in response:
+                organization_name = response['displayName']
