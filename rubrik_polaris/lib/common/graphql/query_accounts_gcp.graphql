@@ -9,6 +9,10 @@ query RubrikPolarisSDKRequest($filter: String = "") {
                 configured_sla_domain_id: configuredSlaDomain{id}
                 effective_sla_domain_name: effectiveSlaDomain{name}
                 effective_sla_domain_id: effectiveSlaDomain{id}
+                gcp_native_project_name: nativeName
+                gcp_native_project_id: nativeId
+                gcp_native_project_number: projectNumber
+                organization_name: organizationName
             }
         }
     }
