@@ -205,6 +205,12 @@
 </dd></dl>
 
 <dl class="function">
+<dt id="rubrik_polaris.lib.common.core.get_report_data">
+<code class="descclassname">rubrik_polaris.lib.common.core.</code><code class="descname">get_report_data</code><span class="sig-paren">(</span><em>self</em>, <em>object_type=[]</em>, <em>cluster_ids=[]</em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.lib.common.core.get_report_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve Report Data from Polaris</p>
+</dd></dl>
+
+<dl class="function">
 <dt id="rubrik_polaris.lib.common.core.get_sla_domains">
 <code class="descclassname">rubrik_polaris.lib.common.core.</code><code class="descname">get_sla_domains</code><span class="sig-paren">(</span><em>self</em>, <em>sla_domain_name=''</em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.lib.common.core.get_sla_domains" title="Permalink to this definition">¶</a></dt>
 <dd><p>Retrieves dictionary of SLA Domain Names and Identifiers.</p>
@@ -261,7 +267,7 @@ dict – The complete set of SLA domains or a one element dict if a non-empty <c
 
 <dl class="function">
 <dt id="rubrik_polaris.lib.common.core.submit_assign_sla">
-<code class="descclassname">rubrik_polaris.lib.common.core.</code><code class="descname">submit_assign_sla</code><span class="sig-paren">(</span><em>self</em>, <em>object_ids</em>, <em>sla_id</em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.lib.common.core.submit_assign_sla" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">rubrik_polaris.lib.common.core.</code><code class="descname">submit_assign_sla</code><span class="sig-paren">(</span><em>self</em>, <em>object_ids=[]</em>, <em>sla_id=None</em>, <em>apply_to_existing_snapshots=None</em>, <em>existing_snapshot_retention=None</em>, <em>global_sla_assign_type='protectWithSlaId'</em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.lib.common.core.submit_assign_sla" title="Permalink to this definition">¶</a></dt>
 <dd><p>Submits a Rubrik SLA change for objects</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -269,7 +275,10 @@ dict – The complete set of SLA domains or a one element dict if a non-empty <c
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>{</strong><strong>[</strong><strong>str</strong><strong>]</strong><strong>} -- Array of Rubrik Object IDs</strong> (<em>object_ids</em>) – </li>
+<li><strong>{str} -- Define assignment type noAssignment/doNotProtect/protectWithSlaId</strong> (<em>global_sla_assign_type</em>) – </li>
 <li><strong>{str} -- Rubrik SLA Domain ID</strong> (<em>sla_id</em>) – </li>
+<li><strong>{bool} -- Apply retention policy to pre-existing snapshots</strong> (<em>apply_to_existing_snapshots</em>) – </li>
+<li><strong>{str} -- Snapshot handling on doNotProtect RETAIN_SNAPSHOTS/KEEP_FOREVER/EXPIRE_IMMEDIATELY</strong> (<em>existing_snapshot_retention</em>) – </li>
 </ul>
 </td>
 </tr>
