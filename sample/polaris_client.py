@@ -127,7 +127,7 @@ except Exception as err:
 # pp.pprint(summary)
 
 ### Get accepted ENUM values
-# pp.pprint(rubrik.get_enum_values(name="ActivityTypeEnum"))
+# pp.pprint(rubrik.get_enum_values(name="ExistingSnapshotRetentionEnum"))
 
 ### Get Report Data
 #  report_data = rubrik.get_report_data()
