@@ -29,9 +29,7 @@ def _build_graphql_maps(self):
     from os.path import isfile, join
 
     # Assemble GraphQL query/mutation hash and name map
-    graphql_query = {}
-    graphql_file_type_map = {}
-    graphql_var_type_map = {}
+    graphql_details = {}
 
     file_query_prefix = 'query'
     file_mutation_prefix = 'mutation'
@@ -49,24 +47,20 @@ def _build_graphql_maps(self):
 
         try:
             graphql_file = open("{}{}".format(self._data_path, f), 'r').read()
-            graphql_query[query_name] = """{}""".format(graphql_file)
-            graphql_file_type_map[query_name] = self._get_query_names_from_graphql_query(graphql_file)
-            graphql_var_type_map[query_name] = self._get_attr_types_from_graphql_query(graphql_file)
+            graphql_details[query_name] = self._get_details_from_graphql_query(graphql_file)
+            graphql_details[query_name]['query_text'] = """{}""".format(graphql_file)
+
         except OSError as e:
             raise  # TODO: Should we bail immediately or go on to the next file?
 
-    return graphql_query, graphql_file_type_map, graphql_var_type_map
+    return graphql_details
 
 
-def _get_query_names_from_graphql_query(self, graphql_query_text):
-    import re
-    return re.findall(r' +(\S+) ?\(.*', graphql_query_text)
-
-
-def _get_attr_types_from_graphql_query(self, graphql_query_text):
+def _get_details_from_graphql_query(self, graphql_query_text):
     import re, sys
     try:
         o = {}
+        o['gql_name'] = re.findall(r' +(\S+) ?\(.*', graphql_query_text)[1]
         paren = re.search(r'\((.*?)\)', graphql_query_text).group(1).split(',')
         for i in paren:
             item = re.search(r'^(.*):(.*$)', i)

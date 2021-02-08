@@ -130,10 +130,10 @@ except Exception as err:
 # pp.pprint(rubrik.get_enum_values(name="ExistingSnapshotRetentionEnum"))
 
 ### Get Report Data
-#  report_data = rubrik.get_report_data()
+# report_data = rubrik.get_report_data()
 
 ### Basic report summaries
-#  summary = {}
+# summary = {}
 # for object in report_data:
 #     if object['objectType'] in summary:
 #         summary[object['objectType']] += 1
