@@ -31,8 +31,8 @@ def _query(self, query_name=None, variables=None, timeout=60):
 
     try:
         operation_name = "SdkPython" + ''.join(w[:1].upper() + w[1:] for w in query_name.split('_'))
-        query = re.sub("RubrikPolarisSDKRequest", operation_name, self._graphql_query[query_name])
-        gql_query_name = (self._graphql_file_type_map[query_name])[1]
+        query = re.sub("RubrikPolarisSDKRequest", operation_name, self._graphql_query_map[query_name]['query_text'])
+        gql_query_name = self._graphql_query_map[query_name]['gql_name']
         start = True
         while start or ('pageInfo' in api_response['data'][gql_query_name] and api_response['data'][gql_query_name]['pageInfo']['hasNextPage']):
             if not start:

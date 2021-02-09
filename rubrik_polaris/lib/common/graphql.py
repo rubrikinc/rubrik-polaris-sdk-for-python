@@ -29,8 +29,7 @@ def _build_graphql_maps(self):
     from os.path import isfile, join
 
     # Assemble GraphQL query/mutation hash and name map
-    graphql_query = {}
-    graphql_file_type_map = {}
+    graphql_details = {}
 
     file_query_prefix = 'query'
     file_mutation_prefix = 'mutation'
@@ -48,18 +47,47 @@ def _build_graphql_maps(self):
 
         try:
             graphql_file = open("{}{}".format(self._data_path, f), 'r').read()
-            graphql_query[query_name] = """{}""".format(graphql_file)
+            graphql_details[query_name] = self._get_details_from_graphql_query(graphql_file)
+            graphql_details[query_name]['query_text'] = """{}""".format(graphql_file)
 
-            graphql_file_type_map[query_name] = self._get_query_names_from_graphql_query(graphql_file)
         except OSError as e:
             raise  # TODO: Should we bail immediately or go on to the next file?
 
-    return graphql_query, graphql_file_type_map
+    return graphql_details
 
 
-def _get_query_names_from_graphql_query(self, graphql_query_text):
-    import re
-    return re.findall(r' +(\S+) ?\(.*', graphql_query_text)
+def _get_details_from_graphql_query(self, graphql_query_text):
+    import re, sys
+    try:
+        o = {}
+        o['gql_name'] = re.findall(r' +(\S+) ?\(.*', graphql_query_text)[1]
+        paren = re.search(r'\((.*?)\)', graphql_query_text).group(1).split(',')
+        for i in paren:
+            item = re.search(r'^(.*):(.*$)', i)
+            var_name = item.group(1).strip()
+            o[var_name] = {}
+            if '=' in item.group(2):
+                default_split = item.group(2).split('=')
+                o[var_name]['default'] = default_split[1].strip()
+                o[var_name]['type'] = default_split[0].strip()
+            else:
+                o[var_name]['default'] = None
+                o[var_name]['type'] = item.group(2).strip()
+            if '[' in o[var_name]['type']:
+                o[var_name]['type'] = re.search(r'\[(.*)\]', o[var_name]['type']).group(1)
+                o[var_name]['typeOf'] = 'arrayOf'
+            else:
+                o[var_name]['typeOf'] = 'stringOf'
+            if '!' in o[var_name]['type']:
+                o[var_name]['required'] = True
+                o[var_name]['type'] = o[var_name]['type'].replace("!", "")
+            else:
+                o[var_name]['required'] = False
+        return o
+    except:
+        print("Unexpected error:", sys.exc_info()[0])
+        print(graphql_query_text)
+        raise
 
 
 def _dump_nodes(self, request):
