@@ -144,7 +144,21 @@ def get_task_status(self, task_chain_id):
         raise
 
 
-def get_snapshots(self, snappable_id, **kwargs):
+def _get_snapshot(self, snapshot_id=None):
+    try:
+        query_name = "core_snappable_snapshot"
+        variables = {
+            "snapshot_id": snapshot_id
+        }
+        response = self._query(query_name, variables)
+        if len(response) == 0:
+            return {}
+        return response
+    except Exception:
+        raise
+
+
+def get_snapshots(self, snappable_id=None, recovery_point=None):
     """Retrieve Snapshots for a Snappable from Polaris
 
     Arguments:
@@ -162,7 +176,7 @@ def get_snapshots(self, snappable_id, **kwargs):
         variables = {
             "snappable_id": snappable_id
         }
-        if kwargs and 'recovery_point' in kwargs and kwargs['recovery_point'] == 'latest':
+        if recovery_point == 'latest':
             variables['first'] = 1
 
         response = self._query(query_name, variables)
@@ -172,15 +186,15 @@ def get_snapshots(self, snappable_id, **kwargs):
 
         snapshot_comparison = {}
         for snapshot in response:
-            if kwargs and 'recovery_point' in kwargs and kwargs['recovery_point'] != 'latest':
+            if recovery_point != 'latest':
                 parsed_snapshot_date = parse(snapshot['date']).astimezone()
-                parsed_recovery_point = parse(kwargs['recovery_point'])
+                parsed_recovery_point = parse(recovery_point)
                 parsed_recovery_point = parsed_recovery_point.replace(tzinfo=tzlocal())
                 snapshot['date_local'] = parsed_snapshot_date.isoformat()
                 if parsed_snapshot_date >= parsed_recovery_point:
                     snapshot_comparison[abs(parsed_recovery_point - parsed_snapshot_date)] = snapshot
 
-        if kwargs and 'recovery_point' in kwargs and kwargs['recovery_point'] != 'latest':
+        if recovery_point != 'latest':
             return snapshot_comparison[min(snapshot_comparison)][0]
         return response[0]
     except Exception:

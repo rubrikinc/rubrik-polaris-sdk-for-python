@@ -27,3 +27,8 @@ class PolarisException(Exception):
 class RequestException(PolarisException):
     """Exceptions during requests, e.g. connection, timeout, HTTP errors."""
     pass
+
+
+class ValidationException(PolarisException):
+    """Exceptions during validation of requests."""
+    pass

@@ -403,6 +403,7 @@ def _update_account_aws_initiate(self, _feature, _polaris_account_id):
     except Exception as e:
         print(e)
 
+
 def _update_account_aws(self, profile=None, aws_id=None, aws_secret=None,  _aws_account_id = '', _aws_account_name = None):
     if profile:
         _aws_account_id, _aws_account_name = self.get_account_aws_native_id(profile=profile)
@@ -421,3 +422,20 @@ def _update_account_aws(self, profile=None, aws_id=None, aws_secret=None,  _aws_
                     self._pp.pprint(_update_info)
                 if _feature['status'] == 'DISCONNECTED':
                     print("account needs to be recreated")
+
+
+def _get_account_map_aws(self):
+    account_detail = self.get_accounts_aws_detail("")['awsCloudAccounts']
+    o = {}
+    for i in account_detail:
+        o[i['awsCloudAccount']['nativeId']] = {}
+        o[i['awsCloudAccount']['nativeId']]['id'] = i['awsCloudAccount']['id']
+        o[i['awsCloudAccount']['nativeId']]['account_name'] = i['awsCloudAccount']['accountName']
+        for f in i['featureDetails']:
+            if f['feature'] == 'CLOUD_NATIVE_PROTECTION':
+                o[i['awsCloudAccount']['nativeId']]['status'] = f['status']
+                o[i['awsCloudAccount']['nativeId']]['regions'] = {}
+                for r in f['awsRegions']:
+                    o[i['awsCloudAccount']['nativeId']]['regions'][r] = {}
+    return o
+
