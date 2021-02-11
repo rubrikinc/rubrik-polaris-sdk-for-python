@@ -1,0 +1,6 @@
+query RubrikPolarisSDKRequest($region: AwsNativeRegionEnum!, $aws_native_account_id: UUID!) {
+  getEncryptionKeysForRegionFromAWS(region: $region, awsNativeAccountId: $aws_native_account_id) {
+    id
+    aliases
+  }
+}

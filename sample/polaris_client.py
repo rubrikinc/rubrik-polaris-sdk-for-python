@@ -80,7 +80,7 @@ except Exception as err:
 
 ### Returns specified cloud account details, or all
 # pp.pprint(rubrik.get_accounts_aws("gurling"))
-# pp.pprint(rubrik.get_accounts_aws_detail("d01bd273-ccce-496b-aac1-d7ba9a0b7074"))
+# pp.pprint(rubrik.get_accounts_aws_detail(""))
 # pp.pprint(rubrik.get_accounts_gcp("Trinity-FDSE"))
 # pp.pprint(rubrik.get_accounts_azure("RubrikRangers"))
 # pp.pprint(rubrik.get_accounts_aws())
@@ -140,3 +140,6 @@ except Exception as err:
 #     else:
 #         summary[object['objectType']] = 1
 # pp.pprint(summary)
+
+### Export ec2 to another region
+# pp.pprint(rubrik.submit_compute_export_ec2(snapshot_id='5d932b7d-6c12-4efb-b3f7-d79beddf655a', account_number='627297623784', region='aEU_WEST_3', vpc='vpc-05c6c96c', security_groups=['sg-bb06afd7'], subnet='subnet-85dff5ec', wait=True))
