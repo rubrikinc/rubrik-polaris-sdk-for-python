@@ -57,32 +57,36 @@ def _build_graphql_maps(self):
 
 
 def _get_details_from_graphql_query(self, graphql_query_text):
-    import re, sys
+    import re
+    import sys
     try:
         o = {}
-        o['gql_name'] = re.findall(r' +(\S+) ?\(.*', graphql_query_text)[1]
-        paren = re.search(r'\((.*?)\)', graphql_query_text).group(1).split(',')
-        for i in paren:
-            item = re.search(r'^(.*):(.*$)', i)
-            var_name = item.group(1).strip()
-            o[var_name] = {}
-            if '=' in item.group(2):
-                default_split = item.group(2).split('=')
-                o[var_name]['default'] = default_split[1].strip()
-                o[var_name]['type'] = default_split[0].strip()
-            else:
-                o[var_name]['default'] = None
-                o[var_name]['type'] = item.group(2).strip()
-            if '[' in o[var_name]['type']:
-                o[var_name]['type'] = re.search(r'\[(.*)\]', o[var_name]['type']).group(1)
-                o[var_name]['typeOf'] = 'arrayOf'
-            else:
-                o[var_name]['typeOf'] = 'stringOf'
-            if '!' in o[var_name]['type']:
-                o[var_name]['required'] = True
-                o[var_name]['type'] = o[var_name]['type'].replace("!", "")
-            else:
-                o[var_name]['required'] = False
+        try:
+            o['gql_name'] = re.findall(r' +(\S+) ?\(.*', graphql_query_text)[1]
+            paren = re.search(r'\((.*?)\)', graphql_query_text).group(1).split(',')
+            for i in paren:
+                item = re.search(r'^(.*):(.*$)', i)
+                var_name = item.group(1).strip()
+                o[var_name] = {}
+                if '=' in item.group(2):
+                    default_split = item.group(2).split('=')
+                    o[var_name]['default'] = default_split[1].strip()
+                    o[var_name]['type'] = default_split[0].strip()
+                else:
+                    o[var_name]['default'] = None
+                    o[var_name]['type'] = item.group(2).strip()
+                if '[' in o[var_name]['type']:
+                    o[var_name]['type'] = re.search(r'\[(.*)\]', o[var_name]['type']).group(1)
+                    o[var_name]['typeOf'] = 'arrayOf'
+                else:
+                    o[var_name]['typeOf'] = 'stringOf'
+                if '!' in o[var_name]['type']:
+                    o[var_name]['required'] = True
+                    o[var_name]['type'] = o[var_name]['type'].replace("!", "")
+                else:
+                    o[var_name]['required'] = False
+        except:  # Handle non-variable queries
+            o['gql_name'] = re.search(r'\{(.*)\}', re.sub(r"[\n\t\s]*", "", graphql_query_text))
         return o
     except:
         print("Unexpected error:", sys.exc_info()[0])

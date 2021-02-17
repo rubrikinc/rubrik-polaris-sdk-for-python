@@ -56,8 +56,11 @@ setuptools.setup(
         'zulu',
         'boto3',
         'botocore<1.20.0,>=1.19.59',
+        'google-auth<2.0dev,>=1.21.1',
         'google-api-python-client',
         'oauth2client',
+        'six<2dev,>=1.13.0',
+        'pyasn1<0.5.0,>=0.4.6',
         'httplib2 <1dev, >=0.15.0'
     ],
     include_package_data=True,

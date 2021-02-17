@@ -423,6 +423,26 @@ def _update_account_aws(self, profile=None, aws_id=None, aws_secret=None,  _aws_
                     print("account needs to be recreated")
 
 
+def _get_default_service_account_gcp(self):
+    try:
+        _query_name = "accounts_gcp_project_default_credentials_get"
+        return self._query(_query_name, None)
+    except Exception as e:
+        print(e)
+
+
+def _set_default_service_account_gcp(self, name=None, jwt_config=None):
+    try:
+        _query_name = "accounts_gcp_project_default_credentials_set"
+        _variables = {
+            "name": name,
+            "jwt_config": jwt_config
+        }
+        return self._query(_query_name, _variables)
+    except Exception as e:
+        print(e)
+
+
 def _get_account_map_aws(self):
     account_detail = self.get_accounts_aws_detail("")['awsCloudAccounts']
     o = {}

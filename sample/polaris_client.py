@@ -130,16 +130,16 @@ except Exception as err:
 # pp.pprint(rubrik.get_enum_values(name="ExistingSnapshotRetentionEnum"))
 
 ### Get Report Data
-# report_data = rubrik.get_report_data()
+report_data = rubrik.get_report_data()
 
 ### Basic report summaries
-# summary = {}
-# for object in report_data:
-#     if object['objectType'] in summary:
-#         summary[object['objectType']] += 1
-#     else:
-#         summary[object['objectType']] = 1
-# pp.pprint(summary)
+summary = {}
+for object in report_data:
+    if object['objectType'] in summary:
+        summary[object['objectType']] += 1
+    else:
+        summary[object['objectType']] = 1
+pp.pprint(summary)
 
 ### Export ec2 to another region
 # pp.pprint(rubrik.submit_compute_export_ec2(snapshot_id='5d932b7d-6c12-4efb-b3f7-d79beddf655a', account_number='627297623784', region='aEU_WEST_3', vpc='vpc-05c6c96c', security_groups=['sg-bb06afd7'], subnet='subnet-85dff5ec', wait=True))
