@@ -130,16 +130,32 @@ except Exception as err:
 # pp.pprint(rubrik.get_enum_values(name="ExistingSnapshotRetentionEnum"))
 
 ### Get Report Data
-report_data = rubrik.get_report_data()
+# report_data = rubrik.get_report_data()
 
 ### Basic report summaries
-summary = {}
-for object in report_data:
-    if object['objectType'] in summary:
-        summary[object['objectType']] += 1
-    else:
-        summary[object['objectType']] = 1
-pp.pprint(summary)
+# summary = {}
+# for object in report_data:
+#     if object['objectType'] in summary:
+#         summary[object['objectType']] += 1
+#     else:
+#         summary[object['objectType']] = 1
+# pp.pprint(summary)
 
 ### Export ec2 to another region
 # pp.pprint(rubrik.submit_compute_export_ec2(snapshot_id='5d932b7d-6c12-4efb-b3f7-d79beddf655a', account_number='627297623784', region='aEU_WEST_3', vpc='vpc-05c6c96c', security_groups=['sg-bb06afd7'], subnet='subnet-85dff5ec', wait=True))
+
+### Add GCP Project
+# rubrik.add_project_gcp(service_account_auth_key_file="/home/peterm/.google.milanese.json", gcp_native_project_id="home-network-274622")
+# rubrik.delete_project_gcp(gcp_native_project_id="home-network-274622")
+
+### Check for duplicate vms
+# vms = rubrik.get_compute_vsphere()
+# o = {}
+# for vm in vms:
+#     if vm['name'] in o and not vm['isRelic']:
+#         o[vm['name']].append(vm['cluster']['name'])
+#     elif not vm['isRelic']:
+#         o[vm['name']] = [vm['cluster']['name']]
+# for vm in o:
+#     if len(o[vm]) > 1:
+#         print("{} : {}".format(vm, o[vm]))

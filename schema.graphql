@@ -916,7 +916,7 @@ interface HyperVTopLevelDescendantType {
     snapshotDistribution: SnapshotDistribution!
 }
 
-interface K8sClusterDescendant {
+interface KuprClusterDescendant {
     "The configured SLA Domain of the hierarchy object."
     configuredSlaDomain: SlaDomain!
     "The Effective Retention SLA Domain of the hierarchy object."
@@ -1325,8 +1325,6 @@ interface O365TeamsMessageObject {
     id: String
     "The time the Teams message was sent."
     sentDateTime: DateTime
-    "The id of the snapshot."
-    snapshotId: UUID
     "The recipients of the Teams message."
     toRecipients: [String!]!
 }
@@ -3181,44 +3179,6 @@ type AboutInformation {
     version: String!
 }
 
-type AccessGroup {
-    groupId: String!
-    groupName: String!
-}
-
-type AccessGroupConnection {
-    count: Int!
-    edges: [AccessGroupEdge!]!
-    nodes: [AccessGroup!]!
-    pageInfo: PageInfo!
-}
-
-type AccessGroupEdge {
-    cursor: String!
-    node: AccessGroup!
-}
-
-type AccessUser {
-    activityDelta: Int!
-    email: String!
-    numActivities: Int!
-    riskLevel: RiskLevelTypeEnum!
-    userId: String!
-    username: String!
-}
-
-type AccessUserConnection {
-    count: Int!
-    edges: [AccessUserEdge!]!
-    nodes: [AccessUser!]!
-    pageInfo: PageInfo!
-}
-
-type AccessUserEdge {
-    cursor: String!
-    node: AccessUser!
-}
-
 type AccountSetting {
     isEmailNotificationEnabled: Boolean
     isEulaAccepted: Boolean
@@ -3337,6 +3297,28 @@ type ActivitySeriesGroupByEdge {
 
 type ActivityStatus {
     enumValue: ActivityStatusEnum!
+}
+
+type ActivitySummaryByUser {
+    numCreates: Int!
+    numDeletes: Int!
+    numReads: Int!
+    numWrites: Int!
+    paginationId: String!
+    sid: String!
+    user: String!
+}
+
+type ActivitySummaryByUserConnection {
+    count: Int!
+    edges: [ActivitySummaryByUserEdge!]!
+    nodes: [ActivitySummaryByUser!]!
+    pageInfo: PageInfo!
+}
+
+type ActivitySummaryByUserEdge {
+    cursor: String!
+    node: ActivitySummaryByUser!
 }
 
 type ActivityTable {
@@ -5980,12 +5962,12 @@ type Cluster {
         "filter snappables by input"
         filter: SnappableFilterInput,
         first: Int,
-        last: Int
+        last: Int,
+        "Time range to calculate SLA compliance"
+        slaComplianceTimeRange: SLAComplianceTimeRangeEnum
     ): SnappableConnection!
     "The total number of snapshots."
     snapshotCount: Long!
-    "The cluster state."
-    state: clusterState!
     "The cluster status."
     status: ClusterStatus!
     "The cluster type."
@@ -6541,18 +6523,6 @@ type CustomReportGroupByEdge {
     node: CustomReportGroupBy!
 }
 
-type DailyAnalysisDetails {
-    anomalyEventCount: Long!
-    createdDataBytes: Long!
-    createdFileCount: Long!
-    day: String!
-    deletedDataBytes: Long!
-    deletedFileCount: Long!
-    modifiedDataBytes: Long!
-    modifiedFileCount: Long!
-    suspiciousFileCount: Long!
-}
-
 type DailySnapshotSchedule {
     basicSchedule: BasicSnapshotSchedule
 }
@@ -6573,6 +6543,77 @@ type DataLocationSupportedCluster {
     name: String!
     uuid: String!
     version: String!
+}
+
+type DatagovAuditCfg {
+    auditTargetType: DataGovAuditTargetTypeEnum!
+    clusterUuid: String!
+    hostId: String!
+    id: String!
+    offset: Int!
+    shareName: String!
+    snappableFid: String!
+}
+
+type DatagovAuditCfgConnection {
+    count: Int!
+    edges: [DatagovAuditCfgEdge!]!
+    nodes: [DatagovAuditCfg!]!
+    pageInfo: PageInfo!
+}
+
+type DatagovAuditCfgEdge {
+    cursor: String!
+    node: DatagovAuditCfg!
+}
+
+type DatagovFileActivity {
+    auditStatus: String!
+    auditTs: String!
+    cfgId: String!
+    domainName: String!
+    eventId: String!
+    eventName: String!
+    paginationId: String!
+    path: String!
+    sid: String!
+    userName: String!
+}
+
+type DatagovFileActivityConnection {
+    count: Int!
+    edges: [DatagovFileActivityEdge!]!
+    nodes: [DatagovFileActivity!]!
+    pageInfo: PageInfo!
+}
+
+type DatagovFileActivityEdge {
+    cursor: String!
+    node: DatagovFileActivity!
+}
+
+type DatagovUserActivity {
+    auditStatus: String!
+    auditTs: String!
+    cfgId: String!
+    domainName: String!
+    eventId: String!
+    eventName: String!
+    objectName: String!
+    paginationId: String!
+    userName: String!
+}
+
+type DatagovUserActivityConnection {
+    count: Int!
+    edges: [DatagovUserActivityEdge!]!
+    nodes: [DatagovUserActivity!]!
+    pageInfo: PageInfo!
+}
+
+type DatagovUserActivityEdge {
+    cursor: String!
+    node: DatagovUserActivity!
 }
 
 "Objects containing Datastore names for a given ESXi host"
@@ -6698,11 +6739,6 @@ type DisplayableValueString implements DisplayableValue {
     reportHeader: String!
     serializedValue: String!
     value: String
-}
-
-type DownloadActiveSlaWithReplicationCsvReply {
-    downloadLink: String!
-    isActiveSla: Boolean!
 }
 
 type DownloadCdmUpgradesPdfReply {
@@ -7240,8 +7276,6 @@ type FileResult {
     paginationId: String!
     size: Long!
     snappable: HierarchyObject!
-    snapshotFid: String!
-    snapshotTimestamp: Long!
     staleFiles: Hits
     staleFilesWithHits: Hits
     stalenessType: StalenessTypeEnum!
@@ -9587,13 +9621,30 @@ type JobsReply {
     jobs: [JobReply!]!
 }
 
-type K8sCluster implements HierarchyObject & PolarisHierarchyObject {
+"Represents a fully qualified GCP native KMS Crypto Key"
+type KMSCryptoKey {
+    key: String!
+    keyRing: String!
+    location: String!
+    projectNativeId: String!
+}
+
+"A kms key in AWS realm."
+type KMSEncryptionKeyType {
+    aliases: [String!]!
+    arn: String!
+    id: String!
+}
+
+type KMSKey {
+    arn: String!
+    id: String!
+    name: String!
+}
+
+type KuprCluster implements HierarchyObject & PolarisHierarchyObject {
     "The authorized operations on the object."
     authorizedOperations: [OperationEnum!]!
-    "Information about the Kubernetes cluster"
-    clusterInfo: K8sClusterInfo!
-    "List of IPs for the Kubernetes cluster"
-    clusterIp: [String!]!
     "The configured SLA Domain of the hierarchy object."
     configuredSlaDomain: SlaDomain!
     "List of descendants"
@@ -9606,7 +9657,7 @@ type K8sCluster implements HierarchyObject & PolarisHierarchyObject {
         sortBy: HierarchySortByField,
         sortOrder: HierarchySortOrder,
         typeFilter: [HierarchyObjectTypeEnum!]
-    ): K8sClusterDescendantConnection!
+    ): KuprClusterDescendantConnection!
     "The Effective Retention SLA Domain of the hierarchy object."
     effectiveRetentionSlaDomain: SlaDomain
     "The Effective SLA Domain of the hierarchy object."
@@ -9615,8 +9666,7 @@ type K8sCluster implements HierarchyObject & PolarisHierarchyObject {
     effectiveSlaSourceObject: PathNode
     "The fid of the hierarchy object."
     id: UUID!
-    "Namespaces belonging to the Kubernetes cluster"
-    k8sDescendantNamespaces(after: String, filter: [Filter!], first: Int, sortBy: HierarchySortByField, sortOrder: HierarchySortOrder): K8sNamespaceConnection!
+    k8sDescendantNamespaces(after: String, filter: [Filter!], first: Int, sortBy: HierarchySortByField, sortOrder: HierarchySortOrder): KuprNamespaceConnection!
     "A sequential list containing this object's logical ancestors."
     logicalPath: [PathNode!]!
     "The name of the hierarchy object."
@@ -9631,42 +9681,33 @@ type K8sCluster implements HierarchyObject & PolarisHierarchyObject {
     slaAssignment: SlaAssignmentTypeEnum!
     "The distribution of the snapshots of the hierarchy object"
     snapshotDistribution: SnapshotDistribution!
-    status: K8sClusterStatus!
 }
 
-type K8sClusterConnection {
+type KuprClusterConnection {
     count: Int!
-    edges: [K8sClusterEdge!]!
-    nodes: [K8sCluster!]!
+    edges: [KuprClusterEdge!]!
+    nodes: [KuprCluster!]!
     pageInfo: PageInfo!
 }
 
-type K8sClusterDescendantConnection {
+type KuprClusterDescendantConnection {
     count: Int!
-    edges: [K8sClusterDescendantEdge!]!
-    nodes: [K8sClusterDescendant!]!
+    edges: [KuprClusterDescendantEdge!]!
+    nodes: [KuprClusterDescendant!]!
     pageInfo: PageInfo!
 }
 
-type K8sClusterDescendantEdge {
+type KuprClusterDescendantEdge {
     cursor: String!
-    node: K8sClusterDescendant!
+    node: KuprClusterDescendant!
 }
 
-type K8sClusterEdge {
+type KuprClusterEdge {
     cursor: String!
-    node: K8sCluster!
+    node: KuprCluster!
 }
 
-type K8sClusterInfo {
-    cdmClusterId: UUID
-    k8sVersion: String
-    kuprClusterUUID: UUID!
-    port: Int!
-    type: K8sClusterDBType!
-}
-
-type K8sNamespace implements HierarchyObject & HierarchySnappable & K8sClusterDescendant & PolarisHierarchyObject & PolarisHierarchySnappable {
+type KuprNamespace implements HierarchyObject & HierarchySnappable & KuprClusterDescendant & PolarisHierarchyObject & PolarisHierarchySnappable {
     apiVersion: String!
     "The authorized operations on the object."
     authorizedOperations: [OperationEnum!]!
@@ -9682,7 +9723,7 @@ type K8sNamespace implements HierarchyObject & HierarchySnappable & K8sClusterDe
     "object id"
     id: UUID!
     isRelic: Boolean!
-    k8sClusterID: String!
+    kuprClusterID: String!
     "A sequential list containing this object's logical ancestors."
     logicalPath: [PathNode!]!
     "The name of the hierarchy object."
@@ -9760,37 +9801,16 @@ type K8sNamespace implements HierarchyObject & HierarchySnappable & K8sClusterDe
     ): GenericSnapshotConnection
 }
 
-type K8sNamespaceConnection {
+type KuprNamespaceConnection {
     count: Int!
-    edges: [K8sNamespaceEdge!]!
-    nodes: [K8sNamespace!]!
+    edges: [KuprNamespaceEdge!]!
+    nodes: [KuprNamespace!]!
     pageInfo: PageInfo!
 }
 
-type K8sNamespaceEdge {
+type KuprNamespaceEdge {
     cursor: String!
-    node: K8sNamespace!
-}
-
-"Represents a fully qualified GCP native KMS Crypto Key"
-type KMSCryptoKey {
-    key: String!
-    keyRing: String!
-    location: String!
-    projectNativeId: String!
-}
-
-"A kms key in AWS realm."
-type KMSEncryptionKeyType {
-    aliases: [String!]!
-    arn: String!
-    id: String!
-}
-
-type KMSKey {
-    arn: String!
-    id: String!
-    name: String!
+    node: KuprNamespace!
 }
 
 type LDAPConfig {
@@ -10821,7 +10841,6 @@ type Mutation {
     backupO365Mailbox(mailboxId: UUID!): CreateOnDemandJobReply!
     backupO365Onedrive(onedriveUUID: UUID!): CreateOnDemandJobReply!
     backupO365SharepointDrive(sharepointDriveUUID: UUID!): CreateOnDemandJobReply!
-    backupO365Team(teamUUID: UUID!): CreateOnDemandJobReply!
     batchDeassignRoleFromUserGroups(userGroupToRoles: [UserGroupToRolesInput!]!): Boolean!
     blueprintFailoverReportGenerate(failoverReportGeneratorJobConfig: BlueprintFailoverReportGeneratorJobInfo!): CreateOnDemandJobReply!
     bulkCreateFilesetTemplates(
@@ -10982,7 +11001,7 @@ type Mutation {
         specType: RecoverySpecTypeEnum!
     ): [BlueprintRecoverySpec!]!
     createBlueprintSnapshot(BaseOnDemandSnapshotConfig: BaseOnDemandSnapshotConfig, fid: UUID!): Result!
-    createCloudNativeAwsStorageSetting(createCloudNativeAwsStorageSettingInput: CreateCloudNativeAwsStorageSettingInput!): MutationCreateCloudNativeAwsStorageSetting!
+    createCloudNativeAwsStorageSettings(createCloudNativeAwsStorageSettingInput: CreateCloudNativeAwsStorageSettingInput!): MutationCreateCloudNativeAwsStorageSetting!
     "Create cloud native label rule"
     createCloudNativeLabelRule(
         "cloud native accounts on which tag rule will be applied"
@@ -11027,10 +11046,9 @@ type Mutation {
         id: String!
     ): AsyncRequestStatus!
     createGlobalSla(globalSlaCreateRequest: GlobalSlaCreateRequest!): GlobalSla!
-    "Add a Kubernetes cluster"
     createK8sCluster(
         "Request for creating a new K8s cluster"
-        k8sClusterCreateRequest: K8sClusterCreateInput!
+        k8sClusterCreateRequest: KuprClusterCreateInput!
     ): OnboardingSetupReply!
     createManualTargetMapping(manualTargetMappingCreateRequest: ManualTargetMappingCreateRequest!): TargetMapping!
     createNfsTarget(
@@ -11176,6 +11194,7 @@ type Mutation {
         """
         id: String!
     ): AsyncRequestStatus!
+    downloadObjectFilesCsv(day: String!, filter: ListObjectFilesFiltersInput, timezone: String!): DownloadObjectFilesCsvReply!
     downloadReportCSVAsync(config: CustomReportCreate, id: Int!): AsyncDownloadReply!
     downloadReportPDFAsync(config: CustomReportCreate, id: Int!): AsyncDownloadReply!
     "Download file results csv"
@@ -11346,8 +11365,6 @@ type Mutation {
         "Target AWS account ID for the EC2 instance snapshot export"
         destinationAwsNativeAccountId: UUID!,
         destinationRegionId: AwsNativeRegionEnum!,
-        "Specifies whether to export the instance with the power off"
-        exportInstanceInPoweredOffState: Boolean,
         instanceName: String!,
         instanceType: AwsNativeEc2InstanceTypeEnum!,
         kmsKeyId: String,
@@ -11454,19 +11471,19 @@ type Mutation {
         snapshotFid: UUID!
     ): AsyncRequestStatus!
     "Adds a new cloud account for the GCP project which is not already added"
-    gcpCloudAccountAddManualAuthProject(
-        "Cloud Account Features."
-        features: [CloudAccountFeatureEnum!]!,
+    gcpCloudAccountAddAuthKeyBasedProject(
         "The native project ID of the GCP project."
         gcpNativeProjectId: String!,
         "The project name of the GCP project."
         gcpProjectName: String!,
         "The project number of the GCP project."
-        gcpProjectNumber: Int!,
+        gcpProjectNumber: String!,
+        "True if the added project contains only the shared VPC and not VMs/disksto be protected."
+        isSharedVpcHostProject: Boolean!,
         "[Optional] The name of the organization containing the project."
         organizationName: String,
-        "[Optional] JWT config of the service account."
-        serviceAccountJwtConfigOptional: String
+        "[Optional] Auth key of the service account."
+        serviceAccountAuthKey: String
     ): Boolean!
     "Add cloud account for Gcp Projects for the given features."
     gcpCloudAccountAddProjects(
@@ -11601,11 +11618,9 @@ type Mutation {
         snapshotId: UUID!
     ): RestoreGCEInstanceReply!
     "Sets the default service account auth key"
-    gcpSetDefaultServiceAccountJwtConfig(
-        "The JWT config for a service account in customer project."
-        serviceAccountJWTConfig: String!,
-        "The name of the service account"
-        serviceAccountName: String!
+    gcpSetDefaultServiceAccountAuthKey(
+        "The default service account auth key for customer."
+        serviceAccountAuthKey: String!
     ): Boolean!
     "Generate CSR"
     generateCSR(
@@ -11683,6 +11698,7 @@ type Mutation {
     o365SaaSSetupComplete(o365AppTypes: [String!]!, regionName: String!, stateToken: String!, tenantId: String!): AddO365OrgResponse!
     o365SaaSSetupKickoff: O365SaaSSetupKickoffResp!
     o365SetupKickoff: O365SetupKickoffResp!
+    objectFilesConnection(after: String, before: String, day: String!, filter: ListObjectFilesFiltersInput, first: Int, last: Int, sort: FileResultSortInput, timezone: String!): FileResultConnection!
     "Open a support tunnel in cluster"
     openSupportTunnel(
         "Cluster uuid"
@@ -11706,11 +11722,6 @@ type Mutation {
         "ID assigned to a host object."
         id: String!
     ): HostDetail!
-    "Refresh resources of a Kubernetes cluster"
-    refreshK8sCluster(
-        "Request for refreshing resources in a K8s cluster"
-        k8sClusterRefreshRequest: K8sClusterRefreshInput!
-    ): CreateOnDemandJobReply!
     refreshO365Org(orgId: UUID!): CreateOnDemandJobReply!
     refreshSapHanaSystem(
         "The ID of the SAP HANA system."
@@ -11720,7 +11731,7 @@ type Mutation {
         "Cluster UUID of cdm cluster"
         clusterUUID: String!,
         "Number of days after which data from polaris is removed"
-        expireInDays: Long,
+        expireInDays: Long!,
         isForce: Boolean!
     ): Boolean!
     "Remove LDAP Integration"
@@ -11910,11 +11921,15 @@ type Mutation {
         "Size, in bytes of CDM package"
         size: Long
     ): DownloadPackageReply!
+    "Start Datagov NAS audit"
+    startNasAudit(accountId: String!, auditTargetType: DataGovAuditTargetTypeEnum!, clusterUuid: String!, hostId: String!, shareName: String!): StartNasAuditReply!
     "Starts an on demand periodic upgrade prechecks job in CDM cluster"
     startPeriodicUpgradePrechecksOnDemandJob(
         "Cluster uuid"
         clusterUuid: UUID!
     ): PrechecksJobReply!
+    "Start Sonar audit"
+    startSonarAudit(accountId: String!, auditObjectInfo: [AuditObjectInfo!]!): StartSonarAuditReply!
     "Starts the upgrade with given tarball path"
     startUpgrade(
         "Cluster uuid"
@@ -11952,6 +11967,10 @@ type Mutation {
         "CDM upgrade tarball version"
         version: String!
     ): UpgradeJobReply!
+    "Stop Datagov NAS audit"
+    stopNasAudit(accountId: String!, datagovAuditCfgId: String!): StopNasAuditReply!
+    "Stop Sonar audit"
+    stopSonarAudit(accountId: String!, datagovAuditCfgId: String!): StopSonarAuditReply!
     "Triggers on-demand snapshot for the given Snappables."
     takeOnDemandSnapshot(
         "The SLA ID."
@@ -12002,7 +12021,6 @@ type Mutation {
         "The version of the blueprint"
         version: Int!
     ): BlueprintNew!
-    updateCloudNativeAwsStorageSetting(UpdateCloudNativeAwsStorageSettingInput: UpdateCloudNativeAwsStorageSettingInput!): UpdateCloudNativeAwsStorageSettingReply!
     "Update indexing status for cloudnative snappables"
     updateCloudNativeIndexingStatus(
         "Is indexing enabled or disabled for snappables"
@@ -13285,11 +13303,6 @@ type O365SiteEdge {
     node: O365Site!
 }
 
-type O365TeamChildSnapshotIDs {
-    mailboxSnapshotId: String
-    spDriveSnapshotId: String
-}
-
 type O365Teams implements HierarchyObject & HierarchySnappable & O365OrgDescendant & PolarisHierarchyObject & PolarisHierarchySnappable {
     "The authorized operations on the object."
     authorizedOperations: [OperationEnum!]!
@@ -14347,17 +14360,6 @@ type ProtectedObjectsEdge {
     node: ProtectedObjects!
 }
 
-"Count and snappable type representing protected Radar snappables"
-type ProtectedRadarSnappable {
-    count: Long!
-    snappableType: String!
-}
-
-"Count of protected Radar snappables"
-type ProtectedRadarSnappableCountReply {
-    snappableCounts: [ProtectedRadarSnappable!]!
-}
-
 type ProtectionStatus {
     enumValue: ProtectionStatusEnum!
 }
@@ -15009,6 +15011,52 @@ type Query {
     customAnalyzer(analyzerId: String!): Analyzer!
     "Return hits grouped by analyzer and policy"
     dashboardSummary(getWhitelistedResults: Boolean!): GetDashboardSummaryReply!
+    "Return datagov audit config records"
+    datagovAuditCfgConnection(after: String, datagovAuditCfgId: String!, first: Int): DatagovAuditCfgConnection!
+    "Return file activity records for user"
+    datagovFileActivityForUser(
+        after: String,
+        before: String,
+        datagovAuditCfgId: String!,
+        "End time of the range (in milliseconds since epoch)"
+        endTimeMs: Long!,
+        first: Int,
+        last: Int,
+        "File or dir object to query activity for"
+        objectName: String!,
+        "Security identifier for user, group in Windows"
+        sid: String!,
+        "Begin time of the range (in milliseconds since epoch)"
+        startTimeMs: Long!
+    ): DatagovFileActivityConnection!
+    "Return file activity records"
+    datagovFileAuditConnection(
+        after: String,
+        before: String,
+        datagovAuditCfgId: String!,
+        "End time of the range (in milliseconds since epoch)"
+        endTimeMs: Long!,
+        first: Int,
+        last: Int,
+        "File or dir object to query activity for"
+        objectName: String!,
+        "Begin time of the range (in milliseconds since epoch)"
+        startTimeMs: Long!
+    ): DatagovFileActivityConnection!
+    "Return file audit summary by user"
+    datagovFileAuditSummaryByUser(
+        after: String,
+        before: String,
+        datagovAuditCfgId: String!,
+        "End time of the range (in milliseconds since epoch)"
+        endTimeMs: Long!,
+        first: Int,
+        last: Int,
+        "File or dir object to query activity for"
+        objectName: String!,
+        "Begin time of the range (in milliseconds since epoch)"
+        startTimeMs: Long!
+    ): ActivitySummaryByUserConnection!
     "Return permissions associated with a path"
     datagovSecDesc(
         "Skip converting SIDs in response to friendly names"
@@ -15017,22 +15065,27 @@ type Query {
         snapshotFid: String!,
         stdPath: String!
     ): QuerySDDLReply!
+    "Return user activity records"
+    datagovUserAuditConnection(
+        after: String,
+        before: String,
+        datagovAuditCfgId: String!,
+        "End time of the range (in milliseconds since epoch)"
+        endTimeMs: Long!,
+        first: Int,
+        last: Int,
+        "Security identifier for user, group in Windows"
+        sid: String!,
+        "Begin time of the range (in milliseconds since epoch)"
+        startTimeMs: Long!
+    ): DatagovUserActivityConnection!
     "Return timeline data for all policies of an account"
     discoveryTimeline(endDay: String!, getWhitelistedResults: Boolean!, startDay: String!, timezone: String!): GetPoliciesTimelineReply!
-    downloadActiveSlaWithReplicationCsv(
-        "Account name"
-        account: String!,
-        "CDM Cluster UUID"
-        cdmClusterUUID: String!,
-        "Include Archived SLA"
-        includeArchived: Boolean!
-    ): DownloadActiveSlaWithReplicationCsvReply!
     "Download cdm upgrades table pdf"
     downloadCdmUpgradesPdf(
         "Filters for cdm upgrades page for pdf generation"
         downloadFilter: DownloadCdmUpgradesPdfFiltersInput
     ): DownloadCdmUpgradesPdfReply!
-    downloadObjectFilesCsv(day: String!, filter: ListObjectFilesFiltersInput, timezone: String!): DownloadObjectFilesCsvReply!
     "Get Status of download package job"
     downloadPackageStatus(
         "Cluster uuid"
@@ -15144,8 +15197,6 @@ type Query {
         "Session ID of the current OAuth session."
         sessionId: String!
     ): [GcpListProjectsForOAuthResponse!]!
-    "Returns the service account corresponding to global credentials. Return empty string if global credentials are absent"
-    gcpGetDefaultCredentialsServiceAccount: String!
     "Lists compatible machine types for instance."
     gcpNativeCompatibleMachineTypesList(
         "UUID of snapshot"
@@ -15518,9 +15569,9 @@ type Query {
     issue(issueId: String!): Issue!
     "Return all issues filtered by status"
     issueConnection(after: String, before: String, first: Int, last: Int, status: IssueStatusEnum!): IssueConnection!
-    k8sCluster(fid: UUID!): K8sCluster!
-    k8sClusters(after: String, filter: [Filter!], first: Int, sortBy: HierarchySortByField, sortOrder: HierarchySortOrder): K8sClusterConnection!
-    k8sNamespace(fid: UUID!): K8sNamespace!
+    k8sCluster(fid: UUID!): KuprCluster!
+    k8sClusters(after: String, filter: [Filter!], first: Int, sortBy: HierarchySortByField, sortOrder: HierarchySortOrder): KuprClusterConnection!
+    k8sNamespace(fid: UUID!): KuprNamespace!
     k8sNamespaces(
         after: String,
         filter: [Filter!],
@@ -15529,7 +15580,7 @@ type Query {
         k8sClusterId: UUID!,
         sortBy: HierarchySortByField,
         sortOrder: HierarchySortOrder
-    ): K8sNamespaceConnection!
+    ): KuprNamespaceConnection!
     lambdaSettings: LambdaSettings!
     "Browse LDAP authorized principals"
     ldapAuthorizedPrincipalConnection(
@@ -15614,16 +15665,9 @@ type Query {
     "List of sites of O365Org"
     o365Sites(after: String, filter: [Filter!], first: Int, o365OrgId: UUID!, sortBy: HierarchySortByField, sortOrder: HierarchySortOrder): O365SiteConnection!
     o365Team(snappableFid: UUID!): O365Teams!
-    "List of Channels for the O365Team"
-    o365TeamChannels(limit: Int!, nameFilter: String, snappableFid: UUID!): O365TeamsChannelConnection!
-    "IDs of the child snapshots of the Team snapshot"
-    o365TeamChildSnapshotIDs(snapshotFid: UUID!): O365TeamChildSnapshotIDs!
-    "ID for the conversations folder in the Team's Group Mailbox"
-    o365TeamConversationsFolderID(o365OrgId: UUID!, snappableFid: UUID!, snapshotFid: UUID!): String!
     "List of O365 Teams in the O365Org"
     o365Teams(after: String, filter: [Filter!], first: Int, o365OrgId: UUID!, sortBy: HierarchySortByField, sortOrder: HierarchySortOrder): O365TeamsConnection!
     o365User(fid: UUID!): O365User!
-    objectFiles(after: String, before: String, day: String!, filter: ListObjectFilesFiltersInput, first: Int, last: Int, sort: FileResultSortInput, timezone: String!): FileResultConnection!
     oracleDatabase(fid: UUID!): OracleDatabase!
     oracleDatabaseConnection(after: String, filter: [Filter!], first: Int, sortBy: HierarchySortByField, sortOrder: HierarchySortOrder): OracleDatabaseConnection!
     oracleHost(fid: UUID!): OracleHost!
@@ -15692,17 +15736,6 @@ type Query {
         "sort order"
         sortOrder: SortOrderEnum
     ): ProtectedObjectsConnection!
-    "Get the total number of snappables protected by Radar"
-    protectedRadarSnappableCount: ProtectedRadarSnappableCountReply!
-    "Get a per day summary of the radar analysis results from start day to end day."
-    radarAnalysisSummary(
-        "end day, formatted(ISO 8601) as YYYY-MM-DD"
-        endDay: String!,
-        "start day, formatted(ISO 8601) as YYYY-MM-DD"
-        startDay: String!,
-        "timezone name(IANA)"
-        timezone: String!
-    ): RadarAnalysisSummaryReply!
     radarClusterConnection(
         after: String,
         before: String,
@@ -15977,6 +16010,8 @@ type Query {
         filter: SnappableFilterInput,
         first: Int,
         last: Int,
+        "Time range to calculate SLA compliance"
+        slaComplianceTimeRange: SLAComplianceTimeRangeEnum,
         "sort snappables by field"
         sortBy: SnappableSortByEnum = Name,
         "sort order"
@@ -16017,6 +16052,8 @@ type Query {
         last: Int,
         "List of Snappable aggregations you want to fetch. Explicitly specifying the subset of aggregations you need will greatly speed up the query."
         requestedAggregations: [SnappableAggregationsEnum!],
+        "Time range to calculate SLA compliance"
+        slaComplianceTimeRange: SLAComplianceTimeRangeEnum,
         timezoneOffset: Float = 0.0
     ): SnappableGroupByConnection!
     snappableOnedriveSearch(after: String, first: Int, onedriveSearchFilter: OnedriveSearchFilter, orgId: UUID!, snappableFid: UUID!): O365OnedriveObjectConnection!
@@ -16034,7 +16071,7 @@ type Query {
         searchFilter: SearchFilter,
         snappableFid: UUID!
     ): O365TeamsMessageObjectConnection!
-    snappableTeamsDriveSearch(after: String, channelFolderName: String, channelId: String, first: Int, orgId: UUID!, snappableFid: UUID!, teamsDriveSearchFilter: OnedriveSearchFilter): O365OnedriveObjectConnection!
+    snappableTeamsDriveSearch(after: String, channelId: String, first: Int, orgId: UUID!, snappableFid: UUID!, teamsDriveSearchFilter: OnedriveSearchFilter): O365OnedriveObjectConnection!
     "Returns a single snapshot by id"
     snapshot(
         "Corresponds to snapshot forever UUID in Polaris tables"
@@ -16132,6 +16169,34 @@ type Query {
         sortOrder: SortOrderEnum,
         timezone: String!
     ): SonarContentReportTableRowConnection!
+    "Return file activity records for user"
+    sonarFileActivityForUser(
+        after: String,
+        before: String,
+        "End time of the range (in milliseconds since epoch)"
+        endTimeMs: Long!,
+        first: Int,
+        last: Int,
+        "Security identifier for user, group in Windows"
+        sid: String!,
+        snappableFid: String!,
+        "Begin time of the range (in milliseconds since epoch)"
+        startTimeMs: Long!,
+        stdPath: String!
+    ): DatagovFileActivityConnection!
+    "Return file audit summary by user"
+    sonarFileAuditSummaryByUser(
+        after: String,
+        before: String,
+        "End time of the range (in milliseconds since epoch)"
+        endTimeMs: Long!,
+        first: Int,
+        last: Int,
+        snappableFid: String!,
+        "Begin time of the range (in milliseconds since epoch)"
+        startTimeMs: Long!,
+        stdPath: String!
+    ): ActivitySummaryByUserConnection!
     "Return groupBy for SonarReport"
     sonarReportGroupByConnection(filter: [String!], sonarReportGroupBy: SonarReportGroupByEnum!, timeFilter: TimeFilterInput): SonarReportGroupByResultConnection!
     "Return rows for SonarReport table"
@@ -16146,8 +16211,20 @@ type Query {
         "sort order"
         sortOrder: SortOrderEnum
     ): SonarReportTableRowConnection!
-    sonarUserGroups(after: String, before: String, filter: ListAccessGroupsFilterInput, first: Int, last: Int): AccessGroupConnection!
-    sonarUsers(after: String, before: String, filter: ListAccessUsersFilterInput, first: Int, last: Int, sort: ListAccessUsersSortInput): AccessUserConnection!
+    "Return sonar user activity records"
+    sonarUserActivity(
+        after: String,
+        auditEventFilter: AuditEventFiltersInput,
+        before: String,
+        "End time of the range (in milliseconds since epoch)"
+        endTimeMs: Long!,
+        first: Int,
+        last: Int,
+        "Security identifier for user, group in Windows"
+        sid: String!,
+        "Begin time of the range (in milliseconds since epoch)"
+        startTimeMs: Long!
+    ): SonarUserActivityConnection!
     sourceBlueprintInfo(fid: UUID!): SourceBlueprintInfo!
     "list the available Subnets"
     subnetConnection(
@@ -16411,11 +16488,6 @@ type RPOLagInfo {
     level: String!
 }
 
-"Summary of the radar analysis results"
-type RadarAnalysisSummaryReply {
-    analysisDetails: [DailyAnalysisDetails!]!
-}
-
 "Ransomware analysis report from lambda service"
 type RansomwareResult {
     clusterUuid: UUID!
@@ -16654,18 +16726,12 @@ type ReplicationToCloudRegionSpec {
 
 type ReportConfig {
     aggregations: [String!]!
-    "Chart selections for the report"
     chartConfigs: [ChartConfig!]!
-    "Column selection for the report"
     columns: [String!]!
-    "Type of report"
     dataViewType: DataViewTypeEnum!
-    "Filter selection for the report"
     filters: [ConfigFilter!]!
-    "GroupBy selection for the report"
-    groupBy: configGroupBy!
+    groupBy: [String!]!
     id: Long!
-    "Report name"
     name: String!
     sortBy: String!
     sortOrder: SortOrderEnum
@@ -18271,6 +18337,30 @@ type SonarReportTableRowEdge {
     node: SonarReportTableRow!
 }
 
+type SonarUserActivity {
+    auditStatus: String!
+    auditTs: String!
+    domainName: String!
+    eventId: DataGovAuditEventTypeEnum!
+    eventName: String!
+    paginationId: String!
+    path: String!
+    snappable: HierarchyObject!
+    userName: String!
+}
+
+type SonarUserActivityConnection {
+    count: Int!
+    edges: [SonarUserActivityEdge!]!
+    nodes: [SonarUserActivity!]!
+    pageInfo: PageInfo!
+}
+
+type SonarUserActivityEdge {
+    cursor: String!
+    node: SonarUserActivity!
+}
+
 type Source {
     stringValue: String!
 }
@@ -18296,6 +18386,14 @@ type StartCrawlReply {
     crawlId: String!
 }
 
+type StartNasAuditReply {
+    id: String!
+}
+
+type StartSonarAuditReply {
+    ids: [String!]!
+}
+
 type StartTimeAttributes {
     dayOfWeek: DayOfWeekOpt
     hour: Int!
@@ -18308,6 +18406,16 @@ type StartUpgradeReply {
 
 type Status {
     stringValue: String!
+}
+
+type StopNasAuditReply {
+    clusterUuid: String!
+    hostId: String!
+    shareName: String!
+}
+
+type StopSonarAuditReply {
+    ids: [String!]!
 }
 
 type StorageAccount {
@@ -18747,11 +18855,6 @@ type UnidirectionalReplicationSpec {
     retentionUnit: RetentionUnitEnum!
     "The cluster to which this SLA will replicate the snapshots."
     targetCluster: Cluster
-}
-
-"Output for updateCloudNativeAwsStorageSetting mutation"
-type UpdateCloudNativeAwsStorageSettingReply {
-    targetMapping: TargetMapping!
 }
 
 "The status of update indexing status call. For each snappable ID in the request: an entry in errors if failed."
@@ -21428,20 +21531,6 @@ type cdmSnapshotGroupByEdge {
     node: cdmSnapshotGroupBy!
 }
 
-type clusterState {
-    "Cluster removal status of cdm cluster"
-    clusterRemovalState: ClusterRemovalState!
-    "ConnectedStatus of cdm cluster"
-    connectedState: ClusterStatus!
-}
-
-type configGroupBy {
-    "Aggregations for single-level groupBy. This does not affect double-level groupBys."
-    aggregations: [String!]!
-    "Report-level groupBy selection"
-    groupById: String!
-}
-
 "Cluster metric data grouped by a time unit."
 type metricTimeSeries {
     "cluster metric data for the given time interval."
@@ -21979,11 +22068,6 @@ enum AwsCloudComputeSettingSortByFieldEnum {
 enum AwsCloudTypeEnum {
     CHINA
     STANDARD
-}
-
-enum AwsFeatureForPermissionCheck {
-    AWS_EXPORT_VM_IN_POWERED_OFF_STATE
-    AWS_UNSPECIFIED
 }
 
 enum AwsInstanceTenancyEnum {
@@ -22569,7 +22653,7 @@ enum AzureFeatureForPermissionCheck {
     AZURE_CROSS_REGION_REPLICATION
     AZURE_EXPORT_VM_IN_POWERED_OFF_STATE
     AZURE_LIST_AVAILABILITY_SET
-    AZURE_UNSPECIFIED
+    UNSPECIFIED
 }
 
 enum AzureHostTypeEnum {
@@ -22838,7 +22922,6 @@ enum CdmClusterStatusTypeEnum {
     OnOldRelease
     PrechecksFailureError
     PrechecksFailureWarning
-    PrechecksRunning
     ReadyForDownload
     ReadyForUpgrade
     ResumingUpgrade
@@ -23066,15 +23149,6 @@ enum ClusterProductEnum {
     POLARIS
 }
 
-enum ClusterRemovalState {
-    DATA_DELETING
-    DISCONNECTING
-    FAILED
-    REGISTERED
-    UNREGISTERED
-    WAITING_FOR_DATA_DELETION
-}
-
 enum ClusterSortByEnum {
     ClusterName
     ClusterType
@@ -23125,7 +23199,6 @@ enum ComponentEnum {
     PLATFORM
     RADAR
     SNAPPABLES
-    SONAR
     USER_MANAGEMENT
 }
 
@@ -23177,6 +23250,23 @@ enum CustomReportSortByEnum {
     CreationTime
     UpdateTime
     ViewTime
+}
+
+enum DataGovAuditEventTypeEnum {
+    CREATE
+    DELETE
+    READ
+    RENAME
+    UNKNOWN_EVENT
+    WRITE
+}
+
+enum DataGovAuditTargetTypeEnum {
+    ISILON
+    NETAPP
+    UNKNOWN_TARGET
+    WINDOWS
+    WINDOWS_MINIFILTER
 }
 
 enum DataGovFileModeEnum {
@@ -23388,7 +23478,6 @@ enum FeatureFlagNameEnum {
     AwsSnsSqsBasedAutomatedFlowEnabled
     AzureAppConsistentSnapshotsEnabled
     AzureAutoProtectByTagsEnabled
-    AzureCommonResourceGroupEnabled
     AzureCrossRegionReplicationEnabled
     AzureCrossSubscriptionExportEnabled
     AzureLockSnapshotsEnabled
@@ -23444,16 +23533,15 @@ enum FeatureFlagNameEnum {
     LambdaEnabled
     LdapEnabled
     ManagedVolumeHierarchyEnabled
-    MetadataIncrementalSyncEnabled
     MetadataSyncAdvancedMetricsEnabled
     MetadataSyncEnabled
+    MetadataSyncQuickHashEnabled
     MssqlHierarchyEnabled
     NameSplitRefreshKorgJobEnabled
     NasFilesetRbacEnabled
     NewThemesEnabled
     O365CalendarEnabled
     O365DashboardEnabled
-    O365ExchangeAppShardingEnabled
     O365InventoryEnabled
     O365OnedriveEnabled
     O365OnedriveGAEnabled
@@ -23504,7 +23592,6 @@ enum FeatureFlagNameEnum {
     UAPermissionsTabEnabled
     UnmanagedObjectEnabled
     UserAwarenessV1Enabled
-    UserAwarenessV2Enabled
     VSphereFeatureEnablementEnabled
     VSphereInventoryEnabled
     VSphereSearchAndRecoveryRolloutEnabled
@@ -23749,7 +23836,6 @@ enum HierarchyFilterField {
     AZURE_DISK_SUBSCRIPTION_ID
     AZURE_DISK_TYPE
     AZURE_REGION
-    AZURE_RG_SUBSCRIPTION_ID
     AZURE_TAG
     AZURE_VM_RG_NAME
     AZURE_VM_RG_SUBSCRIPTION_ID
@@ -23899,9 +23985,6 @@ enum HierarchySortByField {
     AZURE_DISK_SUBSCRIPTION_NAME
     AZURE_DISK_TYPE
     AZURE_REGION
-    AZURE_RG_DISKCOUNT
-    AZURE_RG_SUBSCRIPTION_NAME
-    AZURE_RG_VMCOUNT
     AZURE_SUBNET_NAME
     AZURE_SUBSCRIPTION_DISKCOUNT
     AZURE_SUBSCRIPTION_VMCOUNT
@@ -24061,28 +24144,6 @@ enum IssueStatusEnum {
     RESOLVED
 }
 
-enum K8sClusterDBType {
-    AWS
-    Azure
-    GCP
-    OnPrem
-}
-
-enum K8sClusterProtoType {
-    AWS
-    AZURE
-    GCP
-    ON_PREM
-    UNKNOWN
-}
-
-enum K8sClusterStatus {
-    STATUS_CONNECTED
-    STATUS_DISCONNECTED
-    STATUS_INIT
-    STATUS_UNKNOWN
-}
-
 enum LastTestStatusEnum {
     Failed
     NotExist
@@ -24101,14 +24162,6 @@ enum LdapIntegrationFieldEnum {
 
 enum LdapPrincipalFieldEnum {
     Name
-}
-
-enum ListAccessUsersSortEnum {
-    EMAIL
-    NUM_ACTIVITIES
-    NUM_ACTIVITY_DELTA
-    RISK_LEVEL
-    USERNAME
 }
 
 "type of data location"
@@ -24154,12 +24207,10 @@ enum ManagedObjectType {
     AZURE_VIRTUAL_MACHINE
     BLUEPRINT
     CLOUD_NATIVE_TAG_RULE
-    FAILOVER_CLUSTER_APP
     FILESET_TEMPLATE
     GCP_NATIVE_DISK
     GCP_NATIVE_GCE_INSTANCE
     GCP_NATIVE_PROJECT
-    HOST_FAILOVER_CLUSTER
     HOST_SHARE
     HYPERV_CLUSTER
     HYPERV_SCVMM
@@ -24569,7 +24620,6 @@ enum PrePostScriptFailureHandlingEnum {
 enum PrechecksStatusTypeEnum {
     PrechecksFailureError
     PrechecksFailureWarning
-    PrechecksRunning
     PrechecksSuccess
     Unknown
 }
@@ -24744,14 +24794,6 @@ enum RetentionUnitEnum {
     QUARTERS
     WEEKS
     YEARS
-}
-
-enum RiskLevelTypeEnum {
-    HIGH_RISK
-    LOW_RISK
-    MEDIUM_RISK
-    NO_RISK
-    UNKNOWN_RISK
 }
 
 enum RoleFieldEnum {
@@ -25729,6 +25771,17 @@ input ArchivalSpecInput {
     thresholdUnit: RetentionUnitEnum = MINUTES
 }
 
+input AuditEventFiltersInput {
+    eventIds: [DataGovAuditEventTypeEnum!] = []
+    snappableFids: [String!] = []
+}
+
+input AuditObjectInfo {
+    auditObject: String = ""
+    auditTargetType: DataGovAuditTargetTypeEnum = UNKNOWN_TARGET
+    snappableFid: String = ""
+}
+
 input AutomaticAwsTargetMappingCreateRequest {
     awsComputeSettingsId: String
     bucketPrefix: String!
@@ -26486,7 +26539,6 @@ input CloudAccountFilterInput {
 
 "Feature for which required permissions have to be checked."
 input CloudNativeFeatureForPermissionsCheck {
-    awsFeature: AwsFeatureForPermissionCheck
     azureFeature: AzureFeatureForPermissionCheck
 }
 
@@ -26554,13 +26606,6 @@ input CommonNotificationSettingInputType {
     port: Int = 0
     securityType: SMTPSecurityTypeEnum = NONE
     trustedCerts: String = ""
-}
-
-input ConfigGroupByInput {
-    "Aggregations for single-level groupBy. This does not affect double-level groupBys."
-    aggregations: [String!]!
-    "Report-level groupBy selection"
-    groupById: String!
 }
 
 input ContextFilterInputField {
@@ -27623,16 +27668,11 @@ input InterfaceCidrInput {
     selected: Boolean = false
 }
 
-input K8sClusterCreateInput {
+input KuprClusterCreateInput {
     cdmClusterId: UUID
     hostList: [String!]!
     name: String!
     port: Int!
-    type: K8sClusterProtoType!
-}
-
-input K8sClusterRefreshInput {
-    kuprClusterID: UUID!
 }
 
 "Label filter parameters for GCP objects."
@@ -27668,22 +27708,6 @@ input LegalHoldDownloadConfigInput {
     v5.3+: Specifies if the download action is in response to a Legal Hold. This download generates a SHA1 checksum of downloaded data that external bodies can use for integrity verification.
     """
     isLegalHoldDownload: Boolean = false
-}
-
-input ListAccessGroupsFilterInput {
-    groupName: String = ""
-    userId: String = ""
-}
-
-input ListAccessUsersFilterInput {
-    groupsIds: [String!] = []
-    search: String = ""
-    timeRange: UserTimeRangeInput!
-}
-
-input ListAccessUsersSortInput {
-    sortBy: ListAccessUsersSortEnum = USERNAME
-    sortOrder: DataGovSortOrderEnum = ASC
 }
 
 input ListFileResultFiltersInput {
@@ -28215,17 +28239,11 @@ input ReportChartCreate {
 
 input ReportConfigInput {
     aggregations: [String!]!
-    "Chart selections for the report"
     chartConfigs: [ChartConfigInput!]!
-    "Column selection for the report"
     columns: [String!]!
-    "Type of report"
     dataViewType: DataViewTypeEnum!
-    "Filter selection for the report"
     filters: [ReportFilterInput!]!
-    "GroupBy selection for the report"
-    groupBy: ConfigGroupByInput!
-    "Report name"
+    groupBy: [String!]!
     name: String!
     sortBy: String!
     sortOrder: SortOrderEnum
@@ -28577,7 +28595,6 @@ input SnappableFilterInput {
     protectionStatus: [ProtectionStatusEnum!]
     searchTerm: String
     slaDomain: SnappableSlaDomainFilterInput
-    slaTimeRange: SLAComplianceTimeRangeEnum
 }
 
 "Filter snappable data (including search capability)."
@@ -28588,7 +28605,6 @@ input SnappableFilterInputWithSearch {
     protectionStatus: [ProtectionStatusEnum!]
     searchTerm: String
     slaDomain: SnappableSlaDomainFilterInput
-    slaTimeRange: SLAComplianceTimeRangeEnum
     timeRange: TimeRangeInput
 }
 
@@ -28599,7 +28615,6 @@ input SnappableGroupByFilterInput {
     objectType: [ObjectTypeEnum!]
     protectionStatus: [ProtectionStatusEnum!]
     slaDomain: SnappableSlaDomainFilterInput
-    slaTimeRange: SLAComplianceTimeRangeEnum
     timeRange: TimeRangeInput
 }
 
@@ -28748,14 +28763,6 @@ input UnidirectionalReplicationSpecInput {
     retentionUnit: RetentionUnitEnum = MINUTES
 }
 
-"Input for updateCloudNativeAwsStorageSetting mutation"
-input UpdateCloudNativeAwsStorageSettingInput {
-    id: UUID!
-    kmsMasterKeyId: String
-    name: String
-    storageClass: AwsStorageClassTypeEnum
-}
-
 "Filter User Audit data"
 input UserAuditFilterInput {
     cluster: CommonClusterFilterInput
@@ -28777,12 +28784,6 @@ input UserGroupToRolesInput {
 input UserSettingInputType {
     setting: String = ""
     value: String = ""
-}
-
-input UserTimeRangeInput {
-    endTime: String = ""
-    startTime: String = ""
-    timezone: String = ""
 }
 
 input VSphereComputeTargetInputType {

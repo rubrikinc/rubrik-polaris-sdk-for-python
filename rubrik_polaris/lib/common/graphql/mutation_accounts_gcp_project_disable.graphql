@@ -1,0 +1,5 @@
+mutation RubrikPolarisSDKRequest($rubrik_project_id: UUID!, $delete_snapshots: Boolean!) {
+  gcpNativeDisableProject(projectId: $rubrik_project_id, shouldDeleteNativeSnapshots: $delete_snapshots) {
+    taskchainUuid
+  }
+}

@@ -175,7 +175,7 @@ def get_compute_gce(self):
         raise
 
 
-def _get_compute_vsphere(self):
+def get_compute_vsphere(self):
     """ Retrieve all vSphere instances from Polaris """
     try:
         query_name = "compute_vmware_vsphere"
