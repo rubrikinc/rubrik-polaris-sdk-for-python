@@ -34,7 +34,7 @@ def _query(self, query_name=None, variables=None, timeout=60):
         query = re.sub("RubrikPolarisSDKRequest", operation_name, self._graphql_query_map[query_name]['query_text'])
         gql_query_name = self._graphql_query_map[query_name]['gql_name']
         start = True
-        while start or ('pageInfo' in api_response['data'][gql_query_name] and api_response['data'][gql_query_name]['pageInfo']['hasNextPage']):
+        while start or (not isinstance(api_response['data'][gql_query_name], bool) and 'pageInfo' in api_response['data'][gql_query_name] and api_response['data'][gql_query_name]['pageInfo']['hasNextPage']):
             if not start:
                 variables['after'] = api_response['data'][gql_query_name]['pageInfo']['endCursor']
             api_request = requests.post(
@@ -49,6 +49,9 @@ def _query(self, query_name=None, variables=None, timeout=60):
                 timeout=timeout
             )
             api_response = api_request.json()
+            if 'errors' in api_response and len(api_response['errors']) == 1:
+                error = api_response['errors'][0]
+                raise RequestException("Failed request to Polaris, got {}({}) on {}".format(error['message'], error['extensions']['code'], error['path']))
             if 'code' in api_response and 'message' in api_response and api_response['code'] >= 400:
                 raise RequestException(api_response['message'])
             else:
@@ -67,7 +70,7 @@ def _query(self, query_name=None, variables=None, timeout=60):
     except ValueError as value_err:
         raise RequestException(value_err)
     except Exception as err:
-        raise
+        raise RequestException(err)
 
 
 def _get_access_token(self):

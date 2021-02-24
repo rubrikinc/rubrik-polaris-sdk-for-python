@@ -98,6 +98,8 @@ def _dump_nodes(self, request):
     nodes = []
     if 'data' in request and request['data'] and len(request['data']) > 0:
         query_result = list(request['data'].values())[0]
+        if isinstance(query_result, bool):
+            return query_result
         if 'states' in query_result:
             for state in query_result['states']:
                 nodes.append(state['name'])

@@ -1,5 +1,5 @@
-query RubrikPolarisSDKRequest($after: String, $filter: [Filter!]!) {
-  vSphereVmNewConnection(filter: $filter, after: $after) {
+query RubrikPolarisSDKRequest($first: Int, $after: String, $filter: [Filter!]!) {
+  vSphereVmNewConnection(first: $first, filter: $filter, after: $after) {
     edges {
       node {
         cdmId
@@ -31,6 +31,12 @@ query RubrikPolarisSDKRequest($after: String, $filter: [Filter!]!) {
           disconnectReason
         }
       }
+    }
+    pageInfo {
+      startCursor
+      endCursor
+      hasNextPage
+      hasPreviousPage
     }
   }
 }

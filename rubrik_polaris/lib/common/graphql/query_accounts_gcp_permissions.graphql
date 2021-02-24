@@ -1,0 +1,5 @@
+query RubrikPolarisSDKRequest($feature: CloudAccountFeatureEnum = CLOUD_NATIVE_PROTECTION) {
+    gcpCloudAccountListPermissions(feature: $feature){
+        permission
+    }
+}
