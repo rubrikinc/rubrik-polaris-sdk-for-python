@@ -28,13 +28,13 @@ def _validate(self, **kwargs):
 
 def mutation_name_validation(self, input=None):
     if input not in self._graphql_query_map:
-        raise ValidationException("Mutation not found : {}".format(input))
+        raise ValidationException("Graphql Mutation not found : {}".format(input))
     self.mutation_name = input
 
 
 def query_name_validation(self, input=None):
     if input not in self._graphql_query_map:
-        raise ValidationException("Mutation not found : {}".format(input))
+        raise ValidationException("Graphql Query not found : {}".format(input))
     self.query_name = input
 
 
