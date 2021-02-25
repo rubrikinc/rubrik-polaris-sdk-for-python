@@ -134,7 +134,7 @@ def get_compute_ec2(self, object_id=None):
     try:
         if object_id:
             query_name = "compute_aws_ec2_detail"
-            self.validate(
+            self._validate(
                 query_name=query_name
             )
             variables = {
@@ -143,7 +143,7 @@ def get_compute_ec2(self, object_id=None):
             return self._query(self.query_name, variables)
         else:
             query_name = "compute_aws_ec2"
-            self.validate(
+            self._validate(
                 query_name=query_name
             )
             return self._query(self.query_name, None)
@@ -159,7 +159,7 @@ def get_compute_azure(self):
     """
     try:
         query_name = "compute_azure_iaas"
-        self.validate(
+        self._validate(
             query_name=query_name
         )
         return self._query(self.query_name, None)
@@ -175,7 +175,7 @@ def get_compute_gce(self):
     """
     try:
         query_name = "compute_gcp_gce"
-        self.validate(
+        self._validate(
             query_name=query_name
         )
         return self._query(self.query_name, None)
@@ -188,7 +188,7 @@ def get_compute_vsphere(self):
     from rubrik_polaris.exceptions import RequestException
     try:
         query_name = "compute_vmware_vsphere"
-        self.validate(
+        self._validate(
             query_name=query_name
         )
         variables = {"filter": [], "first": 500}
@@ -208,7 +208,7 @@ def _submit_compute_restore(self, snapshot_id=None, mutation_name=None,  should_
         wait {bool} -- Return once complete Defaults to False
     """
 
-    self.validate(
+    self._validate(
         snapshot_id=snapshot_id,
         mutation_name=mutation_name
     )
@@ -281,7 +281,7 @@ def submit_compute_restore_gce(self, snapshot_id, **kwargs):
 def _get_aws_region_kmskeys(self, aws_region, aws_native_account_id):
     try:
         query_name = "compute_aws_region_kmskeys"
-        self.validate(
+        self._validate(
             query_name=query_name,
             aws_region=aws_region
         )
@@ -294,7 +294,7 @@ def _get_aws_region_kmskeys(self, aws_region, aws_native_account_id):
 def _get_aws_region_sshkeypairs(self, aws_region=None, aws_native_account_id=None):
     try:
         query_name = "compute_aws_region_sshkeypairs"
-        self.validate(
+        self._validate(
             query_name=query_name,
             aws_region=aws_region
         )
@@ -311,8 +311,9 @@ def _get_aws_region_vpcs(self, aws_region, aws_native_account_id):
     try:
         output = {}
         query_name = "compute_aws_region_vpcs"
-        self.validate(
+        self._validate(
             query_name=query_name,
+            aws_native_account_id=aws_native_account_id,
             aws_region=aws_region
         )
         variables = {"region": aws_region, "aws_native_account_id": aws_native_account_id}
