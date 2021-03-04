@@ -452,7 +452,7 @@ def _get_account_gcp_project_uuid_by_string(self, search_text):
         }
         return self._query(_query_name, _variables)
     except Exception as e:
-        raise PolarisException("Problem getting GCP Project Galactus ID from Polaris: {}".format(search_text))
+        raise PolarisException("Problem getting GCP project uuid from Polaris: {}".format(search_text))
 
 
 def _get_account_map_aws(self):
@@ -487,19 +487,17 @@ def add_project_gcp(self, service_account_auth_key_file=None, gcp_native_project
 def delete_project_gcp(self, gcp_native_project_id=None, delete_snapshots=False):
     try:
         record = self._get_account_gcp_project(search_text=gcp_native_project_id)[0]
-    except:
+    except Exception:
         raise PolarisException("Project does not exist in Polaris : {}".format(gcp_native_project_id))
     if record['featureDetail']['status'] == "CONNECTED":
         # get the disable ID and do that
-        out = self._get_account_gcp_project_uuid_by_string(gcp_native_project_id)
-        self._pp.pprint(out)
-        disable_response = self._disable_account_gcp_project(project_uuid=record['project']['id'])
+        disable_id = self._get_account_gcp_project_uuid_by_string(str(record['project']['projectNumber']))[0]['id']
+        disable_response = self._disable_account_gcp_project(project_uuid=disable_id)
         if not disable_response:
             raise PolarisException("Problem disabling protection on project: {}".format(gcp_native_project_id))
         task_results = self._monitor_task([disable_response])
         if "SUCC" in task_results['status']:
             delete_result = self._delete_account_gcp_project(project_uuid=record['project']['id'])
-            self._pp.pprint(delete_result)
         else:
             raise PolarisException("Failed to disable project {}".format(gcp_native_project_id))
     if "DISABLED" in record['featureDetail']['status']:
@@ -537,9 +535,9 @@ def _delete_account_gcp_project(self, project_uuid=None):
     try:
         _query_name = "accounts_gcp_project_delete"
         _variables = {
-            "native_protection_ids": [],
+            "native_protection_ids": [project_uuid],
             "shared_vpc_host_project_ids": [],
-            "cloud_account_project_ids": [project_uuid]
+            "cloud_account_project_ids": []
         }
         _request = self._query(_query_name, _variables)
     except Exception as e:

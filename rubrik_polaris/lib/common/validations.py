@@ -36,7 +36,6 @@ def query_name_validation(self, test_variable=None):
     if test_variable not in self._graphql_query_map:
         raise ValidationException("query_name not found : {}".format(test_variable))
     self.query_name = test_variable
-    
 
 
 def aws_native_account_id_validation(self, test_variable=None):

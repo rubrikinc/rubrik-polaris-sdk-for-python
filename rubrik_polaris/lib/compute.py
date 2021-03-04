@@ -188,11 +188,11 @@ def get_compute_vsphere(self):
     from rubrik_polaris.exceptions import RequestException
     try:
         query_name = "compute_vmware_vsphere"
-        self._validate(
-            query_name=query_name
-        )
+        # self._validate(
+        #     query_name=query_name
+        # )
         variables = {"filter": [], "first": 500}
-        return self._query(self.query_name, variables)
+        return self._query(query_name, variables)
     except Exception:
         raise
 

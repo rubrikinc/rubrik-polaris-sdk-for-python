@@ -153,19 +153,20 @@ except Exception as err:
 # ))
 
 ### Add GCP Project
-# rubrik.add_project_gcp(service_account_auth_key_file="/home/peterm/.google.milanese.json", gcp_native_project_id="home-network-274622")`
+# rubrik.add_project_gcp(service_account_auth_key_file="/home/peterm/.google.milanese.json", gcp_native_project_id="home-network-274622")
 
+### Delete GCP Project
 # rubrik.delete_project_gcp(gcp_native_project_id="home-network-274622")
 
 ### Check for duplicate vms
-vms = rubrik.get_compute_vsphere()
-o = {}
-for vm in vms:
-    print('.', end="")
-    if vm['name'] in o and not vm['isRelic']:
-        o[vm['name']].append(vm['cluster']['name'])
-    elif not vm['isRelic']:
-        o[vm['name']] = [vm['cluster']['name']]
-for vm in o:
-    if len(o[vm]) > 1:
-        print("{} : {}".format(vm, o[vm]))
+# vms = rubrik.get_compute_vsphere()
+# o = {}
+# for vm in vms:
+#     print('.', end="")
+#     if vm['name'] in o and not vm['isRelic']:
+#         o[vm['name']].append(vm['cluster']['name'])
+#     elif not vm['isRelic']:
+#         o[vm['name']] = [vm['cluster']['name']]
+# for vm in o:
+#     if len(o[vm]) > 1:
+#         print("{} : {}".format(vm, o[vm]))
