@@ -1,0 +1,13 @@
+query RubrikPolarisSDKRequest($feature: CloudAccountFeatureEnum = CLOUD_NATIVE_PROTECTION, $search_text: String!, $status_filters: [CloudAccountStatusEnum!]!) {
+    gcpCloudAccountListProjects(feature: $feature, projectStatusFilters: $status_filters, projectSearchText: $search_text){
+        project{
+            projectId,
+            projectNumber,
+            name,
+            id
+        }
+        featureDetail{
+            status
+        }
+    }
+}

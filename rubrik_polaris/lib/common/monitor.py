@@ -26,6 +26,7 @@ Collection of methods that monitor tasks
 from multiprocessing.pool import ThreadPool
 from time import sleep
 from timeit import default_timer as timer
+from rubrik_polaris.exceptions import PolarisException
 
 
 # Threader setup
@@ -49,14 +50,13 @@ def _monitor_threader(self, tasks, thread_count, monitor_job):
 
 # Worker thread
 def _monitor_job(job):
-    from rubrik_polaris.exceptions import RequestException
 
     self, task = job
     try:
         start = timer()
         while self.get_task_status(task['taskchainUuid']) not in ["SUCCEEDED", "FAILED"]:
             _ = self.get_task_status(task['taskchainUuid'])
-            sleep(3)
+            sleep(1)
         status = self.get_task_status(task['taskchainUuid'])
 
         # TODO: Add something to handle failures
@@ -67,10 +67,7 @@ def _monitor_job(job):
         return task
 
     except Exception as err:
-        task['status'] = 'FAILED'
-        task['elapsed'] = 0
-
-        return task
+        raise PolarisException("Failed to get status of task {}".format(task['taskchainUuid']))
 
 
 # Start threader

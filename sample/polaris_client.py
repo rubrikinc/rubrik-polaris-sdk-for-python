@@ -142,4 +142,31 @@ except Exception as err:
 # pp.pprint(summary)
 
 ### Export ec2 to another region
-# pp.pprint(rubrik.submit_compute_export_ec2(snapshot_id='5d932b7d-6c12-4efb-b3f7-d79beddf655a', account_number='627297623784', region='aEU_WEST_3', vpc='vpc-05c6c96c', security_groups=['sg-bb06afd7'], subnet='subnet-85dff5ec', wait=True))
+# pp.pprint(rubrik.submit_compute_export_ec2(
+#     snapshot_id='5d932b7d-6c12-4efb-b3f7-d79beddf655a',
+#     aws_account_number='880059949679',
+#     aws_region='EU_WEST_2',
+#     aws_vpc='vpc-d56f3bbd',
+#     aws_security_groups=['sg-ca5d01ad'],
+#     aws_subnet='subnet-bbe44cf7',
+#     wait=True
+# ))
+
+### Add GCP Project
+# rubrik.add_project_gcp(service_account_auth_key_file="/home/peterm/.google.milanese.json", gcp_native_project_id="home-network-274622")
+
+### Delete GCP Project
+# rubrik.delete_project_gcp(gcp_native_project_id="home-network-274622")
+
+### Check for duplicate vms
+# vms = rubrik.get_compute_vsphere()
+# o = {}
+# for vm in vms:
+#     print('.', end="")
+#     if vm['name'] in o and not vm['isRelic']:
+#         o[vm['name']].append(vm['cluster']['name'])
+#     elif not vm['isRelic']:
+#         o[vm['name']] = [vm['cluster']['name']]
+# for vm in o:
+#     if len(o[vm]) > 1:
+#         print("{} : {}".format(vm, o[vm]))

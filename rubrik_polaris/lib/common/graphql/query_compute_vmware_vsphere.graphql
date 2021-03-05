@@ -1,7 +1,8 @@
-query RubrikPolarisSDKRequest($filter: [Filter!]!) {
-  vSphereVmNewConnection(filter: $filter) {
+query RubrikPolarisSDKRequest($first: Int, $after: String, $filter: [Filter!]!) {
+  vSphereVmNewConnection(first: $first, filter: $filter, after: $after) {
     edges {
       node {
+        cdmId
         isRelic
         id
         name
@@ -14,9 +15,6 @@ query RubrikPolarisSDKRequest($filter: [Filter!]!) {
         primaryClusterLocation {
           id
           name
-        }
-        effectiveSlaDomain {
-          ...EffectiveSLADomainFragment
         }
         slaAssignment
         logicalPath {
@@ -34,16 +32,11 @@ query RubrikPolarisSDKRequest($filter: [Filter!]!) {
         }
       }
     }
-  }
-}
-fragment EffectiveSLADomainFragment on SlaDomain {
-  id
-  name
-  ... on ClusterSlaDomain {
-    fid
-    cluster {
-      id
-      name
+    pageInfo {
+      startCursor
+      endCursor
+      hasNextPage
+      hasPreviousPage
     }
   }
 }

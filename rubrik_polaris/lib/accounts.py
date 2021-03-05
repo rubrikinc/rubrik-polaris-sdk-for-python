@@ -18,6 +18,7 @@
 #  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 #  DEALINGS IN THE SOFTWARE.
 
+from rubrik_polaris.exceptions import PolarisException
 
 """
 Collection of functions that manipulate account components.
@@ -216,7 +217,6 @@ def get_account_aws_native_id(self, profile='', aws_id=None, aws_secret=None):
     """
     import boto3 as boto3
     from botocore.exceptions import ClientError
-    from rubrik_polaris.exceptions import PolarisException
 
     try:
         if profile:
@@ -424,6 +424,37 @@ def _update_account_aws(self, profile=None, aws_id=None, aws_secret=None,  _aws_
                     print("account needs to be recreated")
 
 
+def _get_default_service_account_gcp(self):
+    try:
+        _query_name = "accounts_gcp_project_default_credentials_get"
+        return self._query(_query_name, None)
+    except Exception as e:
+        print(e)
+
+
+def _set_default_service_account_gcp(self, name=None, jwt_config=None):
+    try:
+        _query_name = "accounts_gcp_project_default_credentials_set"
+        _variables = {
+            "name": name,
+            "jwt_config": jwt_config
+        }
+        return self._query(_query_name, _variables)
+    except Exception as e:
+        print(e)
+
+
+def _get_account_gcp_project_uuid_by_string(self, search_text):
+    try:
+        _query_name = "accounts_gcp"
+        _variables = {
+            "filter": search_text
+        }
+        return self._query(_query_name, _variables)
+    except Exception as e:
+        raise PolarisException("Problem getting GCP project uuid from Polaris: {}".format(search_text))
+
+
 def _get_account_map_aws(self):
     account_detail = self.get_accounts_aws_detail("")['awsCloudAccounts']
     o = {}
@@ -439,3 +470,127 @@ def _get_account_map_aws(self):
                     o[i['awsCloudAccount']['nativeId']]['regions'][r] = {}
     return o
 
+
+def add_project_gcp(self, service_account_auth_key_file=None, gcp_native_project_id=None):
+    project = self._get_gcp_native_project(service_account_auth_key_file=service_account_auth_key_file, project_id=gcp_native_project_id)
+    project['service_account_auth_key'] = open(service_account_auth_key_file, 'r').read()
+    try:
+        _query_name = "accounts_gcp_project_add"
+        _variables = project
+        _request = self._query(_query_name, _variables)
+        if not _request:
+            raise PolarisException("Problem adding GCP Project to Polaris: {}".format(gcp_native_project_id))
+    except Exception as e:
+        raise PolarisException("Problem adding GCP Project to Polaris: {}".format(gcp_native_project_id))
+
+
+def delete_project_gcp(self, gcp_native_project_id=None, delete_snapshots=False):
+    try:
+        record = self._get_account_gcp_project(search_text=gcp_native_project_id)[0]
+    except Exception:
+        raise PolarisException("Project does not exist in Polaris : {}".format(gcp_native_project_id))
+    if record['featureDetail']['status'] == "CONNECTED":
+        # get the disable ID and do that
+        disable_id = self._get_account_gcp_project_uuid_by_string(str(record['project']['projectNumber']))[0]['id']
+        disable_response = self._disable_account_gcp_project(project_uuid=disable_id)
+        if not disable_response:
+            raise PolarisException("Problem disabling protection on project: {}".format(gcp_native_project_id))
+        task_results = self._monitor_task([disable_response])
+        if "SUCC" in task_results['status']:
+            delete_result = self._delete_account_gcp_project(project_uuid=record['project']['id'])
+        else:
+            raise PolarisException("Failed to disable project {}".format(gcp_native_project_id))
+    if "DISABLED" in record['featureDetail']['status']:
+        delete_result = self._delete_account_gcp_project(project_uuid=record['project']['id'])
+        self._pp.pprint(delete_result)
+
+
+def _disable_account_gcp_project(self, project_uuid=None, delete_snapshots=False):
+    try:
+        _query_name = "accounts_gcp_project_disable"
+        _variables = {
+            "rubrik_project_id": project_uuid,
+            "delete_snapshots": delete_snapshots
+        }
+        _request = self._query(_query_name, _variables)
+        return _request
+    except Exception as e:
+        raise PolarisException("Problem disabling GCP Project in Polaris: {}".format(project_uuid))
+
+
+def _get_account_gcp_project(self, search_text):
+    try:
+        _query_name = "accounts_gcp_projects"
+        _variables = {
+            "status_filters": [],
+            "search_text": search_text
+        }
+        _request = self._query(_query_name, _variables)
+        return _request
+    except Exception as e:
+        raise PolarisException("Problem getting GCP Project from Polaris: {}".format(search_text))
+
+
+def _delete_account_gcp_project(self, project_uuid=None):
+    try:
+        _query_name = "accounts_gcp_project_delete"
+        _variables = {
+            "native_protection_ids": [project_uuid],
+            "shared_vpc_host_project_ids": [],
+            "cloud_account_project_ids": []
+        }
+        _request = self._query(_query_name, _variables)
+    except Exception as e:
+        raise PolarisException("Problem deleting GCP Project from Polaris: {}".format(project_uuid))
+
+
+def _get_account_gcp_permissions_cnp(self):
+    try:
+        _query_name = "accounts_gcp_permissions"
+        _request = self._query(_query_name, None)
+        o = []
+        for p in _request:
+            o.append(p['permission'])
+        return o
+    except Exception as e:
+        raise PolarisException("Problem getting GCP permission requirements from Polaris {}".format(e))
+
+
+def _get_gcp_native_project(self, service_account_auth_key_file, project_id=None):
+    from googleapiclient import discovery
+    from googleapiclient.errors import HttpError
+    from oauth2client.service_account import ServiceAccountCredentials
+    credentials = ServiceAccountCredentials.from_json_keyfile_name(service_account_auth_key_file)
+    service = discovery.build('cloudresourcemanager', 'v1', credentials=credentials)
+
+    # Check permissions requirement from Polaris against GCP using SA
+    permission_required = self._get_account_gcp_permissions_cnp()
+    permissions = {"permissions": permission_required}
+    try:
+        request = service.projects().testIamPermissions(resource=project_id, body=permissions)
+        permissions_set = request.execute()
+        permission_delta = list(set(permission_required) - set(permissions_set['permissions']))
+    except HttpError as e:
+        raise PolarisException("Failed to lookup SA permissions from GCP: {}".format(e))
+    if len(permission_delta) > 0:
+        raise PolarisException("Permissions are incorrect for Service Account. Requires additional: {}".format(permission_delta))
+
+    # Get project details from GCP
+    request = service.projects().get(projectId=project_id)
+    response = request.execute()
+    project = {'gcp_native_project_name': response['name'], 'gcp_native_project_id': response['projectId'], 'gcp_native_project_number': int(response['projectNumber'])}
+    try:
+        if response['parent']['type'] == 'organization':
+            name = 'organizations/{}'.format(response['parent']['id'])
+            request = service.organizations().get(name=name)
+            response = request.execute()
+            if 'displayName' in response:
+                project['organization_name'] = response['displayName']
+    except HttpError as e:
+        if 'permission' in str(e):
+            project['organization_name'] = response['parent']['id']
+        else:
+            raise PolarisException("Problem getting GCP organization: {}".format(e))
+    except Exception as e:
+        raise PolarisException("Problem getting GCP project details: {}".format(e))
+    return project
