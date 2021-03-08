@@ -3,51 +3,33 @@ from glob import glob
 
 import setuptools
 
-long_description = """
-# Rubrik SDK for Polaris
 
-This project provides a Python package that makes it easy to interact with the Rubrik Polaris API.
+name = 'Rubrik Polaris SDK for Python'
+version = '2021.01.08'
 
-The SDK has been tested against Python 3.6.4.
 
-## Installation
-
-Install from pip:
-
-`Pending`
-
-Install from source:
-```
-$ git clone https://github.com/rubrikinc/rubrik-polaris-sdk-for-python
-$ cd rubrik-polaris-sdk-for-python
-$ git checkout beta
-$ python setup.py install
-```
-## Quick Start
-
-## Documentation
-
-## Example
-
-## Additional Links
-"""
+# read the contents of your README file
+from os import path
+this_directory = path.abspath(path.dirname(__file__))
+with open(path.join(this_directory, 'README.md'), encoding='utf-8') as f:
+    long_description = f.read()
 
 
 setuptools.setup(
-    name="rubrik_polaris",
-    version="21.01.08",
-    author="Rubrik Inc",
-    description="A Python package for interacting with the Rubrik Polaris API.",
+    name=name,
+    version=version,
+    author='Rubrik Inc',
+    description='A Python package for interacting with the Rubrik Polaris API.',
     long_description=long_description,
-    long_description_content_type="text/markdown",
-    url="https://github.com/rubrikinc/rubrik-polaris-sdk-for-python",
+    long_description_content_type='text/markdown',
+    url='https://github.com/rubrikinc/rubrik-polaris-sdk-for-python',
     packages=setuptools.find_packages(exclude=['tests']),
     classifiers=[
-        "Intended Audience :: Information Technology",
-        "Intended Audience :: System Administrators",
-        "License :: OSI Approved :: Apache Software License",
-        "Programming Language :: Python",
-        "Programming Language :: Python :: 3.8"
+        'Intended Audience :: Information Technology',
+        'Intended Audience :: System Administrators',
+        'License :: OSI Approved :: Apache Software License',
+        'Programming Language :: Python',
+        'Programming Language :: Python :: 3.8'
     ],
     install_requires=[
         'requests >= 2.23.0',
@@ -71,4 +53,11 @@ setuptools.setup(
         'pytest'
     ],
     zip_safe=False,
+    command_options={
+        'build_sphinx': {
+            'project': ('setup.py', name),
+            'version': ('setup.py', version),
+            'release': ('setup.py', version),
+        }
+    },
 )

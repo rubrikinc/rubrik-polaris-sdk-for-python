@@ -1,7 +1,7 @@
 # Configuration file for the Sphinx documentation builder.
 #
 # This file only contains a selection of the most common options. For a full
-# list see the documentation:
+# list of options see the documentation:
 # https://www.sphinx-doc.org/en/master/usage/configuration.html
 
 # -- Path setup --------------------------------------------------------------
@@ -10,6 +10,7 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
+import datetime
 import os
 import sys
 sys.path.insert(0, os.path.abspath('..'))
@@ -17,12 +18,14 @@ sys.path.insert(0, os.path.abspath('..'))
 
 # -- Project information -----------------------------------------------------
 
-project = 'Rubrik Polaris SDK for Python'
-copyright = '2021, Rubrik Inc'
-author = 'Rubrik Inc'
+# The following are set from setup.py when building using the distutils 
+# custom command 'build_sphinx'
+#
+#project = 'Rubrik Polaris SDK for Python'
+#release = '2021.01.08'
 
-# The full version, including alpha/beta/rc tags
-release = '2021.01.08'
+author = 'Rubrik Inc'
+copyright = '{}, {}'.format(datetime.datetime.now().year, author)
 
 
 # -- General configuration ---------------------------------------------------
@@ -49,7 +52,6 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
-#
 html_theme = 'sphinx_rtd_theme'
 
 # Add any paths that contain custom static files (such as style sheets) here,
