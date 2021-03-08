@@ -22,8 +22,6 @@ $ git checkout beta
 $ python setup.py install
 ```
 
-## Quick Start
-
 ## Documentation
 
 ## Example
