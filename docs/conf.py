@@ -10,7 +10,6 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
-import datetime
 import os
 import sys
 sys.path.insert(0, os.path.abspath('..'))
@@ -23,9 +22,8 @@ sys.path.insert(0, os.path.abspath('..'))
 #
 #project = 'Rubrik Polaris SDK for Python'
 #release = '2021.01.08'
-
-author = 'Rubrik Inc'
-copyright = '{}, {}'.format(datetime.datetime.now().year, author)
+#author = 'Rubrik Inc'
+#copyright = '{}, {}'.format(datetime.datetime.now().year, author)
 
 
 # -- General configuration ---------------------------------------------------
@@ -70,3 +68,9 @@ html_static_path = ['_static']
 
 html_favicon = '_static/rubrik.ico'
 html_logo = '_static/rubrik.png'
+html_style = 'rubrik.css'
+
+html_theme_options = {
+    'navigation_with_keys': True,
+    #'announcement': '<em>This is a BETA version!</em>'
+}

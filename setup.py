@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+from datetime import datetime
 from glob import glob
 
 import setuptools
@@ -6,6 +7,9 @@ import setuptools
 
 name = 'Rubrik Polaris SDK for Python'
 version = '2021.01.08'
+release = '2021.01.08-beta'
+author = 'Rubrik Inc'
+copyright = '{}, {}'.format(datetime.now().year, author)
 
 
 # read the contents of your README file
@@ -18,7 +22,7 @@ with open(path.join(this_directory, 'README.md'), encoding='utf-8') as f:
 setuptools.setup(
     name=name,
     version=version,
-    author='Rubrik Inc',
+    author=author,
     description='A Python package for interacting with the Rubrik Polaris API.',
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -57,7 +61,8 @@ setuptools.setup(
         'build_sphinx': {
             'project': ('setup.py', name),
             'version': ('setup.py', version),
-            'release': ('setup.py', version),
+            'release': ('setup.py', release),
+            'copyright': ('setup.py', copyright)
         }
     },
 )
