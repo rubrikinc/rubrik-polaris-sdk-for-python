@@ -27,12 +27,18 @@ Collection of methods that interact with Polaris primitives.
 def get_sla_domains(self, sla_domain_name=""):
     """Retrieves dictionary of SLA Domain Names and Identifiers.
 
-    Keyword Arguments:
-        sla_domain_name {str} -- Rubrik SLA Domain name (default: {''})
+    Args:
+        sla_domain_name (str): Rubrik SLA Domain name
 
     Returns:
-        str -- ID for the given SLA Domain name as given by `sla_domain_name`
-        dict -- The complete set of SLA domains or a one element dict if a non-empty `sla_domain_name` is given and found.
+        dict: The complete set of SLA domains or a one element dict if a non-empty `sla_domain_name` is given and found.
+
+    Raises:
+        RequestException: If the query to Polaris returned an error
+
+    Examples:
+        >>> client = PolarisClient()
+        >>> sla_domains = client.get_sla_domains()
     """
     from rubrik_polaris.exceptions import RequestException
 
@@ -57,15 +63,21 @@ def get_sla_domains(self, sla_domain_name=""):
 def submit_on_demand(self, object_ids, sla_id, wait=False):
     """Submits On Demand Snapshot request for the given set of object id's and assign the given SLA to the snapshots.
 
-    Arguments:
-        object_ids {[str]} -- Array of Rubrik Object IDs
-        sla_id {str} -- Rubrik SLA Domain ID
-
-    Keyword Arguments:
-        wait {bool} -- Threaded wait for all processes to complete (default: {False})
+    Args:
+        object_ids (list): List of Rubrik Object IDs
+        sla_id (str): Rubrik SLA Domain ID
+        wait (bool): Threaded wait for all processes to complete
 
     Returns:
-        list -- List of errors if any occurred
+        list: List of errors if any occurred
+
+    Raises:
+        RequestException: If the query to Polaris returned an error
+
+    Examples:
+        >>> object_ids = client.get_object_ids_gce(region='us-west-1')
+        >>> sla_domain_id = client.get_sla_domains('Gold')[0]['id']
+        >>> client.submit_on_demand(object_ids, sla_domain_id, wait=True)
     """
     from rubrik_polaris.exceptions import RequestException
     try:
@@ -95,15 +107,24 @@ def submit_on_demand(self, object_ids, sla_id, wait=False):
 def submit_assign_sla(self, object_ids=[], sla_id=None, apply_to_existing_snapshots=None, existing_snapshot_retention=None, global_sla_assign_type="protectWithSlaId"):
     """Submits a Rubrik SLA change for objects
 
-    Arguments:
-        object_ids {[str]} -- Array of Rubrik Object IDs
-        global_sla_assign_type {str} -- Define assignment type noAssignment/doNotProtect/protectWithSlaId
-        sla_id {str} -- Rubrik SLA Domain ID
-        apply_to_existing_snapshots {bool} -- Apply retention policy to pre-existing snapshots
-        existing_snapshot_retention {str} -- Snapshot handling on doNotProtect RETAIN_SNAPSHOTS/KEEP_FOREVER/EXPIRE_IMMEDIATELY
+    Args:
+        object_ids (list): List of Rubrik Object IDs
+        global_sla_assign_type (str): Define assignment type noAssignment/doNotProtect/protectWithSlaId
+        sla_id (str): Rubrik SLA Domain ID
+        apply_to_existing_snapshots (bool): Apply retention policy to pre-existing snapshots
+        existing_snapshot_retention (str): Snapshot handling on doNotProtect RETAIN_SNAPSHOTS/KEEP_FOREVER/EXPIRE_IMMEDIATELY
+        global_sla_assign_type (str): ...
     
     Returns:
-        list -- List of objects assigned the SLA
+        list: List of objects assigned the SLA
+
+    Raises:
+        RequestException: If the query to Polaris returned an error
+    
+    Examples:
+        >>> object_ids = client.get_object_ids_gce(region='us-west-1')
+        >>> sla_domain_id = client.get_sla_domains('Gold')[0]['id']
+        >>> client.submit_assign_sla(object_ids, sla_domain_id)
     """
     from rubrik_polaris.exceptions import RequestException
 
@@ -125,11 +146,14 @@ def submit_assign_sla(self, object_ids=[], sla_id=None, apply_to_existing_snapsh
 def get_task_status(self, task_chain_id):
     """Retrieve task status from Polaris
 
-    Arguments:
-        task_chain_id {str} -- Task Chain UUID from request
+    Args:
+        task_chain_id (str): Task Chain UUID from request
 
     Returns:
-        str -- Task state
+        str: Task state
+
+    Raises:
+        RequestException: If the query to Polaris returned an error
     """
     from rubrik_polaris.exceptions import RequestException
 
@@ -161,12 +185,22 @@ def _get_snapshot(self, snapshot_id=None):
 def get_snapshots(self, snappable_id=None, recovery_point=None):
     """Retrieve Snapshots for a Snappable from Polaris
 
-    Arguments:
-        snappable_id {str} -- Object UUID
-        recovery_point {str} -- Optional datetime of snapshot to return, or 'latest', or not defined to return all
+    Args:
+        snappable_id (str): Object UUID
+        recovery_point (str): Optional datetime of snapshot to return, or 'latest', or not defined to return all
         
     Returns:
-        dict -- A dictionary of snapshots or a single snapshot if 'latest' was passed as `recovery_point`. If no snapshots are found, an empty dict is returned.
+        dict: A dictionary of snapshots or a single snapshot if 'latest' was passed as `recovery_point`. If no snapshots are found, an empty dict is returned.
+
+    Raises:
+        RequestException: If the query to Polaris returned an error
+
+    Examples:
+        >>> snappables = client.get_object_ids_ec2(tags={"Environment": "staging"})
+        >>> for snappable in snappables:
+        ...    snapshot = client.get_snapshots(snappable, recovery_point='latest')
+        ...    if snapshot:
+        ...        print(snapshot[0])
     """
     from dateutil.parser import parse
     from dateutil.tz import tzlocal
@@ -204,17 +238,20 @@ def get_snapshots(self, snappable_id=None, recovery_point=None):
 def get_event_series_list(self, object_type=[], status=[], activity_type=[], severity=[], cluster_ids=[], start_time=None, end_time = None):
     """Retrieve Events from Polaris
 
-    Arguments:
-        object_type {[str]} -- Array of Object Types
-        status {[str]} -- Array of Event Status
-        activity_type {[str]} -- Array of Activity Types
-        severity {[str]} -- Array of severities
-        cluster_ids {[UUID]} -- Array of Cluster IDs
-        start_date {datetime} -- Timestamp to start return set from
-        end_date {datetime} -- Timestamp to end return set from
+    Args:
+        object_type (list): List of Object Types
+        status (list): List of Event Status
+        activity_type (list): List of Activity Types
+        severity (list): List of severities
+        cluster_ids (list): List of Cluster IDs (UUID)
+        start_date (datetime): Timestamp to start return set from
+        end_date (datetime): Timestamp to end return set from
 
     Returns:
-        arr of dict -- An array of dictionaries of Event Data
+        list: A list of dictionaries of Event Data
+
+    Raises:
+        RequestException: If the query to Polaris returned an error
     """
     try:
         query_name = "core_event_series_list"
@@ -240,6 +277,16 @@ def get_event_series_list(self, object_type=[], status=[], activity_type=[], sev
 
 def get_report_data(self, object_type=[], cluster_ids=[]):
     """Retrieve Report Data from Polaris
+
+    Args:
+        object_type (list): List of object type
+        cluster_ids (list): List of cluster id's
+
+    Returns:
+        list: A list of dictionaries of Report data
+
+    Raises:
+        RequestException: If the query to Polaris returned an error
     """
     try:
         query_name = "core_report_data"

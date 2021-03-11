@@ -1,3 +1,7 @@
+---
+permalink: /index.html
+---
+
 # Rubrik SDK for Polaris
 
 This project provides a Python package that makes it easy to interact with the Rubrik Polaris API.
@@ -21,7 +25,6 @@ $ cd rubrik-polaris-sdk-for-python
 $ git checkout beta
 $ python setup.py install
 ```
-## Quick Start
 
 ## Documentation
 
