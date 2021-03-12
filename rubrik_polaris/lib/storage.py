@@ -25,16 +25,27 @@ Collection of functions that manipulate storage components.
 
 
 def get_storage_object_ids_ebs(self, match_all=True, **kwargs):
-    """Retrieves all AWS EBS object IDs that match query
+    """Retrieve ObjectIds for EBS Snappables from Polaris
 
-    Arguments:
-        match_all {bool} -- Set to False to match ANY defined criteria
-        tags {name: value} -- Allows simple qualification of tags
-        kwargs {} -- Any top level object from the get_storage_ebs call
+    Args:
+        match_all (bool): Set to False to match ANY defined criteria
+        tags (dict): Optional allows simple qualification of tags
+        kwargs (dict): Optional any top level object from the get_storage_ebs call
 
     Returns:
-        list -- List of all the EBS object id's
+        list: A list of EBS object IDs matching results of query
+
+    Raises:
+        RequestException: If the query to Polaris returned an error
+
+    Examples:
+        >>> snappables = client.get_object_ids_ebs(tags={"Environment": "staging"})
+        >>> for snappable in snappables:
+        ...    snapshot = client.get_snapshots(snappable, recovery_point='latest')
+        ...    if snapshot:
+        ...        print(snapshot[0])
     """
+
     try:
         object_ids = []
 
@@ -62,10 +73,18 @@ def get_storage_object_ids_ebs(self, match_all=True, **kwargs):
 
 
 def get_storage_ebs(self):
-    """Retrieve all AWS EBS volumes from Polaris
+    """Retrieve details for all EBS Snappables from Polaris
+
+    Args:
 
     Returns:
-        list -- List of all the AWS EBS volumes.
+        dict: Dictionary of all EBS Snappable details
+
+    Raises:
+        RequestException: If the query to Polaris returned an error
+
+    Examples:
+        >>> snappables = client.get_storage_ebs()
     """
     try:
         query_name = "storage_aws_ebs"

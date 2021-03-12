@@ -25,15 +25,18 @@ Collection of functions that manipulate compute components
 
 
 def get_compute_object_ids_ec2(self, match_all=True, **kwargs):
-    """Retrieves all AWS EC2 object IDs that match query
+    """Returns all AWS EC2 object IDs that match query
 
-    Arguments:
-        match_all {bool} -- Set to false to match ANY defined criteria
-        tags {name: value} -- Allows simple qualification of tags
-        kwargs {} -- Any top level object from the get_compute_ec2 call
+    Args:
+        match_all (bool): Set to false to match ANY defined criteria
+        tags (dict): Tags in {Name: Value} format to filter on
+        kwargs (str): Any top level object from the get_compute_ec2 call
 
     Returns:
-        list -- List of all the EC2 object id's 
+        list: List of all the EC2 object id's
+
+    Raises:
+        RequestException: If the query to Polaris returned an error
     """
     try:
         object_ids = []
@@ -60,14 +63,17 @@ def get_compute_object_ids_ec2(self, match_all=True, **kwargs):
 
 
 def get_compute_object_ids_azure(self, match_all=True, **kwargs):
-    """Retrieves all Azure VM object IDs that match query
+    """Returns all AWS EC2 object IDs that match query
 
-    Arguments:
-        match_all {bool} -- Set to false to match ANY defined criteria
-        kwargs {} -- Any top level object from the get_compute_azure call
-    
+    Args:
+        match_all (bool): Set to false to match ANY defined criteria
+        kwargs (str): Any top level object from the get_compute_ec2 call
+
     Returns:
-        list -- List of all the Azure VM object id's 
+        list: List of all the EC2 object id's
+
+    Raises:
+        RequestException: If the query to Polaris returned an error
     """
     try:
         return self._get_compute_object_ids(self.get_compute_azure(), kwargs, match_all=match_all)
@@ -76,14 +82,17 @@ def get_compute_object_ids_azure(self, match_all=True, **kwargs):
 
 
 def get_compute_object_ids_gce(self, match_all=True, **kwargs):
-    """Retrieves all GCE object IDs that match query
+    """Returns all AWS EC2 object IDs that match query
 
-    Arguments:
-        match_all {bool} -- Set to `False` to match ANY defined criteria
-        kwargs {} -- Any top level object from the get_compute_gce call
-    
+    Args:
+        match_all (bool): Set to false to match ANY defined criteria
+        kwargs (str): Any top level object from the get_compute_ec2 call
+
     Returns:
-        list -- List of all the GCE object id's 
+        list: List of all the EC2 object id's
+
+    Raises:
+        RequestException: If the query to Polaris returned an error
     """
     try:
         return self._get_compute_object_ids(self.get_compute_gce(), kwargs, match_all=match_all)
@@ -92,7 +101,7 @@ def get_compute_object_ids_gce(self, match_all=True, **kwargs):
 
 
 def _get_compute_object_ids_vsphere(self, match_all=True, **kwargs):
-    """Retrieves all vSphere objects that match query
+    """Returns all vSphere objects that match query
 
     Arguments:
         match_all {bool} -- Set to false to match ANY defined criteria
@@ -123,13 +132,16 @@ def _get_compute_object_ids(self, instances, criterias, match_all=True):
 
 
 def get_compute_ec2(self, object_id=None):
-    """Retrieve all AWS EC2 instances from Polaris
-    
-    Arguments:
-        object_id {str} -- A specific Object ID to retrieve
+    """Returns all AWS EC2 object details
+
+    Args:
+        object_id (str): optional specific object id to return
 
     Returns:
-        list -- List of all the AWS EC2 instances or the specific instance if the `object_id` is passed.
+        dict: details of AWS instance objects
+
+    Raises:
+        RequestException: If the query to Polaris returned an error
     """
     try:
         if object_id:
@@ -152,10 +164,13 @@ def get_compute_ec2(self, object_id=None):
 
 
 def get_compute_azure(self):
-    """Retrieve all Azure instances from Polaris
-    
+    """Returns all Azure IAAS object details
+
     Returns:
-        list -- List of all Azure VM instances
+        dict: details of Azure IAAS objects
+
+    Raises:
+        RequestException: If the query to Polaris returned an error
     """
     try:
         query_name = "compute_azure_iaas"
@@ -168,10 +183,13 @@ def get_compute_azure(self):
 
 
 def get_compute_gce(self):
-    """Retrieve all GCE instances from Polaris
-        
+    """Returns all GCP GCE object details
+
     Returns:
-        list -- List of all GCE instances
+        dict: details of GCP GCE objects
+
+    Raises:
+        RequestException: If the query to Polaris returned an error
     """
     try:
         query_name = "compute_gcp_gce"
@@ -184,8 +202,14 @@ def get_compute_gce(self):
 
 
 def get_compute_vsphere(self):
-    """ Retrieve all vSphere instances from Polaris """
-    from rubrik_polaris.exceptions import RequestException
+    """Returns all VMware VM object details (Under development)
+
+    Returns:
+        dict: details of VMware VM objects
+
+    Raises:
+        RequestException: If the query to Polaris returned an error
+    """
     try:
         query_name = "compute_vmware_vsphere"
         # self._validate(
@@ -236,29 +260,29 @@ def _submit_compute_restore(self, snapshot_id=None, mutation_name=None,  should_
 def submit_compute_restore_ec2(self, snapshot_id, **kwargs):
     """Submits a Restore of an EC2 instance
 
-    Arguments:
-        snapshot_id {str} -- Snapshot ID to be restored
-        should_power_on {bool} -- Defaults to `False`
-        should_restore_tags {bool} -- Defaults to `False`
-        wait {bool} -- Return once complete Defaults to `False`
+    Args:
+        snapshot_id (str): Snapshot ID to be restored
+        should_power_on (bool): Defaults to `False`
+        should_restore_tags (bool): Defaults to `False`
+        wait (bool): Return once complete Defaults to `False`
     
     Returns:
-        list -- List of errors if any occurred during the restore
+        dict -- List of errors if any occurred during the restore
     """
     return self._submit_compute_restore(snapshot_id=snapshot_id, mutation_name="compute_restore_ec2", **kwargs)
 
 
 def submit_compute_restore_azure(self, snapshot_id, **kwargs):
-    """Submits a Restore of an Azure VM instance
+    """Submits a Restore of a Azure VM
 
-    Arguments:
-        snapshot_id {str} -- Snapshot ID to be restored
-        should_power_on {bool} -- Defaults to `False`
-        should_restore_tags {bool} -- Defaults to `False`
-        wait {bool} -- Return once complete Defaults to `False`
+    Args:
+        snapshot_id (str): Snapshot ID to be restored
+        should_power_on (bool): Defaults to `False`
+        should_restore_tags (bool): Defaults to `False`
+        wait (bool): Return once complete Defaults to `False`
 
     Returns:
-        list -- List of errors if any occurred during the restore
+        dict -- List of errors if any occurred during the restore
     """
     return self._submit_compute_restore(snapshot_id=snapshot_id, mutation_name="compute_restore_azure", **kwargs)
 
@@ -266,14 +290,14 @@ def submit_compute_restore_azure(self, snapshot_id, **kwargs):
 def submit_compute_restore_gce(self, snapshot_id, **kwargs):
     """Submits a Restore of a GCE instance
 
-    Arguments:
-        snapshot_id {str} -- Snapshot ID to be restored
-        should_power_on {bool} -- Defaults to `False`
-        should_restore_tags {bool} -- Defaults to `False`
-        wait {bool} -- Return once complete Defaults to `False`
+    Args:
+        snapshot_id (str): Snapshot ID to be restored
+        should_power_on (bool): Defaults to `False`
+        should_restore_tags (bool): Defaults to `False`
+        wait (bool): Return once complete Defaults to `False`
 
     Returns:
-        list -- List of errors if any occurred during the restore
+        dict -- List of errors if any occurred during the restore
     """
     return self._submit_compute_restore(snapshot_id=snapshot_id, mutation_name="compute_restore_gce")
 
@@ -337,7 +361,20 @@ def _get_aws_region_vpcs(self, aws_region, aws_native_account_id):
 
 def submit_compute_export_ec2(self, snapshot_id=None, aws_account_number=None, aws_region=None, aws_vpc=None,
                               aws_security_groups=None, aws_subnet=None, wait=False, aws_instance_type=None, aws_instance_name=None, copy_tags=True, use_replica=False):
-    """ Submits the export of a EC2 instance"""
+    """Submits a Restore of a GCE instance
+
+    Args:
+        snapshot_id (str): snapshot_id to export
+        aws_account_number (str): aws account number to recover to
+        aws_region (str): aws region to export to
+        aws_vpc (str): aws vpc to assign to export
+        aws_security_groups (list): aws security groups to assign to export
+        aws_subnet (str): aws subnet to assign to export
+        wait (bool): Return once complete Defaults to False
+
+    Returns:
+        dict -- List of errors if any occurred during the export
+    """
     from rubrik_polaris.exceptions import ValidationException
 
     mutation_name = 'compute_export_ec2'
