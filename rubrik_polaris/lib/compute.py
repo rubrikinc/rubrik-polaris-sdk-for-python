@@ -361,7 +361,7 @@ def _get_aws_region_vpcs(self, aws_region, aws_native_account_id):
 
 def submit_compute_export_ec2(self, snapshot_id=None, aws_account_number=None, aws_region=None, aws_vpc=None,
                               aws_security_groups=None, aws_subnet=None, wait=False, aws_instance_type=None, aws_instance_name=None, copy_tags=True, use_replica=False):
-    """Submits a Restore of a GCE instance
+    """Submits an export of a EC2 instance
 
     Args:
         snapshot_id (str): snapshot_id to export
