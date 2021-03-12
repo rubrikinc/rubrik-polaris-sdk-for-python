@@ -25,7 +25,7 @@ Collection of functions that manipulate storage components.
 
 
 def get_storage_object_ids_ebs(self, match_all=True, **kwargs):
-    """Retrieve ObjectIds for EBS Snappables from Polaris
+    """Retrieves ObjectIds for EBS Snappables from Polaris
 
     Args:
         match_all (bool): Set to False to match ANY defined criteria
@@ -73,7 +73,7 @@ def get_storage_object_ids_ebs(self, match_all=True, **kwargs):
 
 
 def get_storage_ebs(self):
-    """Retrieve details for all EBS Snappables from Polaris
+    """Retrieves details for all EBS Snappables from Polaris
 
     Args:
 

@@ -25,7 +25,7 @@ Collection of functions that manipulate compute components
 
 
 def get_compute_object_ids_ec2(self, match_all=True, **kwargs):
-    """Returns all AWS EC2 object IDs that match query
+    """Retrieves all AWS EC2 object IDs that match query
 
     Args:
         match_all (bool): Set to false to match ANY defined criteria
@@ -63,7 +63,7 @@ def get_compute_object_ids_ec2(self, match_all=True, **kwargs):
 
 
 def get_compute_object_ids_azure(self, match_all=True, **kwargs):
-    """Returns all AWS EC2 object IDs that match query
+    """Retrieves all AWS EC2 object IDs that match query
 
     Args:
         match_all (bool): Set to false to match ANY defined criteria
@@ -82,7 +82,7 @@ def get_compute_object_ids_azure(self, match_all=True, **kwargs):
 
 
 def get_compute_object_ids_gce(self, match_all=True, **kwargs):
-    """Returns all AWS EC2 object IDs that match query
+    """Retrieves all AWS EC2 object IDs that match query
 
     Args:
         match_all (bool): Set to false to match ANY defined criteria
@@ -101,7 +101,7 @@ def get_compute_object_ids_gce(self, match_all=True, **kwargs):
 
 
 def _get_compute_object_ids_vsphere(self, match_all=True, **kwargs):
-    """Returns all vSphere objects that match query
+    """Retrieves all vSphere objects that match query
 
     Arguments:
         match_all {bool} -- Set to false to match ANY defined criteria
@@ -132,7 +132,7 @@ def _get_compute_object_ids(self, instances, criterias, match_all=True):
 
 
 def get_compute_ec2(self, object_id=None):
-    """Returns all AWS EC2 object details
+    """Retrieves all AWS EC2 object details
 
     Args:
         object_id (str): optional specific object id to return
@@ -164,7 +164,7 @@ def get_compute_ec2(self, object_id=None):
 
 
 def get_compute_azure(self):
-    """Returns all Azure IAAS object details
+    """Retrieves all Azure IAAS object details
 
     Returns:
         dict: details of Azure IAAS objects
@@ -183,7 +183,7 @@ def get_compute_azure(self):
 
 
 def get_compute_gce(self):
-    """Returns all GCP GCE object details
+    """Retrieves all GCP GCE object details
 
     Returns:
         dict: details of GCP GCE objects
@@ -202,7 +202,7 @@ def get_compute_gce(self):
 
 
 def get_compute_vsphere(self):
-    """Returns all VMware VM object details (Under development)
+    """Retrieves all VMware VM object details (Under development)
 
     Returns:
         dict: details of VMware VM objects

@@ -143,7 +143,7 @@ def _invoke_aws_stack(self, nodes, account_id, regions=[], profile='', aws_id=No
 
 
 def get_accounts_aws(self, filter=""):
-    """Returns AWS account information from Polaris
+    """Retrieves AWS account information from Polaris
 
     Args:
         filter (str): Search string to filter results
@@ -165,7 +165,7 @@ def get_accounts_aws(self, filter=""):
 
 
 def get_accounts_gcp(self, filter=""):
-    """Returns GCP project information from Polaris
+    """Retrieves GCP project information from Polaris
 
     Args:
         filter (str): Search string to filter results
@@ -187,7 +187,7 @@ def get_accounts_gcp(self, filter=""):
 
 
 def get_accounts_azure(self, filter=""):
-    """Returns Azure account information from Polaris
+    """Retrieves Azure account information from Polaris
 
     Args:
         filter (str): Search string to filter results
@@ -209,7 +209,7 @@ def get_accounts_azure(self, filter=""):
 
 
 def get_accounts_aws_detail(self, filter):
-    """Returns deployment details for AWS from Polaris
+    """Retrieves deployment details for AWS from Polaris
 
     Args:
         filter (str): Search string to filter results
@@ -231,7 +231,7 @@ def get_accounts_aws_detail(self, filter):
 
 
 def get_account_aws_native_id(self, profile='', aws_id=None, aws_secret=None):
-    """Returns AWS Account ID from local config
+    """Retrieves AWS Account ID from local config
     
     Args:
         profile (str): Profile name of local configuration
