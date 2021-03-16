@@ -1,9 +1,11 @@
 query RubrikPolarisSDKRequest($first: Int, $after: String, $filter: [Filter!]!) {
   vSphereVmNewConnection(first: $first, filter: $filter, after: $after) {
     edges {
+      cursor
       node {
-        cdmId
         isRelic
+        authorizedOperations
+        replicatedObjectCount
         id
         name
         cluster {
@@ -16,19 +18,43 @@ query RubrikPolarisSDKRequest($first: Int, $after: String, $filter: [Filter!]!) 
           id
           name
         }
+        objectType
+        effectiveSlaDomain {
+          ...EffectiveSLADomainFragment
+        }
+        effectiveSlaSourceObject {
+          fid
+          name
+          objectType
+        }
+        pendingSla {
+          id
+          name
+        }
         slaAssignment
         logicalPath {
           fid
           name
+          objectType
+        }
+        snapshotDistribution {
+          id
+          onDemandCount
+          retrievedCount
+          scheduledCount
+          totalCount
         }
         reportSnappable {
+          id
           archiveStorage
           physicalBytes
+          __typename
         }
         vmwareToolsInstalled
         agentStatus {
           agentStatus
           disconnectReason
+          __typename
         }
       }
     }
@@ -37,6 +63,18 @@ query RubrikPolarisSDKRequest($first: Int, $after: String, $filter: [Filter!]!) 
       endCursor
       hasNextPage
       hasPreviousPage
+    }
+  }
+}
+
+fragment EffectiveSLADomainFragment on SlaDomain {
+  id
+  name
+  ... on ClusterSlaDomain {
+    fid
+    cluster {
+      id
+      name
     }
   }
 }

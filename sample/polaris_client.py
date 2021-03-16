@@ -42,7 +42,8 @@ except Exception as err:
 
 ### Run ODS for machines in a region using Bronze retention, monitor to complete via threads
 # bronze_sla_domain_id = rubrik.get_sla_domains("Bronze")['id']
-# pp.pprint(rubrik.submit_on_demand(rubrik.get_compute_object_ids_azure(region="EastUS2"), bronze_sla_domain_id, wait=True))
+# pp.pprint(rubrik.submit_on_demand(rubrik.get_compute_object_ids_ec2(region="US_WEST_1"), bronze_sla_domain_id, wait=True))
+# pp.pprint(rubrik.submit_on_demand(rubrik.get_compute_object_ids_gce(region="us-west1"), bronze_sla_domain_id, wait=True))
 
 ### Get snapshot ids for snappables
 # snappables = rubrik.get_compute_object_ids_ec2(tags={"Name": "gurlingjb"})
@@ -104,7 +105,7 @@ except Exception as err:
 # end_time = datetime.datetime.now().isoformat()
 # start_time = (datetime.datetime.now() - datetime.timedelta(days=1)).isoformat()
 # todays_failed_events = rubrik.get_event_series_list(cluster_ids=['603109f2-eb30-4da8-9389-911d66abb524'], status=["Failure"], start_time=start_time, end_time=end_time)
-# todays_failed_events = rubrik.get_event_series_list(activity_type=["Hardware"], start_time=start_time, end_time=end_time)
+# todays_failed_events = rubrik.get_event_series_list(start_time=start_time, end_time=end_time)
 # print("Returned events : {}".format(len(todays_failed_events)))
 
 ### Basic event summaries
