@@ -5,14 +5,8 @@ query RubrikPolarisSDKRequest($first: Int, $after: String, $sortBy: AzureNativeV
         id
         name
         resourceGroup {
-          id
-          name
-          subscription {
-            status
-            id
-            name
-            nativeId
-          }
+          ...AzureResourceGroupFragment
+          ...AzureCommonResourceGroupFragment
         }
         region
         vnetName
@@ -48,4 +42,30 @@ query RubrikPolarisSDKRequest($first: Int, $after: String, $sortBy: AzureNativeV
       hasPreviousPage
     }
   }
+}
+
+fragment AzureCommonResourceGroupFragment on AzureNativeCommonResourceGroupWithSla {
+  id
+  name
+  subscription {
+    id
+    name
+    status
+    nativeId
+    __typename
+  }
+  __typename
+}
+
+fragment AzureResourceGroupFragment on AzureNativeResourceGroup {
+  id
+  name
+  subscription {
+    id
+    name
+    status
+    nativeId
+    __typename
+  }
+  __typename
 }

@@ -36,11 +36,11 @@ def get_compute_object_ids_ec2(self, match_all=True, **kwargs):
         list -- List of all the EC2 object id's 
     """
     try:
+        object_ids = []
+        num_criteria = len(kwargs)
+        if 'tags' in kwargs:
+            num_criteria = num_criteria + len(kwargs['tags']) - 1
         for instance in self.get_compute_ec2():
-            object_ids = []
-            num_criteria = len(kwargs)
-            if 'tags' in kwargs:
-                num_criteria = num_criteria + len(kwargs['tags']) - 1
             num_unmatched_criteria = num_criteria
             for key in kwargs:
                 if key == 'tags' and 'tags' in instance:
@@ -245,7 +245,7 @@ def submit_compute_restore_ec2(self, snapshot_id, **kwargs):
     Returns:
         list -- List of errors if any occurred during the restore
     """
-    return self._submit_compute_restore(snapshot_id=snapshot_id, mutation="compute_restore_ec2", **kwargs)
+    return self._submit_compute_restore(snapshot_id=snapshot_id, mutation_name="compute_restore_ec2", **kwargs)
 
 
 def submit_compute_restore_azure(self, snapshot_id, **kwargs):

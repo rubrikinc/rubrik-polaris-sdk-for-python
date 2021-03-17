@@ -24,19 +24,19 @@ except Exception as err:
     print(err)
     sys.exit(1)
 
-### Manipulate AWS EBS Volumes
-# pp.pprint(rubrik.get_storage_ebs())
-# rubrik.get_object_ids_ebs(tags = {"Class": "Management"})
-# bronze_sla_domain_id = rubrik.get_sla_domains("Bronze")['id']
-# pp.pprint(rubrik.submit_on_demand(rubrik.get_object_ids_ebs(volumeId = "vol-077d1df3538afe5dd"), bronze_sla_domain_id, wait=True))
+### Add GCP Project
+# rubrik.add_project_gcp(service_account_auth_key_file="/home/peterm/.google.milanese.json", gcp_native_project_id="home-network-274622")
+
+### Delete GCP Project
+# rubrik.delete_project_gcp(gcp_native_project_id="home-network-274622")
 
 ### Add AWS Acct (local profile must be configured, specify list of profiles _or_ set all=True.
-# rubrik.add_account_aws(regions = ["us-east-1"], profiles = ["peterm-profile"])
+# rubrik.add_account_aws(regions = ["us-east-1"], profiles = ["milanese"])
 # rubrik.add_account_aws(regions = ["us-east-1"], aws_access_key_id='blah', aws_secret_access_key='blah')
 # rubrik.add_account_aws(regions = ["us-west-2"], all = True )
 
 ### Remove AWS Acct (local profile must be configured, specify list of profiles _or_ set all=True.
-# rubrik.delete_account_aws(profiles = ['peterm-profile'])
+# rubrik.delete_account_aws(profiles = ['milanese'])
 # rubrik.delete_account_aws(aws_access_key_id='blah', aws_secret_access_key='blah')
 # rubrik.delete_account_aws(all = True )
 
@@ -44,13 +44,8 @@ except Exception as err:
 # bronze_sla_domain_id = rubrik.get_sla_domains("Bronze")['id']
 # pp.pprint(rubrik.submit_on_demand(rubrik.get_compute_object_ids_azure(region="EastUS2"), bronze_sla_domain_id, wait=True))
 
-### Returns all objectIDs matching arbitrary available inputs. ec2 tags have special treatment
-# pp.pprint(rubrik.get_compute_object_ids_ec2(tags = {"Name": "Puppet Master"}))
-# pp.pprint(rubrik.get_compute_object_ids_azure(region = "EastUS2"))
-# pp.pprint(rubrik.get_compute_object_ids_gce(region = "us-west1"))
-
 ### Get snapshot ids for snappables
-# snappables = rubrik.get_compute_object_ids_ec2(tags = {"Name": "gurlingwinjb"})
+# snappables = rubrik.get_compute_object_ids_ec2(tags={"Name": "gurlingjb"})
 # snappables = rubrik.get_compute_object_ids_azure(name = "tpm1-lin1")
 # snappables = rubrik.get_compute_object_ids_gce(nativeName = "ubuntu-fdse-shared-1")
 # for snappable in snappables:
@@ -64,6 +59,23 @@ except Exception as err:
 #     result = rubrik.submit_compute_restore_azure(snapshot_id, wait=True, should_power_on=True, should_restore_tags=True)
 #     result = rubrik.submit_compute_restore_gce(snapshot_id, wait=True, should_power_on=True, should_restore_tags=True)
 #     pp.pprint(result)
+
+### Query objects, set sla_domain
+# gold_sla_domain_id = rubrik.get_sla_domains("Gold")['id']
+# object_ids = rubrik.get_compute_object_ids_ec2(instanceName="tm2-aws-w1")
+# pp.pprint(rubrik.submit_assign_sla(object_ids=object_ids, sla_id=gold_sla_domain_id))
+# pp.pprint(rubrik.submit_assign_sla(object_ids=object_ids, global_sla_assign_type="doNotProtect", existing_snapshot_retention="KEEP_FOREVER"))
+
+### Manipulate AWS EBS Volumes
+# pp.pprint(rubrik.get_storage_ebs())
+# rubrik.get_object_ids_ebs(tags = {"Class": "Management"})
+# bronze_sla_domain_id = rubrik.get_sla_domains("Bronze")['id']
+# pp.pprint(rubrik.submit_on_demand(rubrik.get_object_ids_ebs(volumeId = "vol-077d1df3538afe5dd"), bronze_sla_domain_id, wait=True))
+
+### Returns all objectIDs matching arbitrary available inputs. ec2 tags have special treatment
+# pp.pprint(rubrik.get_compute_object_ids_ec2(tags = {"Name": "Puppet Master"}))
+# pp.pprint(rubrik.get_compute_object_ids_azure(region = "EastUS2"))
+# pp.pprint(rubrik.get_compute_object_ids_gce(region = "us-west1"))
 
 ### Search for a set of objects and get their details
 # for i in rubrik.get_compute_object_ids_ec2(region = 'US_WEST_2'):
@@ -87,12 +99,6 @@ except Exception as err:
 # pp.pprint(rubrik.get_accounts_gcp())
 # pp.pprint(rubrik.get_accounts_azure())
 # pp.pprint(rubrik.update_account_aws())
-
-### Query objects, set sla_domain
-# gold_sla_domain_id = rubrik.get_sla_domains("Silver")['id']
-# object_ids = rubrik.get_compute_object_ids_ec2(instanceName="tm2-aws-w1")
-# pp.pprint(rubrik.submit_assign_sla(object_ids=object_ids, sla_id=gold_sla_domain_id))
-# pp.pprint(rubrik.submit_assign_sla(object_ids=object_ids, global_sla_assign_type="doNotProtect", existing_snapshot_retention="KEEP_FOREVER"))
 
 ### Event interface
 # end_time = datetime.datetime.now().isoformat()
@@ -151,12 +157,6 @@ except Exception as err:
 #     aws_subnet='subnet-bbe44cf7',
 #     wait=True
 # ))
-
-### Add GCP Project
-# rubrik.add_project_gcp(service_account_auth_key_file="/home/peterm/.google.milanese.json", gcp_native_project_id="home-network-274622")
-
-### Delete GCP Project
-# rubrik.delete_project_gcp(gcp_native_project_id="home-network-274622")
 
 ### Check for duplicate vms
 # vms = rubrik.get_compute_vsphere()
