@@ -52,7 +52,7 @@ def _query(self, query_name=None, variables=None, timeout=60):
             if 'errors' in api_response and len(api_response['errors']) == 1:
                 error = api_response['errors'][0]
                 raise RequestException("Failed request to Polaris, got {}({}) on {}".format(error['message'], error['extensions']['code'], error['path']))
-            if 'code' in api_response and 'message' in api_response and api_response['code'] >= 400:
+            elif 'code' in api_response and 'message' in api_response and api_response['code'] >= 400:
                 raise RequestException(api_response['message'])
             else:
                 api_request.raise_for_status()

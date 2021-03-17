@@ -3346,6 +3346,8 @@ union ActivitySeriesGroupByInfo = ActivityObjectType | ActivityStatus | Activity
 
 union AnomalyResultGroupByInfo = AnomalyStatus | Cluster | Snappable | TimeRangeWithUnit
 
+union AzureResourceGroupUnionType = AzureNativeCommonResourceGroupWithSla | AzureNativeResourceGroup
+
 union CdmSnapshotGroupByInfo = TimeRangeWithUnit
 
 union ClusterGroupByInfo = ClusterType | TimeRangeWithUnit
@@ -5162,7 +5164,7 @@ type AzureNativeManagedDisk implements HierarchyObject & PolarisHierarchyObject 
     physicalPath: [PathNode!]!
     region: AzureNativeRegionEnum!
     "Resource Group of the Azure Disk"
-    resourceGroup: AzureNativeResourceGroup!
+    resourceGroup: AzureResourceGroupUnionType!
     "The assignmennt type for this object's SLA"
     slaAssignment: SlaAssignmentTypeEnum!
     "The list of snapshots taken for this snappable"
@@ -5434,7 +5436,7 @@ type AzureNativeVirtualMachine implements HierarchyObject & PolarisHierarchyObje
     physicalPath: [PathNode!]!
     region: AzureNativeRegionEnum!
     "Resource Group of the Azure VM"
-    resourceGroup: AzureNativeResourceGroup!
+    resourceGroup: AzureResourceGroupUnionType!
     sizeType: String!
     "The assignmennt type for this object's SLA"
     slaAssignment: SlaAssignmentTypeEnum!
@@ -7312,7 +7314,7 @@ type DownloadResultsCsvReply {
 }
 
 type DownloadSnapshotResultsCsvReply {
-    downloadLink: String!
+    success: Boolean!
 }
 
 type DownloadUserActivityCsvReply {
@@ -7513,6 +7515,55 @@ type Ec2InstanceVolume {
     sizeGbs: Int!
 }
 
+"""
+
+Supported in v5.1+
+"""
+type EffectiveSlaHolder {
+    """
+
+    Supported in v5.1+
+    v5.1: ID of the effective SLA domain
+    v5.2+: The ID of the SLA Domain that controls the protection of the Rubrik object.
+    """
+    effectiveSlaDomainId: String!
+    """
+
+    Supported in v5.1+
+    v5.1: name of the effective SLA domain
+    v5.2+: The name of the SLA Domain that controls the protection of the Rubrik object.
+    """
+    effectiveSlaDomainName: String!
+    """
+
+    Supported in v5.1+
+    v5.1: Optional field containing Polaris managed id of the effective SLA domain if it is Polaris managed.
+    v5.2+: Optional. This field contains the managed ID of of the Polaris-managed effective SLA Domain.
+    """
+    effectiveSlaDomainPolarisManagedId: String
+    """
+
+    Supported in v5.1+
+    v5.1: ID of the object from which the effective SLA domain is inherited.
+    v5.2+: The ID of the parent of the Rubrik object from which the SLA Domain that controls the protection of Rubrik object is inherited.
+    """
+    effectiveSlaSourceObjectId: String
+    """
+
+    Supported in v5.1+
+    v5.1: Name of the object from which the effective SLA domain is inherited.
+    v5.2+: The name of the parent of the Rubrik object from which the SLA Domain that controls the protection of Rubrik object is inherited.
+    """
+    effectiveSlaSourceObjectName: String
+    """
+
+    Supported in v5.1+
+    v5.1: A Boolean that indicates whether the effective SLA Domain is Retention Locked. When this value is 'true', the effective SLA Domain is a Retention Lock SLA Domain.
+    v5.2+: Indicates whether the effective SLA Domain is Retention Locked. When this value is 'true', the effective SLA domain is a Retention Lock SLA Domain.
+    """
+    isEffectiveSlaDomainRetentionLocked: Boolean
+}
+
 "Status of 'enable automatic upload' service on certain cluster"
 type EnableAutomaticFmdUploadReply {
     clusterId: String!
@@ -7690,6 +7741,43 @@ type FailoverClusterApp implements CdmHierarchyObject & FailoverClusterTopLevelD
     vips: [String!]!
 }
 
+"""
+
+Supported in v5.2+
+"""
+type FailoverClusterAppConfig {
+    """
+
+    Supported in v5.2+
+    ID of the SLA Domain that is assigned to the specified failover cluster app. Existing snapshots of the object will be retained with the configuration of specified SLA Domain.
+    """
+    configuredSlaDomainId: String
+    """
+
+    Supported in v5.2+
+    The source used by the failover cluster app to perform fileset backups. Either a virtual IP address or a node order must be specified in order for the failover cluster app to perform app backup.
+    """
+    failoverClusterAppSource: FailoverClusterAppSource
+    """
+
+    Supported in v5.2+
+    Cluster ID of the failover cluster app.
+    """
+    failoverClusterId: String!
+    """
+
+    Supported in v5.2+
+    Cluster type of the failover cluster app.
+    """
+    failoverClusterType: FailoverClusterTypeEnum!
+    """
+
+    Required. Supported in v5.2+
+    Name of the failover cluster app.
+    """
+    name: String!
+}
+
 type FailoverClusterAppConnection {
     count: Int!
     edges: [FailoverClusterAppEdge!]!
@@ -7726,10 +7814,202 @@ type FailoverClusterAppPhysicalChildTypeEdge {
     node: FailoverClusterAppPhysicalChildType!
 }
 
+"""
+
+Supported in v5.2+
+"""
+type FailoverClusterAppSource {
+    """
+
+    Supported in v5.2+
+    Specifies an order for the failover cluster nodes. Failover cluster app backups use the failover cluster nodes in the specified order.
+    """
+    nodeOrders: [FailoverClusterNodeOrder!]!
+    "Virtual IP addresses of the failover cluster."
+    vips: [String!]!
+    """
+
+    Supported in v5.3+
+    Virtual IP addresses of the failover cluster.
+    """
+    virtualIps: [String!]!
+}
+
+"""
+
+Supported in v5.2+
+"""
+type FailoverClusterAppSummary {
+    """
+
+    Supported in v5.2+
+    Connectivity status of the failover cluster app.
+    """
+    connectionStatus: FailoverClusterAppConnectionStatusEnum!
+    effectiveSlaHolder: EffectiveSlaHolder
+    failoverClusterAppConfig: FailoverClusterAppConfig
+    """
+
+    Supported in v5.3+
+    The failover cluster name of the failover cluster app. The failover cluster is a group of hosts that provides high availability for running failover clustered applications.
+    """
+    failoverClusterName: String
+    """
+
+    Required. Supported in v5.2+
+    ID assigned to the failover cluster app.
+    """
+    id: String!
+    """
+
+    Supported in v5.3+
+    Failover cluster operating system type.
+    """
+    operatingSystemType: FailoverClusterOsTypeEnum!
+    """
+
+    Supported in v5.2+
+    """
+    primaryClusterId: String!
+    slaAssignable: SlaAssignable
+    """
+
+    Supported in v5.2+
+    SLA Domain assignment for failover cluster app.
+    """
+    slaAssignment: SlaAssignmentEnum!
+}
+
+"""
+
+Supported in v5.2+
+"""
+type FailoverClusterDetail {
+    failoverClusterSummary: FailoverClusterSummary
+    """
+
+    Supported in v5.2+
+    Count of the number of failover cluster apps.
+    """
+    numApps: Int!
+    """
+
+    Supported in v5.2+
+    Count of the number of nodes on the failover cluster.
+    """
+    numNodes: Int!
+}
+
+"""
+
+Supported in v5.2+
+"""
+type FailoverClusterNode {
+    """
+
+    Supported in v5.2+
+    Connectivity status of the node in the failover cluster.
+    """
+    connectionStatus: FailoverClusterNodeConnectionStatusEnum!
+    """
+
+    Required. Supported in v5.2+
+    ID of the node in the failover cluster.
+    """
+    id: String!
+    """
+
+    Required. Supported in v5.2+
+    Name of the node in the failover cluster.
+    """
+    name: String!
+    """
+
+    Supported in v5.3+
+    Operating system of the node in the failover cluster.
+    """
+    operatingSystem: String
+}
+
+"""
+
+Supported in v5.2+
+"""
+type FailoverClusterNodeOrder {
+    """
+
+    Supported in v5.2+
+    ID of the failover cluster node.
+    """
+    nodeId: String!
+    """
+
+    Supported in v5.3+
+    The name of the failover cluster node.
+    """
+    nodeName: String
+    """
+
+    Required. Supported in v5.2+
+    An integer that specifies the place occupied by this node in the failover cluster app backup order.
+    """
+    order: Int!
+}
+
 "Additional information about the status of the failover cluster"
 type FailoverClusterStatusObject {
     connectivity: String!
     timestamp_millis: DateTime
+}
+
+"""
+
+Supported in v5.2+
+"""
+type FailoverClusterSummary {
+    """
+
+    Supported in v5.2+
+    Connectivity status of the failover cluster.
+    """
+    connectionStatus: FailoverClusterConnectionStatusEnum!
+    effectiveSlaHolder: EffectiveSlaHolder
+    """
+
+    Required. Supported in v5.2+
+    ID assigned to the failover cluster.
+    """
+    id: String!
+    """
+
+    Required. Supported in v5.2+
+    Cluster name assigned to the failover cluster.
+    """
+    name: String!
+    """
+
+    Required. Supported in v5.2+
+    Details of the nodes of this failover cluster.
+    """
+    nodes: [FailoverClusterNode!]!
+    """
+
+    Supported in v5.2+
+    Operating system type of the nodes in the failover cluster.
+    """
+    operatingSystemType: FailoverClusterOsTypeEnum!
+    """
+
+    Supported in v5.2+
+    """
+    primaryClusterId: String!
+    slaAssignable: SlaAssignable
+    """
+
+    Supported in v5.2+
+    SLA Domain assignment for failover cluster.
+    """
+    slaAssignment: SlaAssignmentEnum!
 }
 
 type FailoverClusterTopLevelDescendantTypeConnection {
@@ -7925,6 +8205,7 @@ type FeatureFlagAll {
 
 type FederatedLoginStatus {
     enabled: Boolean!
+    inventoryCardEnabled: Boolean!
 }
 
 type FileAccessResult {
@@ -10538,9 +10819,9 @@ type JobsReply {
 type K8sCluster implements HierarchyObject & PolarisHierarchyObject {
     "The authorized operations on the object."
     authorizedOperations: [OperationEnum!]!
-    "Information about the Kubernetes cluster"
+    "Information about the Kubernetes cluster."
     clusterInfo: K8sClusterInfo!
-    "List of IPs for the Kubernetes cluster"
+    "List of IPs for the Kubernetes cluster."
     clusterIp: [String!]!
     "The configured SLA Domain of the hierarchy object."
     configuredSlaDomain: SlaDomain!
@@ -10565,7 +10846,7 @@ type K8sCluster implements HierarchyObject & PolarisHierarchyObject {
     effectiveSlaSourceObject: PathNode
     "The fid of the hierarchy object."
     id: UUID!
-    "Namespaces belonging to the Kubernetes cluster"
+    "Namespaces belonging to the Kubernetes cluster."
     k8sDescendantNamespaces(
         "Returns the elements in the list that come after the specified cursor."
         after: String,
@@ -12054,6 +12335,17 @@ type Mutation {
     "Create a new custom analyzer"
     createCustomAnalyzer(analyzer: AnalyzerInput!): Analyzer!
     createCustomReport(config: CustomReportCreate!): CustomReport!
+    createFailoverCluster(
+        "UUID used to identify the cluster the request goes to"
+        clusterUuid: String!,
+        "Create configuration parameters for a failover cluster."
+        config: FailoverClusterConfigInput!
+    ): FailoverClusterDetail!
+    "Create a failover cluster app."
+    createFailoverClusterApp(
+        "Create configuration parameters for a failover cluster app."
+        config: FailoverClusterAppConfigInput!
+    ): FailoverClusterAppSummary!
     createFilesetSnapshot(
         "Configuration for the on-demand backup."
         config: BaseOnDemandSnapshotConfigInput!,
@@ -12065,9 +12357,9 @@ type Mutation {
         id: String!
     ): AsyncRequestStatus!
     createGlobalSla(globalSlaCreateRequest: GlobalSlaCreateRequest!): GlobalSla!
-    "Add a Kubernetes cluster"
+    "Add a Kubernetes cluster."
     createK8sCluster(
-        "Request for creating a new K8s cluster"
+        "Request for creating a new K8s cluster."
         k8sClusterCreateRequest: K8sClusterCreateInput!
     ): OnboardingSetupReply!
     createManualTargetMapping(manualTargetMappingCreateRequest: ManualTargetMappingCreateRequest!): TargetMapping!
@@ -12102,6 +12394,10 @@ type Mutation {
         roleIds: [String!]!
     ): CreateServiceAccountReply!
     createUser(email: String!, roleIds: [String!]!): String!
+    createUserWithPassword(
+        "User credentials required to create a new user."
+        input: CreateUserWithPasswordInput!
+    ): String!
     "Deactivate a custom analyzer"
     deactivateCustomAnalyzer(analyzerId: String!): String!
     "Deactivate a classification policy"
@@ -12160,6 +12456,54 @@ type Mutation {
     ): String!
     deleteCustomReport(id: Int!): Int!
     deleteEventDigest(recipientUserIDs: [String!]!): Boolean!
+    deleteFailoverCluster(
+        "UUID used to identify the cluster the request goes to"
+        clusterUuid: String!,
+        "ID of the failover cluster."
+        id: String!,
+        """
+
+        v5.2-v5.3: A Boolean that specifies whether to preserve the snapshots of the fileset which belong to a failover cluster application. When this value is 'true,' the snapshots are preserved. The default value is 'true.'
+        v6.0: A Boolean that specifies whether to preserve the snapshots of the fileset which belong to a failover cluster application. When this value is 'true,' the snapshots are preserved. The default value is 'true'.
+        """
+        preserveSnapshots: Boolean
+    ): ResponseSuccess!
+    "Delete failover cluster application."
+    deleteFailoverClusterApp(
+        "ID of the failover cluster app."
+        id: String!,
+        """
+
+        v5.2-v5.3: A Boolean that specifies whether to preserve the snapshots of the fileset which belong to a failover cluster application. When this value is 'true,' the snapshots are preserved. The default value is 'true.'
+        v6.0: A Boolean that specifies whether to preserve the snapshots of the fileset which belong to a failover cluster application. When this value is 'true,' the snapshots are preserved. The default value is 'true'.
+        """
+        preserveSnapshots: Boolean
+    ): ResponseSuccess!
+    "Delete failover cluster applications."
+    deleteFailoverClusterApps(
+        "UUID used to identify the cluster the request goes to"
+        clusterUuid: String!,
+        "The ID of each failover cluster application to delete."
+        ids: [String!]!,
+        """
+
+        v5.3: Specifies whether to preserve the snapshots of the fileset that belongs to a failover cluster application. When this value is 'true,' the snapshots are preserved. The default value is 'true.'
+        v6.0: Specifies whether to preserve the snapshots of the fileset that belongs to a failover cluster application. When this value is 'true,' the snapshots are preserved. The default value is 'true'.
+        """
+        preserveSnapshots: Boolean
+    ): ResponseSuccess!
+    deleteFailoverClusters(
+        "UUID used to identify the cluster the request goes to"
+        clusterUuid: String!,
+        "The ID of each failover cluster to delete."
+        ids: [String!]!,
+        """
+
+        v5.3: Specifies whether to preserve the snapshots of the fileset which belong to a failover cluster application. When this value is 'true,' the snapshots are preserved. The default value is 'true.'
+        v6.0: Specifies whether to preserve the snapshots of the fileset which belong to a failover cluster application. When this value is 'true,' the snapshots are preserved. The default value is 'true'.
+        """
+        preserveSnapshots: Boolean
+    ): ResponseSuccess!
     deleteFilesetSnapshots(
         "ID of the fileset."
         id: String!
@@ -12759,9 +13103,9 @@ type Mutation {
         "ID assigned to a host object."
         id: String!
     ): HostDetail!
-    "Refresh resources of a Kubernetes cluster"
+    "Refresh resources of a Kubernetes cluster."
     refreshK8sCluster(
-        "Request for refreshing resources in a K8s cluster"
+        "Request for refreshing resources in a K8s cluster."
         k8sClusterRefreshRequest: K8sClusterRefreshInput!
     ): CreateOnDemandJobReply!
     refreshO365Org(orgId: UUID!): CreateOnDemandJobReply!
@@ -12787,7 +13131,9 @@ type Mutation {
         shouldPowerOn: Boolean!,
         shouldRestoreTags: Boolean!,
         "UUID of the snapshot"
-        snapshotId: String!
+        snapshotId: String!,
+        "Type of snapshot to use for restore if the source snapshot is expired. If the souce snapshot exists, this value will be ignored"
+        snapshotTypeToUseIfSourceExpired: SnapshotTypeToUseIfSourceExpired
     ): RestoreEc2InstanceSnapshotReply!
     "Trigger azure native restore virtual machine job for given snapshot"
     restoreAzureNativeVirtualMachine(
@@ -12896,8 +13242,8 @@ type Mutation {
     ): Boolean!
     "Set federated login status."
     setFederatedLoginStatus(
-        "Enable or Disable federated login"
-        enabled: Boolean!
+        "Federated login status configuration."
+        federatedLoginStatusArg: FederatedLoginStatusInput!
     ): Boolean!
     setIdentityProvider(
         "Entity id of your IdP"
@@ -12940,6 +13286,11 @@ type Mutation {
         userSetting: UserSettingInputType
     ): UserSetting!
     setupAzureO365Exocompute(exocomputeConfig: AzureO365ExocomputeConfig!, subscriptionId: UUID!, tenantId: String!): SetupAzureO365ExocomputeResp!
+    "Snapshot Kubernetes Namespace."
+    snapshotK8sNamespace(
+        "Request for snapshot of K8s Namespace."
+        k8sNamespaceSnapshotRequest: K8sNamespaceSnapshot!
+    ): CreateOnDemandJobReply!
     startBlueprintFailover(failoverJobConfig: BlueprintFailoverJobConfig!): CreateOnDemandJobReply!
     "Start a crawl"
     startCrawl(analyzerGroups: [AnalyzerGroupInput!]!, extWhiteList: [String!], name: String!, resources: [ResourceInput!]!): StartCrawlReply!
@@ -13106,6 +13457,21 @@ type Mutation {
     updateCustomAnalyzer(analyzer: AnalyzerInput!): Analyzer!
     "Update Eula Acceptance details"
     updateEulaAccepted: Boolean!
+    updateFailoverCluster(
+        "UUID used to identify the cluster the request goes to"
+        clusterUuid: String!,
+        "ID of failover cluster."
+        id: String!,
+        "Properties to update."
+        updateProperties: FailoverClusterConfigInput!
+    ): FailoverClusterDetail!
+    "Update the failover cluster app with specified properties."
+    updateFailoverClusterApp(
+        "ID of failover cluster app."
+        id: String!,
+        "Properties to update."
+        updateProperties: FailoverClusterAppConfigInput!
+    ): FailoverClusterAppSummary!
     updateHostCertificate(
         "ID of the host."
         id: String!
@@ -14722,7 +15088,7 @@ type ObjectType {
     enumValue: ObjectTypeEnum!
 }
 
-"Create Kubernetes Cluster Response"
+"Create Kubernetes Cluster Response."
 type OnboardingSetupReply {
     clusterId: String!
     yamlUrl: String!
@@ -15287,6 +15653,7 @@ type PolarisManagedAwsTarget implements Target {
     "Whether this Target is archived"
     isArchived: Boolean!
     isConsolidationEnabled: Boolean!
+    kmsMasterKeyId: String!
     "The name of this Target"
     name: String!
     proxySettings: ProxySettings
@@ -15360,11 +15727,14 @@ type PolarisSnapshot implements GenericSnapshot {
     date: DateTime!
     expirationDate: DateTime
     expiryHint: Boolean!
+    "Whether or not the snapshot has an unexpired archived copy"
+    hasUnexpiredArchivedCopy: Boolean!
     "Whether or not the snapshot has an unexpired replica"
     hasUnexpiredReplica: Boolean!
     id: UUID!
     indexTime: DateTime
     indexingAttempts: Long!
+    isArchived: Boolean!
     isCorrupted: Boolean!
     isDeletedFromSource: Boolean!
     isDownloadedSnapshot: Boolean
@@ -15380,6 +15750,7 @@ type PolarisSnapshot implements GenericSnapshot {
     sequenceNumber: Int!
     slaDomain: SlaDomain
     snappableId: String!
+    unexpiredArchivedSnapshotCount: Int!
     unexpiredReplicaCount: Int!
 }
 
@@ -15698,8 +16069,8 @@ type Query {
     activitySeries(
         "The id of the activity series"
         activitySeriesId: UUID!,
-        "The id of the cluster"
-        clusterUuid: UUID!
+        "The uuid of the cluster"
+        clusterUuid: UUID
     ): ActivitySeries!
     activitySeriesConnection(
         "Returns the elements in the list that come after the specified cursor."
@@ -15976,6 +16347,11 @@ type Query {
         "Subscription ID"
         subscriptionId: UUID!
     ): [AzureNativeAvailabilitySet!]!
+    "Get details of an Azure Resource Group"
+    azureNativeCommonResourceGroup(
+        "VM Resource group ID or Disk resource group ID"
+        resourceGroupId: UUID!
+    ): AzureNativeCommonResourceGroupWithSla!
     "Lists Azure resource groups"
     azureNativeCommonResourceGroupList(
         "Filters for listing Azure resource groups"
@@ -17244,7 +17620,7 @@ type Query {
         filter: [Filter!],
         "Returns the first n elements from the list."
         first: Int,
-        "Kubernetes cluster UUID"
+        "Kubernetes cluster UUID."
         k8sClusterId: UUID,
         sortBy: HierarchySortByField,
         sortOrder: HierarchySortOrder
@@ -17665,6 +18041,11 @@ type Query {
         "cluster sort order"
         sortOrder: SortOrderEnum = Desc
     ): ClusterConnection!
+    "Get the total number of times that Radar has scanned an object"
+    radarSnappableScannedCount(
+        "snappable Id of an object"
+        snappableIdNotFid: String!
+    ): RadarSnappableScannedCountReply!
     ransomwareResult(
         "The id of the cluster"
         clusterUuid: UUID!,
@@ -18440,14 +18821,14 @@ type Query {
         after: String,
         "Returns the elements in the list that come before the specified cursor."
         before: String,
-        day: String!,
         filter: ListObjectFilesFiltersInput,
         "Returns the first n elements from the list."
         first: Int,
         "Returns the last n elements from the list."
         last: Int,
         sort: FileResultSortInput,
-        timezone: String!,
+        "Time range specified in the user's local timezone."
+        timeRange: UserTimeRangeInput,
         userId: String!
     ): FileResultConnection!
     userActivityTimeline(startDay: String!, timezone: String!, uniqueActivities: Boolean!, userId: String!): ActivityTimelineResultConnection!
@@ -18775,6 +19156,11 @@ type RPOLagInfo {
 "Summary of the radar analysis results"
 type RadarAnalysisSummaryReply {
     analysisDetails: [DailyAnalysisDetails!]!
+}
+
+"Number of times Radar has scanned an object"
+type RadarSnappableScannedCountReply {
+    snappableScannedCounts: [SnappableScanned!]!
 }
 
 "Ransomware analysis report from lambda service"
@@ -20344,6 +20730,13 @@ type SnappableInstanceTypeEdge {
     node: SnappableInstanceType!
 }
 
+"Count, snappable_id, snappable_type of how many times Radar has scanned an object"
+type SnappableScanned {
+    count: Long!
+    snappableId: String!
+    snappableType: String!
+}
+
 type SnappableSecurityGroup {
     description: String!
     id: String!
@@ -21291,6 +21684,7 @@ type User {
     lastLogin: DateTime
     roles: [Role!]!
     status: UserStatusEnum!
+    unreadCount: Int!
     username: String!
 }
 
@@ -24294,6 +24688,7 @@ enum ActivityTypeEnum {
     LegalHold
     Maintenance
     NutanixCluster
+    RadarAnalysis
     Recovery
     Replication
     ResourceOperations
@@ -24507,6 +24902,7 @@ enum AssignSLAWarningsEnum {
     AZURE_FULL_SNAPSHOTS
     AZURE_NATIONAL_PUBLIC_REPLICATION_NOT_SUPPORTED
     BACKUP_WINDOWS_NOT_RESPECTED
+    CROSS_REGION_ARCHIVAL
     INCREMENTAL_BACKUP_FREQUENCY_NOT_RESPECTED
     NO_WARNING
     REMOTE_CONFIGURATION_NOT_RESPECTED
@@ -25183,6 +25579,8 @@ enum AzureNativeCommonResourceGroupSortFieldsEnum {
 
 enum AzureNativeDiskSortFieldsEnum {
     ASSIGNED_SLA_DOMAIN
+    AZURE_DISK_CRG_NAME
+    AZURE_DISK_CRG_SUBSCRIPTION_NAME
     AZURE_DISK_RG_NAME
     AZURE_DISK_SIZE
     AZURE_DISK_SUBSCRIPTION_NAME
@@ -25318,6 +25716,8 @@ enum AzureNativeVirtualMachineSortFieldsEnum {
     ASSIGNED_SLA_DOMAIN
     AZURE_REGION
     AZURE_SUBNET_NAME
+    AZURE_VM_CRG_NAME
+    AZURE_VM_CRG_SUBSCRIPTION_NAME
     AZURE_VM_RG_NAME
     AZURE_VM_SIZE
     AZURE_VM_SUBSCRIPTION_NAME
@@ -25894,6 +26294,7 @@ enum DiskEncryptionType {
 enum DownloadIdentifierEnum {
     REPORT
     SEND_NOW_EMAIL
+    SONAR_DOWNLOAD
 }
 
 enum DownloadStatusEnum {
@@ -25918,6 +26319,50 @@ enum ExistingSnapshotRetentionEnum {
     NOT_APPLICABLE
     "Preserve retention from previous SLA"
     RETAIN_SNAPSHOTS
+}
+
+enum FailoverClusterAppConnectionStatusEnum {
+    FAILOVER_CLUSTER_APP_CONNECTION_STATUS_CONNECTED
+    FAILOVER_CLUSTER_APP_CONNECTION_STATUS_DISCONNECTED
+    FAILOVER_CLUSTER_APP_CONNECTION_STATUS_EMPTY_VALUE
+    FAILOVER_CLUSTER_APP_CONNECTION_STATUS_REPLICATION_TARGET
+}
+
+enum FailoverClusterConnectionStatusEnum {
+    FAILOVER_CLUSTER_CONNECTION_STATUS_CONNECTED
+    FAILOVER_CLUSTER_CONNECTION_STATUS_DISCONNECTED
+    FAILOVER_CLUSTER_CONNECTION_STATUS_EMPTY_VALUE
+    FAILOVER_CLUSTER_CONNECTION_STATUS_PARTIALLY_CONNECTED
+    FAILOVER_CLUSTER_CONNECTION_STATUS_REPLICATION_TARGET
+}
+
+enum FailoverClusterNodeConnectionStatusEnum {
+    FAILOVER_CLUSTER_NODE_CONNECTION_STATUS_CONNECTED
+    FAILOVER_CLUSTER_NODE_CONNECTION_STATUS_CONNECTING
+    FAILOVER_CLUSTER_NODE_CONNECTION_STATUS_CONNECTOR_NOT_DEPLOYED
+    FAILOVER_CLUSTER_NODE_CONNECTION_STATUS_DELETED
+    FAILOVER_CLUSTER_NODE_CONNECTION_STATUS_DELETING
+    FAILOVER_CLUSTER_NODE_CONNECTION_STATUS_DISCONNECTED
+    FAILOVER_CLUSTER_NODE_CONNECTION_STATUS_EMPTY_VALUE
+    FAILOVER_CLUSTER_NODE_CONNECTION_STATUS_PARTIALLY_CONNECTED
+    FAILOVER_CLUSTER_NODE_CONNECTION_STATUS_REPLICATION_TARGET
+}
+
+enum FailoverClusterOsTypeEnum {
+    FAILOVER_CLUSTER_OS_TYPE_AIX
+    FAILOVER_CLUSTER_OS_TYPE_ANY
+    FAILOVER_CLUSTER_OS_TYPE_EMPTY_VALUE
+    FAILOVER_CLUSTER_OS_TYPE_HPUX
+    FAILOVER_CLUSTER_OS_TYPE_LINUX
+    FAILOVER_CLUSTER_OS_TYPE_SUN_OS
+    FAILOVER_CLUSTER_OS_TYPE_UNIX_LIKE
+    FAILOVER_CLUSTER_OS_TYPE_WINDOWS
+}
+
+enum FailoverClusterTypeEnum {
+    FAILOVER_CLUSTER_TYPE_EMPTY_VALUE
+    FAILOVER_CLUSTER_TYPE_UNIX_LIKE
+    FAILOVER_CLUSTER_TYPE_WINDOWS
 }
 
 enum FailoverGroupByEnum {
@@ -25984,6 +26429,7 @@ enum FeatureFlagNameEnum {
     AWSEc2CrashConsistentSnapshotEnabled
     AWSFileIndexingEnabled
     AWSFilterByTagsEnabled
+    AWSOnDemandIndexingEnabled
     AWSReplaceVolumeOptionEnabled
     AWSSnapshotIntegrityEnabled
     AddonsUIEnabled
@@ -26012,6 +26458,7 @@ enum FeatureFlagNameEnum {
     AzureSnapshotIntegrityEnabled
     BackupFailureRemediationEnabled
     CapacityReportNativeSnappableEnabled
+    CardPinningEnabled
     CdmUpgradesEnabled
     CertMgmtEnabled
     CloudAccountForAppFlowsEnabled
@@ -26034,6 +26481,7 @@ enum FeatureFlagNameEnum {
     DataClassificationEnabled
     DatagovNasAuditEnabled
     DatagovUAEnabled
+    DetailedInventoryCardEnabled
     EnforceMoatOnAPIsEnabled
     ExpandedGlobalSearchEnabled
     FederatedLoginEnabled
@@ -26088,9 +26536,11 @@ enum FeatureFlagNameEnum {
     RadarBetaEnabled
     RadarDemoEnabled
     RadarDevEnabled
+    RadarSIEMEnabled
     RecoverySearchEnabled
     ReportAsyncDownloadEnabled
     ReportForecasterEnabled
+    ReportForwardUIEnabled
     ReportLastSyncedDateEnabled
     ReportPDFEnabled
     RkTableEnabled
@@ -26170,8 +26620,10 @@ enum FileResultSortByEnum {
     HITS
     LAST_ACCESS_TIME
     NAME
+    NATIVE_PATH
     NUM_ACTIVITIES
     NUM_ACTIVITIES_DELTA
+    OBJECT_LOCATION
     OBJECT_NAME
     OPEN_ACCESS_TYPE
     SNAPSHOT_TIME
@@ -26358,6 +26810,8 @@ enum HierarchyFilterField {
     AWS_TAG
     AWS_VPC_ID
     AZURE_DISK_ATTACHED_VM
+    AZURE_DISK_CRG_NAME
+    AZURE_DISK_CRG_SUBSCRIPTION_ID
     AZURE_DISK_RG_NAME
     AZURE_DISK_RG_SUBSCRIPTION_ID
     AZURE_DISK_SIZE
@@ -26366,6 +26820,8 @@ enum HierarchyFilterField {
     AZURE_REGION
     AZURE_RG_SUBSCRIPTION_ID
     AZURE_TAG
+    AZURE_VM_CRG_NAME
+    AZURE_VM_CRG_SUBSCRIPTION_ID
     AZURE_VM_RG_NAME
     AZURE_VM_RG_SUBSCRIPTION_ID
     AZURE_VM_SIZE
@@ -26408,6 +26864,10 @@ enum HierarchyFilterField {
     IS_PROTECTED
     IS_RELIC
     IS_REPLICATED
+    KUPR_CDM_CLUSTER_ID
+    KUPR_CLUSTER_STATUS
+    KUPR_NAMESPACE_CDM_CLUSTER_ID
+    KUPR_NAMESPACE_CLUSTER_STATUS
     LOCATION
     NAME
     NAME_EXACT_MATCH
@@ -26516,6 +26976,8 @@ enum HierarchySortByField {
     AWS_REGION
     AWS_VPC_ID
     AZURE_DISK_ATTACHED_VM
+    AZURE_DISK_CRG_NAME
+    AZURE_DISK_CRG_SUBSCRIPTION_NAME
     AZURE_DISK_RG_DISKCOUNT
     AZURE_DISK_RG_NAME
     AZURE_DISK_RG_SUBSCRIPTION_NAME
@@ -26530,6 +26992,8 @@ enum HierarchySortByField {
     AZURE_SUBSCRIPTION_DISKCOUNT
     AZURE_SUBSCRIPTION_VMCOUNT
     AZURE_TENANT_ID
+    AZURE_VM_CRG_NAME
+    AZURE_VM_CRG_SUBSCRIPTION_NAME
     AZURE_VM_RG_NAME
     AZURE_VM_RG_SUBSCRIPTION_NAME
     AZURE_VM_RG_VMCOUNT
@@ -27088,6 +27552,7 @@ enum PastDurationEnum {
     PAST_12_MONTHS
     PAST_24_HOURS
     PAST_30_DAYS
+    PAST_3_DAYS
     PAST_7_DAYS
 }
 
@@ -27143,8 +27608,8 @@ enum PendingActionSyncTypeEnum {
 }
 
 enum PlanNameEnum {
-    FAILOVER
-    TEST_FAILOVER
+    PROD
+    TEST
 }
 
 enum PolarisObjectAuthorizedOperationsEnum {
@@ -27432,6 +27897,13 @@ enum SMTPSecurityTypeEnum {
     TLS
 }
 
+enum SapHanaDataPathTypeEnum {
+    SAP_HANA_DATA_PATH_TYPE_EMPTY_VALUE
+    SAP_HANA_DATA_PATH_TYPE_GCP
+    SAP_HANA_DATA_PATH_TYPE_LOCAL
+    SAP_HANA_DATA_PATH_TYPE_MANAGED_VOLUME
+}
+
 enum SapHanaHostHostTypeEnum {
     SAP_HANA_HOST_HOST_TYPE_EMPTY_VALUE
     SAP_HANA_HOST_HOST_TYPE_MASTER
@@ -27512,6 +27984,13 @@ enum SlaAssignTypeEnum {
     doNotProtect
     noAssignment
     protectWithSlaId
+}
+
+enum SlaAssignmentEnum {
+    SLA_ASSIGNMENT_DERIVED
+    SLA_ASSIGNMENT_DIRECT
+    SLA_ASSIGNMENT_EMPTY_VALUE
+    SLA_ASSIGNMENT_UNASSIGNED
 }
 
 enum SlaAssignmentTypeEnum {
@@ -27675,6 +28154,11 @@ enum SnapshotTypeEnum {
     DOWNLOADED
     ON_DEMAND
     SCHEDULED
+}
+
+enum SnapshotTypeToUseIfSourceExpired {
+    ARCHIVED
+    REPLICATED
 }
 
 enum SonarContentReportGroupByEnum {
@@ -28065,6 +28549,7 @@ enum UserAuditObjectTypeEnum {
     GcpNativeGceInstance
     GcpNativeProject
     Host
+    HostFailoverCluster
     HypervScvmm
     HypervServer
     HypervVm
@@ -28813,11 +29298,13 @@ input AzureNativeDiskFilters {
 
 "Filter to return Azure disks which have resource group name in the given list of resource group names."
 input AzureNativeDiskResourceGroupFilter {
+    isCommonResourceGroupEnabled: Boolean = false
     resourceGroupNames: [String!]!
 }
 
 "Filter to return Azure disks which have rubrik subscription ID in the given list of rubrik subscription IDs."
 input AzureNativeDiskSubscriptionFilter {
+    isCommonResourceGroupEnabled: Boolean = false
     subscriptionIds: [String!]!
 }
 
@@ -28857,6 +29344,7 @@ input AzureNativeTagFilter {
 
 "Filter to return Azure virtual machines which have resource group name in the given list of resource group names."
 input AzureNativeVMResourceGroupFilter {
+    isCommonResourceGroupEnabled: Boolean = false
     resourceGroupNames: [String!]!
 }
 
@@ -28867,6 +29355,7 @@ input AzureNativeVMSizeFilter {
 
 "Filter to return Azure virtual machines which have rubrik subscription ID in the given list of rubrik subscription IDs."
 input AzureNativeVMSubscriptionFilter {
+    isCommonResourceGroupEnabled: Boolean = false
     subscriptionIds: [String!]!
 }
 
@@ -29228,6 +29717,15 @@ input CreateCloudNativeAwsStorageSettingInput {
     storageClass: AwsStorageClassTypeEnum!
 }
 
+input CreateUserWithPasswordInput {
+    "Email for new user."
+    email: String = ""
+    "Password for new user."
+    password: String = ""
+    "Role IDs to add to new user."
+    roleIds: [String!] = []
+}
+
 input CustomReportCreate {
     "Chart configs for the report."
     charts: [ReportChartCreate!]
@@ -29356,7 +29854,7 @@ input EmailAddressFilter {
 input EventDigestConfig {
     activitySeverity: [ActivitySeverityEnum!]
     activityStatus: [ActivityStatusEnum!]
-    "Activity type to filter for emails. Valid types are Storage, Classification, LegalHold, HypervScvmm, Hdfs, VolumeGroup, Instantiate, HypervServer, Configuration, Upgrade, CloudNativeVm, StorageArray, Connection, Conversion, AuthDomain, UnknownEventType, CloudNativeVirtualMachine, Discovery, Replication, Maintenance, Support, Fileset, System, Failover, StormResource, Diagnostic, Vcd, Anomaly, Archive, CloudNativeSource, HostEvent, AwsEvent, ResourceOperations, Backup, Sync, Hardware, TestFailover, Recovery, Download, EmbeddedEvent, NutanixCluster, VCenter, Index, and OTHER_FILTER_ITEM"
+    "Activity type to filter for emails. Valid types are Storage, Classification, LegalHold, HypervScvmm, Hdfs, RadarAnalysis, VolumeGroup, Instantiate, HypervServer, Configuration, Upgrade, CloudNativeVm, StorageArray, Connection, Conversion, AuthDomain, UnknownEventType, CloudNativeVirtualMachine, Discovery, Replication, Maintenance, Support, Fileset, System, Failover, StormResource, Diagnostic, Vcd, Anomaly, Archive, CloudNativeSource, HostEvent, AwsEvent, ResourceOperations, Backup, Sync, Hardware, TestFailover, Recovery, Download, EmbeddedEvent, NutanixCluster, VCenter, Index, and OTHER_FILTER_ITEM"
     activityType: [String!]
     clusters: [String!]
     objectType: [ActivityObjectTypeEnum!]
@@ -29445,6 +29943,114 @@ input ExportSnapshotJobConfigV2Input {
     unregisterVm: Boolean
 }
 
+"""
+
+Supported in v5.2+
+"""
+input FailoverClusterAppConfigInput {
+    """
+
+    Supported in v5.2+
+    ID of the SLA Domain that is assigned to the specified failover cluster app. Existing snapshots of the object will be retained with the configuration of specified SLA Domain.
+    """
+    configuredSlaDomainId: String
+    """
+
+    Supported in v5.2+
+    The source used by the failover cluster app to perform fileset backups. Either a virtual IP address or a node order must be specified in order for the failover cluster app to perform app backup.
+    """
+    failoverClusterAppSource: FailoverClusterAppSourceInput
+    """
+
+    Supported in v5.2+
+    Cluster ID of the failover cluster app.
+    """
+    failoverClusterId: String = ""
+    """
+
+    Supported in v5.2+
+    Cluster type of the failover cluster app.
+    """
+    failoverClusterType: FailoverClusterTypeEnum = FAILOVER_CLUSTER_TYPE_EMPTY_VALUE
+    """
+
+    Required. Supported in v5.2+
+    Name of the failover cluster app.
+    """
+    name: String = ""
+}
+
+"""
+
+Supported in v5.2+
+"""
+input FailoverClusterAppSourceInput {
+    """
+
+    Supported in v5.2+
+    Specifies an order for the failover cluster nodes. Failover cluster app backups use the failover cluster nodes in the specified order.
+    """
+    nodeOrders: [FailoverClusterNodeOrderInput!] = []
+    "Virtual IP addresses of the failover cluster."
+    vips: [String!] = []
+    """
+
+    Supported in v5.3+
+    Virtual IP addresses of the failover cluster.
+    """
+    virtualIps: [String!] = []
+}
+
+"""
+
+Supported in v5.2+
+"""
+input FailoverClusterConfigInput {
+    """
+
+    Supported in v5.2+
+    ID of the SLA Domain that is assigned to the specified failover cluster. Existing snapshots of the object will be retained with the configuration of specified SLA Domain.
+    """
+    configuredSlaDomainId: String
+    """
+
+    Supported in v5.2+
+    Managed ID's of Hosts of the failover cluster.
+    """
+    hostIds: [String!] = []
+    """
+
+    Required. Supported in v5.2+
+    Name of the failover cluster.
+    """
+    name: String = ""
+}
+
+"""
+
+Supported in v5.2+
+"""
+input FailoverClusterNodeOrderInput {
+    """
+
+    Supported in v5.2+
+    ID of the failover cluster node.
+    """
+    nodeId: String = ""
+    """
+
+    Supported in v5.3+
+    The name of the failover cluster node.
+    """
+    nodeName: String
+    """
+
+    Required. Supported in v5.2+
+    An integer that specifies the place occupied by this node in the failover cluster app backup order.
+    """
+    order: Int = 0
+}
+
 "Filter appflows failover jobs"
 input FailoverFilterInput {
     failoverStatus: [FailoverStatusEnum!]
@@ -29461,6 +30067,13 @@ input FeatureFlagContextField {
     key: String!
     "The value of this field. Can be any GraphQL scalar."
     value: AnyScalar!
+}
+
+input FederatedLoginStatusInput {
+    "Enable or Disable federated login."
+    enabled: Boolean!
+    "Enable or Disable federated login inventory card."
+    inventoryCardEnabled: Boolean!
 }
 
 "Struct representing the Onedrive file to be restored"
@@ -30293,6 +30906,10 @@ input K8sClusterRefreshInput {
     kuprClusterID: UUID!
 }
 
+input K8sNamespaceSnapshot {
+    namespaceId: UUID!
+}
+
 "Label filter parameters for GCP objects."
 input LabelFilterParams {
     filterType: GcpNativeLabelFilterTypeEnum!
@@ -31093,6 +31710,8 @@ input SapHanaRecoverableRangeFilterInput {
 Supported in v5.3+
 """
 input SapHanaSystemConfigInput {
+    "Data path details of the SAP HANA system."
+    dataPathSpec: SapHanaSystemDataPathSpecInput
     """
 
     Supported in v5.3+
@@ -31123,6 +31742,11 @@ input SapHanaSystemConfigInput {
     The username of the SAP HANA system.
     """
     username: String = ""
+}
+
+input SapHanaSystemDataPathSpecInput {
+    "Data path of the SAP HANA BACKINT interface."
+    dataPathType: SapHanaDataPathTypeEnum = SAP_HANA_DATA_PATH_TYPE_EMPTY_VALUE
 }
 
 """
