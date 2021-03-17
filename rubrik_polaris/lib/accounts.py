@@ -32,8 +32,8 @@ def add_account_aws(self, regions=[], all=False, profiles=[], aws_access_key_id=
         regions (list): List of AWS regions to include in Polaris for imported accounts
         profiles (list): Optional list of local profile names to add to Polaris
         all (bool): Optional set true to import all locally configured profiles to Polaris
-        aws_access_key_id (str): AWS Access key to import to Polaris
-        aws_secret_access_key (str): AWS secret of key to import to polaris
+        aws_access_key_id (str): AWS Access key of account to import to Polaris
+        aws_secret_access_key (str): AWS secret of key of account to import to polaris
 
     Returns:
         dict: Status if unsuccessful
@@ -355,8 +355,8 @@ def delete_account_aws(self, profiles=[], all=False, aws_access_key_id=None, aws
     """Remove AWS account from Polaris
 
     Args:
-        profiles (list): Optional list of local profile names to add to Polaris
-        all (bool): Optional set true to import all locally configured profiles to Polaris
+        profiles (list): Optional list of local profile names to remove from Polaris
+        all (bool): Optional set true to remove all locally configured profiles from Polaris
         aws_access_key_id (str): AWS Access key to import to Polaris
         aws_secret_access_key (str): AWS secret of key to import to polaris
 
@@ -535,7 +535,7 @@ def delete_project_gcp(self, gcp_native_project_id=None, delete_snapshots=False)
     """Remove GCP project from Polaris
 
     Args:
-        gcp_native_project_id (str): Project_Id of GCP Project to add
+        gcp_native_project_id (str): Project_Id of GCP Project to remove
         delete_snapshots (bool): Should snapshots be removed from Polaris
 
     Returns:
