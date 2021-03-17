@@ -26,17 +26,26 @@ Collection of functions that manipulate account components.
 
 
 def add_account_aws(self, regions=[], all=False, profiles=[], aws_access_key_id=None, aws_secret_access_key=None):
-    """Adds AWS account to Polaris
+    """Add AWS account to Polaris
 
-    Arguments:
-        regions {list} -- List of AWS regions to configure
-        all {bool} -- If true import all available profiles (Default: False)
-        profiles {list} -- List of explicit profiles to add
-        aws_access_key_id {str} -- AWS Access Key ID
-        aws_secret_access_key {str} -- AWS Access Key Secret
+    Args:
+        regions (list): List of AWS regions to include in Polaris for imported accounts
+        profiles (list): Optional list of local profile names to add to Polaris
+        all (bool): Optional set true to import all locally configured profiles to Polaris
+        aws_access_key_id (str): AWS Access key to import to Polaris
+        aws_secret_access_key (str): AWS secret of key to import to polaris
 
     Returns:
-        bool -- `True` if the account was added successfully, otherwise `False`.
+        dict: Status if unsuccessful
+
+    Raises:
+        RequestException: If the query to Polaris returned an error
+
+    Examples:
+        >>> rubrik.add_account_aws(regions = ["us-east-1"], profiles = ["milanese"])
+        >>> rubrik.add_account_aws(regions = ["us-east-1"], aws_access_key_id='blah', aws_secret_access_key='blah')
+        >>> rubrik.add_account_aws(regions = ["us-west-2"], all = True )
+
     """
     if aws_access_key_id and aws_secret_access_key:
         self._add_account_aws(regions=regions, aws_id=aws_access_key_id, aws_secret=aws_secret_access_key)
@@ -136,11 +145,14 @@ def _invoke_aws_stack(self, nodes, account_id, regions=[], profile='', aws_id=No
 def get_accounts_aws(self, filter=""):
     """Retrieves AWS account information from Polaris
 
-    Arguments:
-        filter {str} -- Search string to filter results
+    Args:
+        filter (str): Search string to filter results
 
     Returns:
-        list -- List of AWS accounts in Polaris
+        dict: Details of AWS accounts in Polaris
+
+    Raises:
+        RequestException: If the query to Polaris returned an error
     """
     try:
         query_name = "accounts_aws"
@@ -153,13 +165,16 @@ def get_accounts_aws(self, filter=""):
 
 
 def get_accounts_gcp(self, filter=""):
-    """Retrieves GCP account information from Polaris
+    """Retrieves GCP project information from Polaris
 
-    Arguments:
-        filter {str} -- Search string to filter results
-    
+    Args:
+        filter (str): Search string to filter results
+
     Returns:
-        list -- List of GCP accounts in Polaris
+        dict: Details of GCP Projects in Polaris
+
+    Raises:
+        RequestException: If the query to Polaris returned an error
     """
     try:
         query_name = "accounts_gcp"
@@ -174,11 +189,14 @@ def get_accounts_gcp(self, filter=""):
 def get_accounts_azure(self, filter=""):
     """Retrieves Azure account information from Polaris
 
-    Arguments:
-        filter {str} -- Search string to filter results
+    Args:
+        filter (str): Search string to filter results
 
     Returns:
-        list -- List of Azure accounts in Polaris
+        dict: Details of Azure accounts in Polaris
+
+    Raises:
+        RequestException: If the query to Polaris returned an error
     """
     try:
         query_name = "accounts_azure"
@@ -193,11 +211,14 @@ def get_accounts_azure(self, filter=""):
 def get_accounts_aws_detail(self, filter):
     """Retrieves deployment details for AWS from Polaris
 
-    Arguments:
-        filter {str} -- Search AWS native account ID to filter results
+    Args:
+        filter (str): Search string to filter results
 
     Returns:
-        list -- List of AWS account details
+        dict: Details of Azure accounts in Polaris
+
+    Raises:
+        RequestException: If the query to Polaris returned an error
     """
     try:
         query_name = "accounts_aws_detail"
@@ -210,10 +231,18 @@ def get_accounts_aws_detail(self, filter):
 
 
 def get_account_aws_native_id(self, profile='', aws_id=None, aws_secret=None):
-    """Returns AWS Account ID from local config
+    """Retrieves AWS Account ID from local config
     
+    Args:
+        profile (str): Profile name of local configuration
+        aws_access_key_id (str): AWS Access key to import to Polaris
+        aws_secret_access_key (str): AWS secret of key to import to polaris
+
     Returns:
-        str -- AWS Account ID, AWS Account Name (if applicable)
+        list: AWS account name and ID of requested account
+
+    Raises:
+        RequestException: If the query to Polaris returned an error
     """
     import boto3 as boto3
     from botocore.exceptions import ClientError
@@ -323,13 +352,24 @@ def _destroy_aws_stack(self, stack_region, stack_name, profile='', aws_id=None, 
 
 
 def delete_account_aws(self, profiles=[], all=False, aws_access_key_id=None, aws_secret_access_key=None):
-    """Commits  Delete AWS Account in Polaris, relies on local .aws
-    
-    Arguments:
-        all {bool} -- If true import all available profiles (Default: False)
-        profiles {list} -- List of explicit profiles to add
-        aws_access_key_id {str} -- AWS Access Key ID
-        aws_secret_access_key {str} -- AWS Access Key Secret
+    """Remove AWS account from Polaris
+
+    Args:
+        profiles (list): Optional list of local profile names to add to Polaris
+        all (bool): Optional set true to import all locally configured profiles to Polaris
+        aws_access_key_id (str): AWS Access key to import to Polaris
+        aws_secret_access_key (str): AWS secret of key to import to polaris
+
+    Returns:
+        dict: Status if unsuccessful
+
+    Raises:
+        RequestException: If the query to Polaris returned an error
+
+    Examples:
+        >>> rubrik.delete_account_aws(profiles = ['milanese_profile'])
+        >>> rubrik.delete_account_aws(aws_access_key_id='blah', aws_secret_access_key='blah')
+        >>> rubrik.delete_account_aws(all = True )
     """
     if aws_access_key_id and aws_secret_access_key:
         self._delete_account_aws(aws_id=aws_access_key_id, aws_secret=aws_secret_access_key)
@@ -373,16 +413,7 @@ def _delete_account_aws(self, profile='', aws_id=None, aws_secret=None):
 
 
 def update_account_aws(self, regions=[], all=False, profiles=[], aws_access_key_id=None, aws_secret_access_key=None):
-    """Updates AWS account if configured in Polaris
-
-    Arguments:
-        all {bool} -- If true import all available profiles (Default: False)
-        profiles {list} -- List of explicit profiles to add
-        aws_access_key_id {str} -- AWS Access Key ID
-        aws_secret_access_key {str} -- AWS Access Key Secret
-
-    Returns:
-        bool -- `True` if the account was added successfully, otherwise `False`.
+    """Updates AWS account if configured in Polaris (Under Development)
     """
     if aws_access_key_id and aws_secret_access_key:
         self._update_account_aws(aws_id=aws_access_key_id, aws_secret=aws_secret_access_key)
@@ -390,6 +421,7 @@ def update_account_aws(self, regions=[], all=False, profiles=[], aws_access_key_
         for profile in self._get_aws_profiles():
             if profile in profiles or (all and profile != 'default'):
                 self._update_account_aws(profile=profile)
+
 
 def _update_account_aws_initiate(self, _feature, _polaris_account_id):
     try:
@@ -472,6 +504,21 @@ def _get_account_map_aws(self):
 
 
 def add_project_gcp(self, service_account_auth_key_file=None, gcp_native_project_id=None):
+    """Add GCP project to Polaris
+
+    Args:
+        service_account_auth_key_file (str): Filename of SA .json file
+        gcp_native_project_id (str): Project_Id of GCP Project to add
+
+    Returns:
+        dict: Status if unsuccessful
+
+    Raises:
+        RequestException: If the query to Polaris returned an error
+
+    Examples:
+        >>>  rubrik.add_project_gcp(service_account_auth_key_file="/home/peterm/.google.milanese.json", gcp_native_project_id="home-network-274622")
+    """
     project = self._get_gcp_native_project(service_account_auth_key_file=service_account_auth_key_file, project_id=gcp_native_project_id)
     project['service_account_auth_key'] = open(service_account_auth_key_file, 'r').read()
     try:
@@ -485,24 +532,37 @@ def add_project_gcp(self, service_account_auth_key_file=None, gcp_native_project
 
 
 def delete_project_gcp(self, gcp_native_project_id=None, delete_snapshots=False):
+    """Remove GCP project from Polaris
+
+    Args:
+        gcp_native_project_id (str): Project_Id of GCP Project to add
+        delete_snapshots (bool): Should snapshots be removed from Polaris
+
+    Returns:
+        dict: Status if unsuccessful
+
+    Raises:
+        RequestException: If the query to Polaris returned an error
+
+    Examples:
+        >>> rubrik.delete_project_gcp(gcp_native_project_id="home-network-274622")
+    """
     try:
         record = self._get_account_gcp_project(search_text=gcp_native_project_id)[0]
     except Exception:
         raise PolarisException("Project does not exist in Polaris : {}".format(gcp_native_project_id))
     if record['featureDetail']['status'] == "CONNECTED":
-        # get the disable ID and do that
         disable_id = self._get_account_gcp_project_uuid_by_string(str(record['project']['projectNumber']))[0]['id']
         disable_response = self._disable_account_gcp_project(project_uuid=disable_id)
         if not disable_response:
             raise PolarisException("Problem disabling protection on project: {}".format(gcp_native_project_id))
         task_results = self._monitor_task([disable_response])
         if "SUCC" in task_results['status']:
-            delete_result = self._delete_account_gcp_project(project_uuid=record['project']['id'])
+            self._delete_account_gcp_project(project_uuid=record['project']['id'])
         else:
             raise PolarisException("Failed to disable project {}".format(gcp_native_project_id))
     if "DISABLED" in record['featureDetail']['status']:
-        delete_result = self._delete_account_gcp_project(project_uuid=record['project']['id'])
-        self._pp.pprint(delete_result)
+        self._delete_account_gcp_project(project_uuid=record['project']['id'])
 
 
 def _disable_account_gcp_project(self, project_uuid=None, delete_snapshots=False):
