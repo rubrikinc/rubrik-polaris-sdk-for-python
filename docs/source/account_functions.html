@@ -144,54 +144,160 @@
 <dl class="py function">
 <dt id="rubrik_polaris.lib.accounts.add_account_aws">
 <code class="sig-prename descclassname"><span class="pre">rubrik_polaris.lib.accounts.</span></code><code class="sig-name descname"><span class="pre">add_account_aws</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">regions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">all</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">profiles</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aws_access_key_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aws_secret_access_key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.lib.accounts.add_account_aws" title="Permalink to this definition">¶</a></dt>
-<dd><p>Adds AWS account to Polaris</p>
+<dd><p>Add AWS account to Polaris</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>{list} -- List of AWS regions to configure</strong> (<em>regions</em>) – </p></li>
-<li><p><strong>{bool} -- If true import all available profiles</strong><strong> (</strong><strong>Default</strong> (<em>all</em>) – False)</p></li>
-<li><p><strong>{list} -- List of explicit profiles to add</strong> (<em>profiles</em>) – </p></li>
-<li><p><strong>{str} -- AWS Access Key ID</strong> (<em>aws_access_key_id</em>) – </p></li>
-<li><p><strong>{str} -- AWS Access Key Secret</strong> (<em>aws_secret_access_key</em>) – </p></li>
+<li><p><strong>regions</strong> (<em>list</em>) – List of AWS regions to include in Polaris for imported accounts</p></li>
+<li><p><strong>profiles</strong> (<em>list</em>) – Optional list of local profile names to add to Polaris</p></li>
+<li><p><strong>all</strong> (<em>bool</em>) – Optional set true to import all locally configured profiles to Polaris</p></li>
+<li><p><strong>aws_access_key_id</strong> (<em>str</em>) – AWS Access key of account to import to Polaris</p></li>
+<li><p><strong>aws_secret_access_key</strong> (<em>str</em>) – AWS secret of key of account to import to polaris</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>bool – <cite>True</cite> if the account was added successfully, otherwise <cite>False</cite>.</p>
+<dd class="field-even"><p>Status if unsuccessful</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>RequestException</strong> – If the query to Polaris returned an error</p>
 </dd>
 </dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">rubrik</span><span class="o">.</span><span class="n">add_account_aws</span><span class="p">(</span><span class="n">regions</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"us-east-1"</span><span class="p">],</span> <span class="n">profiles</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"milanese"</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rubrik</span><span class="o">.</span><span class="n">add_account_aws</span><span class="p">(</span><span class="n">regions</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"us-east-1"</span><span class="p">],</span> <span class="n">aws_access_key_id</span><span class="o">=</span><span class="s1">'blah'</span><span class="p">,</span> <span class="n">aws_secret_access_key</span><span class="o">=</span><span class="s1">'blah'</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rubrik</span><span class="o">.</span><span class="n">add_account_aws</span><span class="p">(</span><span class="n">regions</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"us-west-2"</span><span class="p">],</span> <span class="nb">all</span> <span class="o">=</span> <span class="kc">True</span> <span class="p">)</span>
+</pre></div>
+</div>
 </dd></dl>
 <dl class="py function">
 <dt id="rubrik_polaris.lib.accounts.add_project_gcp">
-<code class="sig-prename descclassname"><span class="pre">rubrik_polaris.lib.accounts.</span></code><code class="sig-name descname"><span class="pre">add_project_gcp</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service_account_auth_key_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gcp_native_project_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.lib.accounts.add_project_gcp" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-<dl class="py function">
-<dt id="rubrik_polaris.lib.accounts.delete_account_aws">
-<code class="sig-prename descclassname"><span class="pre">rubrik_polaris.lib.accounts.</span></code><code class="sig-name descname"><span class="pre">delete_account_aws</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">profiles</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">all</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aws_access_key_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aws_secret_access_key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.lib.accounts.delete_account_aws" title="Permalink to this definition">¶</a></dt>
-<dd><p>Commits  Delete AWS Account in Polaris, relies on local .aws</p>
+<code class="sig-prename descclassname"><span class="pre">rubrik_polaris.lib.accounts.</span></code><code class="sig-name descname"><span class="pre">add_project_gcp</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service_account_auth_key_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gcp_native_project_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gcp_native_project_number</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gcp_native_project_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.lib.accounts.add_project_gcp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add GCP project to Polaris</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>{bool} -- If true import all available profiles</strong><strong> (</strong><strong>Default</strong> (<em>all</em>) – False)</p></li>
-<li><p><strong>{list} -- List of explicit profiles to add</strong> (<em>profiles</em>) – </p></li>
-<li><p><strong>{str} -- AWS Access Key ID</strong> (<em>aws_access_key_id</em>) – </p></li>
-<li><p><strong>{str} -- AWS Access Key Secret</strong> (<em>aws_secret_access_key</em>) – </p></li>
+<li><p><strong>service_account_auth_key_file</strong> (<em>str</em>) – Filename of SA .json file</p></li>
+<li><p><strong>gcp_native_project_id</strong> (<em>str</em>) – Project_Id of GCP Project to add</p></li>
+<li><p><strong>gcp_native_project_number</strong> (<em>str</em>) – GCP Project number if ommiting SA</p></li>
+<li><p><strong>gcp_native_project_name</strong> (<em>str</em>) – GCP Project name if omitting SA</p></li>
 </ul>
 </dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Status if unsuccessful</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>RequestException</strong> – If the query to Polaris returned an error</p>
+</dd>
 </dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span> <span class="n">rubrik</span><span class="o">.</span><span class="n">add_project_gcp</span><span class="p">(</span><span class="n">service_account_auth_key_file</span><span class="o">=</span><span class="s2">"/home/peterm/.google.milanese.json"</span><span class="p">,</span> <span class="n">gcp_native_project_id</span><span class="o">=</span><span class="s2">"home-network-274622"</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+<dl class="py function">
+<dt id="rubrik_polaris.lib.accounts.delete_account_aws">
+<code class="sig-prename descclassname"><span class="pre">rubrik_polaris.lib.accounts.</span></code><code class="sig-name descname"><span class="pre">delete_account_aws</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">profiles</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">all</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aws_access_key_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aws_secret_access_key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.lib.accounts.delete_account_aws" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove AWS account from Polaris</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>profiles</strong> (<em>list</em>) – Optional list of local profile names to remove from Polaris</p></li>
+<li><p><strong>all</strong> (<em>bool</em>) – Optional set true to remove all locally configured profiles from Polaris</p></li>
+<li><p><strong>aws_access_key_id</strong> (<em>str</em>) – AWS Access key to import to Polaris</p></li>
+<li><p><strong>aws_secret_access_key</strong> (<em>str</em>) – AWS secret of key to import to polaris</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Status if unsuccessful</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>RequestException</strong> – If the query to Polaris returned an error</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">rubrik</span><span class="o">.</span><span class="n">delete_account_aws</span><span class="p">(</span><span class="n">profiles</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'milanese_profile'</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rubrik</span><span class="o">.</span><span class="n">delete_account_aws</span><span class="p">(</span><span class="n">aws_access_key_id</span><span class="o">=</span><span class="s1">'blah'</span><span class="p">,</span> <span class="n">aws_secret_access_key</span><span class="o">=</span><span class="s1">'blah'</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rubrik</span><span class="o">.</span><span class="n">delete_account_aws</span><span class="p">(</span><span class="nb">all</span> <span class="o">=</span> <span class="kc">True</span> <span class="p">)</span>
+</pre></div>
+</div>
 </dd></dl>
 <dl class="py function">
 <dt id="rubrik_polaris.lib.accounts.delete_project_gcp">
 <code class="sig-prename descclassname"><span class="pre">rubrik_polaris.lib.accounts.</span></code><code class="sig-name descname"><span class="pre">delete_project_gcp</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gcp_native_project_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delete_snapshots</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.lib.accounts.delete_project_gcp" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Remove GCP project from Polaris</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>gcp_native_project_id</strong> (<em>str</em>) – Project_Id of GCP Project to remove</p></li>
+<li><p><strong>delete_snapshots</strong> (<em>bool</em>) – Should snapshots be removed from Polaris</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Status if unsuccessful</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>RequestException</strong> – If the query to Polaris returned an error</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">rubrik</span><span class="o">.</span><span class="n">delete_project_gcp</span><span class="p">(</span><span class="n">gcp_native_project_id</span><span class="o">=</span><span class="s2">"home-network-274622"</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
 <dl class="py function">
 <dt id="rubrik_polaris.lib.accounts.get_account_aws_native_id">
 <code class="sig-prename descclassname"><span class="pre">rubrik_polaris.lib.accounts.</span></code><code class="sig-name descname"><span class="pre">get_account_aws_native_id</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">profile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aws_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aws_secret</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.lib.accounts.get_account_aws_native_id" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns AWS Account ID from local config</p>
+<dd><p>Retrieves AWS Account ID from local config</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>str – AWS Account ID, AWS Account Name (if applicable)</p>
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>profile</strong> (<em>str</em>) – Profile name of local configuration</p></li>
+<li><p><strong>aws_access_key_id</strong> (<em>str</em>) – AWS Access key to import to Polaris</p></li>
+<li><p><strong>aws_secret_access_key</strong> (<em>str</em>) – AWS secret of key to import to polaris</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>AWS account name and ID of requested account</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>RequestException</strong> – If the query to Polaris returned an error</p>
 </dd>
 </dl>
+</dd></dl>
+<dl class="py function">
+<dt id="rubrik_polaris.lib.accounts.get_account_gcp_default_sa">
+<code class="sig-prename descclassname"><span class="pre">rubrik_polaris.lib.accounts.</span></code><code class="sig-name descname"><span class="pre">get_account_gcp_default_sa</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.lib.accounts.get_account_gcp_default_sa" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get default SA Key for GCP</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Status of query results</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>RequestException</strong> – If the query to Polaris returned an error</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">rubrik</span><span class="o">.</span><span class="n">get_account_gcp_default_sa</span><span class="p">()</span>
+</pre></div>
+</div>
 </dd></dl>
 <dl class="py function">
 <dt id="rubrik_polaris.lib.accounts.get_accounts_aws">
@@ -199,10 +305,16 @@
 <dd><p>Retrieves AWS account information from Polaris</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>{str} -- Search string to filter results</strong> (<em>filter</em>) – </p>
+<dd class="field-odd"><p><strong>filter</strong> (<em>str</em>) – Search string to filter results</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>list – List of AWS accounts in Polaris</p>
+<dd class="field-even"><p>Details of AWS accounts in Polaris</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>RequestException</strong> – If the query to Polaris returned an error</p>
 </dd>
 </dl>
 </dd></dl>
@@ -212,10 +324,16 @@
 <dd><p>Retrieves deployment details for AWS from Polaris</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>{str} -- Search AWS native account ID to filter results</strong> (<em>filter</em>) – </p>
+<dd class="field-odd"><p><strong>filter</strong> (<em>str</em>) – Search string to filter results</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>list – List of AWS account details</p>
+<dd class="field-even"><p>Details of Azure accounts in Polaris</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>RequestException</strong> – If the query to Polaris returned an error</p>
 </dd>
 </dl>
 </dd></dl>
@@ -225,43 +343,68 @@
 <dd><p>Retrieves Azure account information from Polaris</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>{str} -- Search string to filter results</strong> (<em>filter</em>) – </p>
+<dd class="field-odd"><p><strong>filter</strong> (<em>str</em>) – Search string to filter results</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>list – List of Azure accounts in Polaris</p>
+<dd class="field-even"><p>Details of Azure accounts in Polaris</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>RequestException</strong> – If the query to Polaris returned an error</p>
 </dd>
 </dl>
 </dd></dl>
 <dl class="py function">
 <dt id="rubrik_polaris.lib.accounts.get_accounts_gcp">
 <code class="sig-prename descclassname"><span class="pre">rubrik_polaris.lib.accounts.</span></code><code class="sig-name descname"><span class="pre">get_accounts_gcp</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.lib.accounts.get_accounts_gcp" title="Permalink to this definition">¶</a></dt>
-<dd><p>Retrieves GCP account information from Polaris</p>
+<dd><p>Retrieves GCP project information from Polaris</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>{str} -- Search string to filter results</strong> (<em>filter</em>) – </p>
+<dd class="field-odd"><p><strong>filter</strong> (<em>str</em>) – Search string to filter results</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>list – List of GCP accounts in Polaris</p>
+<dd class="field-even"><p>Details of GCP Projects in Polaris</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>RequestException</strong> – If the query to Polaris returned an error</p>
 </dd>
 </dl>
 </dd></dl>
 <dl class="py function">
-<dt id="rubrik_polaris.lib.accounts.update_account_aws">
-<code class="sig-prename descclassname"><span class="pre">rubrik_polaris.lib.accounts.</span></code><code class="sig-name descname"><span class="pre">update_account_aws</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">regions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">all</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">profiles</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aws_access_key_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aws_secret_access_key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.lib.accounts.update_account_aws" title="Permalink to this definition">¶</a></dt>
-<dd><p>Updates AWS account if configured in Polaris</p>
+<dt id="rubrik_polaris.lib.accounts.set_account_gcp_default_sa">
+<code class="sig-prename descclassname"><span class="pre">rubrik_polaris.lib.accounts.</span></code><code class="sig-name descname"><span class="pre">set_account_gcp_default_sa</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service_account_auth_key_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service_account_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.lib.accounts.set_account_gcp_default_sa" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set default SA Key for GCP</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>{bool} -- If true import all available profiles</strong><strong> (</strong><strong>Default</strong> (<em>all</em>) – False)</p></li>
-<li><p><strong>{list} -- List of explicit profiles to add</strong> (<em>profiles</em>) – </p></li>
-<li><p><strong>{str} -- AWS Access Key ID</strong> (<em>aws_access_key_id</em>) – </p></li>
-<li><p><strong>{str} -- AWS Access Key Secret</strong> (<em>aws_secret_access_key</em>) – </p></li>
+<li><p><strong>service_account_auth_key_file</strong> (<em>str</em>) – Filename of SA key file</p></li>
+<li><p><strong>service_account_name</strong> (<em>bool</em>) – Name to reference SA</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>bool – <cite>True</cite> if the account was added successfully, otherwise <cite>False</cite>.</p>
+<dd class="field-even"><p>Status if unsuccessful</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>RequestException</strong> – If the query to Polaris returned an error</p>
 </dd>
 </dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">rubrik</span><span class="o">.</span><span class="n">set_account_gcp_default_sa</span><span class="p">(</span><span class="n">service_account_auth_key_file</span> <span class="o">=</span> <span class="s2">"file.json"</span><span class="p">,</span> <span class="n">service_account_name</span> <span class="o">=</span> <span class="s2">"sa-2021-03"</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+<dl class="py function">
+<dt id="rubrik_polaris.lib.accounts.update_account_aws">
+<code class="sig-prename descclassname"><span class="pre">rubrik_polaris.lib.accounts.</span></code><code class="sig-name descname"><span class="pre">update_account_aws</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">regions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">all</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">profiles</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aws_access_key_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aws_secret_access_key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.lib.accounts.update_account_aws" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates AWS account if configured in Polaris (Under Development)</p>
 </dd></dl>
 </div>
 

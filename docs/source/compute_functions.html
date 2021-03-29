@@ -145,49 +145,73 @@
 <dl class="py function">
 <dt id="rubrik_polaris.lib.compute.get_compute_azure">
 <code class="sig-prename descclassname"><span class="pre">rubrik_polaris.lib.compute.</span></code><code class="sig-name descname"><span class="pre">get_compute_azure</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.lib.compute.get_compute_azure" title="Permalink to this definition">¶</a></dt>
-<dd><p>Retrieve all Azure instances from Polaris</p>
+<dd><p>Retrieves all Azure IAAS object details</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>list – List of all Azure VM instances</p>
+<dd class="field-odd"><p>details of Azure IAAS objects</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>RequestException</strong> – If the query to Polaris returned an error</p>
 </dd>
 </dl>
 </dd></dl>
 <dl class="py function">
 <dt id="rubrik_polaris.lib.compute.get_compute_ec2">
 <code class="sig-prename descclassname"><span class="pre">rubrik_polaris.lib.compute.</span></code><code class="sig-name descname"><span class="pre">get_compute_ec2</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">object_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.lib.compute.get_compute_ec2" title="Permalink to this definition">¶</a></dt>
-<dd><p>Retrieve all AWS EC2 instances from Polaris</p>
+<dd><p>Retrieves all AWS EC2 object details</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>{str} -- A specific Object ID to retrieve</strong> (<em>object_id</em>) – </p>
+<dd class="field-odd"><p><strong>object_id</strong> (<em>str</em>) – optional specific object id to return</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>list – List of all the AWS EC2 instances or the specific instance if the <cite>object_id</cite> is passed.</p>
+<dd class="field-even"><p>details of AWS instance objects</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>RequestException</strong> – If the query to Polaris returned an error</p>
 </dd>
 </dl>
 </dd></dl>
 <dl class="py function">
 <dt id="rubrik_polaris.lib.compute.get_compute_gce">
 <code class="sig-prename descclassname"><span class="pre">rubrik_polaris.lib.compute.</span></code><code class="sig-name descname"><span class="pre">get_compute_gce</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.lib.compute.get_compute_gce" title="Permalink to this definition">¶</a></dt>
-<dd><p>Retrieve all GCE instances from Polaris</p>
+<dd><p>Retrieves all GCP GCE object details</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>list – List of all GCE instances</p>
+<dd class="field-odd"><p>details of GCP GCE objects</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>RequestException</strong> – If the query to Polaris returned an error</p>
 </dd>
 </dl>
 </dd></dl>
 <dl class="py function">
 <dt id="rubrik_polaris.lib.compute.get_compute_object_ids_azure">
 <code class="sig-prename descclassname"><span class="pre">rubrik_polaris.lib.compute.</span></code><code class="sig-name descname"><span class="pre">get_compute_object_ids_azure</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">match_all</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.lib.compute.get_compute_object_ids_azure" title="Permalink to this definition">¶</a></dt>
-<dd><p>Retrieves all Azure VM object IDs that match query</p>
+<dd><p>Retrieves all AWS EC2 object IDs that match query</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>{bool} -- Set to false to match ANY defined criteria</strong> (<em>match_all</em>) – </p></li>
-<li><p><strong>{} -- Any top level object from the get_compute_azure call</strong> (<em>kwargs</em>) – </p></li>
+<li><p><strong>match_all</strong> (<em>bool</em>) – Set to false to match ANY defined criteria</p></li>
+<li><p><strong>kwargs</strong> (<em>str</em>) – Any top level object from the get_compute_ec2 call</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>list – List of all the Azure VM object id’s</p>
+<dd class="field-even"><p>List of all the EC2 object id’s</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>RequestException</strong> – If the query to Polaris returned an error</p>
 </dd>
 </dl>
 </dd></dl>
@@ -198,57 +222,96 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>{bool} -- Set to false to match ANY defined criteria</strong> (<em>match_all</em>) – </p></li>
-<li><p><strong>{name</strong> (<em>tags</em>) – value} – Allows simple qualification of tags</p></li>
-<li><p><strong>{} -- Any top level object from the get_compute_ec2 call</strong> (<em>kwargs</em>) – </p></li>
+<li><p><strong>match_all</strong> (<em>bool</em>) – Set to false to match ANY defined criteria</p></li>
+<li><p><strong>tags</strong> (<em>dict</em>) – Tags in {Name: Value} format to filter on</p></li>
+<li><p><strong>kwargs</strong> (<em>str</em>) – Any top level object from the get_compute_ec2 call</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>list – List of all the EC2 object id’s</p>
+<dd class="field-even"><p>List of all the EC2 object id’s</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>RequestException</strong> – If the query to Polaris returned an error</p>
 </dd>
 </dl>
 </dd></dl>
 <dl class="py function">
 <dt id="rubrik_polaris.lib.compute.get_compute_object_ids_gce">
 <code class="sig-prename descclassname"><span class="pre">rubrik_polaris.lib.compute.</span></code><code class="sig-name descname"><span class="pre">get_compute_object_ids_gce</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">match_all</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.lib.compute.get_compute_object_ids_gce" title="Permalink to this definition">¶</a></dt>
-<dd><p>Retrieves all GCE object IDs that match query</p>
+<dd><p>Retrieves all AWS EC2 object IDs that match query</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>{bool} -- Set to False to match ANY defined criteria</strong> (<em>match_all</em>) – </p></li>
-<li><p><strong>{} -- Any top level object from the get_compute_gce call</strong> (<em>kwargs</em>) – </p></li>
+<li><p><strong>match_all</strong> (<em>bool</em>) – Set to false to match ANY defined criteria</p></li>
+<li><p><strong>kwargs</strong> (<em>str</em>) – Any top level object from the get_compute_ec2 call</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>list – List of all the GCE object id’s</p>
+<dd class="field-even"><p>List of all the EC2 object id’s</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>RequestException</strong> – If the query to Polaris returned an error</p>
 </dd>
 </dl>
 </dd></dl>
 <dl class="py function">
 <dt id="rubrik_polaris.lib.compute.get_compute_vsphere">
 <code class="sig-prename descclassname"><span class="pre">rubrik_polaris.lib.compute.</span></code><code class="sig-name descname"><span class="pre">get_compute_vsphere</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.lib.compute.get_compute_vsphere" title="Permalink to this definition">¶</a></dt>
-<dd><p>Retrieve all vSphere instances from Polaris</p>
+<dd><p>Retrieves all VMware VM object details (Under development)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>details of VMware VM objects</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>RequestException</strong> – If the query to Polaris returned an error</p>
+</dd>
+</dl>
 </dd></dl>
 <dl class="py function">
 <dt id="rubrik_polaris.lib.compute.submit_compute_export_ec2">
 <code class="sig-prename descclassname"><span class="pre">rubrik_polaris.lib.compute.</span></code><code class="sig-name descname"><span class="pre">submit_compute_export_ec2</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snapshot_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aws_account_number</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aws_region</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aws_vpc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aws_security_groups</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aws_subnet</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wait</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aws_instance_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aws_instance_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">copy_tags</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_replica</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.lib.compute.submit_compute_export_ec2" title="Permalink to this definition">¶</a></dt>
-<dd><p>Submits the export of a EC2 instance</p>
+<dd><p>Submits an export of a EC2 instance</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>snapshot_id</strong> (<em>str</em>) – snapshot_id to export</p></li>
+<li><p><strong>aws_account_number</strong> (<em>str</em>) – aws account number to recover to</p></li>
+<li><p><strong>aws_region</strong> (<em>str</em>) – aws region to export to</p></li>
+<li><p><strong>aws_vpc</strong> (<em>str</em>) – aws vpc to assign to export</p></li>
+<li><p><strong>aws_security_groups</strong> (<em>list</em>) – aws security groups to assign to export</p></li>
+<li><p><strong>aws_subnet</strong> (<em>str</em>) – aws subnet to assign to export</p></li>
+<li><p><strong>wait</strong> (<em>bool</em>) – Return once complete Defaults to False</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>dict – List of errors if any occurred during the export</p>
+</dd>
+</dl>
 </dd></dl>
 <dl class="py function">
 <dt id="rubrik_polaris.lib.compute.submit_compute_restore_azure">
 <code class="sig-prename descclassname"><span class="pre">rubrik_polaris.lib.compute.</span></code><code class="sig-name descname"><span class="pre">submit_compute_restore_azure</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snapshot_id</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.lib.compute.submit_compute_restore_azure" title="Permalink to this definition">¶</a></dt>
-<dd><p>Submits a Restore of an Azure VM instance</p>
+<dd><p>Submits a Restore of a Azure VM</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>{str} -- Snapshot ID to be restored</strong> (<em>snapshot_id</em>) – </p></li>
-<li><p><strong>{bool} -- Defaults to False</strong> (<em>should_restore_tags</em>) – </p></li>
-<li><p><strong>{bool} -- Defaults to False</strong> – </p></li>
-<li><p><strong>{bool} -- Return once complete Defaults to False</strong> (<em>wait</em>) – </p></li>
+<li><p><strong>snapshot_id</strong> (<em>str</em>) – Snapshot ID to be restored</p></li>
+<li><p><strong>should_power_on</strong> (<em>bool</em>) – Defaults to <cite>False</cite></p></li>
+<li><p><strong>should_restore_tags</strong> (<em>bool</em>) – Defaults to <cite>False</cite></p></li>
+<li><p><strong>wait</strong> (<em>bool</em>) – Return once complete Defaults to <cite>False</cite></p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>list – List of errors if any occurred during the restore</p>
+<dd class="field-even"><p>dict – List of errors if any occurred during the restore</p>
 </dd>
 </dl>
 </dd></dl>
@@ -259,14 +322,14 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>{str} -- Snapshot ID to be restored</strong> (<em>snapshot_id</em>) – </p></li>
-<li><p><strong>{bool} -- Defaults to False</strong> (<em>should_restore_tags</em>) – </p></li>
-<li><p><strong>{bool} -- Defaults to False</strong> – </p></li>
-<li><p><strong>{bool} -- Return once complete Defaults to False</strong> (<em>wait</em>) – </p></li>
+<li><p><strong>snapshot_id</strong> (<em>str</em>) – Snapshot ID to be restored</p></li>
+<li><p><strong>should_power_on</strong> (<em>bool</em>) – Defaults to <cite>False</cite></p></li>
+<li><p><strong>should_restore_tags</strong> (<em>bool</em>) – Defaults to <cite>False</cite></p></li>
+<li><p><strong>wait</strong> (<em>bool</em>) – Return once complete Defaults to <cite>False</cite></p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>list – List of errors if any occurred during the restore</p>
+<dd class="field-even"><p>dict – List of errors if any occurred during the restore</p>
 </dd>
 </dl>
 </dd></dl>
@@ -277,14 +340,14 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>{str} -- Snapshot ID to be restored</strong> (<em>snapshot_id</em>) – </p></li>
-<li><p><strong>{bool} -- Defaults to False</strong> (<em>should_restore_tags</em>) – </p></li>
-<li><p><strong>{bool} -- Defaults to False</strong> – </p></li>
-<li><p><strong>{bool} -- Return once complete Defaults to False</strong> (<em>wait</em>) – </p></li>
+<li><p><strong>snapshot_id</strong> (<em>str</em>) – Snapshot ID to be restored</p></li>
+<li><p><strong>should_power_on</strong> (<em>bool</em>) – Defaults to <cite>False</cite></p></li>
+<li><p><strong>should_restore_tags</strong> (<em>bool</em>) – Defaults to <cite>False</cite></p></li>
+<li><p><strong>wait</strong> (<em>bool</em>) – Return once complete Defaults to <cite>False</cite></p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>list – List of errors if any occurred during the restore</p>
+<dd class="field-even"><p>dict – List of errors if any occurred during the restore</p>
 </dd>
 </dl>
 </dd></dl>
