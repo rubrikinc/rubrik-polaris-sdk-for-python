@@ -34,7 +34,11 @@ def _query(self, query_name=None, variables=None, timeout=60):
         query = re.sub("RubrikPolarisSDKRequest", operation_name, self._graphql_query_map[query_name]['query_text'])
         gql_query_name = self._graphql_query_map[query_name]['gql_name']
         start = True
-        while start or (not isinstance(api_response['data'][gql_query_name], bool) and 'pageInfo' in api_response['data'][gql_query_name] and api_response['data'][gql_query_name]['pageInfo']['hasNextPage']):
+        while start or \
+                (api_response['data'][gql_query_name]
+                 and not isinstance(api_response['data'][gql_query_name], bool)
+                 and 'pageInfo' in api_response['data'][gql_query_name]
+                 and api_response['data'][gql_query_name]['pageInfo']['hasNextPage']):
             if not start:
                 variables['after'] = api_response['data'][gql_query_name]['pageInfo']['endCursor']
             api_request = requests.post(

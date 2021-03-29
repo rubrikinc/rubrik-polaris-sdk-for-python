@@ -456,26 +456,6 @@ def _update_account_aws(self, profile=None, aws_id=None, aws_secret=None,  _aws_
                     print("account needs to be recreated")
 
 
-def _get_default_service_account_gcp(self):
-    try:
-        _query_name = "accounts_gcp_project_default_credentials_get"
-        return self._query(_query_name, None)
-    except Exception as e:
-        print(e)
-
-
-def _set_default_service_account_gcp(self, name=None, jwt_config=None):
-    try:
-        _query_name = "accounts_gcp_project_default_credentials_set"
-        _variables = {
-            "name": name,
-            "jwt_config": jwt_config
-        }
-        return self._query(_query_name, _variables)
-    except Exception as e:
-        print(e)
-
-
 def _get_account_gcp_project_uuid_by_string(self, search_text):
     try:
         _query_name = "accounts_gcp"
@@ -503,12 +483,15 @@ def _get_account_map_aws(self):
     return o
 
 
-def add_project_gcp(self, service_account_auth_key_file=None, gcp_native_project_id=None):
+def add_project_gcp(self, service_account_auth_key_file=None, gcp_native_project_id=None, gcp_native_project_number=None, gcp_native_project_name=None):
     """Add GCP project to Polaris
 
     Args:
         service_account_auth_key_file (str): Filename of SA .json file
         gcp_native_project_id (str): Project_Id of GCP Project to add
+
+        gcp_native_project_number (str): GCP Project number if ommiting SA
+        gcp_native_project_name (str): GCP Project name if omitting SA
 
     Returns:
         dict: Status if unsuccessful
@@ -519,8 +502,17 @@ def add_project_gcp(self, service_account_auth_key_file=None, gcp_native_project
     Examples:
         >>>  rubrik.add_project_gcp(service_account_auth_key_file="/home/peterm/.google.milanese.json", gcp_native_project_id="home-network-274622")
     """
-    project = self._get_gcp_native_project(service_account_auth_key_file=service_account_auth_key_file, project_id=gcp_native_project_id)
-    project['service_account_auth_key'] = open(service_account_auth_key_file, 'r').read()
+    if service_account_auth_key_file and not gcp_native_project_name and not gcp_native_project_number:
+        project = self._get_gcp_native_project(service_account_auth_key_file=service_account_auth_key_file, project_id=gcp_native_project_id)
+        project['service_account_auth_key'] = open(service_account_auth_key_file, 'r').read()
+    elif gcp_native_project_name and gcp_native_project_number and gcp_native_project_id and not service_account_auth_key_file:
+        project = {
+            "gcp_native_project_name": gcp_native_project_name,
+            "gcp_native_project_number": int(gcp_native_project_number),
+            "gcp_native_project_id": gcp_native_project_id
+        }
+    else:
+        raise PolarisException("Could not add GCP Project, please checkk inputs")
     try:
         _query_name = "accounts_gcp_project_add"
         _variables = project
@@ -591,6 +583,54 @@ def _get_account_gcp_project(self, search_text):
         raise PolarisException("Problem getting GCP Project from Polaris: {}".format(search_text))
 
 
+def set_account_gcp_default_sa(self, service_account_auth_key_file=None, service_account_name=None):
+    """Set default SA Key for GCP
+
+    Args:
+        service_account_auth_key_file (str): Filename of SA key file
+        service_account_name (bool): Name to reference SA
+
+    Returns:
+        dict: Status if unsuccessful
+
+    Raises:
+        RequestException: If the query to Polaris returned an error
+
+    Examples:
+        >>> rubrik.set_account_gcp_default_sa(service_account_auth_key_file = "file.json", service_account_name = "sa-2021-03")
+    """
+    try:
+        _query_name = "accounts_gcp_default_sa_set"
+        _variables = {
+            "name": service_account_name,
+            "jwt_config": open(service_account_auth_key_file, 'r').read()
+        }
+        _request = self._query(_query_name, _variables)
+        return _request
+    except Exception as e:
+        raise PolarisException("Problem setting GCP Project default SA: {}".format(e))
+
+
+def get_account_gcp_default_sa(self):
+    """Get default SA Key for GCP
+
+    Returns:
+        dict: Status of query results
+
+    Raises:
+        RequestException: If the query to Polaris returned an error
+
+    Examples:
+        >>> rubrik.get_account_gcp_default_sa()
+    """
+    try:
+        _query_name = "accounts_gcp_default_sa_get"
+        _request = self._query(_query_name, None)
+        return _request
+    except Exception as e:
+        raise PolarisException("Problem getting GCP Project default SA: {}".format(e))
+
+
 def _delete_account_gcp_project(self, project_uuid=None):
     try:
         _query_name = "accounts_gcp_project_delete"
@@ -626,9 +666,11 @@ def _get_gcp_native_project(self, service_account_auth_key_file, project_id=None
     # Check permissions requirement from Polaris against GCP using SA
     permission_required = self._get_account_gcp_permissions_cnp()
     permissions = {"permissions": permission_required}
+    self._pp.pprint(permissions)
     try:
         request = service.projects().testIamPermissions(resource=project_id, body=permissions)
         permissions_set = request.execute()
+        self._pp.pprint(permissions_set)
         permission_delta = list(set(permission_required) - set(permissions_set['permissions']))
     except HttpError as e:
         raise PolarisException("Failed to lookup SA permissions from GCP: {}".format(e))

@@ -24,11 +24,24 @@ except Exception as err:
     print(err)
     sys.exit(1)
 
-### Add GCP Project
-# rubrik.add_project_gcp(service_account_auth_key_file="/home/peterm/.google.milanese.json", gcp_native_project_id="home-network-274622")
+### Get GCP SA
+# pp.pprint(rubrik.get_account_gcp_default_sa())
+
+### Set GCP SA
+# rubrik.set_account_gcp_default_sa(service_account_auth_key_file="/home/peterm/galactus-gcp-1-a3c-1.json", service_account_name="galactus-key-1")
+# rubrik.set_account_gcp_default_sa(service_account_auth_key_file="/home/peterm/galactus-gcp-1-4b8-2.json", service_account_name="galactus-key-2")
+
+### Add GCP Project without Service Account Key File
+# rubrik.add_project_gcp(gcp_native_project_id="galactus-gcp-2", gcp_native_project_name="galactus-gcp-2", gcp_native_project_number="747532028919")
+# rubrik.add_project_gcp(gcp_native_project_id="pm-team-1", gcp_native_project_name="PM Team 1", gcp_native_project_number="579885922262")
 
 ### Delete GCP Project
-# rubrik.delete_project_gcp(gcp_native_project_id="home-network-274622")
+# rubrik.delete_project_gcp(gcp_native_project_id="galactus-gcp-2")
+# rubrik.delete_project_gcp(gcp_native_project_id="pm-team-1")
+
+### Add GCP Project with Service Account Key File
+# rubrik.add_project_gcp(service_account_auth_key_file="/home/peterm/galactus-gcp-1-a3c-1.json", gcp_native_project_id="galactus-gcp-2")
+# rubrik.add_project_gcp(service_account_auth_key_file="/home/peterm/galactus-gcp-1-a3c-1.json", gcp_native_project_id="pm-team-1")
 
 ### Add AWS Acct (local profile must be configured, specify list of profiles _or_ set all=True.
 # rubrik.add_account_aws(regions = ["us-east-1"], profiles = ["milanese"])
