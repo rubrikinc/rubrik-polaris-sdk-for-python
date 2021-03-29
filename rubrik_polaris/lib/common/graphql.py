@@ -86,7 +86,7 @@ def _get_details_from_graphql_query(self, graphql_query_text):
                 else:
                     o[var_name]['required'] = False
         except:  # Handle non-variable queries
-            o['gql_name'] = re.search(r'\{(.*)\}', re.sub(r"[\n\t\s]*", "", graphql_query_text))
+            o['gql_name'] = re.sub(r"[\{|\}]", "", re.search(r'\{(.*)\}', re.sub(r"[\n\t\s]*", "", graphql_query_text)).group(0))
         return o
     except:
         print("Unexpected error:", sys.exc_info()[0])

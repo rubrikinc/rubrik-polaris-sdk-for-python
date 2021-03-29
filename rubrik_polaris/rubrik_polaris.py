@@ -30,7 +30,8 @@ class PolarisClient:
     from .lib.common.core import get_sla_domains, submit_on_demand, submit_assign_sla, get_task_status, \
         get_snapshots, get_event_series_list, get_report_data
     from .lib.accounts import get_accounts_azure, get_accounts_gcp, get_accounts_aws, get_accounts_aws_detail, \
-        get_account_aws_native_id, add_account_aws, delete_account_aws, add_project_gcp, delete_project_gcp
+        get_account_aws_native_id, add_account_aws, delete_account_aws, add_project_gcp, delete_project_gcp, \
+        get_account_gcp_default_sa, set_account_gcp_default_sa
     from .lib.compute import get_compute_object_ids_azure, get_compute_object_ids_ec2, get_compute_object_ids_gce, \
         get_compute_azure, get_compute_ec2, get_compute_gce, submit_compute_export_ec2, submit_compute_restore_ec2, \
         submit_compute_restore_azure, submit_compute_restore_gce, get_compute_vsphere
@@ -47,9 +48,8 @@ class PolarisClient:
     from .lib.common.core import _get_snapshot
     from .lib.accounts import _invoke_account_delete_aws, _invoke_aws_stack, _commit_account_delete_aws, _update_account_aws, \
         _destroy_aws_stack, _disable_account_aws, _get_aws_profiles, _add_account_aws, _delete_account_aws, \
-        _update_account_aws_initiate, _get_account_map_aws, _get_default_service_account_gcp, _set_default_service_account_gcp, \
-        _get_gcp_native_project, _delete_account_gcp_project, _disable_account_gcp_project, _get_account_gcp_project, \
-        _get_account_gcp_permissions_cnp, _get_account_gcp_project_uuid_by_string
+        _update_account_aws_initiate, _get_account_map_aws, _get_gcp_native_project, _delete_account_gcp_project, \
+        _disable_account_gcp_project, _get_account_gcp_project, _get_account_gcp_permissions_cnp, _get_account_gcp_project_uuid_by_string
 
     def __init__(self, _domain=None, _username=None, _password=None, **kwargs):
         from .lib.common.graphql import _build_graphql_maps
