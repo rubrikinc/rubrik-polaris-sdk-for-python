@@ -1,5 +1,5 @@
 query RubrikPolarisSDKRequest($region: AwsNativeRegionEnum!, $aws_native_account_id: UUID!) {
-  allVpcsInRegion(region: $region, awsNativeAccountId: $aws_native_account_id) {
+  allVpcsByRegionFromAws(region: $region, awsNativeAccountId: $aws_native_account_id) {
     id
     name
     subnets {

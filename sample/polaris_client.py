@@ -55,7 +55,7 @@ except Exception as err:
 
 ### Run ODS for machines in a region using Bronze retention, monitor to complete via threads
 # bronze_sla_domain_id = rubrik.get_sla_domains("Bronze")['id']
-# pp.pprint(rubrik.submit_on_demand(rubrik.get_compute_object_ids_ec2(region="US_WEST_1"), bronze_sla_domain_id, wait=True))
+# pp.pprint(rubrik.submit_on_demand(rubrik.get_compute_object_ids_ec2(instanceNativeId="i-029cb0cb8cb1be619"), bronze_sla_domain_id, wait=True))
 # pp.pprint(rubrik.submit_on_demand(rubrik.get_compute_object_ids_gce(region="us-west1"), bronze_sla_domain_id, wait=True))
 
 ### Get snapshot ids for snappables

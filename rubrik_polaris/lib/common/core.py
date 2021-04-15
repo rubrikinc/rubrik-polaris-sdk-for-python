@@ -94,10 +94,11 @@ def submit_on_demand(self, object_ids, sla_id, wait=False):
             for error_object in response['errors']:
                 results.append(error_object)
 
-        if wait:
-            results = self._monitor_task(response['taskchainUuids'])
-
-        # TODO: find a better way to report errors per uuid
+        try:
+            if wait:
+                results = self._monitor_task(response['taskchainUuids'])
+        except Exception as e:
+            pass
 
         return results
     except Exception:
@@ -162,8 +163,11 @@ def get_task_status(self, task_chain_id):
         variables = {
             "filter": task_chain_id
         }
-        response = self._query(query_name, variables)
-        return response['taskchain']['state']
+        try:
+            response = self._query(query_name, variables)
+        except Exception as e:
+            return "FAILED"
+        return response['taskchain']
     except Exception:
         raise
 

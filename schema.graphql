@@ -3892,6 +3892,21 @@ type AsyncDownloadReply {
     referenceId: String!
 }
 
+type AsyncJobStatus {
+    error: String!
+    jobId: String!
+}
+
+type AsyncJobStatusJobError {
+    error: String!
+    rubrikObjectId: String!
+}
+
+type AsyncJobStatusJobId {
+    jobId: String!
+    rubrikObjectId: String!
+}
+
 """
 
 Supported in v5.0+
@@ -3900,15 +3915,13 @@ type AsyncRequestStatus {
     """
 
     Supported in v5.0+
-    v5.0: The end time of the request
-    v5.1+: The end time of the request.
+    The end time of the request.
     """
     endTime: DateTime
     """
 
     Supported in v5.0+
-    v5.0: Any errors encountered
-    v5.1+: Any errors encountered.
+    Any errors encountered.
     """
     error: RequestErrorInfo
     """
@@ -3921,8 +3934,7 @@ type AsyncRequestStatus {
     """
 
     Required. Supported in v5.0+
-    v5.0: References to any related objects
-    v5.1+: References to any related objects.
+    References to any related objects.
     """
     links: [Link!]!
     """
@@ -3941,8 +3953,7 @@ type AsyncRequestStatus {
     """
 
     Supported in v5.0+
-    v5.0: The start time of the request
-    v5.1+: The start time of the request.
+    The start time of the request.
     """
     startTime: DateTime
     """
@@ -4372,6 +4383,7 @@ type AwsNativeEbsVolume implements AwsNativeAccountDescendantType & AwsNativeAcc
     "The authorized operations on the object."
     authorizedOperations: [PolarisSnappableAuthorizedOperationsEnum!]!
     availabilityZone: String!
+    awsAccountRubrikId: String!
     "Aws account of the EBS Volumes"
     awsNativeAccount: AwsNativeAccount!
     awsNativeAccountName: String!
@@ -4482,9 +4494,10 @@ type AwsNativeEbsVolume implements AwsNativeAccountDescendantType & AwsNativeAcc
         timeRange: TimeRangeInput
     ): GenericSnapshotConnection
     tags: [Tag!]!
-    volumeId: String!
     volumeName: String!
-    volumeType: AwsNativeEbsVolumeTypeEnum!
+    volumeNativeId: String!
+    "AWS Native EBS Volume type. Some examples are: g3, io2. This field cannot be null or empty string and will be mapped directly to available EBS volumes on cloud(AWS). More info: https://aws.amazon.com/ebs/volume-types."
+    volumeType: String!
 }
 
 type AwsNativeEbsVolumeConnection {
@@ -4506,6 +4519,7 @@ type AwsNativeEc2Instance implements AwsNativeAccountDescendantType & AwsNativeA
     "The authorized operations on the object."
     authorizedOperations: [PolarisSnappableAuthorizedOperationsEnum!]!
     availabilityZone: String!
+    awsAccountRubrikId: String!
     "Aws account of the Ec2 instance"
     awsNativeAccount: AwsNativeAccount!
     awsNativeAccountName: String!
@@ -4519,9 +4533,10 @@ type AwsNativeEc2Instance implements AwsNativeAccountDescendantType & AwsNativeA
     effectiveSlaSourceObject: PathNode
     "The fid of the hierarchy object."
     id: UUID!
-    instanceId: String!
     instanceName: String!
-    instanceType: AwsNativeEc2InstanceTypeEnum!
+    instanceNativeId: String!
+    "AWS Native EC2 Instance type. Some examples are: t2.nano, m5.xlarge. This field cannot be null or empty string and will be mapped directly to available EC2 instance on cloud(AWS). More info:  https://aws.amazon.com/ec2/instance-types."
+    instanceType: String!
     isExocomputeConfigured: Boolean!
     isIndexingEnabled: Boolean!
     isMarketplace: Boolean!
@@ -5011,6 +5026,11 @@ type AzureComputeSettings {
     securityGroupId: String!
     subnetId: String!
     virtualNetworkId: String!
+}
+
+type AzureDiskClusterCreateReply {
+    clusterUuid: String!
+    vmInfo: [VmInfo!]!
 }
 
 "Azure Exocompute Configs Create Response."
@@ -5652,8 +5672,7 @@ type BaseSnapshotSummary {
     """
 
     Supported in v5.0+
-    v5.0-v5.3: Integer value that represents the archival state of a snapshot. 0 means the snapshot is not archived. 2 means the snapshot is archived. 3 means the snapshot is downloaded from the archival location. 4 means the snapshot is in the process of being downloaded from the archival location. 6 means the snapshot is stored locally and at the archival location.
-    v6.0: Integer value that represents the archival state of a snapshot. 0 means the snapshot is not archived. 2 means the snapshot is archived. 3 means the snapshot is downloaded from the archival location. 4 means the snapshot is in the process of being downloaded from the archival location. 6 means the snapshot is stored locally and at the archival location.
+    Integer value that represents the archival state of a snapshot. 0 means the snapshot is not archived. 2 means the snapshot is archived. 3 means the snapshot is downloaded from the archival location. 4 means the snapshot is in the process of being downloaded from the archival location. 6 means the snapshot is stored locally and at the archival location.
     """
     cloudState: Long
     """
@@ -5684,15 +5703,13 @@ type BaseSnapshotSummary {
     """
 
     Supported in v5.0+
-    v5.0-v5.3: Integer value representing the state of the indexing job for a snapshot. 0 means that the indexing has not begun or is in progress. 1 means indexing completed successfully. 2 means that the indexer failed to process this snapshot.
-    v6.0: Integer value representing the state of the indexing job for a snapshot. 0 means that the indexing has not begun or is in progress. 1 means indexing completed successfully. 2 means that the indexer failed to process this snapshot.
+    Integer value representing the state of the indexing job for a snapshot. 0 means that the indexing has not begun or is in progress. 1 means indexing completed successfully. 2 means that the indexer failed to process this snapshot.
     """
     indexState: Long
     """
 
     Supported in v5.2+
-    v5.2-v5.3: A Boolean that indicates whether or not custom retention is applied to the snapshot.
-    v6.0: A Boolean that indicates whether or not custom retention is applied to the snapshot.
+    A Boolean that indicates whether or not custom retention is applied to the snapshot.
     """
     isCustomRetentionApplied: Boolean
     """
@@ -5755,6 +5772,11 @@ type BasicSnapshotSchedule {
     frequency: Int!
     retention: Int!
     retentionUnit: RetentionUnitEnum!
+}
+
+type BatchAsyncJobStatus {
+    errors: [AsyncJobStatusJobError!]!
+    jobIds: [AsyncJobStatusJobId!]!
 }
 
 """
@@ -5886,15 +5908,13 @@ type BrowseResponse {
     """
 
     Supported in v5.0+
-    v5.0-v5.3: The type of file, either a regular file or a directory
-    v6.0: The type of file, either a regular file or a directory.
+    The type of file, either a regular file or a directory.
     """
     fileMode: String
     """
 
     Supported in v5.0+
-    v5.0-v5.3: The name of the file
-    v6.0: The name of the file.
+    The name of the file.
     """
     filename: String
     """
@@ -5905,8 +5925,7 @@ type BrowseResponse {
     """
 
     Supported in v5.0+
-    v5.0-v5.3: The complete path of the file
-    v6.0: The complete path of the file.
+    The complete path of the file.
     """
     path: String
     """
@@ -5917,8 +5936,7 @@ type BrowseResponse {
     """
 
     Supported in v5.0+
-    v5.0-v5.3: Description about the status
-    v6.0: Description about the status.
+    Description about the status.
     """
     statusMessage: String
     """
@@ -5937,22 +5955,19 @@ type BrowseResponseListResponse {
     """
 
     Supported in v5.0+
-    v5.0-v5.3: List of matching objects
-    v6.0: List of matching objects.
+    List of matching objects.
     """
     data: [BrowseResponse!]!
     """
 
     Supported in v5.0+
-    v5.0-v5.3: If there is more
-    v6.0: If there is more.
+    If there is more.
     """
     hasMore: Boolean
     """
 
     Supported in v5.0+
-    v5.0-v5.3: Total list responses
-    v6.0: Total list responses.
+    Total list responses.
     """
     total: Long
 }
@@ -5975,6 +5990,16 @@ type CDMSnapshotRetentionInfo {
 type CancelJobReply {
     message: String!
     status: Boolean!
+}
+
+"Async reply for a submitted job."
+type CcProvisionJobReply {
+    "Job Id of the submitted job."
+    jobId: Long!
+    "Detail of the submitted job including job name and function parameters."
+    message: String!
+    "Indicates if the operation was a success or not"
+    success: Boolean!
 }
 
 type CdmArchivalSpec {
@@ -6189,6 +6214,11 @@ type CdmUpgradeReleaseDetailsFromSupportPortalReply {
     supportSoftwareLink: String!
 }
 
+type CellData {
+    displayableValue: DisplayableValue
+    metadata: [Metadata!]!
+}
+
 "Certificate Information"
 type Certificate {
     certificate: String!
@@ -6226,7 +6256,7 @@ type CheckGuestOsReply {
 type CheckGuestOsResult {
     errorMessage: String!
     "vsphere vm instance"
-    instance: VSphereVmNew!
+    instance: VSphereVm!
     instanceId: String!
     instanceOs: GuestOSEnum!
     instanceType: String!
@@ -6465,6 +6495,8 @@ type Cluster {
     metricTimeSeries(timeRange: TimeRangeInput, unit: TimeUnitEnum!): [metricTimeSeries!]!
     "The cluster name."
     name: String!
+    "This field contains information about the various jobs that sync data from the CDM Cluster to Polaris"
+    polarisSyncStatus: PolarisSyncStatus!
     "The cluster product type (e.g., CDM, DATOS, etc.)."
     productType: ClusterProductEnum
     "The time the cluster was registered."
@@ -6805,17 +6837,6 @@ type CrawlObjEdge {
     node: CrawlObj!
 }
 
-"The status of Create EBS Volume Snapshot request. For each volume ID in the request: an entry in errors if failed, and in taskchainUuids if succeeded."
-type CreateAwsNativeEbsVolumeSnapshotsReply {
-    errors: [CreateEbsVolumeSnapshotError!]!
-    taskchainUuids: [CreateEbsVolumeSnapshotTaskchainUuid!]!
-}
-
-type CreateAwsNativeEc2InstanceSnapshotsReply {
-    errors: [CreateEc2InstanceSnapshotError!]!
-    taskchainUuids: [CreateEc2InstanceSnapshotTaskchainUuid!]!
-}
-
 "The status of Create RDS Instance Snapshot request. For each instance ID in the request: an entry in errors if failed, and in taskchainUuids if succeeded."
 type CreateAwsNativeRdsInstanceSnapshotsReply {
     errors: [CreateRdsInstanceSnapshotError!]!
@@ -6871,26 +6892,6 @@ type CreateCloudNativeLabelRuleReply {
 "The status of Create tag Rule request. It contains theid of the new tag rule if request succeeds"
 type CreateCloudNativeTagRuleReply {
     tagRuleId: String!
-}
-
-type CreateEbsVolumeSnapshotError {
-    ebsVolumeId: String!
-    error: String!
-}
-
-type CreateEbsVolumeSnapshotTaskchainUuid {
-    ebsVolumeId: String!
-    taskchainUuid: String!
-}
-
-type CreateEc2InstanceSnapshotError {
-    ec2InstanceId: String!
-    error: String!
-}
-
-type CreateEc2InstanceSnapshotTaskchainUuid {
-    ec2InstanceId: String!
-    taskchainUuid: String!
 }
 
 "O365 create app kickoff response"
@@ -7109,6 +7110,7 @@ type DailyAnalysisDetails {
     deletedFileCount: Long!
     modifiedDataBytes: Long!
     modifiedFileCount: Long!
+    suspiciousDataBytes: Long!
     suspiciousFileCount: Long!
 }
 
@@ -7162,8 +7164,10 @@ type DeleteAwsCloudComputeSettingReply {
     success: Boolean!
 }
 
-type DeleteAwsNativeAccountReply {
-    taskchainUuid: String!
+"Result of cleanup process of cluster."
+type DeleteAzureDiskClusterReply {
+    "Indicates if the operation was a success or not"
+    result: Boolean!
 }
 
 type DeleteBlueprintRecoverySpecReply {
@@ -7268,6 +7272,11 @@ type DownloadCdmUpgradesPdfReply {
     downloadLink: String!
 }
 
+type DownloadCsvReply {
+    "Status of queueing a download CSV job."
+    isSuccessful: Boolean!
+}
+
 "The status of download cloud native files req. It contains thetaskchain id of the download job if succeeded"
 type DownloadFilesReply {
     taskchainId: String!
@@ -7285,10 +7294,6 @@ type DownloadJobInfo {
 type DownloadLink {
     "The link to the report."
     link: String!
-}
-
-type DownloadObjectFilesCsvReply {
-    downloadLink: String!
 }
 
 type DownloadPackageReply {
@@ -7310,18 +7315,6 @@ type DownloadPackageStatusReply {
 }
 
 type DownloadResultsCsvReply {
-    downloadLink: String!
-}
-
-type DownloadSnapshotResultsCsvReply {
-    success: Boolean!
-}
-
-type DownloadUserActivityCsvReply {
-    downloadLink: String!
-}
-
-type DownloadUserFileActivityCsvReply {
     downloadLink: String!
 }
 
@@ -7602,14 +7595,6 @@ type ExportDiskReply {
 
 "Taskchain information for export azure native disk job"
 type ExportDiskSnapshotReply {
-    taskchainUuid: String!
-}
-
-type ExportEbsVolumeSnapshotReply {
-    taskchainUuid: String!
-}
-
-type ExportEc2InstanceSnapshotReply {
     taskchainUuid: String!
 }
 
@@ -8273,8 +8258,7 @@ type FileVersion {
     """
 
     Supported in v5.0+
-    v5.0-v5.3: The type of file, either a regular file or a directory
-    v6.0: The type of file, either a regular file or a directory.
+    The type of file, either a regular file or a directory.
     """
     fileMode: String
     """
@@ -8290,15 +8274,13 @@ type FileVersion {
     """
 
     Supported in v5.0+
-    v5.0-v5.3: The snapshot this file belongs to
-    v6.0: The snapshot this file belongs to.
+    The snapshot this file belongs to.
     """
     snapshotId: String
     """
 
     Supported in v5.0+
-    v5.0-v5.3: The location where the file is stored, either in the cloud or locally
-    v6.0: The location where the file is stored, either in the cloud or locally.
+    The location where the file is stored, either in the cloud or locally.
     """
     source: String
 }
@@ -8334,15 +8316,13 @@ type FilesetDetail {
     """
 
     Supported in v5.0+
-    v5.0-v5.3: Action taken if script fails. Options are "abort", "continue"
-    v6.0: Action taken if script fails. Options are "abort", "continue".
+    Action taken if script fails. Options are "abort", "continue".
     """
     backupScriptErrorHandling: String
     """
 
     Supported in v5.0+
-    v5.0-v5.3: Number of seconds after which the script is killed if it has not completed execution
-    v6.0: Number of seconds after which the script is killed if it has not completed execution.
+    Number of seconds after which the script is killed if it has not completed execution.
     """
     backupScriptTimeout: Long
     filesetSummary: FilesetSummary
@@ -8355,15 +8335,13 @@ type FilesetDetail {
     """
 
     Supported in v5.0+
-    v5.0-v5.3: Script to run after backup of this Fileset ends
-    v6.0: Script to run after backup of this Fileset ends.
+    Script to run after backup of this Fileset ends.
     """
     postBackupScript: String
     """
 
     Supported in v5.0+
-    v5.0-v5.3: Script to run before backup of this Fileset starts
-    v6.0: Script to run before backup of this Fileset starts.
+    Script to run before backup of this Fileset starts.
     """
     preBackupScript: String
     """
@@ -8391,22 +8369,19 @@ type FilesetDetailListResponse {
     """
 
     Supported in v5.0+
-    v5.0-v5.3: List of matching objects
-    v6.0: List of matching objects.
+    List of matching objects.
     """
     data: [FilesetDetail!]!
     """
 
     Supported in v5.0+
-    v5.0-v5.3: If there is more
-    v6.0: If there is more.
+    If there is more.
     """
     hasMore: Boolean
     """
 
     Supported in v5.0+
-    v5.0-v5.3: Total list responses
-    v6.0: Total list responses.
+    Total list responses.
     """
     total: Long
 }
@@ -8490,15 +8465,13 @@ type FilesetSnapshotVerbose {
     """
 
     Supported in v5.0+
-    v5.0-v5.3: Whether or not the fileset snapshot has fingerprint info
-    v6.0: Whether or not the fileset snapshot has fingerprint info.
+    Whether or not the fileset snapshot has fingerprint info.
     """
     hasFingerprint: Boolean!
     """
 
     Supported in v5.0+
-    v5.0-v5.3: List a partition paths for the fileset snapshot
-    v6.0: List a partition paths for the fileset snapshot.
+    List a partition paths for the fileset snapshot.
     """
     partitionPaths: [String!]!
 }
@@ -8738,15 +8711,13 @@ type FilesetTemplateCreate {
     """
 
     Supported in v5.0+
-    v5.0-v5.3: Action taken if script fails. Options are "abort", "continue"
-    v6.0: Action taken if script fails. Options are "abort", "continue".
+    Action taken if script fails. Options are "abort", "continue".
     """
     backupScriptErrorHandling: String
     """
 
     Supported in v5.0+
-    v5.0-v5.3: Number of seconds after which the script is killed if it has not completed execution
-    v6.0: Number of seconds after which the script is killed if it has not completed execution.
+    Number of seconds after which the script is killed if it has not completed execution.
     """
     backupScriptTimeout: Long
     """
@@ -8785,15 +8756,13 @@ type FilesetTemplateCreate {
     """
 
     Supported in v5.0+
-    v5.0-v5.3: Script to run after backup of this fileset ends
-    v6.0: Script to run after backup of this fileset ends.
+    Script to run after backup of this fileset ends.
     """
     postBackupScript: String
     """
 
     Supported in v5.0+
-    v5.0-v5.3: Script to run before backup of this fileset starts
-    v6.0: Script to run before backup of this fileset starts.
+    Script to run before backup of this fileset starts.
     """
     preBackupScript: String
     """
@@ -8824,8 +8793,7 @@ type FilesetTemplateDetail {
     """
 
     Supported in v5.0+
-    v5.0-v5.3: Number of hosts where this template has been applied
-    v6.0: Number of hosts where this template has been applied.
+    Number of hosts where this template has been applied.
     """
     hostCount: Int
     """
@@ -8846,8 +8814,7 @@ type FilesetTemplateDetail {
     """
 
     Supported in v5.0+
-    v5.0-v5.3: Number of shares where this template has been applied
-    v6.0: Number of shares where this template has been applied.
+    Number of shares where this template has been applied.
     """
     shareCount: Int
 }
@@ -8860,22 +8827,19 @@ type FilesetTemplateDetailListResponse {
     """
 
     Supported in v5.0+
-    v5.0-v5.3: List of matching objects
-    v6.0: List of matching objects.
+    List of matching objects.
     """
     data: [FilesetTemplateDetail!]!
     """
 
     Supported in v5.0+
-    v5.0-v5.3: If there is more
-    v6.0: If there is more.
+    If there is more.
     """
     hasMore: Boolean
     """
 
     Supported in v5.0+
-    v5.0-v5.3: Total list responses
-    v6.0: Total list responses.
+    Total list responses.
     """
     total: Long
 }
@@ -9443,11 +9407,6 @@ type GetAppBlueprintSnapshotCloudImagesRsp {
     snapshotCloudImages: [AppBlueprintSnapshotCloudImage!]!
 }
 
-"A list of availability zones in the given region."
-type GetAvailabilityZonesFromAwsReply {
-    availabilityZones: [String!]!
-}
-
 type GetAzureHostTypeResp {
     hostType: AzureHostTypeEnum!
 }
@@ -9688,36 +9647,31 @@ type HdfsBaseConfig {
     """
 
     Supported in v5.2+
-    v5.2-v5.3: API token to access Hdfs
-    v6.0: API token to access Hdfs.
+    API token to access Hdfs.
     """
     apiToken: String
     """
 
     Required. Supported in v5.2+
-    v5.2-v5.3: List of Hdfs Namenode Hosts
-    v6.0: List of Hdfs Namenode Hosts.
+    List of Hdfs Namenode Hosts.
     """
     hosts: [HdfsHost!]!
     """
 
     Supported in v5.2+
-    v5.2-v5.3: Ticket Cache Path of Kerberos Ticket
-    v6.0: Ticket Cache Path of Kerberos Ticket.
+    Ticket Cache Path of Kerberos Ticket.
     """
     kerberosTicket: String
     """
 
     Supported in v5.2+
-    v5.2-v5.3: Logical name for nameservice for Hdfs HA
-    v6.0: Logical name for nameservice for Hdfs HA.
+    Logical name for nameservice for Hdfs HA.
     """
     nameservices: String
     """
 
     Supported in v5.2+
-    v5.2-v5.3: Username to access Hdfs API
-    v6.0: Username to access Hdfs API.
+    Username to access Hdfs API.
     """
     username: String
 }
@@ -9730,15 +9684,13 @@ type HdfsHost {
     """
 
     Required. Supported in v5.2+
-    v5.2-v5.3: Hostname or Ip of Namenode
-    v6.0: Hostname or Ip of Namenode.
+    Hostname or Ip of Namenode.
     """
     hostname: String!
     """
 
     Required. Supported in v5.2+
-    v5.2-v5.3: Port number of Namenode
-    v6.0: Port number of Namenode.
+    Port number of Namenode.
     """
     port: Int!
 }
@@ -9851,8 +9803,7 @@ type HostDetail {
     """
 
     Supported in v5.0+
-    v5.0-v5.3: A relic host is deleted, but still may have snapshots associated with its children (e.g. Fileset)
-    v6.0: A relic host is deleted, but still may have snapshots associated with its children (e.g. Fileset).
+    A relic host is deleted, but still may have snapshots associated with its children (e.g. Fileset).
     """
     isRelic: Boolean!
     """
@@ -9872,8 +9823,7 @@ type HostDetail {
     """
 
     Supported in v5.0+
-    v5.0-v5.3: Specifies the Oracle username for an account with sysdba privileges.
-    v6.0: Specifies the Oracle username for an account with sysdba privileges.
+    Specifies the Oracle username for an account with sysdba privileges.
     """
     oracleSysDbaUser: String
 }
@@ -9886,22 +9836,19 @@ type HostDetailListResponse {
     """
 
     Supported in v5.0+
-    v5.0-v5.3: List of matching objects
-    v6.0: List of matching objects.
+    List of matching objects.
     """
     data: [HostDetail!]!
     """
 
     Supported in v5.0+
-    v5.0-v5.3: If there is more
-    v6.0: If there is more.
+    If there is more.
     """
     hasMore: Boolean
     """
 
     Supported in v5.0+
-    v5.0-v5.3: Total list responses
-    v6.0: Total list responses.
+    Total list responses.
     """
     total: Long
 }
@@ -10168,8 +10115,7 @@ type HostSummary {
     """
 
     Supported in v5.0+
-    v5.0-v5.3: Property that indicates whether CBT is enabled for backups of SQL Server databases on a Windows host. Set to Enabled when CBT based backups of SQL Server databases for the specified Windows host is enabled. Set to Disabled when CBT based backups of SQL Server databases for the specified Windows host is turned off. Set to Default when the Windows host inherits the global CBT setting
-    v6.0: Property that indicates whether CBT is enabled for backups of SQL Server databases on a Windows host. Set to Enabled when CBT based backups of SQL Server databases for the specified Windows host is enabled. Set to Disabled when CBT based backups of SQL Server databases for the specified Windows host is turned off. Set to Default when the Windows host inherits the global CBT setting.
+    Property that indicates whether CBT is enabled for backups of SQL Server databases on a Windows host. Set to Enabled when CBT based backups of SQL Server databases for the specified Windows host is enabled. Set to Disabled when CBT based backups of SQL Server databases for the specified Windows host is turned off. Set to Default when the Windows host inherits the global CBT setting.
     """
     mssqlCbtEnabled: MssqlCbtStatusTypeEnum!
     """
@@ -10856,6 +10802,7 @@ type K8sCluster implements HierarchyObject & PolarisHierarchyObject {
         sortBy: HierarchySortByField,
         sortOrder: HierarchySortOrder
     ): K8sNamespaceConnection!
+    lastRefreshTime: DateTime
     "A sequential list containing this object's logical ancestors."
     logicalPath: [PathNode!]!
     "The name of the hierarchy object."
@@ -11155,8 +11102,9 @@ type LinuxFileset implements CdmHierarchyObject & CdmHierarchySnappableNew & Fai
     effectiveSlaDomain: SlaDomain!
     "The path node of the effective SLA source"
     effectiveSlaSourceObject: PathNode
+    failoverClusterApp: FailoverClusterApp
     hardlinkSupportEnabled: Boolean!
-    host: PhysicalHost!
+    host: PhysicalHost
     "The fid of the hierarchy object."
     id: UUID!
     isPassThrough: Boolean!
@@ -11287,8 +11235,7 @@ type ManagedObjectPendingSlaInfo {
     """
 
     Supported in v5.2+
-    v5.2-v5.3: Managed ID of the object
-    v6.0: Managed ID of the object.
+    Managed ID of the object.
     """
     objectId: String!
     """
@@ -12136,11 +12083,7 @@ type Mutation {
     bulkCreateFilesets(
         "UUID used to identify the cluster the request goes to"
         clusterUuid: String!,
-        """
-
-        v5.0-v5.3: For each fileset, specify a template id along with either host id or share id. If a share id is provided, the host id will be inferred from the host share
-        v6.0: For each fileset, specify a template id along with either host id or share id. If a share id is provided, the host id will be inferred from the host share.
-        """
+        "For each fileset, specify a template id along with either host id or share id. If a share id is provided, the host id will be inferred from the host share."
         definitions: [FilesetCreateInput!]!
     ): FilesetDetailListResponse!
     bulkDeleteFilesetTemplates(
@@ -12191,6 +12134,10 @@ type Mutation {
         clusterUuid: UUID!
     ): CancelJobReply!
     cancelTaskchain(taskchainId: String!): RequestStatus!
+    changePassword(
+        "User credentials required to change a user's password."
+        input: ChangePasswordInput!
+    ): Boolean!
     cleanupBlueprintFailover(cleanupJobconfig: CleanupFailoverJobInfo!): CreateOnDemandJobReply!
     "Check RBA connectivity for the VMs"
     cloudNativeCheckRBAConnectivity(
@@ -12235,13 +12182,6 @@ type Mutation {
         "Request for creating a new Aws Compute Setting"
         awsComputeSettingsCreateRequest: AwsComputeSettingsCreateRequest!
     ): AwsComputeSettings!
-    "Create snapshots of EBS Volumes with given IDs"
-    createAwsNativeEbsVolumeSnapshots(
-        "List of UUIDs of the EBS Volumes"
-        ebsVolumeIds: [UUID!]!,
-        retentionSlaId: String
-    ): CreateAwsNativeEbsVolumeSnapshotsReply!
-    createAwsNativeEc2InstanceSnapshots(ec2InstanceIds: [UUID!]!, retentionSlaId: String): CreateAwsNativeEc2InstanceSnapshotsReply!
     "Create snapshots of RDS Instances with given IDs"
     createAwsNativeRdsInstanceSnapshot(
         "List of UUIDs of the RDS Instances"
@@ -12255,6 +12195,16 @@ type Mutation {
         "Request arg for creating a new Azure account"
         azureAccountCreateRequest: AzureAccountCreateRequest!
     ): CloudAccount!
+    "Create a disk based azure cluster in Azure."
+    createAzureDiskCluster(
+        "CreateAzureDiskClusterArg params for Azure."
+        input: CreateAzureDiskClusterInput!
+    ): AzureDiskClusterCreateReply!
+    "Create a disk based cluster in Azure."
+    createAzureDiskClusterAsync(
+        "CreateAzureDiskClusterArg params for Azure."
+        input: CreateAzureDiskClusterInput!
+    ): CcProvisionJobReply!
     "Trigger azure native create disk snapshot job for given disk IDs"
     createAzureNativeDiskSnapshots(
         "List of Disk IDs"
@@ -12349,11 +12299,7 @@ type Mutation {
     createFilesetSnapshot(
         "Configuration for the on-demand backup."
         config: BaseOnDemandSnapshotConfigInput!,
-        """
-
-        v5.0-v5.3: ID of the Fileset
-        v6.0: ID of the Fileset.
-        """
+        "ID of the Fileset."
         id: String!
     ): AsyncRequestStatus!
     createGlobalSla(globalSlaCreateRequest: GlobalSlaCreateRequest!): GlobalSla!
@@ -12377,11 +12323,7 @@ type Mutation {
     createSapHanaDatabaseSnapshot(
         "Configuration for the on demand backup."
         config: BaseOnDemandSnapshotConfigInput!,
-        """
-
-        v5.0-v5.3: ID of the Fileset
-        v6.0: ID of the Fileset.
-        """
+        "ID of the Fileset."
         id: String!
     ): AsyncRequestStatus!
     createScheduledReport(scheduledReport: ScheduledReportCreate!): ScheduledReport!
@@ -12427,7 +12369,11 @@ type Mutation {
         "Id of aws compute setting."
         awsComputeSettingId: UUID!
     ): DeleteAwsCloudComputeSettingReply!
-    deleteAwsNativeAccount(awsNativeAccountId: UUID!, awsNativeProtectionFeature: AwsNativeProtectionFeatureEnum!, deleteNativeSnapshots: Boolean!): DeleteAwsNativeAccountReply!
+    "Delete a disk based cluster in Azure."
+    deleteAzureDiskCluster(
+        "DeleteAzureDiskClusterInput params for Azure."
+        input: DeleteAzureDiskClusterInput!
+    ): DeleteAzureDiskClusterReply!
     "Deletes an azure subscription."
     deleteAzureNativeSubscription(
         "If the snapshots on Azure should be deleted along with the subscription."
@@ -12457,8 +12403,6 @@ type Mutation {
     deleteCustomReport(id: Int!): Int!
     deleteEventDigest(recipientUserIDs: [String!]!): Boolean!
     deleteFailoverCluster(
-        "UUID used to identify the cluster the request goes to"
-        clusterUuid: String!,
         "ID of the failover cluster."
         id: String!,
         """
@@ -12564,19 +12508,35 @@ type Mutation {
     deleteUsersFromAccount(ids: [String!]!): Boolean!
     downloadFile(fileType: FileTypeEnum!, reportConfig: ReportConfigInput, reportID: Int!): reportGenerateReply!
     downloadFilesetSnapshot(
-        """
-
-        v5.0-v5.3: ID of snapshot
-        v6.0: ID of snapshot.
-        """
+        "ID of snapshot."
         id: String!
     ): AsyncRequestStatus!
+    "Schedule a download CSV job for cross object files."
+    downloadObjectFilesCsv(
+        "Request for scheduling a download CSV job for cross object files."
+        DownloadObjectFilesCsvInput: DownloadObjectFilesCsvInput!
+    ): DownloadCsvReply!
+    "Schedule a download CSV job for objects list."
+    downloadObjectsListCsv(
+        "Request for scheduling a download CSV job for objects list."
+        DownloadObjectsListCsvInput: DownloadObjectsListCsvInput!
+    ): DownloadCsvReply!
     downloadReportCSVAsync(config: CustomReportCreate, id: Int!): AsyncDownloadReply!
     downloadReportPDFAsync(config: CustomReportCreate, id: Int!): AsyncDownloadReply!
     "Download file results csv"
     downloadResultsCsv(crawlId: String!, downloadFilter: DownloadResultsCsvFiltersInput): DownloadResultsCsvReply!
     "Download snapshot policy results csv"
-    downloadSnapshotResultsCsv(downloadFilter: DownloadResultsCsvFiltersInput, snappableFid: String!, snapshotFid: String!): DownloadSnapshotResultsCsvReply!
+    downloadSnapshotResultsCsv(downloadFilter: DownloadResultsCsvFiltersInput, snappableFid: String!, snapshotFid: String!): DownloadCsvReply!
+    "Schedule a download CSV job for a user's activity."
+    downloadUserActivityCsv(
+        "Request for scheduling a download CSV job for a user's activity."
+        DownloadUserActivityCsvInput: DownloadUserActivityCsvInput!
+    ): DownloadCsvReply!
+    "Schedule a download CSV job for user activity on a specific file."
+    downloadUserFileActivityCsv(
+        "Request for scheduling a download CSV job for a user activity on a specific file."
+        DownloadUserFileActivityCsvInput: DownloadUserFileActivityCsvInput!
+    ): DownloadCsvReply!
     editAutomaticAwsTargetMapping(automaticAwsTargetMappingEditRequest: AutomaticAwsTargetMappingEditRequest!): TargetMapping!
     editAutomaticAzureTargetMapping(automaticAzureTargetMappingEditRequest: AutomaticAzureTargetMappingEditRequest!): TargetMapping!
     editAwsAccount(
@@ -12656,30 +12616,17 @@ type Mutation {
         snappableId: UUID!
     ): EnableLambdaForSnappableReply!
     enableO365SharePoint(exocomputeClusterId: String!): RequestStatus!
+    "Mark AWS native EBS volumes to be excluded from EC2 Instance snapshot."
+    excludeAwsNativeEbsVolumesFromSnapshot(
+        "Input to mark EBS volumes to be excluded for EC2 snapshot."
+        input: ExcludeAwsNativeEbsVolumeFromSnapshotInput!
+    ): String!
     excludeDisksFromSnapshot(
         "Mapping from disk ID to excluded flag"
         diskIdToIsExcluded: [DiskIdToIsExcluded!]!,
         "Virtual Machine ID"
         vmId: UUID!
     ): String!
-    excludeVolumesFromSnapshot(ec2InstanceId: UUID!, volumeIdsToIsExcluded: [VolumeIdToIsExcluded!]!): String!
-    exportAwsNativeEbsVolumeSnapshot(
-        availabilityZone: String!,
-        "Target AWS account ID for the EC2 instance snapshot export"
-        destinationAwsNativeAccountId: UUID!,
-        destinationRegionNativeId: AwsNativeRegionEnum!,
-        iops: Int!,
-        kmsKeyId: String,
-        replaceAttached: Boolean!,
-        shouldCopyTags: Boolean!,
-        "UUID of the snapshot"
-        snapshotId: String!,
-        "Specifies if the volume should be exported using the replica"
-        useReplica: Boolean!,
-        volumeName: String!,
-        volumeSize: Int!,
-        volumeType: AwsNativeEbsVolumeTypeEnum!
-    ): ExportEbsVolumeSnapshotReply!
     "Trigger azure native export disk job for given snapshot"
     exportAzureNativeDisk(
         "Availability Zone in which to export the disk, empty for regions types which do not support availability zones"
@@ -12736,25 +12683,6 @@ type Mutation {
         "Size of the exported virtual machine"
         vmSize: String!
     ): ExportVMReply!
-    exportEc2InstanceSnapshot(
-        copyTags: Boolean!,
-        "Target AWS account ID for the EC2 instance snapshot export"
-        destinationAwsNativeAccountId: UUID!,
-        destinationRegionId: AwsNativeRegionEnum!,
-        "Specifies whether to export the instance with the power off"
-        exportInstanceInPoweredOffState: Boolean,
-        instanceName: String!,
-        instanceType: AwsNativeEc2InstanceTypeEnum!,
-        kmsKeyId: String,
-        securityGroupIds: [String!]!,
-        "UUID of the snapshot"
-        snapshotId: String!,
-        "Name of the key pair for the exported instance"
-        sshKeyPairName: String,
-        subnetId: String!,
-        "Specifies if the instance should be exported using the replica"
-        useReplica: Boolean!
-    ): ExportEc2InstanceSnapshotReply!
     exportO365Mailbox(exportConfig: ExportO365MailboxInput!): CreateOnDemandJobReply!
     "Export of RDS Instance with given identifier"
     exportRdsInstance(
@@ -12822,11 +12750,7 @@ type Mutation {
         "The configuration of a job that exports one or more files or folders from a fileset backup."
         config: FilesetExportFilesJobConfigInput!,
         deltaTypeFilter: [DeltaTypeEnum!],
-        """
-
-        v5.0-v5.3: ID of snapshot
-        v6.0: ID of snapshot.
-        """
+        "ID of snapshot."
         id: String!,
         nextSnapshotFid: UUID,
         "os type"
@@ -13093,7 +13017,6 @@ type Mutation {
         "Corresponds to ID of target in Polaris"
         targetId: UUID!
     ): TargetPauseResult!
-    refreshAwsNativeAccounts(awsNativeAccountIds: [UUID!]!, awsNativeProtectionFeatures: [AwsNativeProtectionFeatureEnum!]!): RefreshAwsAccountsReply!
     "Trigger azure native refresh subscription job for the given subscription IDs"
     refreshAzureNativeSubscriptions(
         "List of Subscription IDs"
@@ -13127,14 +13050,6 @@ type Mutation {
     ): Boolean!
     "Remove policies from objects."
     removePolicyObjects(objectIds: [String!]!, policyIds: [String!]!, runAsync: Boolean!): [String!]!
-    restoreAwsNativeEc2InstanceSnapshot(
-        shouldPowerOn: Boolean!,
-        shouldRestoreTags: Boolean!,
-        "UUID of the snapshot"
-        snapshotId: String!,
-        "Type of snapshot to use for restore if the source snapshot is expired. If the souce snapshot exists, this value will be ignored"
-        snapshotTypeToUseIfSourceExpired: SnapshotTypeToUseIfSourceExpired
-    ): RestoreEc2InstanceSnapshotReply!
     "Trigger azure native restore virtual machine job for given snapshot"
     restoreAzureNativeVirtualMachine(
         "Whether to power on virtual machine after restoring"
@@ -13144,10 +13059,16 @@ type Mutation {
         "Snapshot ID"
         snapshotId: UUID!
     ): RestoreVMReply!
+    "Restore Kubernetes Namespace Snapshot."
+    restoreK8sNamespace(
+        "Request to restore K8s Namespace Snapshot."
+        k8sNamespaceRestoreRequest: K8sNamespaceRestore!
+    ): CreateOnDemandJobReply!
     restoreO365Mailbox(restoreConfig: RestoreO365MailboxInput!): CreateOnDemandJobReply!
     restoreO365Onedrive(destOnedriveUUID: UUID!, filesToRestore: [FileInfo!]!, foldersToRestore: [FolderInfo!]!, restoreFolderPath: String!, sourceOnedriveUUID: UUID!): CreateOnDemandJobReply!
     restoreO365SharepointDrive(destSharepointDriveUUID: UUID!, filesToRestore: [FileInfo!]!, foldersToRestore: [FolderInfo!]!, restoreFolderPath: String!, sourceSharepointDriveUUID: UUID!): CreateOnDemandJobReply!
     restoreO365Snappable(destSnappableUUID: UUID!, snappableRestoreConfig: SnappableRestoreConfig!, snappableType: SnappableTypeEnum!, sourceSnappableUUID: UUID!): CreateOnDemandJobReply!
+    restoreO365TeamsFiles(destTeamsChannelInfo: TeamsChannelInfo!, filesToRestore: [FileInfo!]!, foldersToRestore: [FolderInfo!]!, restoreFolderPath: String!, sourceTeamsChannelInfo: TeamsChannelInfo!): CreateOnDemandJobReply!
     resumeTarget(
         "Corresponds to ID of target in Polaris"
         targetId: UUID!
@@ -13291,9 +13212,26 @@ type Mutation {
         "Request for snapshot of K8s Namespace."
         k8sNamespaceSnapshotRequest: K8sNamespaceSnapshot!
     ): CreateOnDemandJobReply!
+    "Trigger job to disable AWS native account and disable protection."
+    startAwsNativeAccountDisableJob(
+        "Input for AWS native account disable job."
+        input: StartAwsNativeAccountDisableJobInput!
+    ): AsyncJobStatus!
+    "Trigger an on demand create snapshot job for AWS EC2 Instances."
+    startAwsNativeEc2InstanceSnapshotsJob(
+        "Input for create AWS EC2 Instance snapshots job."
+        input: StartAwsNativeEc2InstanceSnapshotsJobInput!
+    ): BatchAsyncJobStatus!
     startBlueprintFailover(failoverJobConfig: BlueprintFailoverJobConfig!): CreateOnDemandJobReply!
+    "Start failover jobs for multiple blueprints."
+    startBlueprintsFailover(failoverJobConfigs: [BlueprintFailoverJobConfig!]!): CreateOnDemandJobReply!
     "Start a crawl"
     startCrawl(analyzerGroups: [AnalyzerGroupInput!]!, extWhiteList: [String!], name: String!, resources: [ResourceInput!]!): StartCrawlReply!
+    "Trigger job to create snapshots of EBS Volumes with given IDs"
+    startCreateAwsNativeEbsVolumeSnapshotsJob(
+        "Input for create AWS EBS volume create snapshots job."
+        input: StartAwsNativeEbsVolumeSnapshotsJobInput!
+    ): BatchAsyncJobStatus!
     "Starts CDM job to download installer package in batch"
     startDownloadPackageBatchJob(
         "CDM download package version"
@@ -13320,11 +13258,28 @@ type Mutation {
         "Size, in bytes of CDM package"
         size: Long
     ): DownloadPackageReply!
+    startEc2InstanceSnapshotExportJob(
+        "Input to trigger export AWS native EC2 Instance snapshot job."
+        input: StartAwsNativeEc2InstanceSnapshotExportJobInput!
+    ): AsyncJobStatus!
+    startExportAwsNativeEbsVolumeSnapshotJob(
+        "Input to trigger export AWS native EBS volume snapshot job."
+        input: StartAwsNativeEbsVolumeSnapshotExportJobInput!
+    ): AsyncJobStatus!
     "Starts an on demand periodic upgrade prechecks job in CDM cluster"
     startPeriodicUpgradePrechecksOnDemandJob(
         "Cluster uuid"
         clusterUuid: UUID!
     ): PrechecksJobReply!
+    startRefreshAwsNativeAccountsJob(
+        "Input for refresh AWS native accounts job."
+        input: StartAwsNativeAccountsRefreshJobInput!
+    ): BatchAsyncJobStatus!
+    "Trigger an on demand restore snapshot job for AWS EC2 Instance."
+    startRestoreAwsNativeEc2InstanceSnapshotJob(
+        "Input for restore AWS EC2 Instance snapshot job."
+        input: StartRestoreAwsNativeEc2InstanceSnapshotJobInput!
+    ): AsyncJobStatus!
     "Starts the upgrade with given tarball path"
     startUpgrade(
         "Cluster uuid"
@@ -13458,8 +13413,6 @@ type Mutation {
     "Update Eula Acceptance details"
     updateEulaAccepted: Boolean!
     updateFailoverCluster(
-        "UUID used to identify the cluster the request goes to"
-        clusterUuid: String!,
         "ID of failover cluster."
         id: String!,
         "Properties to update."
@@ -13552,6 +13505,11 @@ type Mutation {
         "Flag to represent if it should validate snapshot recovery spec"
         validateSnapshotRecoverySpec: Boolean
     ): RecoverySpecValidityCheckReply!
+    "Validate the resource mapping of the given blueprint's child snappables for the given recovery point."
+    validateBlueprintResourceMapping(
+        "Resource mapping validation config."
+        input: ValidateBlueprintResourceMappingInput!
+    ): ValidateBlueprintResourceMappingReply!
     vpshereVMRecoveryPointMount(createDatastoreOnly: Boolean, datastoreName: String, disableNetwork: Boolean, hostID: String, keepMacAddresses: Boolean, powerOn: Boolean, recoveryPoint: String, removeNetworkDevices: Boolean, shouldRecoverTags: Boolean, snappableFid: UUID!, snapshotFid: UUID, unregsiterVm: Boolean, vlan: Int, vmName: String): vSphereAsyncRequestStatus!
     vsphereCreateVCenter(caCert: String, clusterUuid: UUID!, conflictResolutionAuthz: ConflictResolutionAuthzEnum!, hostname: String!, password: String!, username: String!): vSphereAsyncRequestStatus!
     vsphereDeleteVCenter(vcenterId: UUID!): vSphereAsyncRequestStatus!
@@ -13684,22 +13642,19 @@ type NasBaseConfig {
     """
 
     Supported in v5.0+
-    v5.0-v5.3: TLS certification to validate NAS server
-    v6.0: TLS certification to validate NAS server.
+    TLS certification to validate NAS server.
     """
     apiCertificate: String
     """
 
     Supported in v5.0+
-    v5.0-v5.3: API endpoint to access NAS API 'FLASHBLADE'
-    v6.0: API endpoint to access NAS API 'FLASHBLADE'.
+    API endpoint to access NAS API 'FLASHBLADE'.
     """
     apiEndpoint: String
     """
 
     Supported in v5.0+
-    v5.0-v5.3: Hostname or IP used in the NAS API calls
-    v6.0: Hostname or IP used in the NAS API calls.
+    Hostname or IP used in the NAS API calls.
     """
     apiHostname: String
     """
@@ -13738,15 +13693,13 @@ type NasBaseConfig {
     """
 
     Supported in v5.0+
-    v5.0-v5.3: Type of NAS vendor 'ISILON/NETAPP/FLASHBLADE'
-    v6.0: Type of NAS vendor 'ISILON/NETAPP/FLASHBLADE'.
+    Type of NAS vendor 'ISILON/NETAPP/FLASHBLADE'.
     """
     vendorType: String!
     """
 
     Supported in v5.0+
-    v5.0-v5.3: Name of the Isilon zone that data IP belongs to
-    v6.0: Name of the Isilon zone that data IP belongs to.
+    Name of the Isilon zone that data IP belongs to.
     """
     zoneName: String
 }
@@ -14842,7 +14795,6 @@ type O365Teams implements HierarchyObject & HierarchySnappable & O365OrgDescenda
     effectiveSlaDomain: SlaDomain!
     "The path node of the effective SLA source"
     effectiveSlaSourceObject: PathNode
-    groupMailboxID: String
     "object id"
     id: UUID!
     isRelic: Boolean!
@@ -14866,7 +14818,6 @@ type O365Teams implements HierarchyObject & HierarchySnappable & O365OrgDescenda
     orgID: String!
     "A sequential list containing this object's physical ancestors."
     physicalPath: [PathNode!]!
-    sharepointDriveID: String
     "The assignmennt type for this object's SLA"
     slaAssignment: SlaAssignmentTypeEnum!
     "The list of snapshots taken for this snappable"
@@ -15454,6 +15405,38 @@ type PendingActionType {
     pendingActionSyncType: PendingActionSyncTypeEnum!
 }
 
+"Detailed information about objects passing through the Radar pipeline."
+type PendingEvaluationResults {
+    "Unique UUID of the cluster."
+    clusterUuid: String!
+    "Date that this object was created in Radar."
+    createdAt: DateTime
+    "Information about this object within the Radar pipeline."
+    info: String!
+    "Determines whether a result is still pending in the Radar pipeline."
+    isCompleted: Boolean!
+    "Internally used ID to manage permissions of this object."
+    managedId: String!
+    "Internally used ID to specify snappable."
+    snappableId: String!
+    "Snappable name."
+    snappableName: String!
+    "Type of snappable."
+    snappableType: String!
+    "Date that this snapshot was performed."
+    snapshotDate: DateTime
+    "Internally used ID to specify snapshot."
+    snapshotId: String!
+    "Date that this object was last updated in Radar."
+    updatedAt: DateTime
+}
+
+"Count and detailed information about items pending in Radar pipeline."
+type PendingEvaluationResultsReply {
+    count: Long!
+    pendingEvaluationResults: [PendingEvaluationResults!]!
+}
+
 type PendingSnapshotDeletion {
     snapshotFid: UUID!
     status: PendingActionStatusEnum!
@@ -15724,6 +15707,7 @@ type PolarisSLASyncStatus {
 }
 
 type PolarisSnapshot implements GenericSnapshot {
+    consistencyLevel: SnapshotConsistencyLevelEnum!
     date: DateTime!
     expirationDate: DateTime
     expiryHint: Boolean!
@@ -15822,6 +15806,20 @@ type PolarisSnapshotGroupByNewConnection {
 type PolarisSnapshotGroupByNewEdge {
     cursor: String!
     node: PolarisSnapshotGroupByNew!
+}
+
+"Status of various CDM-to-Polaris data syncing jobs."
+type PolarisSyncStatus {
+    "Last success time of the cluster syncing job."
+    clusterSyncLastSuccessTime: DateTime
+    "Last success time of the events syncing job."
+    eventsSyncLastSuccessTime: DateTime
+    "Last success time of the job-monitoring dashboard syncing job."
+    jobMonitoringSyncLastSuccessTime: DateTime
+    "Last success time of the object metadata syncing job."
+    objectMetadataSyncLastSuccessTime: DateTime
+    "Last success time of the reports syncing job."
+    reportsSyncLastSuccessTime: DateTime
 }
 
 type PolicyObj {
@@ -16061,8 +16059,6 @@ type Query {
         "aws region argument for archival use case"
         region: AwsRegionEnum!
     ): AwsCloudAccountListVpcResponse!
-    "Returns a list of availability zones in the specified region on the specified AWS account"
-    GetAvailabilityZonesFromAws(awsNativeAccountId: UUID!, region: AwsNativeRegionEnum!): GetAvailabilityZonesFromAwsReply!
     "This endpoint is deprecated."
     accountSettings: AccountSetting!
     activeCustomAnalyzerConnection: AnalyzerConnection!
@@ -16111,6 +16107,38 @@ type Query {
         objectCategories: [String!],
         objectSids: [String!]
     ): ADObjectConnection!
+    "Returns a list of availability zones in the specified region on the specified AWS account"
+    allAvailabilityZonesByRegionFromAws(awsNativeAccountId: UUID!, region: AwsNativeRegionEnum!): [String!]!
+    "Get CDM versions a ServicePrincipal in Azure."
+    allAzureCdmVersions(
+        "CDM version request params for Azure."
+        cdmVersionRequest: cdmVersionRequest!
+    ): [String!]!
+    "Get all available Nsgs for Azure."
+    allAzureNsgs(
+        "Nsg request params for Azure."
+        nsgRequest: nsgRequest!
+    ): [String!]!
+    "Get all available locations for Azure."
+    allAzureRegions(
+        "Authorization for an Azure account."
+        servicePrincipal: servicePrincipal!
+    ): [String!]!
+    "Get resource groups for a service principal in Azure."
+    allAzureResourceGroups(
+        "Authorization for an Azure account."
+        servicePrincipal: servicePrincipal!
+    ): [String!]!
+    "Get subnets for a given account in Azure."
+    allAzureSubnets(
+        "Subnet request params for Azure."
+        subnetRequest: subnetRequest!
+    ): [String!]!
+    "Get vnets for a given account in Azure."
+    allAzureVnets(
+        "Vnet request params for Azure."
+        vnetRequest: vnetRequest!
+    ): [String!]!
     allClusterConnection(
         "Returns the elements in the list that come after the specified cursor."
         after: String,
@@ -16126,8 +16154,31 @@ type Query {
         "cluster sort order"
         sortOrder: SortOrderEnum = Desc
     ): ClusterConnection!
+    "fetch all key pairs for given region"
+    allEc2KeyPairsFromAws(awsNativeAccountId: UUID!, region: AwsNativeRegionEnum!): [String!]!
+    "List user activity for a specific file on a specific snapshot."
+    allFileActivities(
+        "Filters to apply when listing a file's user activities."
+        FileActivitiesFilter: FileActivitiesFilter!,
+        "Sorts to apply when listing a file's user activities."
+        FileActivitiesSort: FileActivitiesSort!,
+        "Request for getting user activity for a specific path on a specific snapshot."
+        ListFileActivitiesInput: ListFileActivitiesInput!,
+        "Returns the elements in the list that come after the specified cursor."
+        after: String,
+        "Returns the elements in the list that come before the specified cursor."
+        before: String,
+        "Returns the first n elements from the list."
+        first: Int,
+        "Returns the last n elements from the list."
+        last: Int
+    ): UserActivityResultConnection!
     allHostedAzureRegions: AzureRegionsResp!
+    "Returns a list of encryption keys in the specified region on the specified AWS account"
+    allKmsEncryptionKeysByRegionFromAws(awsNativeAccountId: UUID!, region: AwsNativeRegionEnum!): [KMSEncryptionKeyType!]!
     allReportConfigs(dataView: DataViewTypeEnum): [ReportConfig!]!
+    "Returns a list of all s3 buckets across regions for the aws account"
+    allS3BucketsFromAws(awsNativeAccountId: UUID!): [String!]!
     allUsersOnAccountConnection(
         "Returns the elements in the list that come after the specified cursor."
         after: String,
@@ -16143,7 +16194,10 @@ type Query {
         "sort order"
         sortOrder: SortOrderEnum
     ): UserConnection!
-    allVpcsInRegion(awsNativeAccountId: UUID!, region: AwsNativeRegionEnum!): [AwsVpc!]!
+    "Returns the list of Vpcs in the AWS account by region"
+    allVpcsByRegionFromAws(awsNativeAccountId: UUID!, region: AwsNativeRegionEnum!): [AwsVpc!]!
+    "Returns the list of Vpcs in the AWS account"
+    allVpcsFromAws(awsNativeAccountId: UUID): [AwsVpc!]!
     analyzerGroupConnection: AnalyzerGroupConnection!
     "Returns which policies are using each analyzer"
     analyzerUsageConnection: AnalyzerUsageConnection!
@@ -16230,7 +16284,8 @@ type Query {
         "The Polaris UUID for the object."
         fid: UUID!
     ): AwsNativeAccount!
-    awsNativeAccountConnection(
+    "Paginated list of AWS native accounts."
+    awsNativeAccounts(
         accountFilters: AwsNativeAccountFilters,
         "Returns the elements in the list that come after the specified cursor."
         after: String,
@@ -16246,11 +16301,13 @@ type Query {
         sortBy: AwsNativeAccountSortFieldsEnum,
         sortOrder: HierarchySortOrder
     ): AwsNativeAccountConnection!
+    "Fetch AWS EBS Volume by ID."
     awsNativeEbsVolume(
-        "The Polaris UUID for the object."
-        fid: UUID!
+        "The Rubrik UUID for the AWS EBS Volume object."
+        ebsVolumeRubrikId: UUID!
     ): AwsNativeEbsVolume!
-    awsNativeEbsVolumeConnection(
+    "Paginated list of AWS EBS Volumes"
+    awsNativeEbsVolumes(
         "Returns the elements in the list that come after the specified cursor."
         after: String,
         "Returns the elements in the list that come before the specified cursor."
@@ -16264,16 +16321,50 @@ type Query {
         sortBy: AwsNativeEbsVolumeSortFieldsEnum,
         sortOrder: HierarchySortOrder
     ): AwsNativeEbsVolumeConnection!
+    "Fetch connection for all AWS EBS Volumes by name or substring of name."
+    awsNativeEbsVolumesByName(
+        "Returns the elements in the list that come after the specified cursor."
+        after: String,
+        "Returns the elements in the list that come before the specified cursor."
+        before: String,
+        "The native name for the AWS EBS Volume object."
+        ebsVolumeName: String!,
+        "Returns the first n elements from the list."
+        first: Int,
+        "Returns the last n elements from the list."
+        last: Int,
+        "Sort fields for list of AWS EBS volumes."
+        sortBy: AwsNativeEbsVolumeSortFieldsEnum,
+        sortOrder: HierarchySortOrder
+    ): AwsNativeEbsVolumeConnection!
+    "Fetch AWS EC2 Instance by ID."
     awsNativeEc2Instance(
-        "The Polaris UUID for the object."
-        fid: UUID!
+        "The Rubrik UUID for the AWS EC2 Instance object."
+        ec2InstanceRubrikId: UUID!
     ): AwsNativeEc2Instance!
-    awsNativeEc2InstanceConnection(
+    "Paginated list of AWS EC2 Instances"
+    awsNativeEc2Instances(
         "Returns the elements in the list that come after the specified cursor."
         after: String,
         "Returns the elements in the list that come before the specified cursor."
         before: String,
         ec2InstanceFilters: AwsNativeEc2InstanceFilters,
+        "Returns the first n elements from the list."
+        first: Int,
+        "Returns the last n elements from the list."
+        last: Int,
+        "Sort fields for list of AWS EC2 instances."
+        sortBy: AwsNativeEc2InstanceSortFieldsEnum,
+        sortOrder: HierarchySortOrder
+    ): AwsNativeEc2InstanceConnection!
+    "Fetch connection for all AWS EC2 Instances by name or substring of name."
+    awsNativeEc2InstancesByName(
+        "Returns the elements in the list that come after the specified cursor."
+        after: String,
+        "Returns the elements in the list that come before the specified cursor."
+        before: String,
+        "The native name for the AWS EC2 Instance object."
+        ec2InstanceName: String!,
         "Returns the first n elements from the list."
         first: Int,
         "Returns the last n elements from the list."
@@ -16300,8 +16391,6 @@ type Query {
         sortBy: AwsNativeRdsInstanceSortFieldsEnum,
         sortOrder: HierarchySortOrder
     ): AwsNativeRdsInstanceConnection!
-    "Returns the list of Vpcs in the AWS account"
-    awsNativeVpcs(awsNativeAccountId: UUID): [AwsVpc!]!
     "Check the permissions on Azure subscriptions and pass the missing permissions."
     azureCheckPermissionsOnSubscription(
         "The cloud account action"
@@ -16565,22 +16654,8 @@ type Query {
         "Corresponds to snapshot ID in CDM tables"
         snapshotId: String!
     ): DiffFMDReply!
-    browseEmailFolder(
-        "Returns the elements in the list that come after the specified cursor."
-        after: String,
-        "Returns the first n elements from the list."
-        first: Int,
-        folderId: String!,
-        orgId: UUID!,
-        snappableFid: UUID!,
-        snapshotFid: UUID!
-    ): O365ExchangeObjectConnection!
     browseFilesetSnapshot(
-        """
-
-        v5.0-v5.3: ID of snapshot
-        v6.0: ID of snapshot.
-        """
+        "ID of snapshot."
         id: String!,
         "Maximum number of entries in the response."
         limit: Int,
@@ -16693,8 +16768,6 @@ type Query {
         "the id of the blueprint"
         blueprintId: UUID!
     ): CheckGuestOsReply!
-    "Checks whether a s3 bucket name is available or not"
-    checkS3BucketNameAvailable(awsNativeAccountId: UUID!, bucketName: String!): Boolean!
     cloudAccount(
         "Corresponds to Cloud Account Id in Polaris tables"
         cloudAccountId: UUID!
@@ -16873,6 +16946,7 @@ type Query {
     customAnalyzer(analyzerId: String!): Analyzer!
     "Return hits grouped by analyzer and policy"
     dashboardSummary(getWhitelistedResults: Boolean!): GetDashboardSummaryReply!
+    dataViewMetadata: [dataViewMetadata!]!
     "Return permissions associated with a path"
     datagovSecDesc(
         "Skip converting SIDs in response to friendly names"
@@ -16894,7 +16968,6 @@ type Query {
         "Filters for cdm upgrades page for pdf generation"
         downloadFilter: DownloadCdmUpgradesPdfFiltersInput
     ): DownloadCdmUpgradesPdfReply!
-    downloadObjectFilesCsv(day: String!, filter: ListObjectFilesFiltersInput, timezone: String!): DownloadObjectFilesCsvReply!
     "Get Status of download package job"
     downloadPackageStatus(
         "Cluster uuid"
@@ -16902,8 +16975,6 @@ type Query {
     ): DownloadPackageStatusReply!
     downloadReportLink(config: CustomReportCreate, id: Int!): DownloadLink!
     downloadReportPDFLink(config: CustomReportCreate, id: Int!): DownloadLink!
-    downloadUserActivityCsv(filter: ListObjectFilesFiltersInput, startDay: String!, timezone: String!): DownloadUserActivityCsvReply!
-    downloadUserFileActivityCsv(nativePath: String!, resource: ResourceInput, startDay: String!, timeGranularity: TimeGranularityEnum!, timezone: String!, userId: String!): DownloadUserFileActivityCsvReply!
     downloadedVersionList: [GroupCount!]!
     dummyFieldWithAdminOnlyTag: Boolean!
     ec2Blueprint(
@@ -17023,11 +17094,7 @@ type Query {
     "Status of the federated login."
     federatedLoginStatus: FederatedLoginStatus!
     filesetSnapshot(
-        """
-
-        v5.0-v5.3: ID of snapshot
-        v6.0: ID of snapshot.
-        """
+        "ID of snapshot."
         id: String!,
         "Whether or not to fetch verbose fileset snapshot information. The performance of this endpoint will decrease if set to true."
         verbose: Boolean
@@ -17327,8 +17394,6 @@ type Query {
         "The id of the cluster"
         clusterUuid: UUID!
     ): NodeStatusListResp!
-    "Returns a list of encryption keys in the specified region on the specified AWS account"
-    getEncryptionKeysForRegionFromAWS(awsNativeAccountId: UUID!, region: AwsNativeRegionEnum!): [KMSEncryptionKeyType!]!
     getGlobalManagerConnectivity(
         "The id of the cluster"
         clusterUuid: UUID!
@@ -17338,11 +17403,7 @@ type Query {
     getGroupCountByUpgradeJobStatus: [GroupCount!]!
     getGroupCountByVersionStatus: [GroupCount!]!
     getHostDiagnosis(
-        """
-
-        v5.0-v5.3: ID assigned to the host object
-        v6.0: ID assigned to the host object.
-        """
+        "ID assigned to the host object."
         id: String!
     ): HostDiagnosisSummary!
     getKorgTaskchainStatus(taskchainId: String!): GetTaskchainStatusReply!
@@ -17401,7 +17462,7 @@ type Query {
         "Returns the last n elements from the list."
         last: Int
     ): [UserDownload!]!
-    globalSearchConnection(
+    globalSearchResults(
         "Returns the elements in the list that come after the specified cursor."
         after: String,
         "Returns the elements in the list that come before the specified cursor."
@@ -17468,7 +17529,7 @@ type Query {
         fid: UUID!
     ): HierarchyObject!
     hierarchyObjects(fids: [UUID!]!, filter: [Filter!]): [HierarchyObject!]!
-    hierarchySnappableConnection(
+    hierarchySnappables(
         "Returns the elements in the list that come after the specified cursor."
         after: String,
         filter: [Filter!],
@@ -17551,11 +17612,13 @@ type Query {
     inventoryRoot: InventoryRoot!
     inventorySubHierarchyRoot(rootEnum: InventorySubHierarchyRootEnum!): InventorySubHierarchyRoot!
     ipWhitelist: GetWhitelistReply!
-    "Queries whether the given volume snapshot is restorable which is used to enable \"Replace volume where attached\" flag on Export Volume Snapshot UI"
+    "Queries whether the given volume can be replaced where attached."
     isAwsNativeEbsVolumeSnapshotRestorable(
         "UUID of the snapshot"
         snapshotId: String!
     ): IsVolumeSnapshotRestorableReply!
+    "Checks whether a s3 bucket name is available or not"
+    isAwsS3BucketNameAvailable(awsNativeAccountId: UUID!, bucketName: String!): Boolean!
     "Queries whether the given disk snapshot is restorable which is used to enable \"Replace disk where attached\" flag on Export Disk Snapshot UI"
     isAzureNativeManagedDiskSnapshotRestorable(
         "Snapshot ID"
@@ -17684,8 +17747,6 @@ type Query {
     listDbParameterGroups(awsNativeAccountId: UUID!, dbEngine: AwsNativeRdsDbEngineEnum!, dbEngineVersion: String!, region: AwsNativeRegionEnum!): [DbParameterGroup!]!
     "fetch all db subnet groups in given region"
     listDbSubnetGroups(awsNativeAccountId: UUID!, region: AwsNativeRegionEnum!): [SubnetGroup!]!
-    "fetch all key pairs for given region"
-    listEc2KeyPairs(awsNativeAccountId: UUID!, region: AwsNativeRegionEnum!): [String!]!
     "List ids of running issues jobs"
     listIssuesJobStatus(queryIds: [String!]!): [String!]!
     listO365Apps(
@@ -17698,8 +17759,6 @@ type Query {
     ): O365AppConnection!
     "fetch all option groups in given region"
     listOptionGroups(awsNativeAccountId: UUID!, dbEngine: AwsNativeRdsDbEngineEnum!, dbEngineVersion: String!, majorEngineVersion: String!, region: AwsNativeRegionEnum!): [OptionGroup!]!
-    "Returns a list of all s3 buckets across regions for the aws account"
-    listS3Buckets(awsNativeAccountId: UUID!): [String!]!
     "A Managed Volume."
     managedVolume(
         "The Polaris UUID for the object."
@@ -17945,6 +18004,8 @@ type Query {
     ): OracleTopLevelDescendantTypeConnection!
     pendingAction(pendingActionId: String!): pendingAction!
     pendingActions(clusterFilter: UUID, historyOnly: Boolean, limit: Long, objectIds: [String!], pendingActionGroupTypeFilter: [PendingActionGroupTypeEnum!], pendingActionSubGroupTypeFilter: [PendingActionSubGroupTypeEnum!], sortedOrder: ChronologicalOrderEnum, statusFilter: [PendingActionStatusEnum!]): [pendingAction!]!
+    "Get information about objects passing through the Radar pipeline."
+    pendingRadarEvaluationResultsCount: PendingEvaluationResultsReply!
     physicalHost(
         "The Polaris UUID for the object."
         fid: UUID!
@@ -18019,8 +18080,14 @@ type Query {
     protectedRadarSnappableCount: ProtectedRadarSnappableCountReply!
     "Get a per day summary of the radar analysis results from start day to end day."
     radarAnalysisSummary(
+        "optional list of cluster uuids to filter on"
+        clusterUuidFilter: [String!],
         "end day, formatted(ISO 8601) as YYYY-MM-DD"
         endDay: String!,
+        "optional list of object types to filter on"
+        objectTypeFilter: [String!],
+        "optional list of sla fids to filter on."
+        slaFidFilter: [String!],
         "start day, formatted(ISO 8601) as YYYY-MM-DD"
         startDay: String!,
         "timezone name(IANA)"
@@ -18283,11 +18350,7 @@ type Query {
         snapshotId: String!
     ): DiffFMDReply!
     searchHost(
-        """
-
-        v5.0-v5.3: ID of the host to search
-        v6.0: ID of the host to search.
-        """
+        "ID of the host to search."
         id: String!,
         "The path query. Either path prefix or filename prefix."
         path: String!
@@ -18308,7 +18371,7 @@ type Query {
         "sort order"
         sortOrder: SortOrderEnum
     ): SnappableConnection!
-    searchSnappableVersionedFileConnection(
+    searchSnappableVersionedFiles(
         "Returns the elements in the list that come after the specified cursor."
         after: String,
         "Returns the first n elements from the list."
@@ -18434,16 +18497,6 @@ type Query {
         searchFilter: SearchFilter,
         snappableFid: UUID!
     ): O365ExchangeObjectConnection!
-    snappableEmailSearchV2(
-        "Returns the elements in the list that come after the specified cursor."
-        after: String,
-        "Returns the first n elements from the list."
-        first: Int,
-        orgId: UUID!,
-        "search filters"
-        searchFilter: SearchFilter,
-        snappableFid: UUID!
-    ): O365ExchangeObjectConnection!
     snappableEventSearch(
         "Returns the elements in the list that come after the specified cursor."
         after: String,
@@ -18521,17 +18574,6 @@ type Query {
         snapshotFid: UUID!
     ): CdmSnapshot!
     snapshotEmailSearch(
-        "Returns the elements in the list that come after the specified cursor."
-        after: String,
-        "Returns the first n elements from the list."
-        first: Int,
-        orgId: UUID!,
-        "search filters"
-        searchFilter: SearchFilter,
-        snappableFid: UUID!,
-        snapshotFid: UUID!
-    ): O365ExchangeObjectConnection!
-    snapshotEmailSearchV2(
         "Returns the elements in the list that come after the specified cursor."
         after: String,
         "Returns the first n elements from the list."
@@ -18809,6 +18851,7 @@ type Query {
         last: Int,
         timezoneOffset: Float = 0.0
     ): TaskSummaryGroupByConnection!
+    teamChannelNameAvailable(channelName: String!, teamUUID: UUID!): Boolean!
     toggleableFeaturesEnabled: [FeatureNameEnum!]!
     uniqueVSphereVCenterCount(filter: [Filter!]): Int!
     "Gets the status for completed/running upgrade process"
@@ -18978,7 +19021,7 @@ type Query {
     vSphereVmNew(
         "The Polaris UUID for the object."
         fid: UUID!
-    ): VSphereVmNew!
+    ): VSphereVm!
     vSphereVmNewConnection(
         "Returns the elements in the list that come after the specified cursor."
         after: String,
@@ -18987,7 +19030,7 @@ type Query {
         first: Int,
         sortBy: HierarchySortByField,
         sortOrder: HierarchySortOrder
-    ): VSphereVmNewConnection!
+    ): VSphereVmConnection!
     "validates that the given DbInstance class, storage type, multi-az capability, encryption capability, iops value are supported for the given dbEngine, dbEngineVersion in the given availability zone."
     validateOrderableDbInstance(
         awsNativeAccountId: UUID!,
@@ -19274,21 +19317,6 @@ type RecoveryTaskDetailsTableFilter {
     task_type: [FilterOption!]!
 }
 
-type RefreshAwsAccountsReply {
-    errors: [RefreshAwsNativeAccountError!]!
-    taskchainUuids: [RefreshAwsNativeAccountTaskchainUuid!]!
-}
-
-type RefreshAwsNativeAccountError {
-    accountId: String!
-    error: String!
-}
-
-type RefreshAwsNativeAccountTaskchainUuid {
-    accountId: String!
-    taskchainUuid: String!
-}
-
 "Subscription ID and the error encountered while scheduling refresh subscription job for the subscription"
 type RefreshAzureNativeSubscriptionError {
     error: String!
@@ -19499,14 +19527,18 @@ type ResourceGroupEdge {
     node: ResourceGroup!
 }
 
+"Information about the resource being validated."
+type ResourceInfo {
+    "Id of the resource."
+    resourceId: String!
+    "Type od the resource"
+    resourceType: ResourceType!
+}
+
 "Empty response type"
 type ResponseSuccess {
     "Whether request returned successfully"
     success: Boolean!
-}
-
-type RestoreEc2InstanceSnapshotReply {
-    taskchainUuid: String!
 }
 
 "Taskchain ID of the taskchain to restore the specified snapshot"
@@ -19588,7 +19620,7 @@ type RotateServiceAccountSecretReply {
 
 type Row {
     metadata: [Metadata!]!
-    values: [DisplayableValue!]!
+    values: [CellData!]!
 }
 
 type RowConnection {
@@ -20280,8 +20312,7 @@ type SearchResponse {
     """
 
     Supported in v5.0+
-    v5.0-v5.3: Just the filename without the whole path
-    v6.0: Just the filename without the whole path.
+    Just the filename without the whole path.
     """
     filename: String
     """
@@ -20299,22 +20330,19 @@ type SearchResponseListResponse {
     """
 
     Supported in v5.0+
-    v5.0-v5.3: List of matching objects
-    v6.0: List of matching objects.
+    List of matching objects.
     """
     data: [SearchResponse!]!
     """
 
     Supported in v5.0+
-    v5.0-v5.3: If there is more
-    v6.0: If there is more.
+    If there is more.
     """
     hasMore: Boolean
     """
 
     Supported in v5.0+
-    v5.0-v5.3: Total list responses
-    v6.0: Total list responses.
+    Total list responses.
     """
     total: Long
 }
@@ -20380,7 +20408,7 @@ type ShareFileset implements CdmHierarchyObject & CdmHierarchySnappableNew & Fil
     "The path node of the effective SLA source"
     effectiveSlaSourceObject: PathNode
     hardlinkSupportEnabled: Boolean!
-    host: PhysicalHost!
+    host: PhysicalHost
     "The fid of the hierarchy object."
     id: UUID!
     isPassThrough: Boolean!
@@ -20615,6 +20643,8 @@ type Snappable {
     id: String!
     "The timestamp of the last taken snapshot."
     lastSnapshot: DateTime
+    latestArchivalSnapshot: DateTime
+    latestReplicationSnapshot: DateTime
     "The number of snapshots locally present."
     localSnapshots: Int
     location: String!
@@ -20887,8 +20917,7 @@ type SnapshotLocationRetentionInfo {
     """
 
     Required. Supported in v5.2+
-    v5.2-v5.3: ID of the location
-    v6.0: ID of the location.
+    ID of the location.
     """
     id: String!
     """
@@ -20912,8 +20941,7 @@ type SnapshotLocationRetentionInfo {
     """
 
     Required. Supported in v5.2+
-    v5.2-v5.3: Name of the location
-    v6.0: Name of the location.
+    Name of the location.
     """
     name: String!
     """
@@ -21688,6 +21716,30 @@ type User {
     username: String!
 }
 
+"Represents the activity for a specific user."
+type UserActivityResult {
+    "The total number of activities this user had."
+    numActivities: Int!
+    "The total number of activities, grouped by activity type."
+    numActivitiesBreakdown: [ActivityResult!]!
+    "ID used for pagination."
+    paginationId: String!
+    "The user that this result corresponds to."
+    user: AccessUser
+}
+
+type UserActivityResultConnection {
+    count: Int!
+    edges: [UserActivityResultEdge!]!
+    nodes: [UserActivityResult!]!
+    pageInfo: PageInfo!
+}
+
+type UserActivityResultEdge {
+    cursor: String!
+    node: UserActivityResult!
+}
+
 type UserAudit {
     auditType: UserAuditTypeEnum
     cluster: Cluster
@@ -22390,7 +22442,7 @@ type VSphereFolderLogicalChildTypeEdge {
     node: VSphereFolderLogicalChildType!
 }
 
-type VSphereHost implements CdmHierarchyObject & HierarchyObject & VSphereComputeClusterDescendantType & VSphereComputeClusterPhysicalChildType & VSphereDatacenterDescendantType & VSphereDatacenterPhysicalChildType & VSphereVCenterDescendantType {
+type VSphereHost implements CdmHierarchyObject & HierarchyObject & VSphereComputeClusterDescendantType & VSphereComputeClusterPhysicalChildType & VSphereDatacenterDescendantType & VSphereDatacenterPhysicalChildType & VSphereVCenterDescendantType & VSphereVCenterPhysicalChildType {
     "The authorized operations on the object."
     authorizedOperations: [OperationEnum!]!
     "The cluster from which this object originated."
@@ -22507,9 +22559,9 @@ type VSphereMount {
     mountRequestId: String
     mountTimestamp: DateTime
     newVMName: String
-    newVm: VSphereVmNew
+    newVm: VSphereVm
     sourceSnapshot: CdmSnapshot
-    sourceVm: VSphereVmNew
+    sourceVm: VSphereVm
     status: VSphereLiveMountStatusEnum!
     unmountRequestId: String
 }
@@ -22930,30 +22982,7 @@ type VSphereVirtualDiskEdge {
     node: VSphereVirtualDisk!
 }
 
-type VSphereVmChild implements BlueprintChild {
-    bootPriority: Int!
-    "failover instance of child snappable"
-    failoverInstance: VSphereBlueprintChildFailoverInstance
-    fid: UUID!
-    "local RPO lag information"
-    localRpoLagInfo: RPOLagInfo
-    "The recovery info of the child virtual machine"
-    recoveryInfo(
-        "The id of the cluster"
-        clusterUuid: UUID!
-    ): ChildVmRecoveryInfo
-    "recoverySpec of child snappable"
-    recoverySpec: RecoverySpec
-    "remote RPO lag information"
-    remoteRpoLagInfo: RPOLagInfo
-    "resourceSpec of child snappable"
-    resourceSpec: VmwareResourceSpec
-    "the child snappable"
-    snappable: VSphereVmNew
-    snappableType: ObjectTypeEnum!
-}
-
-type VSphereVmNew implements CdmHierarchyObject & CdmHierarchySnappableNew & HierarchyObject & HierarchySnappable & VSphereComputeClusterDescendantType & VSphereDatacenterDescendantType & VSphereFolderDescendantType & VSphereFolderLogicalChildType & VSphereHostDescendantType & VSphereHostPhysicalChildType & VSphereTagCategoryDescendantType & VSphereTagDescendantType & VSphereTagTagChildType & VSphereVCenterDescendantType {
+type VSphereVm implements CdmHierarchyObject & CdmHierarchySnappableNew & HierarchyObject & HierarchySnappable & VSphereComputeClusterDescendantType & VSphereDatacenterDescendantType & VSphereFolderDescendantType & VSphereFolderLogicalChildType & VSphereHostDescendantType & VSphereHostPhysicalChildType & VSphereTagCategoryDescendantType & VSphereTagDescendantType & VSphereTagTagChildType & VSphereVCenterDescendantType {
     "Status of the Rubrik Backup Service agent on this VM"
     agentStatus: AgentStatus
     "Whether array integration is enabled for this VM"
@@ -23116,16 +23145,47 @@ type VSphereVmNew implements CdmHierarchyObject & CdmHierarchySnappableNew & Hie
     ): VSphereVirtualDiskConnection!
 }
 
-type VSphereVmNewConnection {
+type VSphereVmChild implements BlueprintChild {
+    bootPriority: Int!
+    "failover instance of child snappable"
+    failoverInstance: VSphereBlueprintChildFailoverInstance
+    fid: UUID!
+    "local RPO lag information"
+    localRpoLagInfo: RPOLagInfo
+    "The recovery info of the child virtual machine"
+    recoveryInfo(
+        "The id of the cluster"
+        clusterUuid: UUID!
+    ): ChildVmRecoveryInfo
+    "recoverySpec of child snappable"
+    recoverySpec: RecoverySpec
+    "remote RPO lag information"
+    remoteRpoLagInfo: RPOLagInfo
+    "resourceSpec of child snappable"
+    resourceSpec: VmwareResourceSpec
+    "the child snappable"
+    snappable: VSphereVm
+    snappableType: ObjectTypeEnum!
+}
+
+type VSphereVmConnection {
     count: Int!
-    edges: [VSphereVmNewEdge!]!
-    nodes: [VSphereVmNew!]!
+    edges: [VSphereVmEdge!]!
+    nodes: [VSphereVm!]!
     pageInfo: PageInfo!
 }
 
-type VSphereVmNewEdge {
+type VSphereVmEdge {
     cursor: String!
-    node: VSphereVmNew!
+    node: VSphereVm!
+}
+
+"Resource mapping validation reply."
+type ValidateBlueprintResourceMappingReply {
+    "Detailed information about each resource validation."
+    statusInfos: [ValidationStatusInfo!]!
+    "Status of the validation."
+    success: Boolean!
 }
 
 type ValidateFailureReason {
@@ -23133,6 +23193,18 @@ type ValidateFailureReason {
     planName: PlanNameEnum!
     snappableId: String!
     snapshotId: String!
+}
+
+"Status for resource mapping validation for blueprint."
+type ValidationStatusInfo {
+    "List of all failure error messages."
+    failureReasons: [String!]!
+    "Validated resource info."
+    resourceInfo: ResourceInfo
+    "Resource mapping validation status for the snappable."
+    validationStatus: ValidationStatus!
+    "List of all warning messages."
+    warningReasons: [String!]!
 }
 
 type ValueBoolean implements Value {
@@ -23769,6 +23841,13 @@ type VmHost {
     vcenterName: String!
 }
 
+type VmInfo {
+    gateway: String!
+    ipAddress: String!
+    subnetMask: String!
+    vmName: String!
+}
+
 type VmNic {
     nicId: String!
     nicMoid: String!
@@ -23790,8 +23869,7 @@ type VmwareCdpLiveInfo {
     """
 
     Supported in v5.1+
-    v5.1-v5.3: The time on this node. Computed after computing the live CDP info for the virtual machine
-    v6.0: The time on this node. Computed after computing the live CDP info for the virtual machine.
+    The time on this node. Computed after computing the live CDP info for the virtual machine.
     """
     currentTime: DateTime
     """
@@ -23879,8 +23957,7 @@ type VmwareVmMountDetailV1 {
     """
 
     Supported in v5.0+
-    v5.0-v5.3: The power status of the mounted VM(ON,OFF,SLEEP etc.)
-    v6.0: The power status of the mounted VM(ON,OFF,SLEEP etc.).
+    The power status of the mounted VM(ON,OFF,SLEEP etc.).
     """
     powerStatus: String
     vmwareVmMountSummaryV1: VmwareVmMountSummaryV1
@@ -24261,8 +24338,9 @@ type WindowsFileset implements CdmHierarchyObject & CdmHierarchySnappableNew & F
     effectiveSlaDomain: SlaDomain!
     "The path node of the effective SLA source"
     effectiveSlaSourceObject: PathNode
+    failoverClusterApp: FailoverClusterApp
     hardlinkSupportEnabled: Boolean!
-    host: PhysicalHost!
+    host: PhysicalHost
     "The fid of the hierarchy object."
     id: UUID!
     isPassThrough: Boolean!
@@ -24410,8 +24488,12 @@ type cdmSnapshotGroupByEdge {
 }
 
 type clusterState {
+    "Cluster removal job creation time."
+    clusterRemovalCreatedAt: DateTime
     "Cluster removal status of cdm cluster"
     clusterRemovalState: ClusterRemovalState!
+    "Cluster removal job update time."
+    clusterRemovalUpdatedAt: DateTime
     "ConnectedStatus of cdm cluster"
     connectedState: ClusterStatus!
 }
@@ -24421,6 +24503,11 @@ type configGroupBy {
     aggregations: [String!]!
     "Report-level groupBy selection"
     groupById: String!
+}
+
+type dataViewMetadata {
+    count: Long!
+    dataViewType: DataViewTypeEnum!
 }
 
 "Cluster metric data grouped by a time unit."
@@ -24709,6 +24796,7 @@ enum ActivityTypeEnum {
 enum AgentConnectStatusEnum {
     Connected
     Disconnected
+    SecondaryCluster
     Unregistered
 }
 
@@ -26217,6 +26305,13 @@ enum DataGovSortOrderEnum {
     DESC
 }
 
+enum DataTransferTypeEnum {
+    EMPTY_VALUE
+    EXPORT
+    HYDRATION
+    INPLACE
+}
+
 enum DataTypeEnum {
     BOOLEAN
     BYTE
@@ -26442,6 +26537,8 @@ enum FeatureFlagNameEnum {
     AwsExocomputeConfigEnabled
     AwsExportInstanceInPoweredOffStateEnabled
     AwsNativeArchivalEnabled
+    AwsNativeArchivalGAEnabled
+    AwsNativeArchivalShortTermRetentionEnabled
     AwsRDSAutoProtectByTagsEnabled
     AwsRDSProtectionEnabled
     AwsRoleBasedArchivalLocationsEnabled
@@ -26471,7 +26568,7 @@ enum FeatureFlagNameEnum {
     CloudNativeAzureEnabled
     CloudNativeGCPEnabled
     CloudNativeOnDemandSnapshotsWithSLA
-    CloudNativeSnapshotIntegrityEnabled
+    CloudNativeUnmanagedObjectsEnabled
     ClusterAddForbidden
     ClusterListFilterEnabled
     ClusterStatusEnabled
@@ -26516,6 +26613,7 @@ enum FeatureFlagNameEnum {
     NewThemesEnabled
     O365CalendarEnabled
     O365DashboardEnabled
+    O365DashboardV2Enabled
     O365ExchangeAppShardingEnabled
     O365InventoryEnabled
     O365OnedriveEnabled
@@ -26533,11 +26631,14 @@ enum FeatureFlagNameEnum {
     PreferDarkTheme
     RBACForGlobalSLAEnabled
     RadarAnomalyModelBEnabled
+    RadarAppFlowsEnabled
     RadarBetaEnabled
     RadarDemoEnabled
     RadarDevEnabled
+    RadarPipelineMergeEnabled
     RadarSIEMEnabled
     RecoverySearchEnabled
+    RemoveClusterEnabled
     ReportAsyncDownloadEnabled
     ReportForecasterEnabled
     ReportForwardUIEnabled
@@ -26595,6 +26696,11 @@ enum FieldEnum {
     IS_INDEX_MERGED
     IS_ON_DEMAND
     TIME_RANGE_WITH_OFFSET
+}
+
+enum FileActivitiesSortBy {
+    NUM_ACTIVITIES
+    USER_NAME
 }
 
 enum FileCountTypeEnum {
@@ -27202,6 +27308,13 @@ enum ListAccessUsersSortEnum {
     NUM_ACTIVITY_DELTA
     RISK_LEVEL
     USERNAME
+}
+
+enum LocationType {
+    AWS
+    AZURE
+    CDM
+    GCP
 }
 
 "type of data location"
@@ -27831,6 +27944,12 @@ enum ResolutionTypeEnum {
     WELL_KNOWN
 }
 
+enum ResourceType {
+    BLUEPRINT
+    CLUSTER
+    SNAPPABLE
+}
+
 enum RetentionUnitEnum {
     DAYS
     HOURS
@@ -27874,6 +27993,7 @@ enum SLAObjectTypeEnum {
     AWS_RDS_OBJECT_TYPE
     AZURE_OBJECT_TYPE
     GCP_OBJECT_TYPE
+    KUPR_OBJECT_TYPE
     O365_OBJECT_TYPE
     SAP_HANA_OBJECT_TYPE
     UNKNOWN_OBJECT_TYPE
@@ -28056,6 +28176,8 @@ enum SnappableSortByEnum {
     ComplianceStatus
     DataReduction
     LastSnapshot
+    LatestArchivalSnapshot
+    LatestReplicationSnapshot
     LocalSnapshots
     Location
     LogicalBytes
@@ -28100,6 +28222,7 @@ enum SnappableTypeEnum {
     ONEDRIVE
     SHAREPOINT_DRIVE
     SHAREPOINT_SITE
+    TEAMS
 }
 
 enum SnapshotCloudStorageTierEnum {
@@ -28110,6 +28233,12 @@ enum SnapshotCloudStorageTierEnum {
     SNAPSHOT_CLOUD_STORAGE_TIER_GLACIER
     SNAPSHOT_CLOUD_STORAGE_TIER_GLACIER_DEEP_ARCHIVE
     SNAPSHOT_CLOUD_STORAGE_TIER_HOT
+}
+
+enum SnapshotConsistencyLevelEnum {
+    SNAPSHOT_APP_CONSISTENT
+    SNAPSHOT_CRASH_CONSISTENT
+    UNKNOWN_CONSISTENCY_LEVEL
 }
 
 enum SnapshotFrequencyEnum {
@@ -28148,6 +28277,12 @@ enum SnapshotQueryFilterField {
 enum SnapshotQuerySortByField {
     CREATION_TIME
     UNKNOWN
+}
+
+enum SnapshotType {
+    ARCHIVED
+    REPLICATED
+    SOURCE
 }
 
 enum SnapshotTypeEnum {
@@ -28258,6 +28393,8 @@ enum SortByFieldEnum {
     IsAnomaly
     LastSnapshot
     LastUpdated
+    LatestArchivalSnapshot
+    LatestReplicationSnapshot
     LocalSnapshots
     Location
     LogicalBytes
@@ -28545,6 +28682,7 @@ enum UserAuditObjectTypeEnum {
     DataLocation
     Ec2Instance
     FailoverClusterApp
+    FederatedAccess
     GcpNativeDisk
     GcpNativeGceInstance
     GcpNativeProject
@@ -28634,6 +28772,7 @@ enum UserAuditTypeEnum {
     Diagnostic
     Download
     Failover
+    Index
     LegalHold
     Login
     Recovery
@@ -28698,6 +28837,12 @@ enum VSphereVirtualDiskSortByEnum {
     Size
 }
 
+enum ValidationStatus {
+    FAILURE
+    SUCCESS
+    WARNING
+}
+
 enum VersionStatusTypeEnum {
     Stable
     Unknown
@@ -28708,6 +28853,11 @@ enum VmPowerStatusEnum {
     poweredOff
     poweredOn
     suspended
+}
+
+enum VmTypeEnum {
+    DENSE
+    STANDARD
 }
 
 enum WarningSeverityEnum {
@@ -28733,6 +28883,7 @@ enum WhitelistModeEnum {
 
 "Filter Activity series data"
 input ActivitySeriesFilterInput {
+    ancestorId: UUID
     cluster: CommonClusterFilterInput
     lastActivityStatus: [ActivityStatusEnum!]
     lastActivityType: [ActivityTypeEnum!]
@@ -28828,7 +28979,7 @@ input AppBlueprintRecoverySpecCreateReqInputType {
 }
 
 input AppBlueprintRestoreSnapshotJobConfigBase {
-    "True if the new virtual machine(s) should be power on"
+    "Power on the new virtual machine(s) if set to True."
     shouldPowerOn: Boolean = true
 }
 
@@ -29255,6 +29406,20 @@ input AzureCloudComputeSettingsInput {
     virtualNetworkId: String = ""
 }
 
+input AzureDiskBasedVmConfig {
+    cdmVersion: String = ""
+    location: String = ""
+    networkResourceGroup: String = ""
+    networkSecurityGroup: String = ""
+    nodeSize: Int = 0
+    resourceGroup: String = ""
+    subnet: String = ""
+    tags: String = ""
+    vhdUrl: String = ""
+    vmType: VmTypeEnum
+    vnet: String = ""
+}
+
 "Azure exocompute config to add."
 input AzureExocomputeAddConfigInputType {
     "Specifies if this configuration is managed by Polaris."
@@ -29502,17 +29667,35 @@ input BidirectionalReplicationSpecInput {
 }
 
 input BlueprintFailoverJobConfig {
-    "The ID of the Blueprint to be failed over"
+    "The ID of the Blueprint to be failed over."
     blueprintId: UUID!
     childSnappableFailoverInfos: [SnappableFailoverInfoType!]
+    "The type of the data transfer, EXPORT, INPLACE, and HYDRATION."
+    dataTransferType: DataTransferTypeEnum
+    "The failure action of failover, PAUSE or CLEANUP."
     failoverFailureAction: String
+    "The operation of the failover, Start or Resume."
     failoverOperation: String
-    "The type of the failover job, FAILOVER or TEST_FAILOVER"
+    "The type of the failover job, FAILOVER or TEST_FAILOVER."
     failoverType: String!
+    "The type of the target location, CDM, AZURE, AWS or GCP."
+    targetLocationType: LocationType
+    "The UUID of the target location."
+    targetLocationUuid: UUID
+}
+
+"Blueprint failover related properties."
+input BlueprintFailoverPropertiesInput {
+    "Data transfer type: EXPORT, INPLACE, HYDRATION."
+    dataTransferType: DataTransferTypeEnum = EMPTY_VALUE
+    "Type of plan: Prod, Test."
+    planType: PlanNameEnum = PROD
+    "Failover target location information."
+    targetLocation: LocationInfo
 }
 
 input BlueprintFailoverReportGeneratorJobInfo {
-    "The IDs for the failover records in the report"
+    "The IDs for the failover records in the report."
     failoverIds: [String!]!
 }
 
@@ -29584,6 +29767,13 @@ input CdmUpgradeInfoFilterInput {
     versionStatus: [VersionStatusTypeEnum!]
 }
 
+input ChangePasswordInput {
+    "Email of user performing reset."
+    email: String = ""
+    "New password for user."
+    password: String = ""
+}
+
 input ChartConfigInput {
     groupBy: [String!]!
     type: ChartType!
@@ -29597,6 +29787,14 @@ input ChildRecoverySpecCreateReqInputType {
 input ChildRecoverySpecInputType {
     awsSpec: AwsVMRecoverySpecInputType
     vSphereSpec: VSphereVMRecoverySpecInputType
+}
+
+"List of snappable ids and recovery points."
+input ChildSnappableFailoverInfoInput {
+    "Point in time to which to recover the VM."
+    recoveryPoint: Long = 0
+    "Snappable id of the blueprint child."
+    snappableId: String = ""
 }
 
 input ClassificationPolicyInput {
@@ -29706,6 +29904,13 @@ input ContextFilterInputField {
     text: String!
 }
 
+"CreateAzureDiskClusterInput for Azure account."
+input CreateAzureDiskClusterInput {
+    clusterConfig: clusterConfigInput
+    servicePrincipal: servicePrincipal
+    vmConfig: AzureDiskBasedVmConfig
+}
+
 "Input for CreateCloudNativeAwsStorageSetting mutation"
 input CreateCloudNativeAwsStorageSettingInput {
     bucketPrefix: String!
@@ -29804,6 +30009,18 @@ input DayOfWeekOptInput {
     day: DayOfWeekEnum = MONDAY
 }
 
+"DeleteAzureDiskClusterInput for Azure account."
+input DeleteAzureDiskClusterInput {
+    "Name of Azure cluster."
+    clusterName: String = ""
+    "Number of nodes in the existing cluster."
+    numNodes: Int = 0
+    "Azure resource group name."
+    resourceGroupName: String = ""
+    "Authorization for Azure."
+    servicePrincipal: servicePrincipal
+}
+
 input DiskIdToIsExcluded {
     diskId: UUID!
     isExcluded: Boolean!
@@ -29822,6 +30039,22 @@ input DownloadCdmUpgradesPdfFiltersInput {
     versionStatus: [String!] = []
 }
 
+input DownloadObjectFilesCsvInput {
+    "The day, (YYYY-MM-DD), from which to collect user activity."
+    day: String!
+    "The filters to apply on the list of activities."
+    filters: ListObjectFilesFiltersInput!
+    "The user's IANA timezone."
+    timezone: String!
+}
+
+input DownloadObjectsListCsvInput {
+    "The day (YYYY-MM-DD) to get the latest snapshots of."
+    day: String!
+    "The user's IANA timezone."
+    timezone: String!
+}
+
 input DownloadResultsCsvFiltersInput {
     analyzerGroupIds: [String!] = []
     browseDirectorySnappablePath: SnappablePathInput
@@ -29830,6 +30063,28 @@ input DownloadResultsCsvFiltersInput {
     listFileResultsSnappablePaths: [SnappablePathInput!] = []
     listFileResultsSnappableTypes: [String!] = []
     whitelistEnabled: Boolean = false
+}
+
+input DownloadUserActivityCsvInput {
+    "The day, (YYYY-MM-DD), from which to collect user activity."
+    day: String!
+    "The filters to apply on the list of activities."
+    filters: ListObjectFilesFiltersInput!
+    "The user's IANA timezone."
+    timezone: String!
+}
+
+input DownloadUserFileActivityCsvInput {
+    "The path to get all activity from."
+    nativePath: String!
+    "The path's corresponding snapshot."
+    snapshot: ResourceInput!
+    "The day (YYYY-MM-DD) from which to collect all activity after."
+    startDay: String!
+    "The user's IANA timezone."
+    timezone: String!
+    "The user to fetch activity for."
+    userId: String!
 }
 
 "Struct representing the onedrive contents to be restored"
@@ -29858,6 +30113,12 @@ input EventDigestConfig {
     activityType: [String!]
     clusters: [String!]
     objectType: [ActivityObjectTypeEnum!]
+}
+
+"Input to mark volumes to be excluded for EC2 snapshot."
+input ExcludeAwsNativeEbsVolumeFromSnapshotInput {
+    awsNativeEc2InstanceId: UUID!
+    volumeIdsToIsExcluded: [VolumeIdToIsExcluded!]!
 }
 
 "existing compute config"
@@ -30076,6 +30337,20 @@ input FederatedLoginStatusInput {
     inventoryCardEnabled: Boolean!
 }
 
+"Filters to apply when listing a file's user activities."
+input FileActivitiesFilter {
+    "The types of activities to include. Empty signifies all activities."
+    activityTypes: [ActivityAccessTypeEnum!] = []
+}
+
+"Sorts to apply when listing a file's user activities."
+input FileActivitiesSort {
+    "The field to sort on."
+    sortBy: FileActivitiesSortBy = USER_NAME
+    "The direction to sort on."
+    sortOrder: DataGovSortOrderEnum = ASC
+}
+
 "Struct representing the Onedrive file to be restored"
 input FileInfo {
     FileID: String!
@@ -30206,8 +30481,7 @@ input FilesetExportFilesJobConfigInput {
     """
 
     Supported in v5.0+
-    v5.0-v5.3: Host ID
-    v6.0: Host ID.
+    Host ID.
     """
     hostId: String = ""
     """
@@ -30219,8 +30493,7 @@ input FilesetExportFilesJobConfigInput {
     """
 
     Supported in v5.0+
-    v5.0-v5.3: Network share ID
-    v6.0: Network share ID.
+    Network share ID.
     """
     shareId: String
 }
@@ -30266,8 +30539,7 @@ input FilesetRestoreFilesJobConfigInput {
     """
 
     Supported in v5.0+
-    v5.0-v5.3: Optional field to determine if we should ignore single error during restore. Default value is false
-    v6.0: Optional field to determine if we should ignore single error during restore. Default value is false.
+    Optional field to determine if we should ignore single error during restore. Default value is false.
     """
     ignoreErrors: Boolean
     """
@@ -30295,15 +30567,13 @@ input FilesetTemplateCreateInput {
     """
 
     Supported in v5.0+
-    v5.0-v5.3: Action taken if script fails. Options are "abort", "continue"
-        v6.0: Action taken if script fails. Options are "abort", "continue".
+    Action taken if script fails. Options are "abort", "continue".
     """
     backupScriptErrorHandling: String
     """
 
     Supported in v5.0+
-    v5.0-v5.3: Number of seconds after which the script is killed if it has not completed execution
-    v6.0: Number of seconds after which the script is killed if it has not completed execution.
+    Number of seconds after which the script is killed if it has not completed execution.
     """
     backupScriptTimeout: Long
     """
@@ -30342,15 +30612,13 @@ input FilesetTemplateCreateInput {
     """
 
     Supported in v5.0+
-    v5.0-v5.3: Script to run after backup of this fileset ends
-    v6.0: Script to run after backup of this fileset ends.
+    Script to run after backup of this fileset ends.
     """
     postBackupScript: String
     """
 
     Supported in v5.0+
-    v5.0-v5.3: Script to run before backup of this fileset starts
-    v6.0: Script to run before backup of this fileset starts.
+    Script to run before backup of this fileset starts.
     """
     preBackupScript: String
     """
@@ -30368,15 +30636,13 @@ input FilesetTemplatePatchInput {
     """
 
     Supported in v5.0+
-    v5.0-v5.3: Action taken if script fails. Options are "abort", "continue"
-        v6.0: Action taken if script fails. Options are "abort", "continue".
+    Action taken if script fails. Options are "abort", "continue".
     """
     backupScriptErrorHandling: String
     """
 
     Supported in v5.0+
-    v5.0-v5.3: Number of seconds after which the script is killed if it has not completed execution
-    v6.0: Number of seconds after which the script is killed if it has not completed execution.
+    Number of seconds after which the script is killed if it has not completed execution.
     """
     backupScriptTimeout: Long
     """
@@ -30408,22 +30674,19 @@ input FilesetTemplatePatchInput {
     """
 
     Supported in v5.0+
-    v5.0-v5.3: Operating system type of filesets created by template
-    v6.0: Operating system type of filesets created by template.
+    Operating system type of filesets created by template.
     """
     operatingSystemType: FilesetTemplatePatchOperatingSystemTypeEnum = FILESET_TEMPLATE_PATCH_OPERATING_SYSTEM_TYPE_EMPTY_VALUE
     """
 
     Supported in v5.0+
-    v5.0-v5.3: Script to run after backup of this Fileset ends
-    v6.0: Script to run after backup of this Fileset ends.
+    Script to run after backup of this Fileset ends.
     """
     postBackupScript: String
     """
 
     Supported in v5.0+
-    v5.0-v5.3: Script to run before backup of this Fileset starts
-    v6.0: Script to run before backup of this Fileset starts.
+    Script to run before backup of this Fileset starts.
     """
     preBackupScript: String
     """
@@ -30438,6 +30701,7 @@ input Filter {
     awsNativeProtectionFeatureNames: [AwsNativeProtectionFeatureEnum!] = []
     field: HierarchyFilterField = IS_ARCHIVED
     isNegative: Boolean = false
+    isSlowSearchEnabled: Boolean = false
     objectTypeFilterParams: [ManagedObjectType!] = []
     tagFilterParams: [TagFilterParams!] = []
     texts: [String!] = []
@@ -30625,36 +30889,31 @@ input HdfsBaseConfigInput {
     """
 
     Supported in v5.2+
-    v5.2-v5.3: API token to access Hdfs
-    v6.0: API token to access Hdfs.
+    API token to access Hdfs.
     """
     apiToken: String
     """
 
     Required. Supported in v5.2+
-    v5.2-v5.3: List of Hdfs Namenode Hosts
-    v6.0: List of Hdfs Namenode Hosts.
+    List of Hdfs Namenode Hosts.
     """
     hosts: [HdfsHostInput!] = []
     """
 
     Supported in v5.2+
-    v5.2-v5.3: Ticket Cache Path of Kerberos Ticket
-    v6.0: Ticket Cache Path of Kerberos Ticket.
+    Ticket Cache Path of Kerberos Ticket.
     """
     kerberosTicket: String
     """
 
     Supported in v5.2+
-    v5.2-v5.3: Logical name for nameservice for Hdfs HA
-    v6.0: Logical name for nameservice for Hdfs HA.
+    Logical name for nameservice for Hdfs HA.
     """
     nameservices: String
     """
 
     Supported in v5.2+
-    v5.2-v5.3: Username to access Hdfs API
-    v6.0: Username to access Hdfs API.
+    Username to access Hdfs API.
     """
     username: String
 }
@@ -30675,15 +30934,13 @@ input HdfsHostInput {
     """
 
     Required. Supported in v5.2+
-    v5.2-v5.3: Hostname or Ip of Namenode
-    v6.0: Hostname or Ip of Namenode.
+    Hostname or Ip of Namenode.
     """
     hostname: String = ""
     """
 
     Required. Supported in v5.2+
-    v5.2-v5.3: Port number of Namenode
-    v6.0: Port number of Namenode.
+    Port number of Namenode.
     """
     port: Int = 0
 }
@@ -30717,8 +30974,7 @@ input HostRegisterInput {
     """
 
     Supported in v5.2+
-    v5.2-v5.3: A Boolean that specifies whether to discover Oracle information at registration. A value of 'true' discovers Oracle information at registration.
-    v6.0: A Boolean that specifies whether to discover Oracle information at registration. A value of 'true' discovers Oracle information at registration.
+    A Boolean that specifies whether to discover Oracle information at registration. A value of 'true' discovers Oracle information at registration.
     """
     isOracleHost: Boolean
     """
@@ -30729,8 +30985,7 @@ input HostRegisterInput {
     """
 
     Supported in v5.0+
-    v5.0-v5.3: Specifies the Oracle username for an account with query privileges. The account must have query privileges for a specified Oracle installation to enable Oracle discovery queries for that installation.
-    v6.0: Specifies the Oracle username for an account with query privileges. The account must have query privileges for a specified Oracle installation to enable Oracle discovery queries for that installation.
+    Specifies the Oracle username for an account with query privileges. The account must have query privileges for a specified Oracle installation to enable Oracle discovery queries for that installation.
     """
     oracleQueryUser: String
     """
@@ -30806,8 +31061,7 @@ input HostUpdateInput {
     """
 
     Supported in v5.2+
-    v5.2-v5.3: A Boolean that specifies whether to discover Oracle information during host refresh. A value of 'true' discovers Oracle information during host refresh.
-    v6.0: A Boolean that specifies whether to discover Oracle information during host refresh. A value of 'true' discovers Oracle information during host refresh.
+    A Boolean that specifies whether to discover Oracle information during host refresh. A value of 'true' discovers Oracle information during host refresh.
     """
     isOracleHost: Boolean
     """
@@ -30829,8 +31083,7 @@ input HostUpdateInput {
     """
 
     Supported in v5.0+
-    v5.0-v5.3: Specifies the Oracle username for an account with query privileges. The account must have query privileges for a specified Oracle installation to enable Oracle discovery queries for that installation.
-    v6.0: Specifies the Oracle username for an account with query privileges. The account must have query privileges for a specified Oracle installation to enable Oracle discovery queries for that installation.
+    Specifies the Oracle username for an account with query privileges. The account must have query privileges for a specified Oracle installation to enable Oracle discovery queries for that installation.
     """
     oracleQueryUser: String
     """
@@ -30859,11 +31112,12 @@ input InstantRecoveryJobConfig {
 Supported in v5.1+
 """
 input InstantRecoveryJobConfigV2Input {
+    "ID of the compute cluster where the new virtual machine will be mounted."
+    clusterId: String
     """
 
     Supported in v5.1+
-    v5.1-v5.3: ID of the ESXi host to use for Instant Recovery
-    v6.0: ID of the ESXi host to use for Instant Recovery.
+    ID of the ESXi host to use for Instant Recovery.
     """
     hostId: String
     mountExportSnapshotJobCommonOptionsV2: MountExportSnapshotJobCommonOptionsV2Input
@@ -30874,6 +31128,8 @@ input InstantRecoveryJobConfigV2Input {
     """
     preserveMoid: Boolean
     requiredRecoveryParameters: RequiredRecoveryParametersInput
+    "ID of the resource pool where the new virtual machine will be mounted."
+    resourcePoolId: String
     """
 
     Supported in v5.1+
@@ -30894,20 +31150,42 @@ input InterfaceCidrInput {
     selected: Boolean = false
 }
 
+"Config of the k8s cluster to onboard"
 input K8sClusterCreateInput {
+    "The ID of the CDM cluster for ON_PREM k8s clusters"
     cdmClusterId: UUID
+    "List of host IPs/hostnames of the k8s nodes"
     hostList: [String!]!
+    "Name of the k8s cluster"
     name: String!
+    "Port on the k8s node for the kupr Ingress Controller"
     port: Int!
+    "KuprClusterType of the k8s cluster"
     type: K8sClusterProtoType!
 }
 
+"Config of the kupr cluster to refresh"
 input K8sClusterRefreshInput {
+    "The ID of the kupr cluster to be refreshed"
     kuprClusterID: UUID!
 }
 
+"Config of the Kupr namespace snapshot to be restored and the target details"
+input K8sNamespaceRestore {
+    "The UUID of the kupr namepspace snapshot to be restored"
+    snapshotUUID: UUID!
+    "The UUID of the target cluster to restore the namespace snapshot to"
+    targetClusterUUID: UUID!
+    "The name of the target namespace to restore the namespace snapshot to"
+    targetNamespaceName: String!
+}
+
+"Config of the Kupr namespace to snapshot"
 input K8sNamespaceSnapshot {
+    "The ID of the kupr namespace managed object to snapshot"
     namespaceId: UUID!
+    "The SLA ID of the on demand snapshot request"
+    onDemandSnapshotSlaId: String!
 }
 
 "Label filter parameters for GCP objects."
@@ -30961,6 +31239,19 @@ input ListAccessUsersSortInput {
     sortOrder: DataGovSortOrderEnum = ASC
 }
 
+input ListFileActivitiesInput {
+    "The corresponding snappable's FID."
+    snappableFid: String!
+    "The corresponding snapshot's FID."
+    snapshotFid: String!
+    "The datetime to collect user activity from."
+    startDateTime: String!
+    "The standardized path to fetch user activities for."
+    stdPath: String!
+    "The user's IANA timezone."
+    timezone: String!
+}
+
 input ListFileResultFiltersInput {
     analyzerGroupIds: [String!] = []
     fileType: FileCountTypeEnum!
@@ -30975,15 +31266,24 @@ input ListObjectFilesFiltersInput {
     activityTypes: [ActivityAccessTypeEnum!] = []
     analyzerGroupIds: [String!] = []
     clusterIds: [String!] = []
-    fileCountType: FileCountTypeEnum!
+    fileCountTypes: [FileCountTypeEnum!] = []
     inodeTypes: [InodeTypeEnum!] = []
     objectIds: [String!] = []
+    objectTypes: [HierarchyObjectTypeEnum!]!
     openAccessTypes: [OpenAccessTypeEnum!] = []
     pathPrefix: String = ""
     searchText: String = ""
     snappableTypes: [String!] = []
     stalenessTypes: [StalenessTypeEnum!] = []
     whitelistEnabled: Boolean = false
+}
+
+"Target location information."
+input LocationInfo {
+    "Id of the target location."
+    locationId: String = ""
+    "Location type: CDM, AZURE, AWS, GCP."
+    locationType: LocationType = CDM
 }
 
 input LogConfig {
@@ -31047,8 +31347,7 @@ input MountExportSnapshotJobCommonOptionsInput {
     """
 
     Supported in v5.0+
-    v5.0-v5.3: Name of the new VM created by mount or export
-    v6.0: Name of the new VM created by mount or export.
+    Name of the new VM created by mount or export.
     """
     vmName: String
 }
@@ -31085,8 +31384,7 @@ input MountExportSnapshotJobCommonOptionsV2Input {
     """
 
     Supported in v5.1+
-    v5.1-v5.3: Name of the new VM created by mount or export
-    v6.0: Name of the new VM created by mount or export.
+    Name of the new VM created by mount or export.
     """
     vmName: String
 }
@@ -31099,8 +31397,7 @@ input MountSnapshotJobConfigForBatchV1Input {
     """
 
     Required. Supported in v5.0+
-    v5.0-v5.3: Snapshot mount config
-    v6.0: Snapshot mount config.
+    Snapshot mount config.
     """
     config: MountSnapshotJobConfigV1Input
     """
@@ -31124,9 +31421,7 @@ input MountSnapshotJobConfigForBatchV1Input {
     """
 
     Supported in v5.0+
-    v5.0: Mount a snapshot from this virtual machine.
-    v5.1-v5.3: Mount a snapshot from this virtual machine
-    v6.0: Mount a snapshot from this virtual machine.
+    Mount a snapshot from this virtual machine.
     """
     vmId: String = ""
 }
@@ -31177,6 +31472,8 @@ input MountSnapshotJobConfigV1Input {
 Supported in v5.1+
 """
 input MountSnapshotJobConfigV2Input {
+    "ID of the compute cluster where the new virtual machine will be mounted."
+    clusterId: String
     """
 
     Supported in v5.1+
@@ -31197,6 +31494,8 @@ input MountSnapshotJobConfigV2Input {
     hostId: String
     mountExportSnapshotJobCommonOptionsV2: MountExportSnapshotJobCommonOptionsV2Input
     requiredRecoveryParameters: RequiredRecoveryParametersInput
+    "ID of the resource pool where the new virtual machine will be mounted."
+    resourcePoolId: String
     """
 
     Supported in v5.1+
@@ -31224,43 +31523,37 @@ input NasConfigInput {
     """
 
     Supported in v5.0+
-    v5.0-v5.3: TLS certification to validate NAS server
-    v6.0: TLS certification to validate NAS server.
+    TLS certification to validate NAS server.
     """
     apiCertificate: String
     """
 
     Supported in v5.0+
-    v5.0-v5.3: API endpoint to access NAS API 'FLASHBLADE'
-    v6.0: API endpoint to access NAS API 'FLASHBLADE'.
+    API endpoint to access NAS API 'FLASHBLADE'.
     """
     apiEndpoint: String
     """
 
     Supported in v5.0+
-    v5.0-v5.3: Hostname or IP used in the NAS API calls
-    v6.0: Hostname or IP used in the NAS API calls.
+    Hostname or IP used in the NAS API calls.
     """
     apiHostname: String
     """
 
     Supported in v5.0+
-    v5.0-v5.3: Password to access NAS API 'ISILON/NETAPP'
-    v6.0: Password to access NAS API 'ISILON/NETAPP'.
+    Password to access NAS API 'ISILON/NETAPP'.
     """
     apiPassword: String
     """
 
     Supported in v5.0+
-    v5.0-v5.3: API token to access NAS API 'FLASHBLADE'
-    v6.0: API token to access NAS API 'FLASHBLADE'.
+    API token to access NAS API 'FLASHBLADE'.
     """
     apiToken: String
     """
 
     Supported in v5.0+
-    v5.0-v5.3: Username to access NAS API 'ISILON/NETAPP'
-    v6.0: Username to access NAS API 'ISILON/NETAPP'.
+    Username to access NAS API 'ISILON/NETAPP'.
     """
     apiUsername: String
     """
@@ -31292,15 +31585,13 @@ input NasConfigInput {
     """
 
     Supported in v5.0+
-    v5.0-v5.3: Type of NAS vendor 'ISILON/NETAPP/FLASHBLADE'
-    v6.0: Type of NAS vendor 'ISILON/NETAPP/FLASHBLADE'.
+    Type of NAS vendor 'ISILON/NETAPP/FLASHBLADE'.
     """
     vendorType: String = ""
     """
 
     Supported in v5.0+
-    v5.0-v5.3: Name of the Isilon zone that data IP belongs to
-    v6.0: Name of the Isilon zone that data IP belongs to.
+    Name of the Isilon zone that data IP belongs to.
     """
     zoneName: String
 }
@@ -31534,15 +31825,13 @@ input RequiredRecoveryParametersInput {
     """
 
     Supported in v5.1+
-    v5.1-v5.3: Point in time to recover to
-    v6.0: Point in time to recover to.
+    Point in time to recover to.
     """
     recoveryPoint: DateTime
     """
 
     Supported in v5.1+
-    v5.1-v5.3: ID of the snapshot to recover
-    v6.0: ID of the snapshot to recover.
+    ID of the snapshot to recover.
     """
     snapshotId: String
 }
@@ -31584,8 +31873,7 @@ input RestoreFilesJobConfigInput {
     """
 
     Supported in v5.0+
-    v5.0-v5.3: Domain name (Use . for local admin)
-    v6.0: Domain name (Use . for local admin).
+    Domain name (Use . for local admin).
     """
     domainName: String
     """
@@ -31598,15 +31886,13 @@ input RestoreFilesJobConfigInput {
     """
 
     Supported in v5.0+
-    v5.0-v5.3: Password
-    v6.0: Password.
+    Password.
     """
     password: String
     """
 
     Supported in v5.0+
-    v5.0-v5.3: Absolute file path and restore path if not restored back to itself
-    v6.0: Absolute file path and restore path if not restored back to itself.
+    Absolute file path and restore path if not restored back to itself.
     """
     restoreConfig: [VmRestorePathPairInput!] = []
     """
@@ -31631,8 +31917,7 @@ input RestoreFilesJobConfigInput {
     """
 
     Supported in v5.0+
-    v5.0-v5.3: Username
-    v6.0: Username.
+    Username.
     """
     username: String
 }
@@ -31659,8 +31944,7 @@ input RestorePathPairInput {
     """
 
     Required. Supported in v5.0+
-    v5.0-v5.3: Original file path to be restored
-    v6.0: Original file path to be restored.
+    Original file path to be restored.
     """
     path: String = ""
     """
@@ -31933,6 +32217,72 @@ input SpecificReplicationSpecInput {
     unidirectionalSpecInput: UnidirectionalReplicationSpecInput
 }
 
+"Input to trigger AWS native account disable job."
+input StartAwsNativeAccountDisableJobInput {
+    awsNativeAccountId: UUID!
+    awsNativeProtectionFeature: AwsNativeProtectionFeatureEnum!
+    shouldDeleteNativeSnapshots: Boolean!
+}
+
+"Input to trigger AWS native account refresh job."
+input StartAwsNativeAccountsRefreshJobInput {
+    awsNativeAccountIds: [UUID!]!
+    awsNativeProtectionFeatures: [AwsNativeProtectionFeatureEnum!]!
+}
+
+"Input to trigger export AWS native EBS volume job."
+input StartAwsNativeEbsVolumeSnapshotExportJobInput {
+    availabilityZone: String!
+    destinationAwsNativeAccountId: UUID!
+    destinationRegionNativeId: AwsNativeRegionEnum!
+    iops: Int!
+    kmsKeyId: String = ""
+    shouldCopyTags: Boolean!
+    shouldReplaceAttached: Boolean!
+    shouldUseReplica: Boolean = false
+    snapshotId: UUID!
+    snapshotType: SnapshotType = SOURCE
+    volumeName: String!
+    volumeSize: Int!
+    volumeType: AwsNativeEbsVolumeTypeEnum!
+}
+
+"Input to trigger AWS native EBS volume create snapshot job."
+input StartAwsNativeEbsVolumeSnapshotsJobInput {
+    ebsVolumeIds: [UUID!]!
+    retentionSlaId: String = ""
+}
+
+"Input to trigger export AWS native EC2 Instance job."
+input StartAwsNativeEc2InstanceSnapshotExportJobInput {
+    destinationAwsNativeAccountId: UUID!
+    destinationRegionId: AwsNativeRegionEnum!
+    exportInstanceInPoweredOffState: Boolean = false
+    instanceName: String!
+    instanceType: AwsNativeEc2InstanceTypeEnum!
+    kmsKeyId: String = ""
+    securityGroupIds: [String!]!
+    shouldCopyTags: Boolean!
+    snapshotId: UUID!
+    snapshotType: SnapshotType = SOURCE
+    sshKeyPairName: String = ""
+    subnetId: String!
+}
+
+"Trigger AWS EC2 instance snapshots create job."
+input StartAwsNativeEc2InstanceSnapshotsJobInput {
+    ec2InstanceIds: [UUID!]!
+    retentionSlaId: String = ""
+}
+
+"Trigger AWS EC2 instance snapshot restore job."
+input StartRestoreAwsNativeEc2InstanceSnapshotJobInput {
+    shouldPowerOn: Boolean!
+    shouldRestoreTags: Boolean!
+    snapshotId: String!
+    snapshotTypeToUseIfSourceExpired: SnapshotTypeToUseIfSourceExpired
+}
+
 input StartTimeAttributesInput {
     dayOfWeek: DayOfWeekOptInput
     hour: Int = 0
@@ -32006,6 +32356,13 @@ input TaskSummaryFilterInput {
     slaDomain: SnappableSlaDomainFilterInput
     time_gt: DateTime
     time_lt: DateTime
+}
+
+"Struct representing the Teams Channels to/from be restored"
+input TeamsChannelInfo {
+    ChannelName: String
+    ChannelUUID: UUID
+    TeamUUID: UUID!
 }
 
 input TimeFilterInput {
@@ -32129,6 +32486,16 @@ input VSphereVirtualDiskFilter {
     sourceVmId: UUID
 }
 
+"Input for ValidateBlueprintResourceMapping."
+input ValidateBlueprintResourceMappingInput {
+    "Blueprint failover related properties."
+    blueprintFailoverProperties: BlueprintFailoverPropertiesInput!
+    "Blueprint uuid."
+    blueprintId: UUID!
+    "List of snappable ids and recovery points."
+    childSnappableFailoverInfos: [ChildSnappableFailoverInfoInput!]!
+}
+
 input VmDiskUpdateInput {
     excludeFromSnapshots: Boolean
     virtualDiskFid: UUID!
@@ -32181,12 +32548,56 @@ input YearlySnapshotScheduleInput {
     yearStartMonth: MonthEnum = JANUARY
 }
 
+"CDM versions for Azure account."
+input cdmVersionRequest {
+    location: String = ""
+    servicePrincipal: servicePrincipal
+}
+
+"ClusterConfig for Azure account."
+input clusterConfigInput {
+    adminPassword: String = ""
+    clusterName: String = ""
+    dnsNameServers: [String!]
+    dnsSearchDomains: [String!]
+    ntpServers: [String!]
+    numNodes: Int = 0
+    userEmail: String = ""
+}
+
 "GCP KMS Crypto Key"
 input kmsCryptoKey {
     key: String = ""
     keyRing: String = ""
     location: String = ""
     projectNativeId: String = ""
+}
+
+"NsgRequest for Azure account."
+input nsgRequest {
+    netResourceGroup: String = ""
+    servicePrincipal: servicePrincipal
+}
+
+"Authorization for Azure account."
+input servicePrincipal {
+    clientId: String = ""
+    clientSecret: String = ""
+    subscriptionId: String = ""
+    tenatId: String = ""
+}
+
+"SubnetRequest for Azure account."
+input subnetRequest {
+    resourceGroup: String = ""
+    servicePrincipal: servicePrincipal
+    vnetName: String = ""
+}
+
+"VNetRequest for Azure account."
+input vnetRequest {
+    resourceGroup: String = ""
+    servicePrincipal: servicePrincipal
 }
 
 

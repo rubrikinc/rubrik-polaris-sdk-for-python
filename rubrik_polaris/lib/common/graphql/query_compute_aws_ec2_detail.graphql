@@ -1,7 +1,7 @@
 query RubrikPolarisSDKRequest($object_id: UUID!) {
-  awsNativeEc2Instance(fid: $object_id) {
+  awsNativeEc2Instance(ec2InstanceRubrikId: $object_id) {
     id
-    instanceId
+    instanceNativeId
     instanceName
     isRelic
     isExocomputeConfigured
@@ -49,7 +49,7 @@ query RubrikPolarisSDKRequest($object_id: UUID!) {
     }
     attachedEbsVolumes {
       id
-      volumeId
+      volumeNativeId
       volumeName
       volumeType
       sizeInGBs
