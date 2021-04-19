@@ -1,10 +1,10 @@
 query RubrikPolarisSDKRequest($first: Int, $after: String, $filters: AwsNativeEc2InstanceFilters) {
-  awsNativeEc2InstanceConnection(first: $first, after: $after, ec2InstanceFilters: $filters) {
+  awsNativeEc2Instances(first: $first, after: $after, ec2InstanceFilters: $filters) {
     edges {
       cursor
       node {
         id
-        instanceId
+        instanceNativeId
         instanceName
         vpcName
         region

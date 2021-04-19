@@ -53,17 +53,15 @@ def _monitor_job(job):
 
     self, task = job
     try:
+        if 'jobId' in task:
+            task['taskchainUuid'] = task['jobId']
         start = timer()
-        while self.get_task_status(task['taskchainUuid']) not in ["SUCCEEDED", "FAILED"]:
-            _ = self.get_task_status(task['taskchainUuid'])
+        while self.get_task_status(task['taskchainUuid'])['state'] not in ["SUCCEEDED", "FAILED"]:
+            _ = self.get_task_status(task['taskchainUuid'])['state']
             sleep(1)
-        status = self.get_task_status(task['taskchainUuid'])
-
-        # TODO: Add something to handle failures
-
-        task['status'] = status
+        task_status = self.get_task_status(task['taskchainUuid'])
+        task['status'] = task_status['state']
         task['elapsed'] = timer() - start
-
         return task
 
     except Exception as err:

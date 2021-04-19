@@ -1,6 +1,8 @@
-query RubrikPolarisSDKRequest($region: AwsNativeRegionEnum!, $aws_native_account_id: UUID!) {
-  getEncryptionKeysForRegionFromAWS(region: $region, awsNativeAccountId: $aws_native_account_id) {
-    id
-    aliases
+query RubrikPolarisSDKRequest($region: AwsRegionEnum!, $aws_native_account_id: UUID!, $feature: CloudAccountFeatureEnum = CLOUD_NATIVE_PROTECTION) {
+  AwsCloudAccountListKMSKeys(region: $region, cloudAccountUuid: $aws_native_account_id, feature: $feature) {
+    result{
+      id
+      name
+    }
   }
 }
