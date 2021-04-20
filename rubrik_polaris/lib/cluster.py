@@ -74,7 +74,6 @@ def get_cdm_cluster_connection_status(self, cluster_id):
         query = self._query(query_name, variables)
         if query['nodes']:
             return query['nodes'][0]['state']['connectedState']
-            print(query)
         else:
             raise Exception("A CDM Cluster with an ID of {} was not found.".format(cluster_id))
             
