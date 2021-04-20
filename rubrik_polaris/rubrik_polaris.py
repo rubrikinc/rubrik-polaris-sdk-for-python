@@ -37,6 +37,7 @@ class PolarisClient:
         submit_compute_restore_azure, submit_compute_restore_gce, get_compute_vsphere
     from .lib.storage import get_storage_object_ids_ebs, get_storage_ebs
     from .lib.common.graphql import get_enum_values
+    from .lib.cluster import get_cdm_cluster_location
 
     # Private
     from .lib.common.connection import _query, _get_access_token
