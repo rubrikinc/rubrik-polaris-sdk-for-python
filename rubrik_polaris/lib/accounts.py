@@ -18,11 +18,12 @@
 #  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 #  DEALINGS IN THE SOFTWARE.
 
-from rubrik_polaris.exceptions import PolarisException
 
 """
 Collection of functions that manipulate account components.
 """
+
+from rubrik_polaris.exceptions import PolarisException
 
 
 def add_account_aws(self, regions=[], all=False, profiles=[], aws_access_key_id=None, aws_secret_access_key=None):
