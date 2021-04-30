@@ -696,3 +696,47 @@ def _get_gcp_native_project(self, service_account_auth_key_file, project_id=None
     except Exception as e:
         raise PolarisException("Problem getting GCP project details: {}".format(e))
     return project
+
+
+def set_account_azure_default_sa(
+        self,
+        azure_app_id=None,
+        azure_app_secret_key=None,
+        azure_app_tenant_id=None,
+        azure_app_name=None,
+        azure_tenant_domain_name=None,
+        azure_cloud_type='AZUREPUBLICCLOUD'):
+    """Set default SA for Azure
+
+    Args:
+        azure_app_id (str):  Client ID of the Application
+        azure_app_secret_key (str):  Client secret key of the Application.
+        azure_app_tenant_id (str): Optional, ID of the home tenant of the application.
+        azure_app_name (str): Optional, Name of the application
+        azure_tenant_domain_name (str): Optional, Domain Name of the Azure tenant.
+        azure_cloud_type (str): AZUREPUBLICCLOUD [default] or AZURECHINACLOUD
+
+    Returns:
+        dict: Status if unsuccessful
+
+    Raises:
+        RequestException: If the query to Polaris returned an error
+
+    Examples:
+    """
+    try:
+        _query_name = "accounts_azure_default_sa_set"
+        _variables = {
+            "azure_app_id": azure_app_id,
+            "azure_app_secret_key": azure_app_secret_key,
+            "azure_app_tenant_id": azure_app_tenant_id,
+            "azure_app_name": azure_app_name,
+            "azure_tenant_domain_name": azure_tenant_domain_name,
+            "azure_cloud_type": azure_cloud_type
+        }
+        _request = self._query(_query_name, _variables)
+        return _request
+    except Exception as e:
+        raise PolarisException("Problem setting GCP Project default SA: {}".format(e))
+
+
