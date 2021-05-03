@@ -1,0 +1,3 @@
+mutation RubrikPolarisSDKRequest($account_id: String!, $account_name: String!, $regions: [String!]! ){
+    azureCloudAccountDeleteWithoutOAuth()
+}

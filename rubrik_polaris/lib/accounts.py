@@ -737,6 +737,6 @@ def set_account_azure_default_sa(
         _request = self._query(_query_name, _variables)
         return _request
     except Exception as e:
-        raise PolarisException("Problem setting GCP Project default SA: {}".format(e))
+        raise PolarisException("Problem setting Azure App default SA: {}".format(e))
 
 
