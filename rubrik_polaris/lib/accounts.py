@@ -740,3 +740,45 @@ def set_account_azure_default_sa(
         raise PolarisException("Problem setting Azure App default SA: {}".format(e))
 
 
+def add_account_azure(
+        self,
+        azure_tenant_domain_name=None,
+        azure_cloud_type='AZUREPUBLICCLOUD',
+        feature='CLOUDNATIVEPROTECTION',
+        azure_subscriptions=None,
+        azure_regions=None,
+        azure_policy_version=None):
+    """Add Azure subscription to Polaris
+
+    Args:
+        azure_tenant_domain_name (str): Optional, Domain Name of the Azure tenant.
+        azure_cloud_type (str): AZUREPUBLICCLOUD [default] or AZURECHINACLOUD
+        feature (str): Polaris cloud feature - CLOUDNATIVEPROTECTION [default]
+        azure_subscriptions (arr): Array of [["subscription_id","subscription_name"],[]]
+        azure_regions (arr): Array of Azure Regions
+        azure_policy_version (int): Azure Policy version
+
+    Returns:
+        dict: Status if unsuccessful
+
+    Raises:
+        RequestException: If the query to Polaris returned an error
+
+    Examples:
+    """
+    try:
+        _query_name = "accounts_azure_default_sa_set"
+        _variables = {
+            "azure_tenant_domain_name": azure_tenant_domain_name,
+            "azure_cloud_type": azure_cloud_type,
+            "feature": feature,
+            "azure_subscriptions": azure_subscriptions,
+            "azure_regions": azure_regions,
+            "azure_policy_version": azure_policy_version
+        }
+        _request = self._query(_query_name, _variables)
+        return _request
+    except Exception as e:
+        raise PolarisException("Problem adding Azure Subscription: {}".format(e))
+
+
