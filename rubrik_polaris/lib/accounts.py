@@ -263,7 +263,9 @@ def get_account_aws_native_id(self, profile='', aws_id=None, aws_secret=None):
             if e.response['Error']['Code'] == 'AWSOrganizationsNotInUseException':
                 pass
             else:
-                raise PolarisException("Unexpected error: %s" % e)
+                if 'Error' in e.response and 'Code' in e.response['Error']:
+                    raise PolarisException("Unexpected error ({}): {}".format(e.response['Error']['Code'], e))
+                raise PolarisException("Unexpected error: {}".format(e))
         return boto_account_id, boto_account_name
     except PolarisException:
         raise
