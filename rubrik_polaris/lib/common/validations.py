@@ -24,9 +24,11 @@ from uuid import UUID
 
 def _validate(self, **kwargs):
     for validation in kwargs:
+        if not kwargs[validation]:
+            kwargs[validation] = "NONE"
         if isinstance(kwargs[validation], list):
             for test in kwargs[validation]:
-                setattr(self, validation, globals()[validation+'_validation'](self, test_variable=kwargs[validation][test]))
+                setattr(self, validation, globals()[validation+'_validation'](self, test_variable=test))
         else:
             setattr(self, validation, globals()[validation + '_validation'](self, test_variable=kwargs[validation]))
 
@@ -137,7 +139,7 @@ def azure_cloud_type_validation(self, test_variable=None):
     return test_variable
 
 
-def azure_region_validation(self, test_variable=None):
+def azure_regions_validation(self, test_variable=None):
     test = self.get_enum_values(name="AzureCloudAccountRegionEnum")
     if not test_variable or test_variable not in test:
         raise ValidationException("{} not found, valid regions are {}".format(test_variable, list(test)))
@@ -155,5 +157,14 @@ def uuid_validation(self, test_variable=None):
     if not UUID(test_variable):
         raise ValidationException("{} not a UUID".format(test_variable))
     return test_variable
+
+
+def azure_subscription_ids(self, test_variable=None):
+    if not test_variable:
+        raise ValidationException("No subscription ids in list")
+    if not uuid_validation(test_variable=test_variable):
+        raise ValidationException("{} is not a UUID".format(test_variable))
+    return test_variable
+
 
 

@@ -215,7 +215,7 @@ def get_accounts_aws_detail(self, filter):
         filter (str): Search string to filter results
 
     Returns:
-        dict: Details of Azure accounts in Polaris
+        dict: Details of AWS accounts in Polaris
 
     Raises:
         RequestException: If the query to Polaris returned an error
@@ -749,7 +749,7 @@ def add_account_azure(
         self,
         azure_tenant_domain_name=None,
         azure_cloud_type='AZUREPUBLICCLOUD',
-        feature='CLOUDNATIVEPROTECTION',
+        feature='CLOUD_NATIVE_PROTECTION',
         azure_subscriptions=None,
         azure_regions=None,
         azure_policy_version=None):
@@ -780,12 +780,17 @@ def add_account_azure(
             azure_regions=azure_regions,
 #            azure_subscriptions=azure_subscriptions
         )
+
+        azure_subscriptions_converted = []
+        for azure_subscription in azure_subscriptions:
+            azure_subscriptions_converted.append({'nativeId': azure_subscription[0], 'name': azure_subscription[1]})
+
         _variables = {
             "azure_tenant_domain_name": azure_tenant_domain_name,
             "azure_cloud_type": self.azure_cloud_type,
-            "feature": feature,
-            "azure_subscriptions": azure_subscriptions,
-            "azure_regions": azure_regions,
+            "feature": self.feature,
+            "azure_subscriptions": azure_subscriptions_converted,
+            "azure_regions": self.azure_regions,
             "azure_policy_version": azure_policy_version
         }
         _request = self._query(_query_name, _variables)
@@ -817,11 +822,11 @@ def delete_account_azure(
         self._validate(
             mutation_name=_query_name,
             feature=feature,
-#            azure_subscription_ids=azure_subscription_ids
+            azure_subscription_ids=azure_subscription_ids
         )
         _variables = {
-            "feature": feature,
-            "azure_subscription_ids": azure_subscription_ids
+            "feature": self.feature,
+            "azure_subscription_ids": self.azure_subscription_ids
         }
         _request = self._query(_query_name, _variables)
         return _request
