@@ -260,7 +260,8 @@ def get_account_aws_native_id(self, profile='', aws_id=None, aws_secret=None):
         try:
             boto_account_name = boto3.client('organizations').describe_account(AccountId=boto_account_id).get('Account').get('Name')
         except ClientError as e:
-            if e.response['Error']['Code'] == 'AWSOrganizationsNotInUseException':
+            if e.response['Error']['Code'] == 'AWSOrganizationsNotInUseException' \
+                    or e.response['Error']['Code'] == 'AccessDeniedException':
                 pass
             else:
                 if 'Error' in e.response and 'Code' in e.response['Error']:
