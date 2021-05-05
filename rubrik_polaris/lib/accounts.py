@@ -706,6 +706,7 @@ def set_account_azure_default_sa(
         azure_app_name=None,
         azure_tenant_domain_name=None,
         azure_cloud_type='AZUREPUBLICCLOUD'):
+
     """Set default SA for Azure
 
     Args:
@@ -726,15 +727,19 @@ def set_account_azure_default_sa(
     """
     try:
         _query_name = "accounts_azure_default_sa_set"
+        self._validate(
+            mutation_name=_query_name,
+            azure_cloud_type=azure_cloud_type
+        )
         _variables = {
             "azure_app_id": azure_app_id,
             "azure_app_secret_key": azure_app_secret_key,
             "azure_app_tenant_id": azure_app_tenant_id,
             "azure_app_name": azure_app_name,
             "azure_tenant_domain_name": azure_tenant_domain_name,
-            "azure_cloud_type": azure_cloud_type
+            "azure_cloud_type": self.azure_cloud_type
         }
-        _request = self._query(_query_name, _variables)
+        _request = self._query(self.mutation_name, _variables)
         return _request
     except Exception as e:
         raise PolarisException("Problem setting Azure App default SA: {}".format(e))
@@ -767,10 +772,17 @@ def add_account_azure(
     Examples:
     """
     try:
-        _query_name = "accounts_azure_default_sa_set"
+        _query_name = "accounts_azure_add"
+        self._validate(
+            mutation_name=_query_name,
+            azure_cloud_type=azure_cloud_type,
+            feature=feature,
+            azure_regions=azure_regions,
+#            azure_subscriptions=azure_subscriptions
+        )
         _variables = {
             "azure_tenant_domain_name": azure_tenant_domain_name,
-            "azure_cloud_type": azure_cloud_type,
+            "azure_cloud_type": self.azure_cloud_type,
             "feature": feature,
             "azure_subscriptions": azure_subscriptions,
             "azure_regions": azure_regions,
@@ -801,7 +813,12 @@ def delete_account_azure(
     Examples:
     """
     try:
-        _query_name = "accounts_azure_default_sa_set"
+        _query_name = "accounts_azure_delete"
+        self._validate(
+            mutation_name=_query_name,
+            feature=feature,
+#            azure_subscription_ids=azure_subscription_ids
+        )
         _variables = {
             "feature": feature,
             "azure_subscription_ids": azure_subscription_ids
