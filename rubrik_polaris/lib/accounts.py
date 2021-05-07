@@ -25,12 +25,12 @@ Collection of functions that manipulate account components.
 """
 
 
-def add_account_aws(self, regions=[], all=False, profiles=[], aws_access_key_id=None, aws_secret_access_key=None):
+def add_account_aws(self, aws_regions=[], all=False, aws_profiles=[], aws_access_key_id=None, aws_secret_access_key=None, cloud_account_features=None):
     """Add AWS account to Polaris
 
     Args:
-        regions (list): List of AWS regions to include in Polaris for imported accounts
-        profiles (list): Optional list of local profile names to add to Polaris
+        aws_regions (list): List of AWS regions to include in Polaris for imported accounts
+        aws_profiles (list): Optional list of local profile names to add to Polaris
         all (bool): Optional set true to import all locally configured profiles to Polaris
         aws_access_key_id (str): AWS Access key of account to import to Polaris
         aws_secret_access_key (str): AWS secret of key of account to import to polaris
@@ -43,21 +43,21 @@ def add_account_aws(self, regions=[], all=False, profiles=[], aws_access_key_id=
         RequestException: If the query to Polaris returned an error
 
     Examples:
-        >>> rubrik.add_account_aws(regions = ["us-east-1"], profiles = ["milanese"])
-        >>> rubrik.add_account_aws(regions = ["us-east-1"], aws_access_key_id='blah', aws_secret_access_key='blah')
-        >>> rubrik.add_account_aws(regions = ["us-west-2"], all = True )
+        >>> rubrik.add_account_aws(aws_regions = ["us-east-1"], profiles = ["milanese"], cloud_account_features = ["CLOUD_NATIVE_PROTECTION"])
+        >>> rubrik.add_account_aws(aws_regions = ["us-east-1"], aws_access_key_id='blah', aws_secret_access_key='blah', cloud_account_features = ["CLOUD_NATIVE_PROTECTION"])
+        >>> rubrik.add_account_aws(aws_regions = ["us-west-2"], all = True , cloud_account_features = ["CLOUD_NATIVE_PROTECTION"])
 
     """
     if aws_access_key_id and aws_secret_access_key:
-        self._add_account_aws(regions=regions, aws_id=aws_access_key_id, aws_secret=aws_secret_access_key)
-    elif all or profiles:
+        self._add_account_aws(aws_regions=aws_regions, aws_id=aws_access_key_id, aws_secret=aws_secret_access_key, cloud_account_features=cloud_account_features)
+    elif all or aws_profiles:
         for profile in self._get_aws_profiles():
-            if profile in profiles or (all and profile != 'default'):
-                self._add_account_aws(profile=profile, regions=regions)
+            if profile in aws_profiles or (all and profile != 'default'):
+                self._add_account_aws(profile=profile, aws_regions=aws_regions, cloud_account_features=cloud_account_features)
                 #TODO: Should add above into a queque for threaded provisioning
 
 
-def _add_account_aws(self, regions=[], cloud_account_features=None, profile='', aws_id=None, aws_secret=None):
+def _add_account_aws(self, aws_regions=[], cloud_account_features=None, profile='', aws_id=None, aws_secret=None):
     aws_account_id = None
     aws_account_name = None
 
@@ -78,29 +78,63 @@ def _add_account_aws(self, regions=[], cloud_account_features=None, profile='', 
         account_name_list.append(profile)
 
     try:
-        cloud_account_action = 'CREATE'
-        cloud_account_features = cloud_account_features
-
-        query_name = "accounts_aws_add_initiate"
-        variables = {
-            "account_id": aws_account_id,
-            "account_name": " : ".join(account_name_list),
-            "cloud_account_action": cloud_account_action,
-            "cloud_account_features": cloud_account_features
-        }
-        result = self._query(query_name, variables)
-        self._pp.pprint(result)
-        exit()
-        if result['errorMessage']:
-            raise Exception("Account {} already added".format(aws_account_id))
+        account_initiate_result = _add_account_aws_initiate(self, cloud_account_features=cloud_account_features, account_name_list=account_name_list, aws_account_id=aws_account_id)['initiateResponse']
+        account_commit_result = _add_account_aws_commit(self, cloud_account_features=cloud_account_features, account_name_list=account_name_list, aws_account_id=aws_account_id, account_initiate_result=account_initiate_result, aws_regions=aws_regions)
     except Exception:
         raise
 
     else:
         if profile:
-            _invoke_aws_stack(self, result, aws_account_id, regions=regions, profile=profile)
+            _invoke_aws_stack(self, account_initiate_result=account_initiate_result, aws_account_id=aws_account_id, regions=aws_regions, profile=profile)
         elif aws_id and aws_secret:
-            _invoke_aws_stack(self, result, aws_account_id, regions=regions, aws_id=aws_id, aws_secret=aws_secret)
+            _invoke_aws_stack(self, account_initiate_result=account_initiate_result, aws_account_id=aws_account_id, regions=aws_regions, aws_id=aws_id, aws_secret=aws_secret)
+
+
+def _add_account_aws_commit(self, aws_regions=None, cloud_account_features=None, account_name_list=None, aws_account_id=None, account_initiate_result=None):
+    cloud_account_action = 'CREATE'
+    cloud_account_features = cloud_account_features
+    query_name = "accounts_aws_add_commit"
+    self._validate(
+        cloud_account_action=cloud_account_action,
+        query_name=query_name,
+        cloud_account_features=cloud_account_features,
+        aws_regions=aws_regions
+    )
+    variables = {
+        "aws_account_id": aws_account_id,
+        "aws_account_name": " : ".join(account_name_list),
+        "aws_regions": aws_regions,
+        "external_id": account_initiate_result['externalId'],
+        "feature_versions": account_initiate_result['featureVersionList'],
+        "stack_name": account_initiate_result['stackName'],
+        "cloud_account_action": self.cloud_account_action,
+        "cloud_account_features": self.cloud_account_features
+    }
+    result = self._query(self.query_name, variables)
+    if 'errorMessage' in result and result['errorMessage']:
+        raise Exception("Account {} already added: {}".format(aws_account_id, result['errorMessage']))
+    return result
+
+
+def _add_account_aws_initiate(self, cloud_account_features=None, account_name_list=None, aws_account_id=None ):
+    cloud_account_action = 'CREATE'
+    cloud_account_features = cloud_account_features
+    query_name = "accounts_aws_add_initiate"
+    self._validate(
+        cloud_account_action=cloud_account_action,
+        query_name=query_name,
+        cloud_account_features=cloud_account_features
+    )
+    variables = {
+        "aws_account_id": aws_account_id,
+        "account_name": " : ".join(account_name_list),
+        "cloud_account_action": self.cloud_account_action,
+        "cloud_account_features": self.cloud_account_features
+    }
+    result = self._query(self.query_name, variables)
+    if 'errorMessage' in result and result['errorMessage']:
+        raise Exception("Account {} already added: {}".format(aws_account_id, result['errorMessage']))
+    return result
 
 
 def _get_aws_profiles(self):
@@ -108,45 +142,40 @@ def _get_aws_profiles(self):
     return boto3.session.Session().available_profiles
 
 
-def _invoke_aws_stack(self, nodes, account_id, regions=[], profile='', aws_id=None, aws_secret=None):
-    """Invokes AWS Cloudformation configuration for Account
-
-    Arguments:
-        nodes {dict} -- nodes from add_account_aws
-        account_id {str} -- account_id from add_account_aws
-    """
+def _invoke_aws_stack(self, account_initiate_result=None, aws_account_id=None, regions=[], profile='', aws_id=None, aws_secret=None):
     import boto3 as boto3
+    import re
     from botocore.exceptions import WaiterError
 
+    region = re.sub(r"_", "-", regions[0].lower())
     if profile:
         boto3.setup_default_session(profile_name=profile)
     elif aws_id and aws_secret:
         boto3.setup_default_session(aws_access_key_id=aws_id, aws_secret_access_key=aws_secret)
 
-    for region in regions:
-        boto_account_id = boto3.client('sts').get_caller_identity().get('Account')
-        client = boto3.client('cloudformation', region_name=region)
+    boto_account_id = boto3.client('sts').get_caller_identity().get('Account')
+    client = boto3.client('cloudformation', region_name=region)
 
-        if boto_account_id != account_id:
-            raise Exception("Account mismatch. Are you using the proper AWS_PROFILE?")
+    if boto_account_id != aws_account_id:
+        raise Exception("Account mismatch. Are you using the proper AWS_PROFILE?")
 
-        # Add ability to use local keys
-        try:
-            create_stack = client.create_stack(
-                StackName=nodes['cloudFormationName'],
-                TemplateURL=nodes['cloudFormationTemplateUrl'],
-                DisableRollback=False,
-                Capabilities=['CAPABILITY_IAM'],
-                EnableTerminationProtection=False
-            )
-        except Exception as e:
-            raise Exception('Stack creation failed with error:\n {}'.format(str(e)))
+    # Add ability to use local keys
+    try:
+        create_stack = client.create_stack(
+            StackName=account_initiate_result['stackName'],
+            TemplateURL=account_initiate_result['templateUrl'],
+            DisableRollback=False,
+            Capabilities=['CAPABILITY_IAM'],
+            EnableTerminationProtection=False
+        )
+    except Exception as e:
+        raise Exception('Stack creation failed with error:\n {}'.format(str(e)))
 
-        waiter = client.get_waiter('stack_create_complete')
-        try:
-            waiter.wait(StackName=create_stack['StackId'])
-        except WaiterError:
-            raise
+    waiter = client.get_waiter('stack_create_complete')
+    try:
+        waiter.wait(StackName=create_stack['StackId'])
+    except WaiterError:
+        raise
 
 
 def get_accounts_aws(self, filter=""):
@@ -396,7 +425,8 @@ def _delete_account_aws(self, profile='', aws_id=None, aws_secret=None):
         elif aws_id and aws_secret:
             account_id = self.get_account_aws_native_id(aws_id=aws_id, aws_secret=aws_secret)[0]
 
-        polaris_account_info = self.get_accounts_aws_detail(account_id)['awsCloudAccounts'][0]
+        polaris_account_info = self.get_accounts_aws_detail(account_id)[0]
+        self._pp.pprint(polaris_account_info)
         # TODO: Add exception if account does not exist in polaris
         polaris_account_id = polaris_account_info['awsCloudAccount']['id']
         self._disable_account_aws(polaris_account_id)
