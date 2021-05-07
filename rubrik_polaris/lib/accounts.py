@@ -34,6 +34,7 @@ def add_account_aws(self, regions=[], all=False, profiles=[], aws_access_key_id=
         all (bool): Optional set true to import all locally configured profiles to Polaris
         aws_access_key_id (str): AWS Access key of account to import to Polaris
         aws_secret_access_key (str): AWS secret of key of account to import to polaris
+        cloud_account_features (list): List of services to enable for cloud account
 
     Returns:
         dict: Status if unsuccessful
@@ -56,7 +57,7 @@ def add_account_aws(self, regions=[], all=False, profiles=[], aws_access_key_id=
                 #TODO: Should add above into a queque for threaded provisioning
 
 
-def _add_account_aws(self, regions=[], profile='', aws_id=None, aws_secret=None):
+def _add_account_aws(self, regions=[], cloud_account_features=None, profile='', aws_id=None, aws_secret=None):
     aws_account_id = None
     aws_account_name = None
 
@@ -77,13 +78,19 @@ def _add_account_aws(self, regions=[], profile='', aws_id=None, aws_secret=None)
         account_name_list.append(profile)
 
     try:
-        query_name = "accounts_aws_add"
+        cloud_account_action = 'CREATE'
+        cloud_account_features = cloud_account_features
+
+        query_name = "accounts_aws_add_initiate"
         variables = {
             "account_id": aws_account_id,
             "account_name": " : ".join(account_name_list),
-            "regions": regions
+            "cloud_account_action": cloud_account_action,
+            "cloud_account_features": cloud_account_features
         }
         result = self._query(query_name, variables)
+        self._pp.pprint(result)
+        exit()
         if result['errorMessage']:
             raise Exception("Account {} already added".format(aws_account_id))
     except Exception:
@@ -288,7 +295,7 @@ def _disable_account_aws(self, polaris_account_id):
         raise
 
 
-def _invoke_account_delete_aws(self, polaris_account_id):
+def _invoke_account_delete_aws(self, cloud_account_uuid):
     """Invokes initiation of Delete AWS Account in Polaris
 
     Arguments:
@@ -297,14 +304,14 @@ def _invoke_account_delete_aws(self, polaris_account_id):
     try:
         query_name = "accounts_aws_delete_initiate"
         variables = {
-            "polaris_account_id": polaris_account_id
+            "cloud_account_uuid": cloud_account_uuid
         }
         return self._query(query_name, variables)
     except Exception:
         raise
 
 
-def _commit_account_delete_aws(self, polaris_account_id):
+def _commit_account_delete_aws(self, cloud_account_uuid):
     """Commits  Delete AWS Account in Polaris
 
     Arguments:
@@ -313,7 +320,7 @@ def _commit_account_delete_aws(self, polaris_account_id):
     try:
         query_name = "accounts_aws_delete_commit"
         variables = {
-            "polaris_account_id": polaris_account_id
+            "cloud_account_uuid": cloud_account_uuid
         }
         return self._query(query_name, variables)
     except Exception:
