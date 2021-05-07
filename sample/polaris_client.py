@@ -49,7 +49,7 @@ except Exception as err:
 # rubrik.add_account_aws(aws_regions = ["US_WEST_2"], all = True,  cloud_account_features=["CLOUD_NATIVE_PROTECTION"])
 
 ### Remove AWS Acct (local profile must be configured, specify list of profiles _or_ set all=True.
-rubrik.delete_account_aws(profiles = ['milanese'])
+# rubrik.delete_account_aws(profiles = ['milanese'])
 # rubrik.delete_account_aws(aws_access_key_id='blah', aws_secret_access_key='blah')
 # rubrik.delete_account_aws(all = True )
 
