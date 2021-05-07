@@ -3,7 +3,6 @@ import argparse
 import pprint
 import sys
 import rubrik_polaris
-import datetime
 
 
 pp = pprint.PrettyPrinter(indent=4)
@@ -12,14 +11,19 @@ parser = argparse.ArgumentParser()
 parser.add_argument('-p', '--password', dest='password', help="Polaris Password", default=None)
 parser.add_argument('-u', '--username', dest='username', help="Polaris UserName", default=None)
 parser.add_argument('-d', '--domain', dest='domain', help="Polaris Domain", default=None)
+parser.add_argument('-k', '--keyfile', dest='json_keyfile', help="JSON Keyfile", default=None)
 parser.add_argument('-r', '--root', dest='root_domain', help="Polaris Root Domain", default=None)
 parser.add_argument('--insecure', help='Deactivate SSL Verification', action="store_true")
 
 args = parser.parse_args()
 
 try:
-    rubrik = rubrik_polaris.PolarisClient(args.domain, args.username, args.password, root_domain=args.root_domain,
-                                          insecure=args.insecure)
+    ### Instantiate with username/password
+    # rubrik = rubrik_polaris.PolarisClient(domain=args.domain, username=args.username, password=args.password, root_domain=args.root_domain,
+    #                                       insecure=args.insecure)
+
+    ### Instantiate with json keyfile
+    rubrik = rubrik_polaris.PolarisClient(json_keyfile=args.json_keyfile, insecure=args.insecure)
 except Exception as err:
     print(err)
     sys.exit(1)

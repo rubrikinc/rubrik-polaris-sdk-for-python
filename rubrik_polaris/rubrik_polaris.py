@@ -40,7 +40,7 @@ class PolarisClient:
     from .lib.cluster import get_cdm_cluster_location, get_cdm_cluster_connection_status
 
     # Private
-    from .lib.common.connection import _query, _get_access_token
+    from .lib.common.connection import _query, _get_access_token_basic, _get_access_token_keyfile
     from .lib.common.validations import _validate
     from .lib.compute import _submit_compute_restore, _get_compute_object_ids, _get_aws_region_vpcs, _get_aws_region_kmskeys, \
         _get_aws_region_sshkeypairs, _submit_compute_export
@@ -53,18 +53,18 @@ class PolarisClient:
         _disable_account_gcp_project, _get_account_gcp_project, _get_account_gcp_permissions_cnp, _get_account_gcp_project_uuid_by_string, \
         _add_account_aws_initiate, _add_account_aws_commit
 
-    def __init__(self, _domain=None, _username=None, _password=None, **kwargs):
+    def __init__(self, domain=None, username=None, password=None, json_keyfile=None, **kwargs):
         from .lib.common.graphql import _build_graphql_maps
 
         self._pp = pprint.PrettyPrinter(indent=4)
 
         # Set credentials
-        self._domain = self._get_cred('rubrik_polaris_domain', _domain)
-        self._username = self._get_cred('rubrik_polaris_username', _username)
-        self._password = self._get_cred('rubrik_polaris_password', _password)
+        self._domain = self._get_cred('rubrik_polaris_domain', domain)
+        self._username = self._get_cred('rubrik_polaris_username', username)
+        self._password = self._get_cred('rubrik_polaris_password', password)
 
-        if not (self._domain and self._username and self._password):
-            raise Exception('Required credentials are missing! Please pass in username, password and domain, directly or through the OS environment.')
+        if not (self._domain and self._username and self._password) and not json_keyfile:
+            raise Exception('Required credentials are missing! Please pass in username, password and domain, directly or through the OS environment, or .json key file.')
 
         # Set base variables
         self._kwargs = kwargs
@@ -81,15 +81,22 @@ class PolarisClient:
             self._baseurl = "https://{}.my.rubrik.com/api".format(self._domain)
 
         try:
-            # Get Auth Token and assemble header
-            self._access_token = self._get_access_token()
-            del(self._username, self._password)
+            if self._username and self._password:
+                self._access_token = self._get_access_token_basic()
+                del(self._username, self._password)
+            elif json_keyfile:
+                import json
+                import re
+                with open(json_keyfile) as f:
+                    json_key = json.load(f)
+                self._baseurl = re.sub(r"/client_token", "", json_key['access_token_uri'])
+                self._access_token = self._get_access_token_keyfile(json_key=json_key)
+
             self._headers = {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
                 'Authorization': 'Bearer ' + self._access_token
             }
-            
             # Get graphql content
             (self._graphql_query_map) = _build_graphql_maps(self)
 

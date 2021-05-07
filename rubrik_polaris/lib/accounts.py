@@ -424,8 +424,11 @@ def _delete_account_aws(self, profile='', aws_id=None, aws_secret=None):
             account_id = self.get_account_aws_native_id(profile=profile)[0]
         elif aws_id and aws_secret:
             account_id = self.get_account_aws_native_id(aws_id=aws_id, aws_secret=aws_secret)[0]
+        try:
+            polaris_account_info = self.get_accounts_aws_detail(account_id)[0]
+        except Exception as e:
+            raise Exception("Account not found in Polaris ({})".format(account_id))
 
-        polaris_account_info = self.get_accounts_aws_detail(account_id)[0]
         # TODO: Add exception if account does not exist in polaris
         polaris_account_id = polaris_account_info['awsCloudAccount']['id']
         self._disable_account_aws(polaris_account_id)
