@@ -296,7 +296,7 @@ def get_account_aws_native_id(self, profile='', aws_id=None, aws_secret=None):
         try:
             boto_account_name = boto3.client('organizations').describe_account(AccountId=boto_account_id).get('Account').get('Name')
         except ClientError as e:
-            if e.response['Error']['Code'] == 'AWSOrganizationsNotInUseException':
+            if e.response['Error']['Code'] in ['AWSOrganizationsNotInUseException', 'AccessDeniedException']:
                 pass
             else:
                 raise PolarisException("Unexpected error: %s" % e)
@@ -426,7 +426,6 @@ def _delete_account_aws(self, profile='', aws_id=None, aws_secret=None):
             account_id = self.get_account_aws_native_id(aws_id=aws_id, aws_secret=aws_secret)[0]
 
         polaris_account_info = self.get_accounts_aws_detail(account_id)[0]
-        self._pp.pprint(polaris_account_info)
         # TODO: Add exception if account does not exist in polaris
         polaris_account_id = polaris_account_info['awsCloudAccount']['id']
         self._disable_account_aws(polaris_account_id)

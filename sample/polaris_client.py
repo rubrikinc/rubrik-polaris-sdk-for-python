@@ -44,12 +44,12 @@ except Exception as err:
 # rubrik.add_project_gcp(service_account_auth_key_file="/home/peterm/galactus-gcp-1-a3c-1.json", gcp_native_project_id="pm-team-1")
 
 ### Add AWS Acct (local profile must be configured, specify list of profiles _or_ set all=True.
-# rubrik.add_account_aws(regions = ["us-east-1"], profiles = ["milanese"])
-# rubrik.add_account_aws(regions = ["us-east-1"], aws_access_key_id='blah', aws_secret_access_key='blah')
-# rubrik.add_account_aws(regions = ["us-west-2"], all = True )
+# rubrik.add_account_aws(aws_regions=["US_EAST_1"], aws_profiles=["milanese"], cloud_account_features=["CLOUD_NATIVE_PROTECTION"])
+# rubrik.add_account_aws(aws_regions = ["US-EAST_1"], aws_access_key_id='blah', aws_secret_access_key='blah', cloud_account_features=["CLOUD_NATIVE_PROTECTION"])
+# rubrik.add_account_aws(aws_regions = ["US_WEST_2"], all = True,  cloud_account_features=["CLOUD_NATIVE_PROTECTION"])
 
 ### Remove AWS Acct (local profile must be configured, specify list of profiles _or_ set all=True.
-# rubrik.delete_account_aws(profiles = ['milanese'])
+rubrik.delete_account_aws(profiles = ['milanese'])
 # rubrik.delete_account_aws(aws_access_key_id='blah', aws_secret_access_key='blah')
 # rubrik.delete_account_aws(all = True )
 
