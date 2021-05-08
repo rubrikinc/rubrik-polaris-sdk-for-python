@@ -77,7 +77,7 @@ def _query(self, query_name=None, variables=None, timeout=60):
         raise RequestException(err)
 
 
-def _get_access_token(self):
+def _get_access_token_basic(self):
     import requests
     from rubrik_polaris.exceptions import RequestException
 
@@ -92,7 +92,40 @@ def _get_access_token(self):
             'Accept': 'application/json, text/plain'
         }
         request = requests.post(session_url, json=payload, headers=headers, verify=False)
-    
+
+        del payload
+
+        response_json = request.json()
+        if 'access_token' not in response_json:
+            raise RequestException("Authentication failed!")
+
+        return response_json['access_token']
+
+    except requests.exceptions.RequestException as request_err:
+        raise RequestException(request_err)
+    except ValueError as value_err:
+        raise RequestException(value_err)
+    except Exception as err:
+        raise
+
+
+def _get_access_token_keyfile(self, json_key=None):
+    import requests
+    from rubrik_polaris.exceptions import RequestException
+
+    try:
+        session_url = json_key['access_token_uri']
+        payload = {
+            "client_id": json_key['client_id'],
+            "client_secret": json_key['client_secret'],
+            "name": json_key['name']
+        }
+        headers = {
+            'Content-Type': 'application/json;charset=UTF-8',
+            'Accept': 'application/json, text/plain'
+        }
+        request = requests.post(session_url, json=payload, headers=headers, verify=False)
+
         del payload
 
         response_json = request.json()

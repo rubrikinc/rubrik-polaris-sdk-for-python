@@ -1,9 +1,0 @@
-mutation RubrikPolarisSDKRequest($account_id: String!, $account_name: String!, $regions: [String!]! ){
-    awsNativeProtectionAccountAdd(awsNativeProtectionAccountAddArg: {accountId: $account_id, name: $account_name, regions: $regions})
-    {
-       cloudFormationName
-       cloudFormationUrl
-       cloudFormationTemplateUrl
-       errorMessage
-    }
-}

@@ -3346,8 +3346,6 @@ union ActivitySeriesGroupByInfo = ActivityObjectType | ActivityStatus | Activity
 
 union AnomalyResultGroupByInfo = AnomalyStatus | Cluster | Snappable | TimeRangeWithUnit
 
-union AzureResourceGroupUnionType = AzureNativeCommonResourceGroupWithSla | AzureNativeResourceGroup
-
 union CdmSnapshotGroupByInfo = TimeRangeWithUnit
 
 union ClusterGroupByInfo = ClusterType | TimeRangeWithUnit
@@ -3444,9 +3442,9 @@ type AccessGroupEdge {
 type AccessUser {
     activityDelta: Int!
     email: String!
+    lastAccessTime: String!
     numActivities: Int!
-    riskLevel: RiskLevelTypeEnum!
-    userId: String!
+    userSid: String!
     username: String!
 }
 
@@ -3760,6 +3758,8 @@ type AnomalyResult {
     filesModifiedCount: Long
     id: String!
     isAnomaly: Boolean!
+    "The location of the object."
+    location: String!
     managedId: String!
     objectType: ObjectTypeEnum
     previousSnapshotDate: DateTime!
@@ -4058,39 +4058,12 @@ type AwsAccountValidationResponse {
     seamlessFlowEnabled: Boolean!
 }
 
-"Initiate delete of aws cloud account."
-type AwsCloudAccountDeleteInitiateReply {
-    "Cloud formation url to delete the stack"
-    cloudFormationUrl: String!
-    "List of feature-version"
-    featureRegionMap: [AwsCloudAccountFeatureVersion!]!
-}
-
-"Process delete of aws cloud account."
-type AwsCloudAccountDeleteProcessReply {
-    "Contains success response message."
-    message: String
-}
-
 "Feature version of aws cloud accounts"
 type AwsCloudAccountFeatureVersion {
     "Feature Enum"
     feature: CloudAccountFeatureEnum!
     "Version"
     version: Int!
-}
-
-"Aws cloud accounts."
-type AwsCloudAccountGetAccountResponse {
-    "Account details."
-    awsCloudAccount: AwsAccountResponse
-    "Feature details."
-    featureDetails: [FeatureDetail!]!
-}
-
-"Aws cloud accounts for a feature."
-type AwsCloudAccountGetAccountsResponse {
-    awsCloudAccounts: [AwsCloudAccountGetAccountResponse!]!
 }
 
 "Initiate aws cloud accounts."
@@ -4133,37 +4106,17 @@ type AwsCloudAccountListVpcResponse {
     result: [CloudAccountVpc!]!
 }
 
-"Process aws cloud account(s)."
-type AwsCloudAccountProcessResponse {
-    "Contains success response message."
-    awsChildAccounts: [AwsAccountResponse!]!
-    "Contains success response message."
-    message: String
-}
-
-"Aws cloud account save response."
-type AwsCloudAccountSaveResponse {
-    "Contains success response message."
-    message: String
-}
-
-"Aws Cloud Account Update Feature Initiate Response."
-type AwsCloudAccountUpdateFeatureInitiateResponse {
-    cloudFormationUrl: String!
-    templateUrl: String!
+"Aws cloud accounts."
+type AwsCloudAccountSelectorType {
+    "Account details."
+    awsCloudAccount: AwsAccountResponse
+    "Feature details."
+    featureDetails: [FeatureDetail!]!
 }
 
 "Aws Cloud Account Update Feature Response."
 type AwsCloudAccountUpdateFeatureResponse {
     success: Boolean!
-}
-
-"Aws cloud accounts validate response."
-type AwsCloudAccountValidateAndInitateResponse {
-    "Aws cloud account initiate response type."
-    initiateResponse: AwsCloudAccountInitiate
-    "Contains error message for admin account."
-    validateResponse: AwsCloudAccountValidateResponse
 }
 
 "Aws cloud accounts validate response."
@@ -4196,24 +4149,8 @@ type AwsEc2Instance {
     instanceType: String!
 }
 
-"AWS Exocompute Configs Create Response."
-type AwsExocomputeConfigsCreateResponse {
-    configs: [AwsExocomputeGetConfigResponse!]!
-}
-
-"AWS Exocompute Configs Delete Response."
-type AwsExocomputeConfigsDeleteResponse {
-    deletionStatus: [AwsExocomputeConfigsDeletionStatusType!]!
-}
-
-"AWS Exocompute Configs Deletion status."
-type AwsExocomputeConfigsDeletionStatusType {
-    exocomputeConfigId: String!
-    success: Boolean!
-}
-
 "AWS Exocompute configs in an AWS account."
-type AwsExocomputeConfigsInAccount {
+type AwsExocomputeConfig {
     "Account details."
     awsCloudAccount: AwsAccountResponse!
     "Aws exocompute get config response"
@@ -4224,9 +4161,10 @@ type AwsExocomputeConfigsInAccount {
     featureDetails: FeatureDetail!
 }
 
-"AWS Exocompute Configs List Response."
-type AwsExocomputeConfigsResponse {
-    configs: [AwsExocomputeConfigsInAccount!]!
+"AWS Exocompute Configs Deletion status."
+type AwsExocomputeConfigsDeletionStatusType {
+    exocomputeConfigId: String!
+    success: Boolean!
 }
 
 "AWS Exocompute config in a region."
@@ -4809,7 +4747,7 @@ type AwsReplicationTarget {
 
 "AWS role based Account specific info"
 type AwsRoleBasedAccount implements CloudAccount {
-    awsSpecificInfo: AwsCloudAccountGetAccountResponse!
+    awsSpecificInfo: AwsCloudAccountSelectorType!
     "The id of this Cloud Account"
     cloudAccountId: String!
     "The type of this Cloud Provider."
@@ -5076,62 +5014,6 @@ type AzureNativeAvailabilitySet {
     nativeId: String!
 }
 
-"An Azure resource group"
-type AzureNativeCommonResourceGroupWithSla implements HierarchyObject & PolarisHierarchyObject {
-    "The authorized operations on the object."
-    authorizedOperations: [PolarisObjectAuthorizedOperationsEnum!]!
-    "The configured SLA Domain of the hierarchy object."
-    configuredSlaDomain: SlaDomain!
-    diskResourceGroupId: UUID!
-    diskSla: AzureNativeResourceGroupSlaAssignment!
-    disksCount: Int!
-    "The Effective Retention SLA Domain of the hierarchy object."
-    effectiveRetentionSlaDomain: SlaDomain
-    "The Effective SLA Domain of the hierarchy object."
-    effectiveSlaDomain: SlaDomain!
-    "The path node of the effective SLA source"
-    effectiveSlaSourceObject: PathNode
-    "The fid of the hierarchy object."
-    id: UUID!
-    "A sequential list containing this object's logical ancestors."
-    logicalPath: [PathNode!]!
-    "The name of the hierarchy object."
-    name: String!
-    "The number of snappable descendants of this object"
-    numSnappableDescendants: Int!
-    "The object type of this object."
-    objectType: HierarchyObjectTypeEnum!
-    "A sequential list containing this object's physical ancestors."
-    physicalPath: [PathNode!]!
-    region: AzureNativeRegionEnum!
-    "The assignmennt type for this object's SLA"
-    slaAssignment: SlaAssignmentTypeEnum!
-    "The distribution of the snapshots of the hierarchy object"
-    snapshotDistribution: SnapshotDistribution!
-    "Azure subscription of the resource group"
-    subscription: AzureNativeSubscription!
-    subscriptionId: UUID!
-    tags: [AzureTag!]!
-    "List of Azure Virtual Machines in the resource group"
-    virtualMachineConnection(
-        "Returns the elements in the list that come after the specified cursor."
-        after: String,
-        "Returns the elements in the list that come before the specified cursor."
-        before: String,
-        "Returns the first n elements from the list."
-        first: Int,
-        "Returns the last n elements from the list."
-        last: Int,
-        "Sort fields for list of Azure virtual machines."
-        sortBy: AzureNativeVirtualMachineSortFieldsEnum,
-        sortOrder: HierarchySortOrder,
-        virtualMachineFilters: AzureNativeVirtualMachineFilters
-    ): AzureNativeVirtualMachineConnection!
-    vmResourceGroupId: UUID!
-    vmSla: AzureNativeResourceGroupSlaAssignment!
-    vmsCount: Int!
-}
-
 "Represents available disk types for an Azure availability zone."
 type AzureNativeDiskTypesForAvailabilityZone {
     availabilityZone: String!
@@ -5184,7 +5066,7 @@ type AzureNativeManagedDisk implements HierarchyObject & PolarisHierarchyObject 
     physicalPath: [PathNode!]!
     region: AzureNativeRegionEnum!
     "Resource Group of the Azure Disk"
-    resourceGroup: AzureResourceGroupUnionType!
+    resourceGroup: AzureNativeResourceGroup!
     "The assignmennt type for this object's SLA"
     slaAssignment: SlaAssignmentTypeEnum!
     "The list of snapshots taken for this snappable"
@@ -5378,9 +5260,10 @@ type AzureNativeSubscription implements HierarchyObject & PolarisHierarchyObject
     physicalPath: [PathNode!]!
     "Lists Azure resource groups in the subscription"
     resourceGroupList(
-        resourceGroupFilters: AzureNativeResourceGroupFilters,
-        "Sort fields for list of Azure resource groups."
-        sortBy: AzureNativeVMResourceGroupSortFieldsEnum,
+        "Filters for listing Azure resource groups"
+        commonResourceGroupFilters: AzureNativeCommonResourceGroupFilters,
+        "Sort fields for listing Azure resource groups."
+        sortBy: AzureNativeCommonResourceGroupSortFieldsEnum,
         sortOrder: HierarchySortOrder
     ): [AzureNativeResourceGroup!]!
     "The assignmennt type for this object's SLA"
@@ -5456,7 +5339,7 @@ type AzureNativeVirtualMachine implements HierarchyObject & PolarisHierarchyObje
     physicalPath: [PathNode!]!
     region: AzureNativeRegionEnum!
     "Resource Group of the Azure VM"
-    resourceGroup: AzureResourceGroupUnionType!
+    resourceGroup: AzureNativeResourceGroup!
     sizeType: String!
     "The assignmennt type for this object's SLA"
     slaAssignment: SlaAssignmentTypeEnum!
@@ -5675,11 +5558,7 @@ type BaseSnapshotSummary {
     Integer value that represents the archival state of a snapshot. 0 means the snapshot is not archived. 2 means the snapshot is archived. 3 means the snapshot is downloaded from the archival location. 4 means the snapshot is in the process of being downloaded from the archival location. 6 means the snapshot is stored locally and at the archival location.
     """
     cloudState: Long
-    """
-
-    Supported in v5.1+
-    """
-    cloudStorageTier: SnapshotCloudStorageTierEnum!
+    cloudStorageTier: SnapshotCloudStorageTierEnum
     """
 
     Supported in v5.0+
@@ -6376,6 +6255,11 @@ type CloudNativeAccountIdWithName {
     name: String!
 }
 
+type CloudNativeFileRecoveryFeasibility {
+    fileRecoveryFeasibility: FileRecoveryFeasibility!
+    snapshotId: String!
+}
+
 type CloudNativeFileVersion {
     fileMode: FileModeEnum!
     lastModified: DateTime!
@@ -6469,6 +6353,8 @@ type Cluster {
         "Returns the last n elements from the list."
         last: Int
     ): ClusterNodeConnection!
+    "When the global manager connectivity was last updated."
+    connectivityLastUpdated: DateTime
     "Sonar previewer config."
     datagovPreviewerConfig: PreviewerClusterConfig!
     "The cluster's default address."
@@ -6479,6 +6365,8 @@ type Cluster {
     estimatedRunway: Long!
     "The cluster's location."
     geoLocation: GeoLocation
+    "The cluster's global manager connectivity status."
+    globalManagerConnectivityStatus: GlobalManagerConnectivity
     "The cluster uuid."
     id: UUID!
     "Whether or not the cluster is healthy."
@@ -6495,6 +6383,8 @@ type Cluster {
     metricTimeSeries(timeRange: TimeRangeInput, unit: TimeUnitEnum!): [metricTimeSeries!]!
     "The cluster name."
     name: String!
+    "Whether the global manager connectivity is healthy."
+    passesConnectivityCheck: Boolean
     "This field contains information about the various jobs that sync data from the CDM Cluster to Polaris"
     polarisSyncStatus: PolarisSyncStatus!
     "The cluster product type (e.g., CDM, DATOS, etc.)."
@@ -6655,6 +6545,14 @@ type ClusterNodeConnection {
 type ClusterNodeEdge {
     cursor: String!
     node: ClusterNode!
+}
+
+"Replication target specific information."
+type ClusterReplicationTarget {
+    "Id of replication target."
+    id: String!
+    "Name of replication target."
+    name: String!
 }
 
 type ClusterSlaDomain implements SlaDomain {
@@ -6835,6 +6733,11 @@ type CrawlObjConnection {
 type CrawlObjEdge {
     cursor: String!
     node: CrawlObj!
+}
+
+"AWS Exocompute Configs Create Response."
+type CreateAwsExocomputeConfigsReply {
+    configs: [AwsExocomputeGetConfigResponse!]!
 }
 
 "The status of Create RDS Instance Snapshot request. For each instance ID in the request: an entry in errors if failed, and in taskchainUuids if succeeded."
@@ -7162,6 +7065,11 @@ type DbParameterGroup {
 "Reply for deletion of aws compute setting"
 type DeleteAwsCloudComputeSettingReply {
     success: Boolean!
+}
+
+"AWS Exocompute Configs Delete Response."
+type DeleteAwsExocomputeConfigsReply {
+    deletionStatus: [AwsExocomputeConfigsDeletionStatusType!]!
 }
 
 "Result of cleanup process of cluster."
@@ -7749,12 +7657,7 @@ type FailoverClusterAppConfig {
     Cluster ID of the failover cluster app.
     """
     failoverClusterId: String!
-    """
-
-    Supported in v5.2+
-    Cluster type of the failover cluster app.
-    """
-    failoverClusterType: FailoverClusterTypeEnum!
+    failoverClusterType: FailoverClusterTypeEnum
     """
 
     Required. Supported in v5.2+
@@ -7825,12 +7728,7 @@ type FailoverClusterAppSource {
 Supported in v5.2+
 """
 type FailoverClusterAppSummary {
-    """
-
-    Supported in v5.2+
-    Connectivity status of the failover cluster app.
-    """
-    connectionStatus: FailoverClusterAppConnectionStatusEnum!
+    connectionStatus: FailoverClusterAppConnectionStatusEnum
     effectiveSlaHolder: EffectiveSlaHolder
     failoverClusterAppConfig: FailoverClusterAppConfig
     """
@@ -7845,24 +7743,14 @@ type FailoverClusterAppSummary {
     ID assigned to the failover cluster app.
     """
     id: String!
-    """
-
-    Supported in v5.3+
-    Failover cluster operating system type.
-    """
-    operatingSystemType: FailoverClusterOsTypeEnum!
+    operatingSystemType: FailoverClusterOsTypeEnum
     """
 
     Supported in v5.2+
     """
     primaryClusterId: String!
     slaAssignable: SlaAssignable
-    """
-
-    Supported in v5.2+
-    SLA Domain assignment for failover cluster app.
-    """
-    slaAssignment: SlaAssignmentEnum!
+    slaAssignment: SlaAssignmentEnum
 }
 
 """
@@ -7890,12 +7778,7 @@ type FailoverClusterDetail {
 Supported in v5.2+
 """
 type FailoverClusterNode {
-    """
-
-    Supported in v5.2+
-    Connectivity status of the node in the failover cluster.
-    """
-    connectionStatus: FailoverClusterNodeConnectionStatusEnum!
+    connectionStatus: FailoverClusterNodeConnectionStatusEnum
     """
 
     Required. Supported in v5.2+
@@ -7952,12 +7835,7 @@ type FailoverClusterStatusObject {
 Supported in v5.2+
 """
 type FailoverClusterSummary {
-    """
-
-    Supported in v5.2+
-    Connectivity status of the failover cluster.
-    """
-    connectionStatus: FailoverClusterConnectionStatusEnum!
+    connectionStatus: FailoverClusterConnectionStatusEnum
     effectiveSlaHolder: EffectiveSlaHolder
     """
 
@@ -7977,24 +7855,14 @@ type FailoverClusterSummary {
     Details of the nodes of this failover cluster.
     """
     nodes: [FailoverClusterNode!]!
-    """
-
-    Supported in v5.2+
-    Operating system type of the nodes in the failover cluster.
-    """
-    operatingSystemType: FailoverClusterOsTypeEnum!
+    operatingSystemType: FailoverClusterOsTypeEnum
     """
 
     Supported in v5.2+
     """
     primaryClusterId: String!
     slaAssignable: SlaAssignable
-    """
-
-    Supported in v5.2+
-    SLA Domain assignment for failover cluster.
-    """
-    slaAssignment: SlaAssignmentEnum!
+    slaAssignment: SlaAssignmentEnum
 }
 
 type FailoverClusterTopLevelDescendantTypeConnection {
@@ -8747,12 +8615,7 @@ type FilesetTemplateCreate {
     Required. Supported in v5.0+
     """
     name: String!
-    """
-
-    Supported in v5.0+
-    Operating system type of filesets created by template.
-    """
-    operatingSystemType: FilesetTemplateCreateOperatingSystemTypeEnum!
+    operatingSystemType: FilesetTemplateCreateOperatingSystemTypeEnum
     """
 
     Supported in v5.0+
@@ -8765,11 +8628,7 @@ type FilesetTemplateCreate {
     Script to run before backup of this fileset starts.
     """
     preBackupScript: String
-    """
-
-    Supported in v5.0+
-    """
-    shareType: FilesetTemplateCreateShareTypeEnum!
+    shareType: FilesetTemplateCreateShareTypeEnum
 }
 
 type FilesetTemplateDescendantTypeConnection {
@@ -8806,6 +8665,12 @@ type FilesetTemplateDetail {
     Supported in v5.0+
     """
     isArchived: Boolean
+    """
+
+    Supported in v6.0
+    Specifies whether this is created by a Kupr Host.
+    """
+    isCreatedByKupr: Boolean
     """
 
     Supported in v5.0+
@@ -8902,6 +8767,20 @@ type FilesetUpdate {
 type FilterOption {
     displayValue: String!
     value: String
+}
+
+"Process delete of aws cloud account."
+type FinalizeAwsCloudAccountDeletionReply {
+    "Contains success response message."
+    message: String
+}
+
+"Finalize aws cloud account(s) protection."
+type FinalizeAwsCloudAccountProtectionReply {
+    "Contains success response message."
+    awsChildAccounts: [AwsAccountResponse!]!
+    "Contains success response message."
+    message: String
 }
 
 "Detail of the Gcp Cloud Account Add operations."
@@ -9565,6 +9444,20 @@ type GetWhitelistReply {
     mode: WhitelistModeEnum!
 }
 
+"Global manager connectivity status."
+type GlobalManagerConnectivity {
+    "URLs pinged to check connectivity."
+    urls: [GlobalManagerUrl!]!
+}
+
+"URLs pinged to check connectivity."
+type GlobalManagerUrl {
+    "Whether or not the URL check has passed."
+    isReachable: Boolean!
+    "URL pinged to check connectivity."
+    url: String!
+}
+
 "Metadata for rendering a global sla."
 type GlobalSla implements SlaDomain {
     archivalSpec: ArchivalSpec
@@ -9780,18 +9673,8 @@ type HostDetail {
     """
     compressionEnabled: Boolean
     hostSummary: HostSummary
-    """
-
-    Supported in v5.0+
-    Specifies the installation status of the VFD driver on a Windows host. The value is 'NotInstalled' when the driver is absent. The value is 'Installed' when the driver is present. The value is 'RestartRequred' when the driver is present but requires a restart of the Windows host in order to function.
-    """
-    hostVfdDriverState: HostVfdStateEnum!
-    """
-
-    Supported in v5.0+
-    Specifies the status of VFD-based volume backups on Windows hosts. The value is 'Enabled' when VFD-based volume backups are enabled. The value is 'Disabled' when VFD-based volume backups are disabled.
-    """
-    hostVfdEnabled: HostVfdInstallConfigEnum!
+    hostVfdDriverState: HostVfdStateEnum
+    hostVfdEnabled: HostVfdInstallConfigEnum
     """
 
     Supported in v5.2+
@@ -9866,6 +9749,8 @@ type HostDiagnosisSummary {
 }
 
 type HostFailoverCluster implements CdmHierarchyObject & FailoverClusterTopLevelDescendantType & HierarchyObject {
+    "The list of Hosts making up this Host Failover Cluster."
+    allNodes: [PhysicalHost!]!
     "The authorized operations on the object."
     authorizedOperations: [OperationEnum!]!
     cdmId: String!
@@ -9899,7 +9784,6 @@ type HostFailoverCluster implements CdmHierarchyObject & FailoverClusterTopLevel
     logicalPath: [PathNode!]!
     "The name of the hierarchy object."
     name: String!
-    nodes: [String!]!
     "The OS Type of this Host Failover Cluster"
     nodesOsType: GuestOsTypeEnum
     "The number of snappable descendants of this object"
@@ -10106,18 +9990,8 @@ type HostSummary {
     v5.3+: Unique identifier for host.
     """
     id: String!
-    """
-
-    Supported in v5.0+
-    Property that indicates whether CBT is enabled for backups of SQL Server databases on a Windows host. When the value of mssqlCbtEnabled is Default, this property has the same value as the global CBT setting. In all other cases, this property has the same value as mssqlCbtEnabled. To change the global CBT setting, use the SQL Server default property update endpoint.
-    """
-    mssqlCbtEffectiveStatus: MssqlCbtEffectiveStatusTypeEnum!
-    """
-
-    Supported in v5.0+
-    Property that indicates whether CBT is enabled for backups of SQL Server databases on a Windows host. Set to Enabled when CBT based backups of SQL Server databases for the specified Windows host is enabled. Set to Disabled when CBT based backups of SQL Server databases for the specified Windows host is turned off. Set to Default when the Windows host inherits the global CBT setting.
-    """
-    mssqlCbtEnabled: MssqlCbtStatusTypeEnum!
+    mssqlCbtEffectiveStatus: MssqlCbtEffectiveStatusTypeEnum
+    mssqlCbtEnabled: MssqlCbtStatusTypeEnum
     """
 
     Supported in v5.0+
@@ -10611,6 +10485,12 @@ type InfrastructureTable {
     sortOrder: SortOrderEnum
 }
 
+"Aws Cloud Account Update Feature Initiate Response."
+type InitiateFeatureUpdateForAwsCloudAccountReply {
+    cloudFormationUrl: String!
+    templateUrl: String!
+}
+
 type InstalledVersionGroupCount {
     count: Int!
     group: String!
@@ -10683,6 +10563,12 @@ type InventorySubHierarchyRoot {
         sortOrder: HierarchySortOrder,
         typeFilter: [HierarchyObjectTypeEnum!]
     ): HierarchyObjectConnection!
+}
+
+"Link to download investigation results as CSV."
+type InvestigationCsvDownloadLinkReply {
+    "Link for the CSV file which can be downloaded."
+    downloadLink: String!
 }
 
 "It checks if the rule name is unique or not"
@@ -10813,6 +10699,8 @@ type K8sCluster implements HierarchyObject & PolarisHierarchyObject {
     objectType: HierarchyObjectTypeEnum!
     "A sequential list containing this object's physical ancestors."
     physicalPath: [PathNode!]!
+    "Range of ports that are allowed to be accessed."
+    rbsPortRanges: [K8sRbsInfo!]!
     "The assignmennt type for this object's SLA"
     slaAssignment: SlaAssignmentTypeEnum!
     "The distribution of the snapshots of the hierarchy object"
@@ -10972,6 +10860,12 @@ type K8sNamespaceConnection {
 type K8sNamespaceEdge {
     cursor: String!
     node: K8sNamespace!
+}
+
+type K8sRbsInfo {
+    kuprClusterUUID: UUID!
+    maxPort: Int!
+    minPort: Int!
 }
 
 "Represents a fully qualified GCP native KMS Crypto Key"
@@ -11875,37 +11769,11 @@ type Mutation {
         "Boolean value to indicate whether to apply changes made to the SLA to existing snapshots. If not specified, this defaults to true."
         shouldApplyToExistingSnapshots: Boolean
     ): [SlaAssignResult!]!
-    "Initiate deletion of cloud account."
-    awsCloudAccountDeleteInitiate(
-        "Args for initiate aws cloud accounts for deletion."
-        awsCloudAccountDeleteInitiateArg: AwsCloudAccountDeleteInitiateInput!,
-        "The id of the cloud account"
-        cloudAccountUuid: UUID!
-    ): AwsCloudAccountDeleteInitiateReply!
-    "Process deletion of cloud account."
-    awsCloudAccountDeleteProcess(
-        "Arguments for processing deletion of cloud accounts."
-        awsCloudAccountDeleteProcessArg: AwsCloudAccountDeleteProcessInput!,
-        "The id of the cloud account"
-        cloudAccountUuid: UUID!
-    ): AwsCloudAccountDeleteProcessReply!
     "Initiate create cloud account."
     awsCloudAccountInitiate(
         "Arguments for initiate aws cloud accounts for creation."
         awsCloudAccountInitiateArg: AwsCloudAccountInitiateInput!
     ): AwsCloudAccountInitiate!
-    "Process cloud account."
-    awsCloudAccountProcess(
-        "Arguments for process cloud accounts."
-        awsCloudAccountProcessArg: AwsCloudAccountProcessInput!
-    ): AwsCloudAccountProcessResponse!
-    "Save details for a given cloud account."
-    awsCloudAccountSave(
-        "Arguments to save cloud account's role arn, stack arn and regions."
-        awsCloudAccountSaveArg: AwsCloudAccountSaveInput!,
-        "The id of the cloud account"
-        cloudAccountUuid: UUID!
-    ): AwsCloudAccountSaveResponse!
     "Update features to latest version."
     awsCloudAccountUpdateFeature(
         "The id of the cloud account"
@@ -11913,35 +11781,11 @@ type Mutation {
         "Cloud Account Features."
         features: [CloudAccountFeatureEnum!]!
     ): AwsCloudAccountUpdateFeatureResponse!
-    "Initiate manual update features to latest version."
-    awsCloudAccountUpdateFeatureInitiate(
-        "The id of the cloud account"
-        cloudAccountUuid: UUID!,
-        "Cloud Account Features."
-        features: [CloudAccountFeatureEnum!]!
-    ): AwsCloudAccountUpdateFeatureInitiateResponse!
     "Validate given aws accounts for creation."
     awsCloudAccountValidate(
         "Arguments for validate aws cloud accounts."
         awsCloudAccountValidateArg: AwsCloudAccountValidateInput!
     ): AwsCloudAccountValidateResponse!
-    "Validate and initiate given aws accounts for creation."
-    awsCloudAccountValidateAndInitiate(
-        "Arguments for initiate aws cloud accounts for creation."
-        awsCloudAccountInitiateArg: AwsCloudAccountInitiateInput!
-    ): AwsCloudAccountValidateAndInitateResponse!
-    "Create AWS Exocompute configs."
-    awsExocomputeAdd(
-        "List of exocompute configs to add."
-        awsExocomputeAddRequestsArg: [AwsExocomputeAddConfigInputType!]!,
-        "The id of the cloud account"
-        cloudAccountUuid: UUID!
-    ): AwsExocomputeConfigsCreateResponse!
-    "Deletes AWS Exocompute configs."
-    awsExocomputeConfigsDelete(
-        "List of AWS exocompute config UUIDs."
-        awsExocomputeConfigIdsArg: [UUID!]!
-    ): AwsExocomputeConfigsDeleteResponse!
     "Add aws account for native protection."
     awsNativeProtectionAccountAdd(
         "Arguments to add account for native protection."
@@ -12182,6 +12026,11 @@ type Mutation {
         "Request for creating a new Aws Compute Setting"
         awsComputeSettingsCreateRequest: AwsComputeSettingsCreateRequest!
     ): AwsComputeSettings!
+    "Create AWS Exocompute configs."
+    createAwsExocomputeConfigs(
+        "Input to create AWS exocompute configs."
+        input: CreateAwsExocomputeConfigsInput!
+    ): CreateAwsExocomputeConfigsReply!
     "Create snapshots of RDS Instances with given IDs"
     createAwsNativeRdsInstanceSnapshot(
         "List of UUIDs of the RDS Instances"
@@ -12233,9 +12082,9 @@ type Mutation {
         "The status of the blueprint"
         status: BlueprintStatusEnum! = Uncompleted,
         "The id of the intended remote target location"
-        targetLocationId: String!,
+        targetLocationId: String,
         "The type of the intended remote target location"
-        targetLocationType: BlueprintLocationTypeEnum! = CDM
+        targetLocationType: BlueprintLocationTypeEnum = CDM
     ): BlueprintNew!
     "create a list of blueprint recovery specs with a list of child snappable/snapshot recovery specs"
     createBlueprintRecoverySpec(
@@ -12369,6 +12218,11 @@ type Mutation {
         "Id of aws compute setting."
         awsComputeSettingId: UUID!
     ): DeleteAwsCloudComputeSettingReply!
+    "Deletes AWS Exocompute configs."
+    deleteAwsExocomputeConfigs(
+        "List of AWS exocompute config UUIDs."
+        input: DeleteAwsExocomputeConfigsInput!
+    ): DeleteAwsExocomputeConfigsReply!
     "Delete a disk based cluster in Azure."
     deleteAzureDiskCluster(
         "DeleteAzureDiskClusterInput params for Azure."
@@ -12772,6 +12626,16 @@ type Mutation {
         "Corresponds to snapshot forever UUID in Polaris tables"
         snapshotFid: UUID!
     ): AsyncRequestStatus!
+    "Process and finalize deletion of cloud account is the last step in deletion of a feature from cloud account. This endpoint is a MUST for deletion of disconnected features."
+    finalizeAwsCloudAccountDeletion(
+        "Args to process aws cloud accounts for deletion."
+        input: FinalizeAwsCloudAccountDeletionInput!
+    ): FinalizeAwsCloudAccountDeletionReply!
+    "Process cloud account. This is the second step after validate and create in addition of a feature for cloud account. It adds the feature to the database."
+    finalizeAwsCloudAccountProtection(
+        "Arguments for process cloud accounts."
+        input: FinalizeAwsCloudAccountProtectionInput!
+    ): FinalizeAwsCloudAccountProtectionReply!
     "Adds a new cloud account for the GCP project which is not already added"
     gcpCloudAccountAddManualAuthProject(
         "Cloud Account Features."
@@ -12952,6 +12816,11 @@ type Mutation {
         userId: String
     ): Csr!
     getDownloadUrl(downloadId: Long!): UserDownloadUrl!
+    "Initiate manual update features to latest version."
+    initiateFeatureUpdateForAwsCloudAccount(
+        "Input to initiate feature update for AWS cloud account."
+        input: InitiateFeatureUpdateForAwsCloudAccountInput!
+    ): InitiateFeatureUpdateForAwsCloudAccountReply!
     insertCustomerO365App(o365AppClientId: String!, o365AppClientSecret: String!, o365AppType: String!, o365SubscriptionName: String!): RequestStatus!
     "List CIDRs for compute setting."
     listCidrsForComputeSetting(
@@ -13017,11 +12886,20 @@ type Mutation {
         "Corresponds to ID of target in Polaris"
         targetId: UUID!
     ): TargetPauseResult!
+    "Initiate deletion of cloud account. This is the first step to delete AWS cloud account. It generated template for deletion of cloud account and does not change any state of account."
+    prepareAwsCloudAccountDeletion(
+        "Args for initiate aws cloud accounts for deletion."
+        input: PrepareAwsCloudAccountDeletionInput!
+    ): PrepareAwsCloudAccountDeletionReply!
     "Trigger azure native refresh subscription job for the given subscription IDs"
     refreshAzureNativeSubscriptions(
         "List of Subscription IDs"
         subscriptionIds: [UUID!]!
     ): RefreshAzureNativeSubscriptionsReply!
+    refreshGlobalManagerConnectivityStatus(
+        "The id of the cluster"
+        clusterUuid: UUID!
+    ): GlobalManagerConnectivity!
     refreshHost(
         "ID assigned to a host object."
         id: String!
@@ -13068,7 +12946,7 @@ type Mutation {
     restoreO365Onedrive(destOnedriveUUID: UUID!, filesToRestore: [FileInfo!]!, foldersToRestore: [FolderInfo!]!, restoreFolderPath: String!, sourceOnedriveUUID: UUID!): CreateOnDemandJobReply!
     restoreO365SharepointDrive(destSharepointDriveUUID: UUID!, filesToRestore: [FileInfo!]!, foldersToRestore: [FolderInfo!]!, restoreFolderPath: String!, sourceSharepointDriveUUID: UUID!): CreateOnDemandJobReply!
     restoreO365Snappable(destSnappableUUID: UUID!, snappableRestoreConfig: SnappableRestoreConfig!, snappableType: SnappableTypeEnum!, sourceSnappableUUID: UUID!): CreateOnDemandJobReply!
-    restoreO365TeamsFiles(destTeamsChannelInfo: TeamsChannelInfo!, filesToRestore: [FileInfo!]!, foldersToRestore: [FolderInfo!]!, restoreFolderPath: String!, sourceTeamsChannelInfo: TeamsChannelInfo!): CreateOnDemandJobReply!
+    restoreO365TeamsFiles(destTeamsChannelInfo: TeamsChannelInfo, filesToRestore: [FileInfo!]!, foldersToRestore: [FolderInfo!]!, shouldCreateDestChannel: Boolean!): CreateOnDemandJobReply!
     resumeTarget(
         "Corresponds to ID of target in Polaris"
         targetId: UUID!
@@ -13225,6 +13103,11 @@ type Mutation {
     startBlueprintFailover(failoverJobConfig: BlueprintFailoverJobConfig!): CreateOnDemandJobReply!
     "Start failover jobs for multiple blueprints."
     startBlueprintsFailover(failoverJobConfigs: [BlueprintFailoverJobConfig!]!): CreateOnDemandJobReply!
+    "Create index of cloudnative snapshots"
+    startCloudNativeSnapshotsIndexJob(
+        "Input for create snapshots index job."
+        input: StartCloudNativeSnapshotsIndexJobInput!
+    ): BatchAsyncJobStatus!
     "Start a crawl"
     startCrawl(analyzerGroups: [AnalyzerGroupInput!]!, extWhiteList: [String!], name: String!, resources: [ResourceInput!]!): StartCrawlReply!
     "Trigger job to create snapshots of EBS Volumes with given IDs"
@@ -13352,6 +13235,11 @@ type Mutation {
         name: String!,
         primaryClusterUuid: UUID!
     ): Blueprint!
+    "Updates regions, stack arn and role arn for a feature for a given cloud account."
+    updateAwsCloudAccount(
+        "Arguments to save cloud account's role arn, stack arn and regions."
+        input: UpdateAwsCloudAccountInput!
+    ): UpdateAwsCloudAccountReply!
     updateAwsComputeSetting(
         "Request arguments for updating a Aws Compute Setting"
         awsComputeSettingsUpdateRequest: AwsComputeSettingsEditRequest!
@@ -13368,9 +13256,9 @@ type Mutation {
         "The status of the blueprint"
         status: BlueprintStatusEnum! = Uncompleted,
         "The id of the intended remote target location"
-        targetLocationId: String!,
+        targetLocationId: String,
         "The type of the intended remote target location"
-        targetLocationType: BlueprintLocationTypeEnum! = CDM,
+        targetLocationType: BlueprintLocationTypeEnum = CDM,
         "The version of the blueprint"
         version: Int!
     ): BlueprintNew!
@@ -13498,6 +13386,11 @@ type Mutation {
         "ID of a VM."
         id: String!
     ): AsyncRequestStatus!
+    "Validate and create aws cloud account. If validation fails, no error is returned and the cause is present in the \"message\" field of return object or within admin/child accounts of return object. In case validation succeeds, it initiates creation of AWS cloud account. This is the first step to set up native protection."
+    validateAndCreateAwsCloudAccount(
+        "Arguments for validate input and create aws cloud accounts."
+        input: ValidateAndCreateAwsCloudAccountInput!
+    ): ValidateAndCreateAwsCloudAccountReply!
     "validate the recovery specs with the given app blueprint snappable or snapshot fid"
     validateBlueprintRecoverySpec(
         "the id of the blueprint"
@@ -14110,6 +14003,7 @@ type O365Email implements O365ExchangeObject {
     receivedDateTime: DateTime
     sentDateTime: DateTime
     snapshotId: UUID
+    snapshotNum: Int
     subject: String
     toRecipients: [String!]!
 }
@@ -14131,6 +14025,7 @@ type O365Folder implements O365ExchangeObject {
     name: String
     parentFolderId: String
     snapshotId: UUID
+    snapshotNum: Int
 }
 
 type O365Mailbox implements HierarchyObject & HierarchySnappable & O365OrgDescendant & O365UserDescendant & PolarisHierarchyObject & PolarisHierarchySnappable {
@@ -14386,6 +14281,7 @@ type O365OnedriveFile implements O365OnedriveObject {
     size: Long
     snapshotId: UUID
     snapshotNum: Int
+    snapshotTime: DateTime
 }
 
 type O365OnedriveFolder implements O365OnedriveObject {
@@ -14401,6 +14297,7 @@ type O365OnedriveFolder implements O365OnedriveObject {
     size: Long
     snapshotId: UUID
     snapshotNum: Int
+    snapshotTime: DateTime
 }
 
 type O365OnedriveObjectConnection {
@@ -15930,6 +15827,14 @@ type PrechecksStatusReply {
     runPeriodInMinutes: Int!
 }
 
+"Initiate and prepare deletion of aws cloud account."
+type PrepareAwsCloudAccountDeletionReply {
+    "Cloud formation url to delete the stack"
+    cloudFormationUrl: String!
+    "List of feature-version"
+    featureRegionMap: [AwsCloudAccountFeatureVersion!]!
+}
+
 type PreviewerClusterConfig {
     clusterId: String!
     enabled: Boolean!
@@ -16109,6 +16014,16 @@ type Query {
     ): ADObjectConnection!
     "Returns a list of availability zones in the specified region on the specified AWS account"
     allAvailabilityZonesByRegionFromAws(awsNativeAccountId: UUID!, region: AwsNativeRegionEnum!): [String!]!
+    "Get all active aws cloud accounts."
+    allAwsCloudAccounts(
+        "Arguments for get cloud accounts."
+        awsCloudAccountsArg: AwsCloudAccountsInput!
+    ): [AwsCloudAccountSelectorType!]!
+    "List AWS Exocompute configs with given search query."
+    allAwsExocomputeConfigs(
+        "Search query provided by user on exocompute list page. It will search for exocompute configs whose account name or account native ID is prefixed by search query."
+        awsNativeAccountIdOrNamePrefix: String!
+    ): [AwsExocomputeConfig!]!
     "Get CDM versions a ServicePrincipal in Azure."
     allAzureCdmVersions(
         "CDM version request params for Azure."
@@ -16154,6 +16069,11 @@ type Query {
         "cluster sort order"
         sortOrder: SortOrderEnum = Desc
     ): ClusterConnection!
+    "All replication targets for a cluster."
+    allClusterReplicationTargets(
+        "UUID of the cluster."
+        clusterUuid: UUID!
+    ): [ClusterReplicationTarget!]!
     "fetch all key pairs for given region"
     allEc2KeyPairsFromAws(awsNativeAccountId: UUID!, region: AwsNativeRegionEnum!): [String!]!
     "List user activity for a specific file on a specific snapshot."
@@ -16249,17 +16169,12 @@ type Query {
     appBlueprintSnapshotImageInfos(appSnapshotFids: [UUID!]!): GetAppBlueprintSnapshotCloudImagesRsp!
     appflowsSummary: AppflowsSummary!
     "Get aws cloud account by ID."
-    awsCloudAccount(
+    awsCloudAccountSelector(
         "Arguments for get cloud account."
-        awsCloudAccountArg: AwsCloudAccountGetAccountInput!,
+        awsCloudAccountArg: AwsCloudAccountSelectorInput!,
         "The id of the cloud account"
         cloudAccountUuid: UUID!
-    ): AwsCloudAccountGetAccountResponse!
-    "Get all active aws cloud accounts."
-    awsCloudAccounts(
-        "Arguments for get cloud accounts."
-        awsCloudAccountsArg: AwsCloudAccountsInput!
-    ): AwsCloudAccountGetAccountsResponse!
+    ): AwsCloudAccountSelectorType!
     awsComputeSettings(
         "Corresponds to Compute Setting Id in Polaris tables"
         computeSettingId: UUID!
@@ -16274,11 +16189,6 @@ type Query {
         "sort order"
         sortOrder: SortOrderEnum
     ): [AwsComputeSettings!]!
-    "List AWS Exocompute configs with given search query."
-    awsExocomputeConfigs(
-        "Search query provided by user on exocompute list page. It will search for exocompute configs whose account name or account native ID is prefixed by search query."
-        AwsExocomputeSearchQueryArg: String!
-    ): AwsExocomputeConfigsResponse!
     awsNativeAccount(
         awsNativeProtectionFeature: AwsNativeProtectionFeatureEnum!,
         "The Polaris UUID for the object."
@@ -16436,19 +16346,6 @@ type Query {
         "Subscription ID"
         subscriptionId: UUID!
     ): [AzureNativeAvailabilitySet!]!
-    "Get details of an Azure Resource Group"
-    azureNativeCommonResourceGroup(
-        "VM Resource group ID or Disk resource group ID"
-        resourceGroupId: UUID!
-    ): AzureNativeCommonResourceGroupWithSla!
-    "Lists Azure resource groups"
-    azureNativeCommonResourceGroupList(
-        "Filters for listing Azure resource groups"
-        commonResourceGroupFilters: AzureNativeCommonResourceGroupFilters,
-        "Sort fields for listing Azure resource groups."
-        sortBy: AzureNativeCommonResourceGroupSortFieldsEnum,
-        sortOrder: HierarchySortOrder
-    ): [AzureNativeCommonResourceGroupWithSla!]!
     "Lists supported disk types when exporting a particular snapshot."
     azureNativeExportCompatibleDiskTypes(
         "The azure region."
@@ -16492,9 +16389,10 @@ type Query {
     ): AzureNativeResourceGroup!
     "Lists Azure resource groups"
     azureNativeResourceGroupList(
-        resourceGroupFilters: AzureNativeResourceGroupFilters,
-        "Sort fields for list of Azure resource groups."
-        sortBy: AzureNativeVMResourceGroupSortFieldsEnum,
+        "Filters for listing Azure resource groups"
+        commonResourceGroupFilters: AzureNativeCommonResourceGroupFilters,
+        "Sort fields for listing Azure resource groups."
+        sortBy: AzureNativeCommonResourceGroupSortFieldsEnum,
         sortOrder: HierarchySortOrder
     ): [AzureNativeResourceGroup!]!
     "Lists security groups in the specified regionand subscription."
@@ -16714,6 +16612,7 @@ type Query {
         after: String,
         "Returns the first n elements from the list."
         first: Int,
+        nameFilter: String,
         orgId: UUID!,
         snappableFid: UUID!,
         snapshotFid: UUID!
@@ -17394,10 +17293,6 @@ type Query {
         "The id of the cluster"
         clusterUuid: UUID!
     ): NodeStatusListResp!
-    getGlobalManagerConnectivity(
-        "The id of the cluster"
-        clusterUuid: UUID!
-    ): String!
     getGroupCountByCdmClusterStatus: GroupCountListWithTotal!
     getGroupCountByPrechecksStatus: [GroupCount!]!
     getGroupCountByUpgradeJobStatus: [GroupCount!]!
@@ -17611,6 +17506,15 @@ type Query {
     ): SnappableInstanceTypeConnection!
     inventoryRoot: InventoryRoot!
     inventorySubHierarchyRoot(rootEnum: InventorySubHierarchyRootEnum!): InventorySubHierarchyRoot!
+    "Link to downloadable investigation results in CSV format."
+    investigationCsvDownloadLink(
+        "The id of the cluster"
+        clusterUuid: UUID!,
+        "the fid of the snappable"
+        snappableId: UUID!,
+        "Corresponds to snapshot ID in CDM tables"
+        snapshotId: String!
+    ): InvestigationCsvDownloadLinkReply!
     ipWhitelist: GetWhitelistReply!
     "Queries whether the given volume can be replaced where attached."
     isAwsNativeEbsVolumeSnapshotRestorable(
@@ -17626,6 +17530,11 @@ type Query {
         "Subscription ID"
         subscriptionId: UUID!
     ): Boolean!
+    "List of snapshots with their file recovery feasibility status"
+    isCloudNativeFileRecoveryFeasible(
+        "List of snapshot IDs"
+        snapshotIds: [UUID!]!
+    ): ValidateCloudNativeFileRecoveryFeasibilityReply!
     "Is Logged into Rubrik support portal"
     isLoggedIntoRubrikSupportPortal: SupportPortalStatusReply!
     "Is Rubrik Suppport Portal reachable from this deployment"
@@ -17932,7 +17841,15 @@ type Query {
     ): O365SiteConnection!
     o365Team(snappableFid: UUID!): O365Teams!
     "List of Channels for the O365Team"
-    o365TeamChannels(limit: Int!, nameFilter: String, snappableFid: UUID!): O365TeamsChannelConnection!
+    o365TeamChannels(
+        "Returns the elements in the list that come after the specified cursor."
+        after: String,
+        excludeArchived: Boolean!,
+        "Returns the first n elements from the list."
+        first: Int,
+        nameFilter: String,
+        snappableFid: UUID!
+    ): O365TeamsChannelConnection!
     "IDs of the child snapshots of the Team snapshot"
     o365TeamChildSnapshotIDs(snapshotFid: UUID!): O365TeamChildSnapshotIDs!
     "ID for the conversations folder in the Team's Group Mailbox"
@@ -19896,12 +19813,7 @@ type SapHanaHost {
     The IP address or fully qualified domain name of the SAP HANA host.
     """
     hostName: String!
-    """
-
-    Supported in v5.3+
-    The type of the SAP HANA system host. Possible values are MASTER, SLAVE, SECONDARY_MASTER or SECONDARY_SLAVE .
-    """
-    hostType: SapHanaHostHostTypeEnum!
+    hostType: SapHanaHostHostTypeEnum
     """
 
     Supported in v5.3+
@@ -20036,12 +19948,7 @@ type SapHanaRecoverableRangeEdge {
 Supported in v5.3+
 """
 type SapHanaSslInfo {
-    """
-
-    Supported in v5.3+
-    The encryption provider for the SAPA HANA system. Possible values are OPENSSL, COMMON_CRYPTO, SAP_CRYPTO.
-    """
-    encryptionProvider: SapHanaSslInfoEncryptionProviderEnum!
+    encryptionProvider: SapHanaSslInfoEncryptionProviderEnum
     """
 
     Supported in v5.3+
@@ -20187,12 +20094,7 @@ type SapHanaSystemPhysicalChildTypeEdge {
 Supported in v5.3+
 """
 type SapHanaSystemSummary {
-    """
-
-    Supported in v5.3+
-    The container type of the SAP HANA system. Possible values are SINGLE_CONTAINER, MULTI_CONTAINER.
-    """
-    containerType: SapHanaSystemSummaryContainerTypeEnum!
+    containerType: SapHanaSystemSummaryContainerTypeEnum
     """
 
     Required. Supported in v5.3+
@@ -20234,11 +20136,6 @@ type SapHanaSystemSummary {
     Supported in v5.3+
     """
     sslInfo: SapHanaSslInfo
-    """
-
-    Required. Supported in v5.3+
-    The status of the SAP HANA system.
-    """
     status: SapHanaSystemSummaryStatusEnum!
     """
 
@@ -20536,12 +20433,7 @@ type SlaAssignable {
     v5.2+: The name of the SLA Domain configured directly on the Rubrik object.
     """
     configuredSlaDomainName: String!
-    """
-
-    Supported in v5.2+
-    Specifies whether the SLA Domain is used for protection or retention.
-    """
-    configuredSlaDomainType: ConfiguredSlaTypeEnum!
+    configuredSlaDomainType: ConfiguredSlaTypeEnum
     """
 
     Required. Supported in v5.0+
@@ -20628,10 +20520,13 @@ type SlaWarning {
 
 "An object that can be snapshotted."
 type Snappable {
+    archivalComplianceStatus: String
+    archivalSnapshotLag: Int
     "The number of snapshots that have been archived."
     archiveSnapshots: Int
     "The amount of storage taken by archived snapshots."
     archiveStorage: Long
+    awaitingFirstFull: Boolean
     "The cluster the snappable belongs to"
     cluster: Cluster
     "The current compliance status of the snappable."
@@ -20645,6 +20540,8 @@ type Snappable {
     lastSnapshot: DateTime
     latestArchivalSnapshot: DateTime
     latestReplicationSnapshot: DateTime
+    localOnDemandSnapshots: Int
+    localSLASnapshots: Int
     "The number of snapshots locally present."
     localSnapshots: Int
     location: String!
@@ -20669,6 +20566,8 @@ type Snappable {
     replicaSnapshots: Int
     "The amount of storage taken by replicated snapshots."
     replicaStorage: Long
+    replicationComplianceStatus: String
+    replicationSnapshotLag: Int
     "The sla domain of the snappable."
     slaDomain: SlaDomain
     "The total number of snapshots present for the snapshot."
@@ -21596,6 +21495,12 @@ type UnidirectionalReplicationSpec {
     retentionUnit: RetentionUnitEnum!
     "The cluster to which this SLA will replicate the snapshots."
     targetCluster: Cluster
+}
+
+"Aws cloud account save response."
+type UpdateAwsCloudAccountReply {
+    "Contains success response message."
+    message: String
 }
 
 "Output for updateCloudNativeAwsStorageSetting mutation"
@@ -23180,12 +23085,25 @@ type VSphereVmEdge {
     node: VSphereVm!
 }
 
+"Aws cloud accounts validate response."
+type ValidateAndCreateAwsCloudAccountReply {
+    "Aws cloud account initiate response type."
+    initiateResponse: AwsCloudAccountInitiate
+    "Contains error message for admin account."
+    validateResponse: AwsCloudAccountValidateResponse
+}
+
 "Resource mapping validation reply."
 type ValidateBlueprintResourceMappingReply {
     "Detailed information about each resource validation."
     statusInfos: [ValidationStatusInfo!]!
     "Status of the validation."
     success: Boolean!
+}
+
+"Contains a map representing feasibility to do file recovery on snapshots"
+type ValidateCloudNativeFileRecoveryFeasibilityReply {
+    snapshotFileRecoveryFeasibility: [CloudNativeFileRecoveryFeasibility!]!
 }
 
 type ValidateFailureReason {
@@ -24653,7 +24571,7 @@ enum ActivityObjectTypeEnum {
     O365Organization
     O365SharePointDrive
     O365Site
-    O365Teams
+    O365Team
     ObjectProtection
     Oracle
     OracleDb
@@ -25793,13 +25711,6 @@ enum AzureNativeSubscriptionSortFieldsEnum {
     NAME
 }
 
-enum AzureNativeVMResourceGroupSortFieldsEnum {
-    AZURE_REGION
-    AZURE_VM_RG_SUBSCRIPTION_NAME
-    EFFECTIVE_SLA_DOMAIN
-    NAME
-}
-
 enum AzureNativeVirtualMachineSortFieldsEnum {
     ASSIGNED_SLA_DOMAIN
     AZURE_REGION
@@ -25971,7 +25882,6 @@ enum CdmSnapshotSortByEnum {
 
 enum CdpLocalStatusEnum {
     CDP_LOCAL_STATUS_ACTIVE
-    CDP_LOCAL_STATUS_EMPTY_VALUE
     CDP_LOCAL_STATUS_FAILED
     CDP_LOCAL_STATUS_NOT_ENABLED
     CDP_LOCAL_STATUS_PENDING
@@ -25980,7 +25890,6 @@ enum CdpLocalStatusEnum {
 }
 
 enum CdpReplicationStatusEnum {
-    CDP_REPLICATION_STATUS_EMPTY_VALUE
     CDP_REPLICATION_STATUS_FAILED
     CDP_REPLICATION_STATUS_HEALTHY
     CDP_REPLICATION_STATUS_INITIALIZING
@@ -26232,7 +26141,6 @@ enum ComponentEnum {
 }
 
 enum ConfiguredSlaTypeEnum {
-    CONFIGURED_SLA_TYPE_EMPTY_VALUE
     CONFIGURED_SLA_TYPE_PROTECTION_SLA
     CONFIGURED_SLA_TYPE_RETENTION_SLA
 }
@@ -26419,14 +26327,12 @@ enum ExistingSnapshotRetentionEnum {
 enum FailoverClusterAppConnectionStatusEnum {
     FAILOVER_CLUSTER_APP_CONNECTION_STATUS_CONNECTED
     FAILOVER_CLUSTER_APP_CONNECTION_STATUS_DISCONNECTED
-    FAILOVER_CLUSTER_APP_CONNECTION_STATUS_EMPTY_VALUE
     FAILOVER_CLUSTER_APP_CONNECTION_STATUS_REPLICATION_TARGET
 }
 
 enum FailoverClusterConnectionStatusEnum {
     FAILOVER_CLUSTER_CONNECTION_STATUS_CONNECTED
     FAILOVER_CLUSTER_CONNECTION_STATUS_DISCONNECTED
-    FAILOVER_CLUSTER_CONNECTION_STATUS_EMPTY_VALUE
     FAILOVER_CLUSTER_CONNECTION_STATUS_PARTIALLY_CONNECTED
     FAILOVER_CLUSTER_CONNECTION_STATUS_REPLICATION_TARGET
 }
@@ -26438,7 +26344,6 @@ enum FailoverClusterNodeConnectionStatusEnum {
     FAILOVER_CLUSTER_NODE_CONNECTION_STATUS_DELETED
     FAILOVER_CLUSTER_NODE_CONNECTION_STATUS_DELETING
     FAILOVER_CLUSTER_NODE_CONNECTION_STATUS_DISCONNECTED
-    FAILOVER_CLUSTER_NODE_CONNECTION_STATUS_EMPTY_VALUE
     FAILOVER_CLUSTER_NODE_CONNECTION_STATUS_PARTIALLY_CONNECTED
     FAILOVER_CLUSTER_NODE_CONNECTION_STATUS_REPLICATION_TARGET
 }
@@ -26446,7 +26351,6 @@ enum FailoverClusterNodeConnectionStatusEnum {
 enum FailoverClusterOsTypeEnum {
     FAILOVER_CLUSTER_OS_TYPE_AIX
     FAILOVER_CLUSTER_OS_TYPE_ANY
-    FAILOVER_CLUSTER_OS_TYPE_EMPTY_VALUE
     FAILOVER_CLUSTER_OS_TYPE_HPUX
     FAILOVER_CLUSTER_OS_TYPE_LINUX
     FAILOVER_CLUSTER_OS_TYPE_SUN_OS
@@ -26455,7 +26359,6 @@ enum FailoverClusterOsTypeEnum {
 }
 
 enum FailoverClusterTypeEnum {
-    FAILOVER_CLUSTER_TYPE_EMPTY_VALUE
     FAILOVER_CLUSTER_TYPE_UNIX_LIKE
     FAILOVER_CLUSTER_TYPE_WINDOWS
 }
@@ -26583,6 +26486,7 @@ enum FeatureFlagNameEnum {
     ExpandedGlobalSearchEnabled
     FederatedLoginEnabled
     FederatedLoginManagementEnabled
+    FilesetInventoryEAEnabled
     FilesetInventoryEnabled
     FilesetInventoryGAEnabled
     FilesetRbacEnabled
@@ -26603,6 +26507,7 @@ enum FeatureFlagNameEnum {
     KubernetesInventoryEnabled
     LambdaEnabled
     LdapEnabled
+    LocalSlaEnabled
     ManagedVolumeHierarchyEnabled
     MetadataIncrementalSyncEnabled
     MetadataSyncAdvancedMetricsEnabled
@@ -26633,6 +26538,7 @@ enum FeatureFlagNameEnum {
     RadarAnomalyModelBEnabled
     RadarAppFlowsEnabled
     RadarBetaEnabled
+    RadarDashboardEnabled
     RadarDemoEnabled
     RadarDevEnabled
     RadarPipelineMergeEnabled
@@ -26652,6 +26558,7 @@ enum FeatureFlagNameEnum {
     SLASyncHighFreqEnabled
     SSOEnhancementEnabled
     SapHanaInventoryEnabled
+    SapHanaOnGcpEnabled
     ScheduledReportEnabled
     SecureUploadEnabled
     SkipFailedEventQueryEnabled
@@ -26718,6 +26625,13 @@ enum FileModeEnum {
     SYMLINK
 }
 
+enum FileRecoveryFeasibility {
+    EXOCOMPUTE_NOT_CONFIGURED
+    FEASIBLE
+    SNAPSHOT_EXPIRED
+    UNKNOWN
+}
+
 enum FileResultSortByEnum {
     CLUSTER
     DAILY_CHANGE
@@ -26753,25 +26667,21 @@ enum FilesetOSType {
 }
 
 enum FilesetTemplateCreateOperatingSystemTypeEnum {
-    FILESET_TEMPLATE_CREATE_OPERATING_SYSTEM_TYPE_EMPTY_VALUE
     FILESET_TEMPLATE_CREATE_OPERATING_SYSTEM_TYPE_UNIX_LIKE
     FILESET_TEMPLATE_CREATE_OPERATING_SYSTEM_TYPE_WINDOWS
 }
 
 enum FilesetTemplateCreateShareTypeEnum {
-    FILESET_TEMPLATE_CREATE_SHARE_TYPE_EMPTY_VALUE
     FILESET_TEMPLATE_CREATE_SHARE_TYPE_NFS
     FILESET_TEMPLATE_CREATE_SHARE_TYPE_SMB
 }
 
 enum FilesetTemplatePatchOperatingSystemTypeEnum {
-    FILESET_TEMPLATE_PATCH_OPERATING_SYSTEM_TYPE_EMPTY_VALUE
     FILESET_TEMPLATE_PATCH_OPERATING_SYSTEM_TYPE_UNIX_LIKE
     FILESET_TEMPLATE_PATCH_OPERATING_SYSTEM_TYPE_WINDOWS
 }
 
 enum FilesetTemplatePatchShareTypeEnum {
-    FILESET_TEMPLATE_PATCH_SHARE_TYPE_EMPTY_VALUE
     FILESET_TEMPLATE_PATCH_SHARE_TYPE_NFS
     FILESET_TEMPLATE_PATCH_SHARE_TYPE_SMB
 }
@@ -26964,6 +26874,7 @@ enum HierarchyFilterField {
     GCP_NATIVE_PROJECT_NAME_OR_PROJECT_NUMBER
     GCP_NATIVE_PROJECT_NATIVE_ID
     GCP_NATIVE_REGION
+    GUEST_OS_TYPE_FOR_FILE_RESTORE
     HAS_PARENT_SNAPPABLE
     IS_ARCHIVED
     IS_GHOST
@@ -26998,12 +26909,9 @@ enum HierarchyObjectTypeEnum {
     AwsNativeEbsVolume
     AwsNativeEc2Instance
     AwsNativeRdsInstance
-    AzureNativeCommonResourceGroup
-    AzureNativeDiskResourceGroup
     AzureNativeManagedDisk
     AzureNativeResourceGroup
     AzureNativeSubscription
-    AzureNativeVMResourceGroup
     AzureNativeVm
     CloudNativeTagRule
     Ec2Instance
@@ -27179,12 +27087,10 @@ enum HostRoot {
 
 enum HostVfdInstallConfigEnum {
     HOST_VFD_INSTALL_CONFIG_DISABLED
-    HOST_VFD_INSTALL_CONFIG_EMPTY_VALUE
     HOST_VFD_INSTALL_CONFIG_ENABLED
 }
 
 enum HostVfdStateEnum {
-    HOST_VFD_STATE_EMPTY_VALUE
     HOST_VFD_STATE_INSTALLED
     HOST_VFD_STATE_INSTALLED_BUT_RESTART_REQUIRED
     HOST_VFD_STATE_NOT_INSTALLED
@@ -27306,7 +27212,6 @@ enum ListAccessUsersSortEnum {
     EMAIL
     NUM_ACTIVITIES
     NUM_ACTIVITY_DELTA
-    RISK_LEVEL
     USERNAME
 }
 
@@ -27454,7 +27359,6 @@ enum MonthEnum {
 }
 
 enum MssqlCbtEffectiveStatusTypeEnum {
-    MSSQL_CBT_EFFECTIVE_STATUS_TYPE_EMPTY_VALUE
     MSSQL_CBT_EFFECTIVE_STATUS_TYPE_OFF
     MSSQL_CBT_EFFECTIVE_STATUS_TYPE_OFF_DEFAULT
     MSSQL_CBT_EFFECTIVE_STATUS_TYPE_ON
@@ -27464,7 +27368,6 @@ enum MssqlCbtEffectiveStatusTypeEnum {
 enum MssqlCbtStatusTypeEnum {
     MSSQL_CBT_STATUS_TYPE_DEFAULT
     MSSQL_CBT_STATUS_TYPE_DISABLED
-    MSSQL_CBT_STATUS_TYPE_EMPTY_VALUE
     MSSQL_CBT_STATUS_TYPE_ENABLED
 }
 
@@ -28018,14 +27921,12 @@ enum SMTPSecurityTypeEnum {
 }
 
 enum SapHanaDataPathTypeEnum {
-    SAP_HANA_DATA_PATH_TYPE_EMPTY_VALUE
     SAP_HANA_DATA_PATH_TYPE_GCP
     SAP_HANA_DATA_PATH_TYPE_LOCAL
     SAP_HANA_DATA_PATH_TYPE_MANAGED_VOLUME
 }
 
 enum SapHanaHostHostTypeEnum {
-    SAP_HANA_HOST_HOST_TYPE_EMPTY_VALUE
     SAP_HANA_HOST_HOST_TYPE_MASTER
     SAP_HANA_HOST_HOST_TYPE_SECONDARY_MASTER
     SAP_HANA_HOST_HOST_TYPE_SECONDARY_SLAVE
@@ -28043,7 +27944,6 @@ enum SapHanaRecoverableRangeSortByEnum {
 
 enum SapHanaSslInfoEncryptionProviderEnum {
     SAP_HANA_SSL_INFO_ENCRYPTION_PROVIDER_COMMON_CRYPTO
-    SAP_HANA_SSL_INFO_ENCRYPTION_PROVIDER_EMPTY_VALUE
     SAP_HANA_SSL_INFO_ENCRYPTION_PROVIDER_OPENSSL
     SAP_HANA_SSL_INFO_ENCRYPTION_PROVIDER_SAP_CRYPTO
 }
@@ -28056,13 +27956,11 @@ enum SapHanaSystemStatus {
 }
 
 enum SapHanaSystemSummaryContainerTypeEnum {
-    SAP_HANA_SYSTEM_SUMMARY_CONTAINER_TYPE_EMPTY_VALUE
     SAP_HANA_SYSTEM_SUMMARY_CONTAINER_TYPE_MULTI_CONTAINER
     SAP_HANA_SYSTEM_SUMMARY_CONTAINER_TYPE_SINGLE_CONTAINER
 }
 
 enum SapHanaSystemSummaryStatusEnum {
-    SAP_HANA_SYSTEM_SUMMARY_STATUS_EMPTY_VALUE
     SAP_HANA_SYSTEM_SUMMARY_STATUS_ERROR
     SAP_HANA_SYSTEM_SUMMARY_STATUS_OK
     SAP_HANA_SYSTEM_SUMMARY_STATUS_UNKNOWN
@@ -28109,7 +28007,6 @@ enum SlaAssignTypeEnum {
 enum SlaAssignmentEnum {
     SLA_ASSIGNMENT_DERIVED
     SLA_ASSIGNMENT_DIRECT
-    SLA_ASSIGNMENT_EMPTY_VALUE
     SLA_ASSIGNMENT_UNASSIGNED
 }
 
@@ -28168,8 +28065,11 @@ enum SnappableLevelHierarchyTypeEnum {
 }
 
 enum SnappableSortByEnum {
+    ArchivalComplianceStatus
+    ArchivalSnapshotLag
     ArchiveSnapshots
     ArchiveStorage
+    AwaitingFirstFull
     Cluster
     ClusterName
     ClusterType
@@ -28178,6 +28078,8 @@ enum SnappableSortByEnum {
     LastSnapshot
     LatestArchivalSnapshot
     LatestReplicationSnapshot
+    LocalOnDemandSnapshots
+    LocalSLASnapshots
     LocalSnapshots
     Location
     LogicalBytes
@@ -28189,6 +28091,8 @@ enum SnappableSortByEnum {
     ProtectionStatus
     ReplicaSnapshots
     ReplicaStorage
+    ReplicationComplianceStatus
+    ReplicationSnapshotLag
     SlaDomainName
     TotalSnapshots
     TransferredBytes
@@ -28229,7 +28133,6 @@ enum SnapshotCloudStorageTierEnum {
     SNAPSHOT_CLOUD_STORAGE_TIER_AZURE_ARCHIVE
     SNAPSHOT_CLOUD_STORAGE_TIER_COLD
     SNAPSHOT_CLOUD_STORAGE_TIER_COOL
-    SNAPSHOT_CLOUD_STORAGE_TIER_EMPTY_VALUE
     SNAPSHOT_CLOUD_STORAGE_TIER_GLACIER
     SNAPSHOT_CLOUD_STORAGE_TIER_GLACIER_DEEP_ARCHIVE
     SNAPSHOT_CLOUD_STORAGE_TIER_HOT
@@ -28371,8 +28274,11 @@ enum SortByFieldEnum {
     AnalyzerName
     AnomalyProbability
     AppBlueprintName
+    ArchivalComplianceStatus
+    ArchivalSnapshotLag
     ArchiveSnapshots
     ArchiveStorage
+    AwaitingFirstFull
     BytesCreatedCount
     BytesDeletedCount
     BytesModifiedCount
@@ -28395,6 +28301,8 @@ enum SortByFieldEnum {
     LastUpdated
     LatestArchivalSnapshot
     LatestReplicationSnapshot
+    LocalOnDemandSnapshots
+    LocalSLASnapshots
     LocalSnapshots
     Location
     LogicalBytes
@@ -28423,6 +28331,8 @@ enum SortByFieldEnum {
     RegisteredAt
     ReplicaSnapshots
     ReplicaStorage
+    ReplicationComplianceStatus
+    ReplicationSnapshotLag
     SLADomain
     Severity
     Size
@@ -28706,7 +28616,7 @@ enum UserAuditObjectTypeEnum {
     O365Onedrive
     O365Organization
     O365SharepointDrive
-    O365Teams
+    O365Team
     OracleDb
     OracleHost
     OracleRac
@@ -29076,22 +28986,9 @@ input AwsCloudAccountAdminInput {
     seamlessFlowEnabled: Boolean = false
 }
 
-input AwsCloudAccountDeleteInitiateInput {
-    feature: CloudAccountFeatureEnum!
-}
-
-input AwsCloudAccountDeleteProcessInput {
-    feature: CloudAccountFeatureEnum!
-    featureVersion: [AwsCloudAccountFeatureVersionInput!]
-}
-
 input AwsCloudAccountFeatureVersionInput {
     feature: CloudAccountFeatureEnum!
     version: Long!
-}
-
-input AwsCloudAccountGetAccountInput {
-    features: [CloudAccountFeatureEnum!]!
 }
 
 input AwsCloudAccountInitiateInput {
@@ -29111,25 +29008,8 @@ input AwsCloudAccountInput {
     seamlessFlowEnabled: Boolean = false
 }
 
-input AwsCloudAccountProcessInput {
-    action: CloudAccountActionEnum!
-    "Admin account, required for bulk upload."
-    awsAdminAccount: AwsCloudAccountInput
-    awsChildAccounts: [AwsCloudAccountInput!]!
-    awsRegions: [AwsCloudAccountRegionEnum!]
-    externalId: String!
-    featureVersion: [AwsCloudAccountFeatureVersionInput!]
+input AwsCloudAccountSelectorInput {
     features: [CloudAccountFeatureEnum!]!
-    stackName: String
-    stackSetName: String
-}
-
-input AwsCloudAccountSaveInput {
-    action: CloudAccountActionEnum!
-    awsRegions: [AwsCloudAccountRegionEnum!]
-    feature: CloudAccountFeatureEnum!
-    roleArn: String
-    stackArn: String
 }
 
 input AwsCloudAccountValidateInput {
@@ -29173,14 +29053,14 @@ input AwsComputeSettingsEditRequest {
 }
 
 "Aws exocompute config to add."
-input AwsExocomputeAddConfigInputType {
+input AwsExocomputeConfigInput {
     "AWS ID of cluster control plane security group. Not required if isPolarisManaged is true"
     clusterSecurityGroupId: String = ""
     "True, if security groups are to be managed to be polaris. False, if security groups are managed by user."
     isPolarisManaged: Boolean!
     "AWS ID of worker node security group. Not required if isPolarisManaged is true"
     nodeSecurityGroupId: String = ""
-    "The region for which the config is specified"
+    "The region for which the config is specified."
     region: AwsCloudAccountRegionEnum!
     "List of exactly 2 subnets."
     subnets: [AwsExocomputeSubnetInputType!]!
@@ -29424,7 +29304,7 @@ input AzureDiskBasedVmConfig {
 input AzureExocomputeAddConfigInputType {
     "Specifies if this configuration is managed by Polaris."
     isPolarisManaged: Boolean!
-    "The region for which the config is specified"
+    "The region for which the config is specified."
     region: AzureCloudAccountRegionEnum!
     "Subnet native id where exocompute should be launched."
     subnetNativeId: String!
@@ -29478,22 +29358,9 @@ input AzureNativeDiskTypeFilter {
     diskTypes: [String!]!
 }
 
-"Filter to return Azure resource groups which have rubrik subscription ID in the given list of rubrik subscription IDs."
-input AzureNativeRGSubscriptionFilter {
-    subscriptionIds: [String!]!
-}
-
 "Filter to return Azure virtual machine which have region in the given list of regions."
 input AzureNativeRegionFilter {
     regions: [AzureNativeRegionEnum!]!
-}
-
-"Filters for list of Azure resource groups."
-input AzureNativeResourceGroupFilters {
-    effectiveSlaFilter: EffectiveSlaFilter
-    nameSubstringFilter: NameSubstringFilter
-    regionFilter: AzureNativeRegionFilter
-    subscriptionFilter: AzureNativeRGSubscriptionFilter
 }
 
 "Filters for list of Azure subscriptions."
@@ -29631,7 +29498,7 @@ input BatchMountSnapshotJobConfigInput {
     Required. Supported in v5.0+
     v5.0: Array of virtual machine IDs with snapshots to be live mounted.
     v5.1-v5.3: Array of vm_ids to live mount a snapshot from
-    v6.0: Array of vm_ids to live mount a snapshot from.
+    v6.0: Array of objects containing information about snapshots to mount.
     """
     snapshots: [MountSnapshotJobConfigForBatchV1Input!] = []
 }
@@ -29904,6 +29771,12 @@ input ContextFilterInputField {
     text: String!
 }
 
+"Input to create AWS exocompute configs."
+input CreateAwsExocomputeConfigsInput {
+    cloudAccountUuid: UUID!
+    configs: [AwsExocomputeConfigInput!]!
+}
+
 "CreateAzureDiskClusterInput for Azure account."
 input CreateAzureDiskClusterInput {
     clusterConfig: clusterConfigInput
@@ -30007,6 +29880,11 @@ input DailySnapshotScheduleInput {
 
 input DayOfWeekOptInput {
     day: DayOfWeekEnum = MONDAY
+}
+
+"Input to delete AWS exocompute configs."
+input DeleteAwsExocomputeConfigsInput {
+    configIdsToBeDeleted: [UUID!]!
 }
 
 "DeleteAzureDiskClusterInput for Azure account."
@@ -30202,6 +30080,8 @@ input ExportSnapshotJobConfigV2Input {
     A Boolean value that determines whether the new virtual machine created from a snapshot is registered with the vCenter Server. When this value is 'true', the registration is removed from the vCenter Server. When this value is 'false', the registration is kept on the vCenter Server. The default is 'false'.
     """
     unregisterVm: Boolean
+    "The network binding for vNIC of the virtual machine."
+    vNicBindings: [VmwareVNicBindingInfoV2Input!] = []
 }
 
 """
@@ -30227,12 +30107,7 @@ input FailoverClusterAppConfigInput {
     Cluster ID of the failover cluster app.
     """
     failoverClusterId: String = ""
-    """
-
-    Supported in v5.2+
-    Cluster type of the failover cluster app.
-    """
-    failoverClusterType: FailoverClusterTypeEnum = FAILOVER_CLUSTER_TYPE_EMPTY_VALUE
+    failoverClusterType: FailoverClusterTypeEnum
     """
 
     Required. Supported in v5.2+
@@ -30353,6 +30228,7 @@ input FileActivitiesSort {
 
 "Struct representing the Onedrive file to be restored"
 input FileInfo {
+    ChannelInfo: TeamsChannelInfo
     FileID: String!
     FileName: String!
     FileSnapshotsToRestore: [FileSnapshotInfo!]!
@@ -30603,12 +30479,7 @@ input FilesetTemplateCreateInput {
     Required. Supported in v5.0+
     """
     name: String = ""
-    """
-
-    Supported in v5.0+
-    Operating system type of filesets created by template.
-    """
-    operatingSystemType: FilesetTemplateCreateOperatingSystemTypeEnum = FILESET_TEMPLATE_CREATE_OPERATING_SYSTEM_TYPE_EMPTY_VALUE
+    operatingSystemType: FilesetTemplateCreateOperatingSystemTypeEnum
     """
 
     Supported in v5.0+
@@ -30621,11 +30492,7 @@ input FilesetTemplateCreateInput {
     Script to run before backup of this fileset starts.
     """
     preBackupScript: String
-    """
-
-    Supported in v5.0+
-    """
-    shareType: FilesetTemplateCreateShareTypeEnum = FILESET_TEMPLATE_CREATE_SHARE_TYPE_EMPTY_VALUE
+    shareType: FilesetTemplateCreateShareTypeEnum
 }
 
 """
@@ -30671,12 +30538,7 @@ input FilesetTemplatePatchInput {
     Supported in v5.0+
     """
     name: String
-    """
-
-    Supported in v5.0+
-    Operating system type of filesets created by template.
-    """
-    operatingSystemType: FilesetTemplatePatchOperatingSystemTypeEnum = FILESET_TEMPLATE_PATCH_OPERATING_SYSTEM_TYPE_EMPTY_VALUE
+    operatingSystemType: FilesetTemplatePatchOperatingSystemTypeEnum
     """
 
     Supported in v5.0+
@@ -30689,11 +30551,7 @@ input FilesetTemplatePatchInput {
     Script to run before backup of this Fileset starts.
     """
     preBackupScript: String
-    """
-
-    Supported in v5.0+
-    """
-    shareType: FilesetTemplatePatchShareTypeEnum = FILESET_TEMPLATE_PATCH_SHARE_TYPE_EMPTY_VALUE
+    shareType: FilesetTemplatePatchShareTypeEnum
 }
 
 "Filter"
@@ -30707,8 +30565,28 @@ input Filter {
     texts: [String!] = []
 }
 
+"Input to process and finalize deletion of AWS cloud account."
+input FinalizeAwsCloudAccountDeletionInput {
+    cloudAccountId: UUID!
+    feature: CloudAccountFeatureEnum!
+}
+
+input FinalizeAwsCloudAccountProtectionInput {
+    action: CloudAccountActionEnum!
+    "Admin account, required for bulk upload."
+    awsAdminAccount: AwsCloudAccountInput
+    awsChildAccounts: [AwsCloudAccountInput!]!
+    awsRegions: [AwsCloudAccountRegionEnum!]
+    externalId: String!
+    featureVersion: [AwsCloudAccountFeatureVersionInput!]
+    features: [CloudAccountFeatureEnum!]!
+    stackName: String
+    stackSetName: String
+}
+
 "Struct representing the Onedrive folder to be restored"
 input FolderInfo {
+    ChannelInfo: TeamsChannelInfo
     FolderID: String!
     FolderName: String!
     FolderSize: Long!
@@ -31048,11 +30926,7 @@ input HostUpdateInput {
     When VFD is disabled on the specified Windows host, set this property to false to instruct the Rubrik cluster to remove the VFD driver from a specified Windows host. Before using this property, disable VFD on the specified Windows host by setting the value of HostVfdEnabled to Disabled.
     """
     hostVfdDriverInstalled: Boolean
-    """
-
-    Supported in v5.0+
-    """
-    hostVfdEnabled: HostVfdInstallConfigEnum = HOST_VFD_INSTALL_CONFIG_EMPTY_VALUE
+    hostVfdEnabled: HostVfdInstallConfigEnum
     """
 
     Supported in v5.0+
@@ -31070,11 +30944,7 @@ input HostUpdateInput {
     When CBT is disabled on the specified Windows host, set this property to false to instruct the Rubrik cluster to remove the CBT driver from a specified Windows host. Before using this property, disable CBT on the specified Windows host by setting the value of mssqlCbtEnabled to Disabled.
     """
     mssqlCbtDriverInstalled: Boolean
-    """
-
-    Supported in v5.0+
-    """
-    mssqlCbtEnabled: MssqlCbtStatusTypeEnum = MSSQL_CBT_STATUS_TYPE_EMPTY_VALUE
+    mssqlCbtEnabled: MssqlCbtStatusTypeEnum
     """
 
     Supported in v5.0+
@@ -31098,6 +30968,12 @@ input HostUpdateInput {
 
 input HourlySnapshotScheduleInput {
     basicSchedule: BasicSnapshotScheduleInput
+}
+
+"Input to initiate feature update for AWS cloud account."
+input InitiateFeatureUpdateForAwsCloudAccountInput {
+    cloudAccountUuid: UUID!
+    features: [CloudAccountFeatureEnum!]!
 }
 
 input InstantRecoveryJobConfig {
@@ -31136,6 +31012,8 @@ input InstantRecoveryJobConfigV2Input {
     A Boolean value that determines whether the job recovers the tags assigned to the virtual machine. When this value is 'true', the job recovers the tags. When this value is 'false', the job does not recover the tags.
     """
     shouldRecoverTags: Boolean
+    "The network binding for vNIC of the virtual machine."
+    vNicBindings: [VmwareVNicBindingInfoV2Input!] = []
     """
 
     Supported in v5.1+
@@ -31150,41 +31028,43 @@ input InterfaceCidrInput {
     selected: Boolean = false
 }
 
-"Config of the k8s cluster to onboard"
+"Config of the k8s cluster to onboard."
 input K8sClusterCreateInput {
-    "The ID of the CDM cluster for ON_PREM k8s clusters"
+    "The ID of the CDM cluster for ON_PREM k8s clusters."
     cdmClusterId: UUID
-    "List of host IPs/hostnames of the k8s nodes"
+    "List of host IPs/hostnames of the k8s nodes."
     hostList: [String!]!
-    "Name of the k8s cluster"
+    "Name of the k8s cluster."
     name: String!
-    "Port on the k8s node for the kupr Ingress Controller"
+    "Port on the k8s node for the kupr Ingress Controller."
     port: Int!
-    "KuprClusterType of the k8s cluster"
+    "Ports in the range of node port service range of the Kubernetes cluster."
+    rbsPortRanges: [PortRange!]!
+    "KuprClusterType of the k8s cluster."
     type: K8sClusterProtoType!
 }
 
-"Config of the kupr cluster to refresh"
+"Config of the kupr cluster to refresh."
 input K8sClusterRefreshInput {
-    "The ID of the kupr cluster to be refreshed"
+    "The ID of the kupr cluster to be refreshed."
     kuprClusterID: UUID!
 }
 
-"Config of the Kupr namespace snapshot to be restored and the target details"
+"Config of the Kupr namespace snapshot to be restored and the target details."
 input K8sNamespaceRestore {
-    "The UUID of the kupr namepspace snapshot to be restored"
+    "The UUID of the kupr namepspace snapshot to be restored."
     snapshotUUID: UUID!
-    "The UUID of the target cluster to restore the namespace snapshot to"
+    "The UUID of the target cluster to restore the namespace snapshot to."
     targetClusterUUID: UUID!
-    "The name of the target namespace to restore the namespace snapshot to"
+    "The name of the target namespace to restore the namespace snapshot to."
     targetNamespaceName: String!
 }
 
-"Config of the Kupr namespace to snapshot"
+"Config of the Kupr namespace to snapshot."
 input K8sNamespaceSnapshot {
-    "The ID of the kupr namespace managed object to snapshot"
+    "The ID of the kupr namespace managed object to snapshot."
     namespaceId: UUID!
-    "The SLA ID of the on demand snapshot request"
+    "The SLA ID of the on demand snapshot request."
     onDemandSnapshotSlaId: String!
 }
 
@@ -31397,7 +31277,8 @@ input MountSnapshotJobConfigForBatchV1Input {
     """
 
     Required. Supported in v5.0+
-    Snapshot mount config.
+    v5.0-v5.3: Snapshot mount config
+    v6.0: Configuration for Snapshot mount.
     """
     config: MountSnapshotJobConfigV1Input
     """
@@ -31409,19 +31290,23 @@ input MountSnapshotJobConfigForBatchV1Input {
     """
 
     Supported in v5.0+
-    Mounts the most recent snapshot prior to the specified date. This parameter is only evaluated when no value is set for snapshotId.
+    v5.0-v5.3: Mounts the most recent snapshot prior to the specified date. This parameter is only evaluated when no value is set for snapshotId.
+    v6.0: Mounts the most recent snapshot taken prior to the specified date. This parameter is only evaluated when no value is set for snapshotId.
     """
     snapshotBeforeDate: DateTime
     """
 
     Supported in v5.0+
-    ID of snapshot to mount. Optional. The snapshot to mount is determined from the other parameters in this call when the ID is not provided.
+    v5.0-v5.3: ID of snapshot to mount. Optional. The snapshot to mount is determined from the other parameters in this call when the ID is not provided.
+    v6.0: The ID of the snapshot to export. This parameter is optional if either of the `snapshotBeforeDate` or `snapshotAfterDate` parameters is configured.
     """
     snapshotId: String
     """
 
     Supported in v5.0+
-    Mount a snapshot from this virtual machine.
+    v5.0: Mount a snapshot from this virtual machine.
+    v5.1-v5.3: Mount a snapshot from this virtual machine
+    v6.0: ID of the virtual machine whose snapshot needs to be mounted.
     """
     vmId: String = ""
 }
@@ -31457,8 +31342,6 @@ input MountSnapshotJobConfigV1Input {
     The job recovers the tags that were assigned to the virtual machine.
     """
     shouldRecoverTags: Boolean
-    "The network binding for vNIC of the VM."
-    vNicBindings: [VmwareVNicBindingInfoV1Input!] = []
     """
 
     Supported in v5.0+
@@ -31502,6 +31385,8 @@ input MountSnapshotJobConfigV2Input {
     The job recovers the tags that were assigned to the virtual machine.
     """
     shouldRecoverTags: Boolean
+    "The network binding for vNIC of the virtual machine."
+    vNicBindings: [VmwareVNicBindingInfoV2Input!] = []
     """
 
     Supported in v5.1+
@@ -31654,6 +31539,7 @@ input OldRestorePathPairInput {
 input OnedriveSearchFilter {
     channelFolderName: String
     channelId: String
+    channelNameKeyword: String
     createTime: TimeRangeFilter
     excludeItemsUnderRoot: Boolean
     modifiedTime: TimeRangeFilter
@@ -31688,6 +31574,14 @@ input PolarisSnapshotFilterNewInput {
     texts: [String!] = []
 }
 
+"Range of ports that are allowed to be accessed."
+input PortRange {
+    "The maximum port in the port range."
+    portMax: Int = 0
+    "The minimum port in the port range."
+    portMin: Int = 0
+}
+
 input PostBackupScriptInputType {
     failureHandling: String
     scriptPath: String
@@ -31704,6 +31598,12 @@ input PreBackupScriptInputType {
     failureHandling: String
     scriptPath: String
     timeoutInMs: Long
+}
+
+"Input to initiate deletion of AWS cloud account."
+input PrepareAwsCloudAccountDeletionInput {
+    cloudAccountId: UUID!
+    feature: CloudAccountFeatureEnum!
 }
 
 input PreviewerClusterConfigInput {
@@ -32029,8 +31929,7 @@ input SapHanaSystemConfigInput {
 }
 
 input SapHanaSystemDataPathSpecInput {
-    "Data path of the SAP HANA BACKINT interface."
-    dataPathType: SapHanaDataPathTypeEnum = SAP_HANA_DATA_PATH_TYPE_EMPTY_VALUE
+    dataPathType: SapHanaDataPathTypeEnum
 }
 
 """
@@ -32185,6 +32084,7 @@ input SnappablePathInput {
 input SnappableRestoreConfig {
     OneDriveRestoreConfig: DriveRestoreConfig
     SharePointDriveRestoreConfig: SharePointDriveRestoreConfig
+    TeamsRestoreConfig: TeamsRestoreConfig
 }
 
 "Filter snappable data based on properties of its Sla domain."
@@ -32275,6 +32175,11 @@ input StartAwsNativeEc2InstanceSnapshotsJobInput {
     retentionSlaId: String = ""
 }
 
+"Trigger create snapshots index job."
+input StartCloudNativeSnapshotsIndexJobInput {
+    snapshotIds: [UUID!]!
+}
+
 "Trigger AWS EC2 instance snapshot restore job."
 input StartRestoreAwsNativeEc2InstanceSnapshotJobInput {
     shouldPowerOn: Boolean!
@@ -32360,9 +32265,17 @@ input TaskSummaryFilterInput {
 
 "Struct representing the Teams Channels to/from be restored"
 input TeamsChannelInfo {
+    ChannelFolderName: String
+    ChannelID: UUID
     ChannelName: String
-    ChannelUUID: UUID
-    TeamUUID: UUID!
+    TeamID: UUID!
+}
+
+"Struct representing the teams contents to be restored"
+input TeamsRestoreConfig {
+    DestChannelInfo: TeamsChannelInfo
+    FilesRestoreConfig: DriveRestoreConfig
+    ShouldCreateDestChannel: Boolean!
 }
 
 input TimeFilterInput {
@@ -32387,6 +32300,15 @@ input UnidirectionalReplicationSpecInput {
     replicationTargetId: String = ""
     retention: Int = 0
     retentionUnit: RetentionUnitEnum = MINUTES
+}
+
+input UpdateAwsCloudAccountInput {
+    action: CloudAccountActionEnum!
+    awsRegions: [AwsCloudAccountRegionEnum!]
+    cloudAccountId: UUID!
+    feature: CloudAccountFeatureEnum!
+    roleArn: String = ""
+    stackArn: String = ""
 }
 
 "Input for updateCloudNativeAwsStorageSetting mutation"
@@ -32486,6 +32408,14 @@ input VSphereVirtualDiskFilter {
     sourceVmId: UUID
 }
 
+input ValidateAndCreateAwsCloudAccountInput {
+    action: CloudAccountActionEnum!
+    "Admin account, required for bulk upload."
+    awsAdminAccount: AwsCloudAccountInput
+    awsChildAccounts: [AwsCloudAccountInput!]!
+    features: [CloudAccountFeatureEnum!]!
+}
+
 "Input for ValidateBlueprintResourceMapping."
 input ValidateBlueprintResourceMappingInput {
     "Blueprint failover related properties."
@@ -32509,23 +32439,25 @@ input VmRestorePathPairInput {
     restorePathPair: RestorePathPairInput
 }
 
-input VmwareNetworkDeviceInfoV1Input {
-    "Required. "
-    key: String = ""
-    "Required. "
+input VmwareNetworkDeviceInfoV2Input {
+    "Required. Device key of the network adapter."
+    key: Int = 0
+    "Required. Name of the network adapter."
     name: String = ""
 }
 
-input VmwareNetworkInfoV1Input {
-    "Required. "
+input VmwareNetworkInfoV2Input {
+    "Required. MOID of the VMware network."
     moid: String = ""
-    "Required. "
+    "Required. Name of the VMware network."
     name: String = ""
 }
 
-input VmwareVNicBindingInfoV1Input {
-    backingNetworkInfo: VmwareNetworkInfoV1Input
-    networkDeviceInfo: VmwareNetworkDeviceInfoV1Input
+input VmwareVNicBindingInfoV2Input {
+    "Information about the backing network."
+    backingNetworkInfo: VmwareNetworkInfoV2Input
+    "Information about the network device."
+    networkDeviceInfo: VmwareNetworkDeviceInfoV2Input
 }
 
 input VmwareVmConfigInput {
