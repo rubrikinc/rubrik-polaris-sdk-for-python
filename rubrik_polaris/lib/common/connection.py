@@ -125,7 +125,7 @@ def _get_access_token_keyfile(self, json_key=None):
             'Accept': 'application/json, text/plain'
         }
         request = requests.post(session_url, json=payload, headers=headers, verify=False)
-    
+
         del payload
 
         response_json = request.json()

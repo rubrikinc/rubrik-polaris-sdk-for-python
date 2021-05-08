@@ -17,3 +17,31 @@
 #  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 #  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 #  DEALINGS IN THE SOFTWARE.
+
+from rubrik_polaris.exceptions import PolarisException
+
+"""
+Collection of functions that manipulate Azure account components.
+"""
+
+
+def get_accounts_azure(self, filter=""):
+    """Retrieves Azure account information from Polaris
+
+    Args:
+        filter (str): Search string to filter results
+
+    Returns:
+        dict: Details of Azure accounts in Polaris
+
+    Raises:
+        RequestException: If the query to Polaris returned an error
+    """
+    try:
+        query_name = "accounts_azure"
+        variables = {
+            "filter": filter
+        }
+        return self._query(query_name, variables)
+    except Exception:
+        raise

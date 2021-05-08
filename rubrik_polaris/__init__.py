@@ -21,8 +21,3 @@
 """
 rubrik_polaris: A Python package for interacting with the Rubrik Polaris API.
 """
-
-from .rubrik_polaris import PolarisClient
-
-
-__all__ = []

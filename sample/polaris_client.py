@@ -2,7 +2,7 @@
 import argparse
 import pprint
 import sys
-import rubrik_polaris
+from rubrik_polaris.rubrik_polaris import PolarisClient
 
 
 pp = pprint.PrettyPrinter(indent=4)
@@ -23,7 +23,7 @@ try:
     #                                       insecure=args.insecure)
 
     ### Instantiate with json keyfile
-    rubrik = rubrik_polaris.PolarisClient(json_keyfile=args.json_keyfile, insecure=args.insecure)
+    rubrik = PolarisClient(json_keyfile=args.json_keyfile, insecure=args.insecure)
 except Exception as err:
     print(err)
     sys.exit(1)
@@ -53,13 +53,13 @@ except Exception as err:
 # rubrik.add_account_aws(aws_regions = ["US_WEST_2"], all = True,  cloud_account_features=["CLOUD_NATIVE_PROTECTION"])
 
 ### Remove AWS Acct (local profile must be configured, specify list of profiles _or_ set all=True.
-# rubrik.delete_account_aws(profiles = ['milanese'])
+# rubrik.delete_account_aws(profiles=['milanese'])
 # rubrik.delete_account_aws(aws_access_key_id='blah', aws_secret_access_key='blah')
 # rubrik.delete_account_aws(all = True )
 
 ### Run ODS for machines in a region using Bronze retention, monitor to complete via threads
 # bronze_sla_domain_id = rubrik.get_sla_domains("Bronze")['id']
-# pp.pprint(rubrik.submit_on_demand(rubrik.get_compute_object_ids_ec2(instanceNativeId="i-029cb0cb8cb1be619"), bronze_sla_domain_id, wait=True))
+# pp.pprint(rubrik.submit_on_demand(rubrik.get_compute_object_ids_ec2(region="US_EAST_1"), bronze_sla_domain_id, wait=True))
 # pp.pprint(rubrik.submit_on_demand(rubrik.get_compute_object_ids_gce(region="us-west1"), bronze_sla_domain_id, wait=True))
 
 ### Get snapshot ids for snappables
