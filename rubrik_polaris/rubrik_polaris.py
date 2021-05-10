@@ -40,6 +40,7 @@ class PolarisClient:
     from .lib.storage.ebs import get_storage_object_ids_ebs, get_storage_ebs
     from .lib.common.graphql import get_enum_values
     from .lib.cluster import get_cdm_cluster_location, get_cdm_cluster_connection_status
+    from .lib.appflows import get_appflows_blueprints
 
     # Private
     from .lib.common.connection import _query, _get_access_token_basic, _get_access_token_keyfile
