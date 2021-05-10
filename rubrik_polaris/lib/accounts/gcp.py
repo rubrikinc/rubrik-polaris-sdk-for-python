@@ -190,7 +190,7 @@ def get_account_gcp_default_sa(self):
     """Get default SA Key for GCP
 
     Returns:
-        dict: Status of query results
+        str: Name of default GCP Service Account
 
     Raises:
         RequestException: If the query to Polaris returned an error

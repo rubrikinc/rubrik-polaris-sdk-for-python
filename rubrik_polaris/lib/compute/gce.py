@@ -25,14 +25,14 @@ Collection of functions that manipulate GCE compute components
 
 
 def get_compute_object_ids_gce(self, match_all=True, **kwargs):
-    """Retrieves all AWS EC2 object IDs that match query
+    """Retrieves all GCP GCE object IDs that match query
 
     Args:
         match_all (bool): Set to false to match ANY defined criteria
-        kwargs (str): Any top level object from the get_compute_ec2 call
+        kwargs (str): Any top level object from the get_compute_gce call
 
     Returns:
-        list: List of all the EC2 object id's
+        list: List of all the GCE object id's
 
     Raises:
         RequestException: If the query to Polaris returned an error
