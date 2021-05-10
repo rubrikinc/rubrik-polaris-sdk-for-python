@@ -1,0 +1,38 @@
+query RubrikPolarisSDKRequest($filter: [Filter!]!) {
+  blueprintNewConnection(filter: $filter) {
+    edges {
+      node {
+        id
+        name
+        status
+        version
+        numChildren
+        sourceLocation {
+          ... on BlueprintCdmLocation {
+            cluster {
+              name
+              id
+              status
+            }
+          }
+        }
+        targetLocation {
+          ... on BlueprintCdmLocation {
+            cluster {
+              name
+              id
+              status
+            }
+          }
+        }
+        latestFailover {
+          status
+          failoverType
+        }
+        lastFailoverStatus
+        lastFailoverTime
+        lastTestFailoverStatus
+      }
+    }
+  }
+}
