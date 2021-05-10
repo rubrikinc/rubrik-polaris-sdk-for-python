@@ -27,7 +27,7 @@ def get_appflows_blueprints(self, blueprint_name=""):
     """Retrieves dictionary of AppFlows blueprints including identifiers and additional details.
 
     Keyword Arguments:
-        blueprint_name {str} -- Rubrik AppFlows blueprint name (default: {''})
+        blueprint_name (str) -- Rubrik AppFlows blueprint name (default: {''})
 
     Returns:
         dict -- A single AppFlows blueprint dict if a non-empty `blueprint_name` is given and found.
