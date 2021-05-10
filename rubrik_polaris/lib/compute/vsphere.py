@@ -17,3 +17,41 @@
 #  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 #  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 #  DEALINGS IN THE SOFTWARE.
+
+
+"""
+Collection of functions that manipulate vSphere compute components
+"""
+
+
+def get_compute_object_ids_vsphere(self, match_all=True, **kwargs):
+    """Retrieves all vSphere objects that match query
+
+    Arguments:
+        match_all {bool} -- Set to false to match ANY defined criteria
+        kwargs {} -- Any top level object from the get_compute_ec2 call
+    """
+    try:
+        return self._get_object_ids_instances(self.get_instances_vsphere(), kwargs, match_all=match_all)
+    except Exception:
+        raise
+
+
+def get_compute_vsphere(self):
+    """Retrieves all VMware VM object details (Under development)
+
+    Returns:
+        dict: details of VMware VM objects
+
+    Raises:
+        RequestException: If the query to Polaris returned an error
+    """
+    try:
+        query_name = "compute_vmware_vsphere"
+        # self._validate(
+        #     query_name=query_name
+        # )
+        variables = {"filter": [], "first": 500}
+        return self._query(query_name, variables)
+    except Exception:
+        raise

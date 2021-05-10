@@ -2,8 +2,7 @@
 import argparse
 import pprint
 import sys
-import rubrik_polaris
-import datetime
+from rubrik_polaris.rubrik_polaris import PolarisClient
 
 
 pp = pprint.PrettyPrinter(indent=4)
@@ -12,14 +11,19 @@ parser = argparse.ArgumentParser()
 parser.add_argument('-p', '--password', dest='password', help="Polaris Password", default=None)
 parser.add_argument('-u', '--username', dest='username', help="Polaris UserName", default=None)
 parser.add_argument('-d', '--domain', dest='domain', help="Polaris Domain", default=None)
+parser.add_argument('-k', '--keyfile', dest='json_keyfile', help="JSON Keyfile", default=None)
 parser.add_argument('-r', '--root', dest='root_domain', help="Polaris Root Domain", default=None)
 parser.add_argument('--insecure', help='Deactivate SSL Verification', action="store_true")
 
 args = parser.parse_args()
 
 try:
-    rubrik = rubrik_polaris.PolarisClient(args.domain, args.username, args.password, root_domain=args.root_domain,
-                                          insecure=args.insecure)
+    ### Instantiate with username/password
+    # rubrik = rubrik_polaris.PolarisClient(domain=args.domain, username=args.username, password=args.password, root_domain=args.root_domain,
+    #                                       insecure=args.insecure)
+
+    ### Instantiate with json keyfile
+    rubrik = PolarisClient(json_keyfile=args.json_keyfile, insecure=args.insecure)
 except Exception as err:
     print(err)
     sys.exit(1)
@@ -44,18 +48,18 @@ except Exception as err:
 # rubrik.add_project_gcp(service_account_auth_key_file="/home/peterm/galactus-gcp-1-a3c-1.json", gcp_native_project_id="pm-team-1")
 
 ### Add AWS Acct (local profile must be configured, specify list of profiles _or_ set all=True.
-# rubrik.add_account_aws(regions = ["us-east-1"], profiles = ["milanese"])
-# rubrik.add_account_aws(regions = ["us-east-1"], aws_access_key_id='blah', aws_secret_access_key='blah')
-# rubrik.add_account_aws(regions = ["us-west-2"], all = True )
+# rubrik.add_account_aws(aws_regions=["US_EAST_1"], aws_profiles=["milanese"], cloud_account_features=["CLOUD_NATIVE_PROTECTION"])
+# rubrik.add_account_aws(aws_regions = ["US-EAST_1"], aws_access_key_id='blah', aws_secret_access_key='blah', cloud_account_features=["CLOUD_NATIVE_PROTECTION"])
+# rubrik.add_account_aws(aws_regions = ["US_WEST_2"], all = True,  cloud_account_features=["CLOUD_NATIVE_PROTECTION"])
 
 ### Remove AWS Acct (local profile must be configured, specify list of profiles _or_ set all=True.
-# rubrik.delete_account_aws(profiles = ['milanese'])
+# rubrik.delete_account_aws(profiles=['milanese'])
 # rubrik.delete_account_aws(aws_access_key_id='blah', aws_secret_access_key='blah')
 # rubrik.delete_account_aws(all = True )
 
 ### Run ODS for machines in a region using Bronze retention, monitor to complete via threads
 # bronze_sla_domain_id = rubrik.get_sla_domains("Bronze")['id']
-# pp.pprint(rubrik.submit_on_demand(rubrik.get_compute_object_ids_ec2(instanceNativeId="i-029cb0cb8cb1be619"), bronze_sla_domain_id, wait=True))
+# pp.pprint(rubrik.submit_on_demand(rubrik.get_compute_object_ids_ec2(region="US_EAST_1"), bronze_sla_domain_id, wait=True))
 # pp.pprint(rubrik.submit_on_demand(rubrik.get_compute_object_ids_gce(region="us-west1"), bronze_sla_domain_id, wait=True))
 
 ### Get snapshot ids for snappables

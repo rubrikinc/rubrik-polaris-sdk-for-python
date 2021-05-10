@@ -19,31 +19,37 @@
 #  DEALINGS IN THE SOFTWARE.
 
 from rubrik_polaris.exceptions import ValidationException
+from uuid import UUID
 
 
 def _validate(self, **kwargs):
     for validation in kwargs:
-        globals()[validation+'_validation'](self, test_variable=kwargs[validation])
+        if not kwargs[validation]:
+            kwargs[validation] = "NONE"
+        if isinstance(kwargs[validation], list):
+            for test in kwargs[validation]:
+                setattr(self, validation, globals()[validation+'_validation'](self, test_variable=test))
+        else:
+            setattr(self, validation, globals()[validation + '_validation'](self, test_variable=kwargs[validation]))
 
 
 def mutation_name_validation(self, test_variable=None):
     if test_variable not in self._graphql_query_map:
         raise ValidationException("mutation_name not found : {}".format(test_variable))
-    self.mutation_name = test_variable
+    return test_variable
 
 
 def query_name_validation(self, test_variable=None):
     if test_variable not in self._graphql_query_map:
         raise ValidationException("query_name not found : {}".format(test_variable))
-    self.query_name = test_variable
+    return test_variable
 
 
 def aws_native_account_id_validation(self, test_variable=None):
     self.aws_account_map = self._get_account_map_aws()
     for aws_account in self.aws_account_map:
         if self.aws_account_map[aws_account]['id'] == test_variable:
-            self.aws_native_account_id = test_variable
-            return
+            return test_variable
     raise ValidationException("aws_native_account_id not found: {}".format(test_variable))
 
 
@@ -54,8 +60,8 @@ def aws_account_number_validation(self, test_variable=None):
         for account in self.aws_account_map:
             if self.aws_account_map[account]['status'].lower() == 'connected':
                 connected_accounts.append(account)
-        raise ValidationException("account_number not found or not connected, valid account numbers are {}".format(connected_accounts))
-    self.aws_account_number = test_variable
+        raise ValidationException("{} not found or not connected, valid account numbers are {}".format(test_variable, connected_accounts))
+    return test_variable
 
 
 def snapshot_id_validation(self, test_variable=None):
@@ -72,14 +78,14 @@ def snapshot_id_validation(self, test_variable=None):
             raise ValidationException("snapshot_id is expired : {}".format(test_variable))
     except Exception as e:
         raise ValidationException("not a valid snapshot_id : {}".format(test_variable))
-    self.snapshot_id = test_variable
+    return test_variable
 
 
-def aws_region_validation(self, test_variable=None):
+def aws_regions_validation(self, test_variable=None):
     regions = self.get_enum_values(name="AwsNativeRegionEnum")
     if not test_variable or test_variable not in regions:
-        raise ValidationException("region not found, valid regions are {}".format(list(regions)))
-    self.aws_region = test_variable
+        raise ValidationException("{} not found, valid regions are {}".format(test_variable, list(regions)))
+    return test_variable
 
 
 def aws_instance_type_validation(self, test_variable=None):
@@ -87,43 +93,82 @@ def aws_instance_type_validation(self, test_variable=None):
     instance_types = self.get_enum_values(name="AwsNativeEc2InstanceTypeEnum")
     if not test_variable or test_variable not in instance_types:
         self.instance_type = instance_details['instanceType']
-    self.aws_instance_type = test_variable
 
 
 def aws_instance_name_validation(self, test_variable=None):
     instance_details = self.get_compute_ec2(object_id=self.snapshot_details['snappableId'])
     if not test_variable:
         self.instance_name = instance_details['instanceName']
-    self.aws_instance_name = test_variable
 
 
 def aws_vpc_validation(self, test_variable=None):
     self.aws_vpcs = self._get_aws_region_vpcs(self.aws_region, self.aws_account_map[self.aws_account_number]['id'])
     if not test_variable or test_variable not in self.aws_vpcs:
-        raise ValidationException("vpc not found, valid vpcs are {}".format(list(self.aws_vpcs)))
-    self.aws_vpc = test_variable
+        raise ValidationException("{} not found, valid vpcs are {}".format(test_variable, list(self.aws_vpcs)))
+    return test_variable
 
 
 def aws_subnet_validation(self, test_variable=None):
     if not test_variable or test_variable not in self.aws_vpcs[self.aws_vpc]['subnets']:
-        raise ValidationException("subnet not found, valid subnets are {}".format(list(self.aws_vpcs[self.aws_vpc]['subnets'])))
-    self.aws_subnet = test_variable
+        raise ValidationException("{} not found, valid subnets are {}".format(test_variable, list(self.aws_vpcs[self.aws_vpc]['subnets'])))
+    return test_variable
 
 
 def aws_security_group_validation(self, test_variable=None):
-    for sg in test_variable:
-        if not sg or sg not in self.aws_vpcs[self.aws_vpc]['security_groups']:
-            raise ValidationException("security_group not found, valid security_groups are {}".format(list(self.aws_vpcs[self.aws_vpc]['security_groups'])))
-    self.aws_security_group = test_variable
+    if not test_variable or test_variable not in self.aws_vpcs[self.aws_vpc]['security_groups']:
+        raise ValidationException("{} not found, valid security_groups are {}".format(test_variable, list(self.aws_vpcs[self.aws_vpc]['security_groups'])))
+    return test_variable
 
 
 def copy_tags_validation(self, test_variable=None):
     if not test_variable:
         test_variable = True
-    self.copy_tags = test_variable
+    return test_variable
 
 
 def use_replica_validation(self, test_variable=None):
     if not test_variable:
         test_variable = False
-    self.use_replica = test_variable
+    return test_variable
+
+
+def azure_cloud_type_validation(self, test_variable=None):
+    test = self.get_enum_values(name="AzureCloudTypeEnum")
+    if not test_variable or test_variable not in test:
+        raise ValidationException("{} not found, valid cloud types are {}".format(test_variable, list(test)))
+    return test_variable
+
+
+def azure_regions_validation(self, test_variable=None):
+    test = self.get_enum_values(name="AzureCloudAccountRegionEnum")
+    if not test_variable or test_variable not in test:
+        raise ValidationException("{} not found, valid regions are {}".format(test_variable, list(test)))
+    return test_variable
+
+
+def cloud_account_action_validation(self, test_variable=None):
+    test = self.get_enum_values(name="CloudAccountActionEnum")
+    if not test_variable or test_variable not in test:
+        raise ValidationException("{} not found, valid features are {}".format(test_variable, list(test)))
+    return test_variable
+
+
+def cloud_account_features_validation(self, test_variable=None):
+    test = self.get_enum_values(name="CloudAccountFeatureEnum")
+    if not test_variable or test_variable not in test:
+        raise ValidationException("{} not found, valid features are {}".format(test_variable, list(test)))
+    return test_variable
+
+
+def uuid_validation(self, test_variable=None):
+    if not UUID(test_variable):
+        raise ValidationException("{} not a UUID".format(test_variable))
+    return test_variable
+
+
+def azure_subscription_ids(self, test_variable=None):
+    if not test_variable:
+        raise ValidationException("No subscription ids in list")
+    if not uuid_validation(test_variable=test_variable):
+        raise ValidationException("{} is not a UUID".format(test_variable))
+    return test_variable
