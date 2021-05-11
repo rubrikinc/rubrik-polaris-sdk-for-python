@@ -1,0 +1,5 @@
+mutation ExportGCPInstanceMutation($snapshot_id: UUID!, $instance_name: String!, $machine_type: String!, $network_tags: [String!], $subnet_name: String!, $targetZone: String!, $copy_labels: Boolean!, $add_rubrik_labels: Boolean!, $project_id: String!, $power_off: Boolean!, $disk_encryption_type: DiskEncryptionType!, $kms_key: kmsCryptoKey, $kms_key_id: String) {
+  gcpNativeExportGceInstance(snapshotId: $snapshot_id, targetInstanceName: $instance_name, targetMachineType: $machine_type, targetNetworkTags: $network_tags, targetSubnetName: $subnet_name, targetZone: $targetZone, shouldCopyLabels: $copy_labels, shouldAddRubrikLabels: $add_rubrik_labels, sharedVPCHostProjectNativeID: $project_id, shouldPowerOff: $power_off, diskEncryptionType: $disk_encryption_type, kmsCryptoKey: $kms_key, kmsCryptoKeyResourceId: $kms_key_id) {
+    taskchainUuid
+  }
+}

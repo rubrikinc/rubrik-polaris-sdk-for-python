@@ -75,3 +75,35 @@ def submit_compute_restore_gce(self, snapshot_id, **kwargs):
         dict -- List of errors if any occurred during the restore
     """
     return self._submit_compute_restore(snapshot_id=snapshot_id, mutation_name="compute_restore_gce")
+
+
+def submit_compute_export_gce(self, snapshot_id=None, instance_name=None, machine_type=None, network_tags=None,
+                              subnet_name=None, zone=None, copy_labels=None, add_rubrik_labels=None, project_id=None,
+                              power_off=None, disk_encryption_type=None, kms_key=None, kms_key_id=None, wait=False):
+    """ Submits the export of a GCE instance"""
+
+    mutation_name = 'compute_export_gce'
+
+    self._validate(
+        mutation_name=mutation_name,
+        snapshot_id=snapshot_id
+    )
+
+    variables = {
+        "snapshot_id": snapshot_id, #UUID! - done
+        "instance_name": instance_name,
+        "machine_type": machine_type, #String!
+        "network_tags": network_tags, #[String!],
+        "subnet_name": subnet_name, #String!,
+        "zone": zone, #String!,
+        "copy_labels": copy_labels, #Boolean!,
+        "add_rubrik_labels": add_rubrik_labels, #Boolean!,
+        "project_id": project_id, #String!,
+        "power_off": power_off, #Boolean!,
+        "disk_encryption_type": disk_encryption_type, #DiskEncryptionType!,
+        "kms_key": kms_key, #kmsCryptoKey,
+        "kms_key_id": kms_key_id #String
+    }
+
+    result = self._submit_compute_export(self, mutation_name=self.mutation_name, variables=variables, wait=wait)
+    return result

@@ -182,7 +182,6 @@ def submit_compute_export_ec2(self, snapshot_id=None, aws_account_number=None, a
     Returns:
         dict -- List of errors if any occurred during the export
     """
-    from rubrik_polaris.exceptions import ValidationException
 
     mutation_name = 'compute_export_ec2'
     self._validate(

@@ -1,0 +1,36 @@
+query RubrikPolarisSDKRequest($object_id: UUID!) {
+    gcpNativeGceInstance(fid: $object_id) {
+        id
+        nativeName
+        isRelic
+        machineType
+        networkHostProjectNativeId
+        vpcName
+        labels{
+            key
+            value
+        }
+        gcpNativeProject{
+            name
+            nativeId
+        }
+        projectId
+        effectiveSlaDomain {
+            name
+            ... on ClusterSlaDomain {
+                fid
+                cluster {
+                    id
+                    name
+                }
+            }
+            ... on GlobalSla {
+                id
+                name
+            }
+        }
+        authorizedOperations
+        zone
+        region
+    }
+}
