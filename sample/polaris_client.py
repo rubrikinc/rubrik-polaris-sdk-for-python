@@ -188,3 +188,9 @@ except Exception as err:
 # for vm in o:
 #     if len(o[vm]) > 1:
 #         print("{} : {}".format(vm, o[vm]))
+
+### Add Azure Sub
+rubrik.add_account_azure(
+    azure_subscriptions=['8fa81a5e-a236-4a73-8e28-e1dcf863c56d'],
+    azure_regions=['blah1']
+)

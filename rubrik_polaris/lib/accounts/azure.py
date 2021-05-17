@@ -97,7 +97,7 @@ def add_account_azure(
         feature='CLOUD_NATIVE_PROTECTION',
         azure_subscriptions=None,
         azure_regions=None,
-        azure_policy_version=None):
+        azure_policy_version=1007):
     """Add Azure subscription to Polaris
     Args:
         azure_tenant_domain_name (str): Optional, Domain Name of the Azure tenant.

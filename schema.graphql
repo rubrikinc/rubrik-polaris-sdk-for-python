@@ -3520,6 +3520,10 @@ type ActivitySeries {
         last: Int
     ): ActivityConnection!
     activitySeriesId: UUID!
+    causeErrorCode: String
+    causeErrorMessage: String
+    causeErrorReason: String
+    causeErrorRemedy: String
     cluster: Cluster
     clusterName: String!
     clusterUuid: UUID!
@@ -3893,7 +3897,9 @@ type AsyncDownloadReply {
 }
 
 type AsyncJobStatus {
+    "Error message if pre validation failed."
     error: String!
+    "Job ID for object if pre validation succeeds for object. If pre validation failed Job ID will be empty and detials will be present in error field."
     jobId: String!
 }
 
@@ -4039,13 +4045,17 @@ type AwsAccount implements CloudAccount {
     name: String!
 }
 
-"Aws account response"
+"Details of AWS account."
 type AwsAccountResponse {
+    "Name of cloud account."
     accountName: String!
+    "Type of cloud account"
     cloudType: AwsCloudTypeEnum!
     id: String!
     message: String!
+    "Native ID of cloud account."
     nativeId: String!
+    "Whether seamless flow is enabled on cloud account."
     seamlessFlowEnabled: Boolean!
 }
 
@@ -4068,21 +4078,21 @@ type AwsCloudAccountFeatureVersion {
 
 "Initiate aws cloud accounts."
 type AwsCloudAccountInitiate {
-    "Aws regions"
+    "List of AWS regions for the cloud account."
     awsRegions: [AwsCloudAccountRegionEnum!]
-    "Aws cloud-formation url"
+    "AWS CloudFormation URL."
     cloudFormationUrl: String!
-    "External id for the cloud account"
+    "External ID for the cloud account."
     externalId: String!
-    "List of feature-versions"
+    "List of feature versions."
     featureVersionList: [AwsCloudAccountFeatureVersion!]!
-    "Role arn for the feature(if valid)"
+    "Role ARN for the feature (if valid)."
     roleArn: String!
-    "Stack name of template to run, only for single account addition"
+    "Stack name of template to run, only for single account addition."
     stackName: String
-    "StackSet name of template to run, only for bulk account addition"
+    "StackSet name of template to run, only for bulk account addition."
     stackSetName: String
-    "Aws cloud formation template url"
+    "AWS CloudFormation template URL."
     templateUrl: String!
 }
 
@@ -4108,9 +4118,9 @@ type AwsCloudAccountListVpcResponse {
 
 "Aws cloud accounts."
 type AwsCloudAccountSelectorType {
-    "Account details."
+    "AWS account details."
     awsCloudAccount: AwsAccountResponse
-    "Feature details."
+    "Feature details for the cloud account."
     featureDetails: [FeatureDetail!]!
 }
 
@@ -4149,11 +4159,11 @@ type AwsEc2Instance {
     instanceType: String!
 }
 
-"AWS Exocompute configs in an AWS account."
+"AWS Exocompute configurations in an AWS account."
 type AwsExocomputeConfig {
     "Account details."
     awsCloudAccount: AwsAccountResponse!
-    "Aws exocompute get config response"
+    "Aws exocompute get configurations response"
     configs: [AwsExocomputeGetConfigResponse!]!
     "List of regions for which exocompute can be configured."
     exocomputeEligibleRegions: [AwsCloudAccountRegionEnum!]!
@@ -4161,13 +4171,13 @@ type AwsExocomputeConfig {
     featureDetails: FeatureDetail!
 }
 
-"AWS Exocompute Configs Deletion status."
+"AWS Exocompute configurations Deletion status."
 type AwsExocomputeConfigsDeletionStatusType {
     exocomputeConfigId: String!
     success: Boolean!
 }
 
-"AWS Exocompute config in a region."
+"AWS Exocompute configuration in a region."
 type AwsExocomputeGetConfigResponse {
     areSecurityGroupsPolarisManaged: Boolean!
     clusterSecurityGroupId: String!
@@ -4180,7 +4190,7 @@ type AwsExocomputeGetConfigResponse {
     vpcId: String!
 }
 
-"AWS Exocompute config in a region."
+"AWS Exocompute configuration in a region."
 type AwsExocomputeSubnetType {
     availabilityZone: String!
     subnetId: String!
@@ -4201,7 +4211,7 @@ type AwsNativeAccount implements HierarchyObject & PolarisHierarchyObject {
     "The authorized operations on the object."
     authorizedOperations: [PolarisObjectAuthorizedOperationsEnum!]!
     "List of all ebs volumes under this AWS account"
-    awsNativeEbsVolumeConnection(
+    awsNativeEbsVolumes(
         "Returns the elements in the list that come after the specified cursor."
         after: String,
         "Returns the elements in the list that come before the specified cursor."
@@ -4216,7 +4226,7 @@ type AwsNativeAccount implements HierarchyObject & PolarisHierarchyObject {
         sortOrder: HierarchySortOrder
     ): AwsNativeEbsVolumeConnection!
     "List of all ec2 instances under this AWS account"
-    awsNativeEc2InstanceConnection(
+    awsNativeEc2Instances(
         "Returns the elements in the list that come after the specified cursor."
         after: String,
         "Returns the elements in the list that come before the specified cursor."
@@ -4231,7 +4241,7 @@ type AwsNativeAccount implements HierarchyObject & PolarisHierarchyObject {
         sortOrder: HierarchySortOrder
     ): AwsNativeEc2InstanceConnection!
     "List of all RDS instances under this AWS account"
-    awsNativeRdsInstanceConnection(
+    awsNativeRdsInstances(
         "Returns the elements in the list that come after the specified cursor."
         after: String,
         "Returns the elements in the list that come before the specified cursor."
@@ -4247,7 +4257,9 @@ type AwsNativeAccount implements HierarchyObject & PolarisHierarchyObject {
     ): AwsNativeRdsInstanceConnection!
     "The configured SLA Domain of the hierarchy object."
     configuredSlaDomain: SlaDomain!
+    "Count of EBS volumes in the account."
     ebsVolumeCount: Int!
+    "Count of EC2 instances in the account."
     ec2InstanceCount: Int!
     "The Effective Retention SLA Domain of the hierarchy object."
     effectiveRetentionSlaDomain: SlaDomain
@@ -4257,6 +4269,7 @@ type AwsNativeAccount implements HierarchyObject & PolarisHierarchyObject {
     effectiveSlaSourceObject: PathNode
     "The fid of the hierarchy object."
     id: UUID!
+    "Last refresh time of account."
     lastRefreshedAt: DateTime
     "List of logical children"
     logicalChildConnection(
@@ -4281,12 +4294,15 @@ type AwsNativeAccount implements HierarchyObject & PolarisHierarchyObject {
     objectType: HierarchyObjectTypeEnum!
     "A sequential list containing this object's physical ancestors."
     physicalPath: [PathNode!]!
+    "Count of RDS instances in the account."
     rdsInstanceCount: Int!
+    "List of AWS regions associated to the account."
     regions: [AwsNativeRegionEnum!]!
     "The assignmennt type for this object's SLA"
     slaAssignment: SlaAssignmentTypeEnum!
     "The distribution of the snapshots of the hierarchy object"
     snapshotDistribution: SnapshotDistribution!
+    "Refresh status of account."
     status: AwsAccountStatusEnum!
 }
 
@@ -4317,13 +4333,17 @@ type AwsNativeAccountLogicalChildTypeEdge {
 type AwsNativeEbsVolume implements AwsNativeAccountDescendantType & AwsNativeAccountLogicalChildType & HierarchyObject & PolarisHierarchyObject & PolarisHierarchySnappable {
     "Ec2 Instance to which this volume is attached"
     attachedEc2Instances: [AwsNativeEc2Instance!]!
+    "List of EC2 instance details to which volume is attached."
     attachmentSpecs: [AttachmentSpecForEbsVolume!]!
     "The authorized operations on the object."
     authorizedOperations: [PolarisSnappableAuthorizedOperationsEnum!]!
+    "Name of the Availability Zone (AZ). Some examples are: US_EAST_1, AP_EAST_1. This field cannot be null or empty string and will be mapped directly to available AZ for EC2 instance on cloud(AWS). More info: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html#concepts-availability-zones."
     availabilityZone: String!
+    "Rubrik ID of Instance."
     awsAccountRubrikId: String!
     "Aws account of the EBS Volumes"
     awsNativeAccount: AwsNativeAccount!
+    "Name for the AWS account."
     awsNativeAccountName: String!
     "The configured SLA Domain of the hierarchy object."
     configuredSlaDomain: SlaDomain!
@@ -4335,10 +4355,15 @@ type AwsNativeEbsVolume implements AwsNativeAccountDescendantType & AwsNativeAcc
     effectiveSlaSourceObject: PathNode
     "The fid of the hierarchy object."
     id: UUID!
+    "Input/Output (IO) limit per second for volume."
     iops: Long!
+    "Whether exocompute is configured for the region where the volume is."
     isExocomputeConfigured: Boolean!
+    "Whether indexing is enabled for snapshots of volume."
     isIndexingEnabled: Boolean!
+    "Whether the volume image is marketplace image."
     isMarketplace: Boolean!
+    "Whether the volume is relic."
     isRelic: Boolean!
     "A sequential list containing this object's logical ancestors."
     logicalPath: [PathNode!]!
@@ -4358,7 +4383,9 @@ type AwsNativeEbsVolume implements AwsNativeAccountDescendantType & AwsNativeAcc
     onDemandSnapshotCount: Int!
     "A sequential list containing this object's physical ancestors."
     physicalPath: [PathNode!]!
+    "Name of the region. Some examples are: US_EAST_1, AP_EAST_1. This field cannot be null or empty string and will be mapped directly to available regions for EBS volume on cloud(AWS). More info: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html#concepts-available-regions."
     region: AwsNativeRegionEnum!
+    "Size of volume in GB."
     sizeInGBs: Int!
     "The assignmennt type for this object's SLA"
     slaAssignment: SlaAssignmentTypeEnum!
@@ -4431,10 +4458,13 @@ type AwsNativeEbsVolume implements AwsNativeAccountDescendantType & AwsNativeAcc
         sortOrder: SortOrderEnum,
         timeRange: TimeRangeInput
     ): GenericSnapshotConnection
+    "List of tags associated with volume."
     tags: [Tag!]!
+    "Name of volume on AWS. Name is not necessarily unique for different volumes."
     volumeName: String!
+    "AWS Native ID of EBS volume."
     volumeNativeId: String!
-    "AWS Native EBS Volume type. Some examples are: g3, io2. This field cannot be null or empty string and will be mapped directly to available EBS volumes on cloud(AWS). More info: https://aws.amazon.com/ebs/volume-types."
+    "AWS Native EBS volume type. Some examples are: g3, io2. This field cannot be null or empty string and will be mapped directly to available EBS volumes on cloud(AWS). More info: https://aws.amazon.com/ebs/volume-types."
     volumeType: String!
 }
 
@@ -4453,13 +4483,17 @@ type AwsNativeEbsVolumeEdge {
 type AwsNativeEc2Instance implements AwsNativeAccountDescendantType & AwsNativeAccountLogicalChildType & HierarchyObject & PolarisHierarchyObject & PolarisHierarchySnappable {
     "Attached ebs volumes"
     attachedEbsVolumes: [AwsNativeEbsVolume!]!
+    "List of EBS volume details attached to the instance."
     attachmentSpecs: [AttachmentSpecForEc2Instance!]!
     "The authorized operations on the object."
     authorizedOperations: [PolarisSnappableAuthorizedOperationsEnum!]!
+    "Name of the Availability Zone (AZ). Some examples are: US_EAST_1, AP_EAST_1. This field cannot be null or empty string and will be mapped directly to available AZs for EC2 instance on cloud(AWS). More info: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html#concepts-availability-zones."
     availabilityZone: String!
+    "Rubrik ID of Instance."
     awsAccountRubrikId: String!
     "Aws account of the Ec2 instance"
     awsNativeAccount: AwsNativeAccount!
+    "Name for the AWS Account."
     awsNativeAccountName: String!
     "The configured SLA Domain of the hierarchy object."
     configuredSlaDomain: SlaDomain!
@@ -4471,13 +4505,19 @@ type AwsNativeEc2Instance implements AwsNativeAccountDescendantType & AwsNativeA
     effectiveSlaSourceObject: PathNode
     "The fid of the hierarchy object."
     id: UUID!
+    "Name of instance on AWS. Name is not necessarily unique for different instances."
     instanceName: String!
+    "AWS Native ID of Instance."
     instanceNativeId: String!
-    "AWS Native EC2 Instance type. Some examples are: t2.nano, m5.xlarge. This field cannot be null or empty string and will be mapped directly to available EC2 instance on cloud(AWS). More info:  https://aws.amazon.com/ec2/instance-types."
+    "AWS Native EC2 instance type. Some examples are: t2.nano, m5.xlarge. This field cannot be null or empty string and will be mapped directly to available EC2 instance on cloud(AWS). More info:  https://aws.amazon.com/ec2/instance-types."
     instanceType: String!
+    "Whether exocompute is configured for the region where the instance is."
     isExocomputeConfigured: Boolean!
+    "Whether indexing is enabled for snapshots of instance."
     isIndexingEnabled: Boolean!
+    "Whether the instance image is marketplace image."
     isMarketplace: Boolean!
+    "Whether the instance is relic."
     isRelic: Boolean!
     "A sequential list containing this object's logical ancestors."
     logicalPath: [PathNode!]!
@@ -4495,11 +4535,15 @@ type AwsNativeEc2Instance implements AwsNativeAccountDescendantType & AwsNativeA
     oldestSnapshot: PolarisSnapshot
     "the number of on-demand snapshots"
     onDemandSnapshotCount: Int!
+    "Name of the Operating System (OS) for the Instance. Some examples are: Linux, Windows. This field cannot be null or empty string but can be Undefined in case it is not currently supported.List of supported OS: Linux, Windows."
     osType: OsTypeEnum!
     "A sequential list containing this object's physical ancestors."
     physicalPath: [PathNode!]!
+    "Private IP address for instance."
     privateIp: String!
+    "Public IP address for instance."
     publicIp: String!
+    "Name of the region. Some examples are: US_EAST_1, AP_EAST_1. This field cannot be null or empty string and will be mapped directly to available regions for EC2 instance on cloud(AWS). More info: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html#concepts-available-regions."
     region: AwsNativeRegionEnum!
     "The assignmennt type for this object's SLA"
     slaAssignment: SlaAssignmentTypeEnum!
@@ -4572,9 +4616,13 @@ type AwsNativeEc2Instance implements AwsNativeAccountDescendantType & AwsNativeA
         sortOrder: SortOrderEnum,
         timeRange: TimeRangeInput
     ): GenericSnapshotConnection
+    "Name of SSH key-pair for the Instance."
     sshKeyPairName: String!
+    "List of tags associated with Instance."
     tags: [Tag!]!
+    "ID of Virtual Private Cloud (VPC) associated with instance."
     vpcId: String!
+    "Name of Virtual Private Cloud (VPC) associated with instance."
     vpcName: String!
 }
 
@@ -4598,16 +4646,23 @@ type AwsNativeProtectionAccountAddResponse {
 }
 
 type AwsNativeRdsInstance implements AwsNativeAccountDescendantType & AwsNativeAccountLogicalChildType & HierarchyObject & PolarisHierarchyObject & PolarisHierarchySnappable {
+    "Allocated size of RDS Instance in GiB."
     allocatedStorageInGibi: Long!
     "The authorized operations on the object."
     authorizedOperations: [PolarisSnappableAuthorizedOperationsEnum!]!
+    "Rubrik Identifier for account associated with RDS Instance."
+    awsAccountRubrikId: String!
     "AWS account of the RDS instance"
     awsNativeAccount: AwsNativeAccount!
     "The configured SLA Domain of the hierarchy object."
     configuredSlaDomain: SlaDomain!
+    "Engine being used for RDS Instance."
     dbEngine: AwsNativeRdsDbEngineEnum!
+    "Class type of RDS Instance."
     dbInstanceClass: AwsNativeRdsDbInstanceClassEnum!
+    "Name of RDS Instance."
     dbInstanceName: String!
+    "Resource identifier of RDS Instance."
     dbiResourceId: String!
     "The Effective Retention SLA Domain of the hierarchy object."
     effectiveRetentionSlaDomain: SlaDomain
@@ -4617,10 +4672,13 @@ type AwsNativeRdsInstance implements AwsNativeAccountDescendantType & AwsNativeA
     effectiveSlaSourceObject: PathNode
     "The fid of the hierarchy object."
     id: UUID!
+    "Identifies if the RDS Instance is part of multiple Availability Zones."
     isMultiAz: Boolean!
+    "Indicates if the RDS Instance is relic."
     isRelic: Boolean!
     "A sequential list containing this object's logical ancestors."
     logicalPath: [PathNode!]!
+    "Maintenance window of RDS Instance."
     maintenanceWindow: String!
     "The name of the hierarchy object."
     name: String!
@@ -4638,7 +4696,9 @@ type AwsNativeRdsInstance implements AwsNativeAccountDescendantType & AwsNativeA
     onDemandSnapshotCount: Int!
     "A sequential list containing this object's physical ancestors."
     physicalPath: [PathNode!]!
+    "Name of Availability Zone(AZ) associated with RDS Instance."
     primaryAvailabilityZone: String!
+    "AWS region of RDS Instance."
     region: AwsNativeRegionEnum!
     "The assignmennt type for this object's SLA"
     slaAssignment: SlaAssignmentTypeEnum!
@@ -4711,8 +4771,11 @@ type AwsNativeRdsInstance implements AwsNativeAccountDescendantType & AwsNativeA
         sortOrder: SortOrderEnum,
         timeRange: TimeRangeInput
     ): GenericSnapshotConnection
+    "List of tags associated with RDS Instance."
     tags: [Tag!]!
+    "Identifier of VPC associated with RDS Instance."
     vpcId: String!
+    "Name of VPC associated with RDS Instance."
     vpcName: String!
 }
 
@@ -4726,6 +4789,12 @@ type AwsNativeRdsInstanceConnection {
 type AwsNativeRdsInstanceEdge {
     cursor: String!
     node: AwsNativeRdsInstance!
+}
+
+"The PIT restore window of the RDS instance."
+type AwsNativeRdsPointInTimeRestoreWindow {
+    earliestTime: DateTime
+    latestTime: DateTime
 }
 
 "A subnet on AWS as defined in awsnative service."
@@ -4814,11 +4883,15 @@ type AwsVMVolumeSpec {
     volumeTypeId: Int!
 }
 
-"A VPC in AWS realm."
+"A Virtual Private Cloud (VPC) in AWS realm."
 type AwsVpc {
+    "ID for the VPC."
     id: String!
+    "Name of the VPC."
     name: String!
+    "List of security groups associated with the VPC."
     securityGroups: [AwsSecurityGroup!]!
+    "List of subnets associated with the VPC."
     subnets: [AwsSubnet!]!
 }
 
@@ -5654,7 +5727,9 @@ type BasicSnapshotSchedule {
 }
 
 type BatchAsyncJobStatus {
+    "List of map of Rubrik object ID to error message for those object for which pre validation failed."
     errors: [AsyncJobStatusJobError!]!
+    "List of map of Rubrik object ID to Job ID for object if pre validation succeeds for object. If pre validation failed, detials will be present in error field."
     jobIds: [AsyncJobStatusJobId!]!
 }
 
@@ -6156,6 +6231,8 @@ type ChildRecoverySpecMap {
     recoverySpec: RecoverySpec!
     "the fid of the recovery spec"
     recoverySpecFid: String!
+    "sla to be assigned post failover"
+    slaId: String
     "the child snappable Fid"
     snappableFid: String!
     "the child snapshot Fid"
@@ -6737,13 +6814,8 @@ type CrawlObjEdge {
 
 "AWS Exocompute Configs Create Response."
 type CreateAwsExocomputeConfigsReply {
+    "List of exocompute configurations."
     configs: [AwsExocomputeGetConfigResponse!]!
-}
-
-"The status of Create RDS Instance Snapshot request. For each instance ID in the request: an entry in errors if failed, and in taskchainUuids if succeeded."
-type CreateAwsNativeRdsInstanceSnapshotsReply {
-    errors: [CreateRdsInstanceSnapshotError!]!
-    taskchainUuids: [CreateRdsInstanceSnapshotTaskchainUuid!]!
 }
 
 "Disk ID and the error encountered while scheduling create azure native disk snapshot job for the Disk"
@@ -6815,16 +6887,6 @@ type CreateRBAInstallerReply {
     debianUrl: String!
     rpmUrl: String!
     windowsUrl: String!
-}
-
-type CreateRdsInstanceSnapshotError {
-    error: String!
-    rdsInstanceId: String!
-}
-
-type CreateRdsInstanceSnapshotTaskchainUuid {
-    rdsInstanceId: String!
-    taskchainUuid: String!
 }
 
 "Service account details"
@@ -7069,6 +7131,7 @@ type DeleteAwsCloudComputeSettingReply {
 
 "AWS Exocompute Configs Delete Response."
 type DeleteAwsExocomputeConfigsReply {
+    "Deletion status for exocompute configurations."
     deletionStatus: [AwsExocomputeConfigsDeletionStatusType!]!
 }
 
@@ -7508,11 +7571,6 @@ type ExportDiskSnapshotReply {
 
 "Taskchain ID of the taskchain to export GCP native instance"
 type ExportGCEInstanceReply {
-    taskchainUuid: String!
-}
-
-"The taskchainUuid of the Export Rds Instance request."
-type ExportRdsInstanceReply {
     taskchainUuid: String!
 }
 
@@ -9333,12 +9391,6 @@ type GetO365StorageStatsResp {
     storageEfficiencyPercent: Long!
 }
 
-"The PIT restore window of the RDS instance."
-type GetPITRestoreWindowReply {
-    earliestTime: DateTime
-    latestTime: DateTime
-}
-
 "Get the health metric for the radar pipeline covering the backup, indexing, and analysis jobs"
 type GetPipelineHealthReply {
     failedAnalysis: Long!
@@ -9362,28 +9414,6 @@ type GetPoliciesTimelineReply {
     totalOaFoldersEntries: [TimelineEntry!]!
     totalStaleFilesHitsEntries: [TimelineEntry!]!
     totalStaleOaFilesEntries: [TimelineEntry!]!
-}
-
-"RDS DB Instance details from AWS."
-type GetRdsInstanceDetailsFromAWSReply {
-    allocatedStorageInGb: Long!
-    backupRetentionPeriod: Long!
-    dbEngine: String!
-    dbInstanceClass: String!
-    dbInstanceStatus: String!
-    dbMaintenanceWindow: String!
-    dbParameterGroupName: String!
-    dbSubnetGroupName: String!
-    engineVersion: String!
-    iops: Long!
-    isMultiAz: Boolean!
-    kmsKeyId: String!
-    optionGroupName: String!
-    port: Long!
-    primaryAz: String!
-    rdsInstanceArn: String!
-    storageType: String!
-    vpcId: String!
 }
 
 type GetSMTPConfigurationReply {
@@ -10876,10 +10906,11 @@ type KMSCryptoKey {
     projectNativeId: String!
 }
 
-"A kms key in AWS realm."
+"A KMS key in AWS realm."
 type KMSEncryptionKeyType {
     aliases: [String!]!
     arn: String!
+    "ID of KMS key."
     id: String!
 }
 
@@ -11769,28 +11800,28 @@ type Mutation {
         "Boolean value to indicate whether to apply changes made to the SLA to existing snapshots. If not specified, this defaults to true."
         shouldApplyToExistingSnapshots: Boolean
     ): [SlaAssignResult!]!
-    "Initiate create cloud account."
+    "This endpoint is deprecated."
     awsCloudAccountInitiate(
         "Arguments for initiate aws cloud accounts for creation."
         awsCloudAccountInitiateArg: AwsCloudAccountInitiateInput!
-    ): AwsCloudAccountInitiate!
-    "Update features to latest version."
+    ): AwsCloudAccountInitiate! @deprecated(reason : "Please use validateAndCreateAwsCloudAccount instead.")
+    "This endpoint is deprecated."
     awsCloudAccountUpdateFeature(
         "The id of the cloud account"
         cloudAccountUuid: UUID!,
         "Cloud Account Features."
         features: [CloudAccountFeatureEnum!]!
-    ): AwsCloudAccountUpdateFeatureResponse!
-    "Validate given aws accounts for creation."
+    ): AwsCloudAccountUpdateFeatureResponse! @deprecated(reason : "Please use initiateFeatureUpdateForAwsCloudAccount instead.")
+    "This endpoint is deprecated."
     awsCloudAccountValidate(
         "Arguments for validate aws cloud accounts."
         awsCloudAccountValidateArg: AwsCloudAccountValidateInput!
-    ): AwsCloudAccountValidateResponse!
-    "Add aws account for native protection."
+    ): AwsCloudAccountValidateResponse! @deprecated(reason : "Please use validateAndCreateAwsCloudAccount instead.")
+    "This endpoint is deprecated."
     awsNativeProtectionAccountAdd(
         "Arguments to add account for native protection."
         awsNativeProtectionAccountAddArg: AwsNativeProtectionAccountAddRequest!
-    ): AwsNativeProtectionAccountAddResponse!
+    ): AwsNativeProtectionAccountAddResponse! @deprecated(reason : "Please use validateAndCreateAwsCloudAccount and finalizeAwsCloudAccountProtection instead.")
     "Add the Azure Subscriptions cloud account for given feature."
     azureCloudAccountAdd(
         "Cloud Account Feature."
@@ -12028,14 +12059,9 @@ type Mutation {
     ): AwsComputeSettings!
     "Create AWS Exocompute configs."
     createAwsExocomputeConfigs(
-        "Input to create AWS exocompute configs."
+        "Input to create AWS exocompute configurations."
         input: CreateAwsExocomputeConfigsInput!
     ): CreateAwsExocomputeConfigsReply!
-    "Create snapshots of RDS Instances with given IDs"
-    createAwsNativeRdsInstanceSnapshot(
-        "List of UUIDs of the RDS Instances"
-        rdsInstanceIds: [UUID!]!
-    ): CreateAwsNativeRdsInstanceSnapshotsReply!
     createAwsTarget(
         "Request for creating a new AWS target"
         awsTargetCreateRequest: AwsTargetCreateRequest!
@@ -12220,7 +12246,7 @@ type Mutation {
     ): DeleteAwsCloudComputeSettingReply!
     "Deletes AWS Exocompute configs."
     deleteAwsExocomputeConfigs(
-        "List of AWS exocompute config UUIDs."
+        "List of AWS exocompute configuration IDs."
         input: DeleteAwsExocomputeConfigsInput!
     ): DeleteAwsExocomputeConfigsReply!
     "Delete a disk based cluster in Azure."
@@ -12279,8 +12305,6 @@ type Mutation {
     ): ResponseSuccess!
     "Delete failover cluster applications."
     deleteFailoverClusterApps(
-        "UUID used to identify the cluster the request goes to"
-        clusterUuid: String!,
         "The ID of each failover cluster application to delete."
         ids: [String!]!,
         """
@@ -12291,8 +12315,6 @@ type Mutation {
         preserveSnapshots: Boolean
     ): ResponseSuccess!
     deleteFailoverClusters(
-        "UUID used to identify the cluster the request goes to"
-        clusterUuid: String!,
         "The ID of each failover cluster to delete."
         ids: [String!]!,
         """
@@ -12538,55 +12560,6 @@ type Mutation {
         vmSize: String!
     ): ExportVMReply!
     exportO365Mailbox(exportConfig: ExportO365MailboxInput!): CreateOnDemandJobReply!
-    "Export of RDS Instance with given identifier"
-    exportRdsInstance(
-        "DB class of the exported RDS DB instance."
-        dbClass: AwsNativeRdsDbInstanceClassEnum!,
-        "Name of the exported RDS DB instance."
-        dbInstanceName: String!,
-        "Region in which the exported RDS DB instance will be launched."
-        destinationRegionNativeId: AwsNativeRegionEnum!,
-        "Export timestamp for PiTR of the instance."
-        exportTime: DateTime,
-        "IOPs of the exported RDS DB instance."
-        iops: Int,
-        "Whether the exported RDS DB instance is multi-AZ or not."
-        isMultiAz: Boolean!,
-        "Whether the export of the instance is manual or point-in-time."
-        isPointInTime: Boolean!,
-        "Whether the new RDS instance must be launched in a powered-off state."
-        isPoweredOff: Boolean!,
-        "Whether the new RDS instance is publicly accessible or not."
-        isPubliclyAccessible: Boolean!,
-        "KMS Key ID of the exported RDS DB instance."
-        kmsKeyId: String,
-        "Port on which the exported RDS DB instance accepts connections."
-        port: Long!,
-        "AZ in which the exported RDS DB instance must be launched."
-        primaryAz: String,
-        "ID of the RDS instance to be exported."
-        rdsInstanceId: UUID!,
-        "List of security group IDs for the new RDS instance."
-        securityGroupIds: [String!],
-        "Whether the option group of the source region must be copied to the destination region, and associated with the exported RDS DB Instance."
-        shouldCopyOptionGroup: Boolean!,
-        "Whether the parameter group associated with the source RDS instance must be copied to the destination region, and associated with the exported RDS DB instance."
-        shouldCopyParameterGroup: Boolean!,
-        "Whether tags will be exported to the new RDS instance."
-        shouldExportTags: Boolean!,
-        "UUID of the snapshot if the export is manual."
-        snapshotId: String,
-        "Name of the option group selected by the user for the new RDS instance."
-        sourceOptionGroupName: String,
-        "Name of the DB parameter group selected by the user for the new RDS instance."
-        sourceParameterGroupName: String,
-        "Storage type of the exported RDS DB instance."
-        storageType: AwsNativeRdsStorageTypeEnum,
-        "Name of the subnet group for the new RDS instance."
-        subnetGroupName: String,
-        "List of subnet IDs for the newly created subnet group, which will be associated with the exported RDS DB instance."
-        subnetIds: [String!]
-    ): ExportRdsInstanceReply!
     filesetAddHost(
         "host name"
         hostName: String!,
@@ -12631,7 +12604,7 @@ type Mutation {
         "Args to process aws cloud accounts for deletion."
         input: FinalizeAwsCloudAccountDeletionInput!
     ): FinalizeAwsCloudAccountDeletionReply!
-    "Process cloud account. This is the second step after validate and create in addition of a feature for cloud account. It adds the feature to the database."
+    "Process cloud account. This is the second step after validate and create in addition of a feature for cloud account.The CloudFormation stack should be created after this step using the CloudFormation URL provided in the first step."
     finalizeAwsCloudAccountProtection(
         "Arguments for process cloud accounts."
         input: FinalizeAwsCloudAccountProtectionInput!
@@ -13100,6 +13073,11 @@ type Mutation {
         "Input for create AWS EC2 Instance snapshots job."
         input: StartAwsNativeEc2InstanceSnapshotsJobInput!
     ): BatchAsyncJobStatus!
+    "Create snapshots of RDS Instances with given IDs"
+    startAwsNativeRdsInstanceSnapshotsJob(
+        "Input to trigger job to create AWS RDS Instance snapshots."
+        input: StartAwsNativeRdsInstanceSnapshotsInput!
+    ): BatchAsyncJobStatus!
     startBlueprintFailover(failoverJobConfig: BlueprintFailoverJobConfig!): CreateOnDemandJobReply!
     "Start failover jobs for multiple blueprints."
     startBlueprintsFailover(failoverJobConfigs: [BlueprintFailoverJobConfig!]!): CreateOnDemandJobReply!
@@ -13149,11 +13127,17 @@ type Mutation {
         "Input to trigger export AWS native EBS volume snapshot job."
         input: StartAwsNativeEbsVolumeSnapshotExportJobInput!
     ): AsyncJobStatus!
+    "Export of RDS Instance with given identifier"
+    startExportRdsInstanceJob(
+        "Input to trigger export AWS native RDS Instance job."
+        input: StartExportRdsInstanceJobInput!
+    ): AsyncJobStatus!
     "Starts an on demand periodic upgrade prechecks job in CDM cluster"
     startPeriodicUpgradePrechecksOnDemandJob(
         "Cluster uuid"
         clusterUuid: UUID!
     ): PrechecksJobReply!
+    "Trigger an on demand job to refresh AWS accounts."
     startRefreshAwsNativeAccountsJob(
         "Input for refresh AWS native accounts job."
         input: StartAwsNativeAccountsRefreshJobInput!
@@ -13235,9 +13219,9 @@ type Mutation {
         name: String!,
         primaryClusterUuid: UUID!
     ): Blueprint!
-    "Updates regions, stack arn and role arn for a feature for a given cloud account."
+    "Updates regions, stack ARN, and role ARN for a feature for a given cloud account."
     updateAwsCloudAccount(
-        "Arguments to save cloud account's role arn, stack arn and regions."
+        "Arguments to save cloud account's role ARN, stack ARN and regions."
         input: UpdateAwsCloudAccountInput!
     ): UpdateAwsCloudAccountReply!
     updateAwsComputeSetting(
@@ -13386,7 +13370,7 @@ type Mutation {
         "ID of a VM."
         id: String!
     ): AsyncRequestStatus!
-    "Validate and create aws cloud account. If validation fails, no error is returned and the cause is present in the \"message\" field of return object or within admin/child accounts of return object. In case validation succeeds, it initiates creation of AWS cloud account. This is the first step to set up native protection."
+    "Validate and create AWS cloud account. If validation fails, no error is returned and the cause is present in the \"message\" field of return object or within admin/child accounts of return object. In case validation succeeds, it initiates creation of AWS cloud account. This is the first step to set up native protection."
     validateAndCreateAwsCloudAccount(
         "Arguments for validate input and create aws cloud accounts."
         input: ValidateAndCreateAwsCloudAccountInput!
@@ -15829,9 +15813,9 @@ type PrechecksStatusReply {
 
 "Initiate and prepare deletion of aws cloud account."
 type PrepareAwsCloudAccountDeletionReply {
-    "Cloud formation url to delete the stack"
+    "CloudFormation URL to delete the stack."
     cloudFormationUrl: String!
-    "List of feature-version"
+    "List of feature versions."
     featureRegionMap: [AwsCloudAccountFeatureVersion!]!
 }
 
@@ -15964,6 +15948,8 @@ type Query {
         "aws region argument for archival use case"
         region: AwsRegionEnum!
     ): AwsCloudAccountListVpcResponse!
+    "Gets the account owner."
+    accountOwner: User!
     "This endpoint is deprecated."
     accountSettings: AccountSetting!
     activeCustomAnalyzerConnection: AnalyzerConnection!
@@ -16012,16 +15998,21 @@ type Query {
         objectCategories: [String!],
         objectSids: [String!]
     ): ADObjectConnection!
-    "Returns a list of availability zones in the specified region on the specified AWS account"
-    allAvailabilityZonesByRegionFromAws(awsNativeAccountId: UUID!, region: AwsNativeRegionEnum!): [String!]!
-    "Get all active aws cloud accounts."
+    "List of availability zones in the specified region on the specified AWS account."
+    allAvailabilityZonesByRegionFromAws(
+        "Rubrik ID for AWS account."
+        awsAccountRubrikId: UUID!,
+        "Region in AWS."
+        region: AwsNativeRegionEnum!
+    ): [String!]!
+    "List all active AWS cloud accounts."
     allAwsCloudAccounts(
         "Arguments for get cloud accounts."
         awsCloudAccountsArg: AwsCloudAccountsInput!
     ): [AwsCloudAccountSelectorType!]!
-    "List AWS Exocompute configs with given search query."
+    "List of AWS Exocompute configurations filtered on cloud account ID or name prefix."
     allAwsExocomputeConfigs(
-        "Search query provided by user on exocompute list page. It will search for exocompute configs whose account name or account native ID is prefixed by search query."
+        "Search query provided by user on exocompute list page. It will search for exocompute configurations whose account name or account native ID is prefixed by search query."
         awsNativeAccountIdOrNamePrefix: String!
     ): [AwsExocomputeConfig!]!
     "Get CDM versions a ServicePrincipal in Azure."
@@ -16069,13 +16060,39 @@ type Query {
         "cluster sort order"
         sortOrder: SortOrderEnum = Desc
     ): ClusterConnection!
+    "Global SLAs used by a cluster."
+    allClusterGlobalSlas(
+        "CDM Cluster UUID"
+        cdmClusterUUID: String!
+    ): [SlaInfo!]!
     "All replication targets for a cluster."
     allClusterReplicationTargets(
         "UUID of the cluster."
         clusterUuid: UUID!
     ): [ClusterReplicationTarget!]!
-    "fetch all key pairs for given region"
-    allEc2KeyPairsFromAws(awsNativeAccountId: UUID!, region: AwsNativeRegionEnum!): [String!]!
+    "All DB parameter groups in given region."
+    allDbParameterGroupsByRegionFromAws(
+        "Rubrik ID for AWS account."
+        awsAccountRubrikId: UUID!,
+        dbEngine: AwsNativeRdsDbEngineEnum!,
+        dbEngineVersion: String!,
+        "Region in AWS."
+        region: AwsNativeRegionEnum!
+    ): [DbParameterGroup!]!
+    "All db subnet groups in given region."
+    allDbSubnetGroupsByRegionFromAws(
+        "Rubrik ID for AWS account."
+        awsAccountRubrikId: UUID!,
+        "Region in AWS."
+        region: AwsNativeRegionEnum!
+    ): [SubnetGroup!]!
+    "List of key pairs for a given region."
+    allEc2KeyPairsByRegionFromAws(
+        "Rubrik ID for AWS account."
+        awsAccountRubrikId: UUID!,
+        "Region in AWS."
+        region: AwsNativeRegionEnum!
+    ): [String!]!
     "List user activity for a specific file on a specific snapshot."
     allFileActivities(
         "Filters to apply when listing a file's user activities."
@@ -16094,11 +16111,29 @@ type Query {
         last: Int
     ): UserActivityResultConnection!
     allHostedAzureRegions: AzureRegionsResp!
-    "Returns a list of encryption keys in the specified region on the specified AWS account"
-    allKmsEncryptionKeysByRegionFromAws(awsNativeAccountId: UUID!, region: AwsNativeRegionEnum!): [KMSEncryptionKeyType!]!
+    "List of encryption keys in the specified region on the specified AWS account."
+    allKmsEncryptionKeysByRegionFromAws(
+        "Rubrik ID for AWS account."
+        awsAccountRubrikId: UUID!,
+        "Region in AWS."
+        region: AwsNativeRegionEnum!
+    ): [KMSEncryptionKeyType!]!
+    "All option groups in given region."
+    allOptionGroupsByRegionFromAws(
+        "Rubrik ID for AWS account."
+        awsAccountRubrikId: UUID!,
+        dbEngine: AwsNativeRdsDbEngineEnum!,
+        dbEngineVersion: String!,
+        majorEngineVersion: String!,
+        "Region in AWS."
+        region: AwsNativeRegionEnum!
+    ): [OptionGroup!]!
     allReportConfigs(dataView: DataViewTypeEnum): [ReportConfig!]!
-    "Returns a list of all s3 buckets across regions for the aws account"
-    allS3BucketsFromAws(awsNativeAccountId: UUID!): [String!]!
+    "List of all S3 buckets across regions for the AWS account."
+    allS3BucketsFromAws(
+        "Rubrik ID for AWS account."
+        awsAccountRubrikId: UUID!
+    ): [String!]!
     allUsersOnAccountConnection(
         "Returns the elements in the list that come after the specified cursor."
         after: String,
@@ -16114,10 +16149,18 @@ type Query {
         "sort order"
         sortOrder: SortOrderEnum
     ): UserConnection!
-    "Returns the list of Vpcs in the AWS account by region"
-    allVpcsByRegionFromAws(awsNativeAccountId: UUID!, region: AwsNativeRegionEnum!): [AwsVpc!]!
-    "Returns the list of Vpcs in the AWS account"
-    allVpcsFromAws(awsNativeAccountId: UUID): [AwsVpc!]!
+    "List of all Virtual Private Clouds (VPCs) in the AWS account by region."
+    allVpcsByRegionFromAws(
+        "Rubrik ID for AWS account."
+        awsAccountRubrikId: UUID!,
+        "Region in AWS."
+        region: AwsNativeRegionEnum!
+    ): [AwsVpc!]!
+    "List of Virtual Private Clouds (VPCs) in the AWS account."
+    allVpcsFromAws(
+        "Rubrik ID for AWS account."
+        awsAccountRubrikId: UUID
+    ): [AwsVpc!]!
     analyzerGroupConnection: AnalyzerGroupConnection!
     "Returns which policies are using each analyzer"
     analyzerUsageConnection: AnalyzerUsageConnection!
@@ -16168,12 +16211,12 @@ type Query {
     appBlueprintOngoingFailoverTaskchainUuids(fids: [UUID!]!): GetAppBlueprintOngoingFailoverTaskchainUuidsRsp!
     appBlueprintSnapshotImageInfos(appSnapshotFids: [UUID!]!): GetAppBlueprintSnapshotCloudImagesRsp!
     appflowsSummary: AppflowsSummary!
-    "Get aws cloud account by ID."
+    "Get AWS cloud account by ID."
     awsCloudAccountSelector(
         "Arguments for get cloud account."
         awsCloudAccountArg: AwsCloudAccountSelectorInput!,
-        "The id of the cloud account"
-        cloudAccountUuid: UUID!
+        "The Rubrik ID of the cloud account."
+        cloudAccountId: UUID!
     ): AwsCloudAccountSelectorType!
     awsComputeSettings(
         "Corresponds to Compute Setting Id in Polaris tables"
@@ -16189,17 +16232,20 @@ type Query {
         "sort order"
         sortOrder: SortOrderEnum
     ): [AwsComputeSettings!]!
+    "AWS Native account."
     awsNativeAccount(
-        awsNativeProtectionFeature: AwsNativeProtectionFeatureEnum!,
-        "The Polaris UUID for the object."
-        fid: UUID!
+        "The Rubrik ID for the AWS Native account."
+        awsNativeAccountRubrikId: UUID!,
+        "Cloud native protection feature."
+        awsNativeProtectionFeature: AwsNativeProtectionFeatureEnum!
     ): AwsNativeAccount!
-    "Paginated list of AWS native accounts."
+    "Paginated list of all AWS native accounts."
     awsNativeAccounts(
         accountFilters: AwsNativeAccountFilters,
         "Returns the elements in the list that come after the specified cursor."
         after: String,
         authorizedOperationFilter: OperationEnum,
+        "Cloud native protection feature."
         awsNativeProtectionFeature: AwsNativeProtectionFeatureEnum!,
         "Returns the elements in the list that come before the specified cursor."
         before: String,
@@ -16211,12 +16257,12 @@ type Query {
         sortBy: AwsNativeAccountSortFieldsEnum,
         sortOrder: HierarchySortOrder
     ): AwsNativeAccountConnection!
-    "Fetch AWS EBS Volume by ID."
+    "AWS EBS Volume by ID."
     awsNativeEbsVolume(
-        "The Rubrik UUID for the AWS EBS Volume object."
+        "Rubrik ID for the AWS EBS Volume object."
         ebsVolumeRubrikId: UUID!
     ): AwsNativeEbsVolume!
-    "Paginated list of AWS EBS Volumes"
+    "Paginated list of all AWS EBS Volumes"
     awsNativeEbsVolumes(
         "Returns the elements in the list that come after the specified cursor."
         after: String,
@@ -16231,7 +16277,7 @@ type Query {
         sortBy: AwsNativeEbsVolumeSortFieldsEnum,
         sortOrder: HierarchySortOrder
     ): AwsNativeEbsVolumeConnection!
-    "Fetch connection for all AWS EBS Volumes by name or substring of name."
+    "Paginated list of all AWS EBS Volumes by name or substring of name."
     awsNativeEbsVolumesByName(
         "Returns the elements in the list that come after the specified cursor."
         after: String,
@@ -16247,12 +16293,12 @@ type Query {
         sortBy: AwsNativeEbsVolumeSortFieldsEnum,
         sortOrder: HierarchySortOrder
     ): AwsNativeEbsVolumeConnection!
-    "Fetch AWS EC2 Instance by ID."
+    "AWS EC2 Instance by ID."
     awsNativeEc2Instance(
-        "The Rubrik UUID for the AWS EC2 Instance object."
+        "Rubrik ID for the AWS EC2 Instance."
         ec2InstanceRubrikId: UUID!
     ): AwsNativeEc2Instance!
-    "Paginated list of AWS EC2 Instances"
+    "Paginated list of all AWS EC2 Instances"
     awsNativeEc2Instances(
         "Returns the elements in the list that come after the specified cursor."
         after: String,
@@ -16267,13 +16313,13 @@ type Query {
         sortBy: AwsNativeEc2InstanceSortFieldsEnum,
         sortOrder: HierarchySortOrder
     ): AwsNativeEc2InstanceConnection!
-    "Fetch connection for all AWS EC2 Instances by name or substring of name."
+    "Paginated list of all AWS EC2 Instances by name or substring of name."
     awsNativeEc2InstancesByName(
         "Returns the elements in the list that come after the specified cursor."
         after: String,
         "Returns the elements in the list that come before the specified cursor."
         before: String,
-        "The native name for the AWS EC2 Instance object."
+        "Native name for the AWS EC2 Instance object."
         ec2InstanceName: String!,
         "Returns the first n elements from the list."
         first: Int,
@@ -16283,11 +16329,22 @@ type Query {
         sortBy: AwsNativeEc2InstanceSortFieldsEnum,
         sortOrder: HierarchySortOrder
     ): AwsNativeEc2InstanceConnection!
+    "Default values for the export operation of the RDS DB instance in the AWS account."
+    awsNativeRdsExportDefaults(
+        "Whether the export of the instance is manual or point-in-time."
+        isPointInTime: Boolean!,
+        "The Rubrik ID for the AWS RDS Instance object."
+        rdsInstanceRubrikId: UUID!,
+        "UUID of the snapshot if the export is manual."
+        snapshotId: String
+    ): RdsInstanceExportDefaults!
+    "AWS RDS Instance object, selected using its Rubrik ID."
     awsNativeRdsInstance(
-        "The Polaris UUID for the object."
-        fid: UUID!
+        "The Rubrik ID for the AWS RDS Instance object."
+        rdsInstanceRubrikId: UUID!
     ): AwsNativeRdsInstance!
-    awsNativeRdsInstanceConnection(
+    "Paginated list of AWS RDS Instance objects."
+    awsNativeRdsInstances(
         "Returns the elements in the list that come after the specified cursor."
         after: String,
         "Returns the elements in the list that come before the specified cursor."
@@ -16301,6 +16358,15 @@ type Query {
         sortBy: AwsNativeRdsInstanceSortFieldsEnum,
         sortOrder: HierarchySortOrder
     ): AwsNativeRdsInstanceConnection!
+    "Point-in-Time (PiT) restore window of the RDS instance in the AWS account."
+    awsNativeRdsPointInTimeRestoreWindow(
+        "Rubrik ID for AWS account."
+        awsAccountRubrikId: UUID!,
+        "Name of the RDS DB Instance"
+        rdsInstanceName: String!,
+        "Region in AWS."
+        region: AwsNativeRegionEnum!
+    ): AwsNativeRdsPointInTimeRestoreWindow!
     "Check the permissions on Azure subscriptions and pass the missing permissions."
     azureCheckPermissionsOnSubscription(
         "The cloud account action"
@@ -16330,7 +16396,7 @@ type Query {
         "Should the details of subscriptions in the tenants be included in response."
         includeSubscriptionDetails: Boolean!
     ): [AzureCloudAccountTenant!]!
-    "List Azure Exocompute configs with given search query."
+    "List Azure Exocompute configurations with given search query."
     azureExocomputeConfigs(
         "Search query provided by user on exocompute list page. It will search for exocompute configs whose account name or account native ID is prefixed by search query."
         AzureExocomputeSearchQueryArg: String!,
@@ -16854,6 +16920,8 @@ type Query {
         snapshotFid: String!,
         stdPath: String!
     ): QuerySDDLReply!
+    "Polaris deployment version."
+    deploymentVersion: String!
     "Return timeline data for all policies of an account"
     discoveryTimeline(endDay: String!, getWhitelistedResults: Boolean!, startDay: String!, timezone: String!): GetPoliciesTimelineReply!
     downloadActiveSlaWithReplicationCsv(
@@ -17304,30 +17372,7 @@ type Query {
     getKorgTaskchainStatus(taskchainId: String!): GetTaskchainStatusReply!
     getO365ServiceStatus(orgID: UUID): GetO365ServiceStatusResp!
     getO365StorageStats(orgID: UUID): GetO365StorageStatsResp!
-    "Returns the PIT restore window of the RDS DB instance in the aws account"
-    getPITRestoreWindow(
-        awsNativeAccountId: UUID!,
-        "Name of the RDS DB Instance"
-        rdsInstanceName: String!,
-        region: AwsNativeRegionEnum!
-    ): GetPITRestoreWindowReply!
     getPermissions(roleId: String!): [Permission!]!
-    "Returns the default values for the export operation of the RDS DB instance in the AWS account"
-    getRDSExportDefaultsFromAWS(
-        "Whether the export of the instance is manual or point-in-time."
-        isPointInTime: Boolean!,
-        "ID of the RDS instance to be exported."
-        rdsInstanceId: UUID!,
-        "UUID of the snapshot if the export is manual."
-        snapshotId: String
-    ): RdsInstanceExportDefaults!
-    "Returns the details of the RDS DB instance in the AWS account"
-    getRDSInstanceDetailsFromAWS(
-        awsNativeAccountId: UUID!,
-        "Name of the RDS DB Instance"
-        rdsInstanceName: String!,
-        region: AwsNativeRegionEnum!
-    ): GetRdsInstanceDetailsFromAWSReply!
     getRolesByIds(roleIds: [String!]!): [Role!]!
     "Get whether alerts for a given snappable are enabled"
     getSnappableAlertSetting(
@@ -17516,13 +17561,39 @@ type Query {
         snapshotId: String!
     ): InvestigationCsvDownloadLinkReply!
     ipWhitelist: GetWhitelistReply!
-    "Queries whether the given volume can be replaced where attached."
+    "Whether the given volume can be replaced where attached."
     isAwsNativeEbsVolumeSnapshotRestorable(
         "UUID of the snapshot"
         snapshotId: String!
     ): IsVolumeSnapshotRestorableReply!
-    "Checks whether a s3 bucket name is available or not"
-    isAwsS3BucketNameAvailable(awsNativeAccountId: UUID!, bucketName: String!): Boolean!
+    "Validates that the given DbInstance class, storage type, multi-az capability, encryption capability, iops value are supported for the given dbEngine, dbEngineVersion in the given availability zone."
+    isAwsNativeRdsInstanceLaunchConfigurationValid(
+        "Rubrik ID for AWS account."
+        awsAccountRubrikId: UUID!,
+        "DB class of the exported RDS DB instance."
+        dbClass: AwsNativeRdsDbInstanceClassEnum!,
+        dbEngine: AwsNativeRdsDbEngineEnum!,
+        dbEngineVersion: String!,
+        "IOPs of the exported RDS DB instance."
+        iops: Int,
+        "Whether the exported RDS DB instance is multi-AZ or not."
+        isMultiAz: Boolean!,
+        "KMS Key ID of the exported RDS DB instance."
+        kmsKeyId: String,
+        "AZ in which the exported RDS DB instance must be launched."
+        primaryAz: String,
+        "Region in AWS."
+        region: AwsNativeRegionEnum!,
+        "Storage type of the exported RDS DB instance."
+        storageType: AwsNativeRdsStorageTypeEnum
+    ): Boolean!
+    "Whether a S3 bucket name is available or not."
+    isAwsS3BucketNameAvailable(
+        "Rubrik ID for AWS account."
+        awsAccountRubrikId: UUID!,
+        "Name of the S3 bucket."
+        bucketName: String!
+    ): Boolean!
     "Queries whether the given disk snapshot is restorable which is used to enable \"Replace disk where attached\" flag on Export Disk Snapshot UI"
     isAzureNativeManagedDiskSnapshotRestorable(
         "Snapshot ID"
@@ -17652,10 +17723,6 @@ type Query {
         "The Polaris UUID for the object."
         fid: UUID!
     ): LinuxFileset!
-    "fetch all db parameter groups in given region"
-    listDbParameterGroups(awsNativeAccountId: UUID!, dbEngine: AwsNativeRdsDbEngineEnum!, dbEngineVersion: String!, region: AwsNativeRegionEnum!): [DbParameterGroup!]!
-    "fetch all db subnet groups in given region"
-    listDbSubnetGroups(awsNativeAccountId: UUID!, region: AwsNativeRegionEnum!): [SubnetGroup!]!
     "List ids of running issues jobs"
     listIssuesJobStatus(queryIds: [String!]!): [String!]!
     listO365Apps(
@@ -17666,8 +17733,6 @@ type Query {
         o365AppFilters: [AppFilter!]!,
         o365AppSortByParam: AppSortByParam
     ): O365AppConnection!
-    "fetch all option groups in given region"
-    listOptionGroups(awsNativeAccountId: UUID!, dbEngine: AwsNativeRdsDbEngineEnum!, dbEngineVersion: String!, majorEngineVersion: String!, region: AwsNativeRegionEnum!): [OptionGroup!]!
     "A Managed Volume."
     managedVolume(
         "The Polaris UUID for the object."
@@ -18076,6 +18141,15 @@ type Query {
         "Corresponds to snapshot ID in CDM tables"
         snapshotId: String!
     ): RansomwareResult
+    "Details of the RDS instance in the AWS account."
+    rdsInstanceDetailsFromAws(
+        "Rubrik ID for AWS account."
+        awsAccountRubrikId: UUID!,
+        "Name of the RDS DB Instance"
+        rdsInstanceName: String!,
+        "Region in AWS."
+        region: AwsNativeRegionEnum!
+    ): RdsInstanceDetailsFromAws!
     report(id: Int!): CustomReport!
     reportConfig(reportID: Int!): ReportConfig!
     reportConnection(
@@ -18948,32 +19022,15 @@ type Query {
         sortBy: HierarchySortByField,
         sortOrder: HierarchySortOrder
     ): VSphereVmConnection!
-    "validates that the given DbInstance class, storage type, multi-az capability, encryption capability, iops value are supported for the given dbEngine, dbEngineVersion in the given availability zone."
-    validateOrderableDbInstance(
-        awsNativeAccountId: UUID!,
-        "DB class of the exported RDS DB instance."
-        dbClass: AwsNativeRdsDbInstanceClassEnum!,
-        dbEngine: AwsNativeRdsDbEngineEnum!,
-        dbEngineVersion: String!,
-        "IOPs of the exported RDS DB instance."
-        iops: Int,
-        "Whether the exported RDS DB instance is multi-AZ or not."
-        isMultiAz: Boolean!,
-        "KMS Key ID of the exported RDS DB instance."
-        kmsKeyId: String,
-        "AZ in which the exported RDS DB instance must be launched."
-        primaryAz: String,
-        region: AwsNativeRegionEnum!,
-        "Storage type of the exported RDS DB instance."
-        storageType: AwsNativeRdsStorageTypeEnum
-    ): Boolean!
-    "If error is returned, the name is invalid. Otherwise the name is valid"
-    validateRdsInstanceNameForExport(
-        awsNativeAccountId: UUID!,
+    "Validates the name used for RDS Instance during export operation. If false, it returns error of why validation fails, otherwise error message will be empty."
+    validateAwsNativeRdsInstanceNameForExport(
+        "Rubrik ID for AWS account."
+        awsAccountRubrikId: UUID!,
         "Name of the RDS DB Instance"
         rdsInstanceName: String!,
+        "Region in AWS."
         region: AwsNativeRegionEnum!
-    ): Boolean!
+    ): ValidateAwsNativeRdsInstanceNameForExportReply!
     "A vCloud Director."
     vcd(
         "The Polaris UUID for the object."
@@ -19181,6 +19238,28 @@ type RansomwareResultGroupByConnection {
 type RansomwareResultGroupByEdge {
     cursor: String!
     node: RansomwareResultGroupBy!
+}
+
+"RDS DB Instance details from AWS."
+type RdsInstanceDetailsFromAws {
+    allocatedStorageInGb: Long!
+    backupRetentionPeriod: Long!
+    dbEngine: String!
+    dbInstanceClass: String!
+    dbInstanceStatus: String!
+    dbMaintenanceWindow: String!
+    dbParameterGroupName: String!
+    dbSubnetGroupName: String!
+    engineVersion: String!
+    iops: Long!
+    isMultiAz: Boolean!
+    kmsKeyId: String!
+    optionGroupName: String!
+    port: Long!
+    primaryAz: String!
+    rdsInstanceArn: String!
+    storageType: String!
+    vpcId: String!
 }
 
 "RDS Export defaults from AWS."
@@ -19607,6 +19686,7 @@ type SapHanaAppMetadata {
 }
 
 type SapHanaConfig {
+    differentialFrequency: SlaDuration
     incrementalFrequency: SlaDuration
     logRetention: SlaDuration
 }
@@ -20501,6 +20581,14 @@ type SlaDomainWithWarnings {
 type SlaDuration {
     duration: Int!
     unit: RetentionUnitEnum!
+}
+
+"Type that contains SLA name and ID."
+type SlaInfo {
+    "ID of SLA."
+    id: String!
+    "Name of SLA."
+    name: String!
 }
 
 type SlaLogFrequencyConfigResult {
@@ -23087,10 +23175,16 @@ type VSphereVmEdge {
 
 "Aws cloud accounts validate response."
 type ValidateAndCreateAwsCloudAccountReply {
-    "Aws cloud account initiate response type."
+    "AWS cloud account initiate response if the request is successful."
     initiateResponse: AwsCloudAccountInitiate
-    "Contains error message for admin account."
+    "Contains error message for admin account if the request is not successful."
     validateResponse: AwsCloudAccountValidateResponse
+}
+
+"Validate AWS RDS Instance name for export."
+type ValidateAwsNativeRdsInstanceNameForExportReply {
+    error: String!
+    isValid: Boolean!
 }
 
 "Resource mapping validation reply."
@@ -24909,6 +25003,7 @@ enum AssignSLAWarningsEnum {
     AZURE_NATIONAL_PUBLIC_REPLICATION_NOT_SUPPORTED
     BACKUP_WINDOWS_NOT_RESPECTED
     CROSS_REGION_ARCHIVAL
+    DIFFERENTIAL_BACKUP_FREQUENCY_NOT_RESPECTED
     INCREMENTAL_BACKUP_FREQUENCY_NOT_RESPECTED
     NO_WARNING
     REMOTE_CONFIGURATION_NOT_RESPECTED
@@ -26409,6 +26504,7 @@ enum FailoverTableColumnEnum {
 
 enum FailoverTypeEnum {
     FAILOVER
+    LOCALRECOVERY
     TEST_FAILOVER
 }
 
@@ -26561,6 +26657,7 @@ enum FeatureFlagNameEnum {
     SapHanaOnGcpEnabled
     ScheduledReportEnabled
     SecureUploadEnabled
+    ServiceAccountEnabled
     SkipFailedEventQueryEnabled
     SlaComplianceFilterEnabled
     SnapshotWindowEnabled
@@ -27539,6 +27636,7 @@ enum OperationEnum {
     ViewDataClassGlobal
     ViewGcpCloudAccount
     ViewInventory
+    ViewInventoryWithHierarchy
     ViewNonSystemEvent
     ViewReport
     ViewSLA
@@ -28978,17 +29076,22 @@ input AwsAccountEditRequest {
 }
 
 input AwsCloudAccountAdminInput {
+    "Name of cloud account."
     accountName: String = ""
     "Cloud type (Standard/China) for the cloud account"
     cloudType: AwsCloudTypeEnum = STANDARD
     id: String = ""
+    "Native ID of cloud account."
     nativeId: String = ""
+    "Whether seamless flow is enabled on cloud account."
     seamlessFlowEnabled: Boolean = false
 }
 
 input AwsCloudAccountFeatureVersionInput {
+    "Name of feature to be protected for cloud account."
     feature: CloudAccountFeatureEnum!
-    version: Long!
+    "Version of feature. This should be same as the response given in the first step (validateAndCreateAwsCloudAccount)."
+    version: Int!
 }
 
 input AwsCloudAccountInitiateInput {
@@ -29000,11 +29103,14 @@ input AwsCloudAccountInitiateInput {
 }
 
 input AwsCloudAccountInput {
+    "Name of cloud account."
     accountName: String = ""
     "Cloud type (Standard/China) for the cloud account"
     cloudType: AwsCloudTypeEnum = STANDARD
     id: String = ""
+    "Native ID of cloud account."
     nativeId: String = ""
+    "Whether seamless flow is enabled on cloud account."
     seamlessFlowEnabled: Boolean = false
 }
 
@@ -29019,12 +29125,13 @@ input AwsCloudAccountValidateInput {
 }
 
 input AwsCloudAccountsInput {
-    "Admin account id to filter."
+    "Admin account ID to filter."
     awsAdminAccountFilter: UUID
-    "Search in native id, account name, and role arn."
+    "Search in native ID, account name, and role ARN."
     columnSearchFilter: String
+    "Type of cloud native protection feature."
     feature: CloudAccountFeatureEnum!
-    "List for status."
+    "List of status filters for listing cloud accounts."
     statusFilters: [CloudAccountStatusEnum!]!
 }
 
@@ -29052,7 +29159,7 @@ input AwsComputeSettingsEditRequest {
     vpcId: String = ""
 }
 
-"Aws exocompute config to add."
+"AWS exocompute configuration to add."
 input AwsExocomputeConfigInput {
     "AWS ID of cluster control plane security group. Not required if isPolarisManaged is true"
     clusterSecurityGroupId: String = ""
@@ -29060,7 +29167,7 @@ input AwsExocomputeConfigInput {
     isPolarisManaged: Boolean!
     "AWS ID of worker node security group. Not required if isPolarisManaged is true"
     nodeSecurityGroupId: String = ""
-    "The region for which the config is specified."
+    "The region for which the configuration is specified."
     region: AwsCloudAccountRegionEnum!
     "List of exactly 2 subnets."
     subnets: [AwsExocomputeSubnetInputType!]!
@@ -29543,7 +29650,7 @@ input BlueprintFailoverJobConfig {
     failoverFailureAction: String
     "The operation of the failover, Start or Resume."
     failoverOperation: String
-    "The type of the failover job, FAILOVER or TEST_FAILOVER."
+    "The type of the failover job, LOCALRECOVERY, FAILOVER or TEST_FAILOVER."
     failoverType: String!
     "The type of the target location, CDM, AZURE, AWS or GCP."
     targetLocationType: LocationType
@@ -29648,6 +29755,7 @@ input ChartConfigInput {
 
 input ChildRecoverySpecCreateReqInputType {
     recoverySpec: ChildRecoverySpecInputType!
+    slaId: String
     snappableId: String!
 }
 
@@ -29771,9 +29879,11 @@ input ContextFilterInputField {
     text: String!
 }
 
-"Input to create AWS exocompute configs."
+"Input to create AWS exocompute configurations."
 input CreateAwsExocomputeConfigsInput {
-    cloudAccountUuid: UUID!
+    "Rubrik ID for cloud account."
+    cloudAccountId: UUID!
+    "List of exocompute configurations for the cloud account."
     configs: [AwsExocomputeConfigInput!]!
 }
 
@@ -29882,8 +29992,9 @@ input DayOfWeekOptInput {
     day: DayOfWeekEnum = MONDAY
 }
 
-"Input to delete AWS exocompute configs."
+"Input to delete AWS exocompute configurations."
 input DeleteAwsExocomputeConfigsInput {
+    "IDs of exocompute configurations to be deleted."
     configIdsToBeDeleted: [UUID!]!
 }
 
@@ -29995,7 +30106,9 @@ input EventDigestConfig {
 
 "Input to mark volumes to be excluded for EC2 snapshot."
 input ExcludeAwsNativeEbsVolumeFromSnapshotInput {
+    "Rubrik ID of EC2 instance."
     awsNativeEc2InstanceId: UUID!
+    "List of map of Rubrik IDs to excluded status of volumes."
     volumeIdsToIsExcluded: [VolumeIdToIsExcluded!]!
 }
 
@@ -30567,20 +30680,30 @@ input Filter {
 
 "Input to process and finalize deletion of AWS cloud account."
 input FinalizeAwsCloudAccountDeletionInput {
+    "Rubrik ID of account to be deleted."
     cloudAccountId: UUID!
+    "Protection feature to be deleted for the cloud account."
     feature: CloudAccountFeatureEnum!
 }
 
 input FinalizeAwsCloudAccountProtectionInput {
+    "Action to be performed with cloud account."
     action: CloudAccountActionEnum!
     "Admin account, required for bulk upload."
     awsAdminAccount: AwsCloudAccountInput
+    "List of AWS accounts."
     awsChildAccounts: [AwsCloudAccountInput!]!
+    "List of AWS regions for the cloud account."
     awsRegions: [AwsCloudAccountRegionEnum!]
+    "External ID of the IAM role trust policy for the cloud account."
     externalId: String!
-    featureVersion: [AwsCloudAccountFeatureVersionInput!]
+    "List of feature types to be protected for the cloud account."
+    featureVersion: [AwsCloudAccountFeatureVersionInput!]!
+    "List of features for native protection of cloud account."
     features: [CloudAccountFeatureEnum!]!
+    "Name of the CloudFormation stack to be created."
     stackName: String
+    "Stackset name of the CloudFormation stack to be created."
     stackSetName: String
 }
 
@@ -30972,7 +31095,7 @@ input HourlySnapshotScheduleInput {
 
 "Input to initiate feature update for AWS cloud account."
 input InitiateFeatureUpdateForAwsCloudAccountInput {
-    cloudAccountUuid: UUID!
+    cloudAccountId: UUID!
     features: [CloudAccountFeatureEnum!]!
 }
 
@@ -31602,7 +31725,9 @@ input PreBackupScriptInputType {
 
 "Input to initiate deletion of AWS cloud account."
 input PrepareAwsCloudAccountDeletionInput {
+    "Rubrik ID of account to be deleted."
     cloudAccountId: UUID!
+    "Protection feature to be deleted for the cloud account."
     feature: CloudAccountFeatureEnum!
 }
 
@@ -31867,6 +31992,7 @@ input SLAAuditDetailFilterInput {
 }
 
 input SapHanaConfigInput {
+    differentialFrequency: SlaDurationInput
     incrementalFrequency: SlaDurationInput
     logRetention: SlaDurationInput
 }
@@ -32119,60 +32245,99 @@ input SpecificReplicationSpecInput {
 
 "Input to trigger AWS native account disable job."
 input StartAwsNativeAccountDisableJobInput {
-    awsNativeAccountId: UUID!
+    "Rubrik ID of AWS account."
+    awsAccountRubrikId: UUID!
+    "Type of native protection to be disabled."
     awsNativeProtectionFeature: AwsNativeProtectionFeatureEnum!
+    "Whether to delete snapshots in the account."
     shouldDeleteNativeSnapshots: Boolean!
 }
 
 "Input to trigger AWS native account refresh job."
 input StartAwsNativeAccountsRefreshJobInput {
-    awsNativeAccountIds: [UUID!]!
+    "Rubrik IDs of AWS account to be refreshed."
+    awsAccountRubrikIds: [UUID!]!
+    "Native protection feature to be refreshed."
     awsNativeProtectionFeatures: [AwsNativeProtectionFeatureEnum!]!
 }
 
-"Input to trigger export AWS native EBS volume job."
+"Input to trigger AWS native EBS volume export job."
 input StartAwsNativeEbsVolumeSnapshotExportJobInput {
+    "Availability Zone (AZ) of exported volume."
     availabilityZone: String!
-    destinationAwsNativeAccountId: UUID!
+    "Rubrik ID of AWS account where exported volume will reside."
+    destinationAwsAccountRubrikId: UUID!
+    "Region of exported volume."
     destinationRegionNativeId: AwsNativeRegionEnum!
+    "Input/Output (IO) operation limit per second for the exported volume."
     iops: Int!
+    "ID of KMS key to be used for export."
     kmsKeyId: String = ""
+    "Whether to copy tags to exported volume."
     shouldCopyTags: Boolean!
+    "Whether to replace volume where attached."
     shouldReplaceAttached: Boolean!
     shouldUseReplica: Boolean = false
+    "ID of snapshot to be exported."
     snapshotId: UUID!
+    "Type of snapshot used for export."
     snapshotType: SnapshotType = SOURCE
+    "Name of volume after export."
     volumeName: String!
+    "Size in GBs of exported volume."
     volumeSize: Int!
+    "AWS Native EBS volume type. Some examples are: g3, io2. More info: https://aws.amazon.com/ebs/volume-types."
     volumeType: AwsNativeEbsVolumeTypeEnum!
 }
 
 "Input to trigger AWS native EBS volume create snapshot job."
 input StartAwsNativeEbsVolumeSnapshotsJobInput {
+    "Rubrik IDs of EBS volumes for snapshots creation."
     ebsVolumeIds: [UUID!]!
+    "Retention SLA ID to be used for the snapshots to be created."
     retentionSlaId: String = ""
 }
 
-"Input to trigger export AWS native EC2 Instance job."
+"Input to trigger AWS native EC2 Instance export job."
 input StartAwsNativeEc2InstanceSnapshotExportJobInput {
-    destinationAwsNativeAccountId: UUID!
+    "Rubrik ID of AWS account where exported instance will reside."
+    destinationAwsAccountRubrikId: UUID!
+    "Region of exported instance."
     destinationRegionId: AwsNativeRegionEnum!
+    "Power state of exported instance."
     exportInstanceInPoweredOffState: Boolean = false
+    "Name of instance after export."
     instanceName: String!
+    "AWS Native EC2 instance type to be used after export. Some examples are: t2.nano, m5.xlarge. More info:  https://aws.amazon.com/ec2/instance-types."
     instanceType: AwsNativeEc2InstanceTypeEnum!
+    "ID of KMS key to be used for export."
     kmsKeyId: String = ""
+    "List of security group IDs to be used for exported instance."
     securityGroupIds: [String!]!
+    "Whether to copy tags to exported instance."
     shouldCopyTags: Boolean!
+    "ID of snapshot to be exported."
     snapshotId: UUID!
+    "Type of snapshot used to export."
     snapshotType: SnapshotType = SOURCE
+    "Name of SSh key pair to be used for export."
     sshKeyPairName: String = ""
+    "ID of subnet to use for exported instance."
     subnetId: String!
 }
 
 "Trigger AWS EC2 instance snapshots create job."
 input StartAwsNativeEc2InstanceSnapshotsJobInput {
+    "List of Rubrik EC2 instance IDs."
     ec2InstanceIds: [UUID!]!
+    "Retention SLA Rubrik ID."
     retentionSlaId: String = ""
+}
+
+"Input to trigger job to create AWS RDS Instance snapshots."
+input StartAwsNativeRdsInstanceSnapshotsInput {
+    "List of Rubrik UUIDs of the RDS Instances"
+    rdsInstanceIds: [UUID!]!
 }
 
 "Trigger create snapshots index job."
@@ -32180,11 +32345,59 @@ input StartCloudNativeSnapshotsIndexJobInput {
     snapshotIds: [UUID!]!
 }
 
+"Input to trigger AWS native RDS Instance export job."
+input StartExportRdsInstanceJobInput {
+    "Instance class of RDS instance."
+    dbInstanceClass: AwsNativeRdsDbInstanceClassEnum!
+    "Name of the exported RDS DB instance."
+    dbInstanceName: String!
+    "Region in which the exported RDS DB instance will be launched."
+    destinationRegionNativeId: AwsNativeRegionEnum!
+    "Export timestamp for Point in Time recovery of the instance."
+    exportTime: DateTime
+    "Input Output (I/O) per second of the exported RDS DB instance."
+    iops: Int = 0
+    "Whether the exported RDS DB instance is multi-AZ or not."
+    isMultiAz: Boolean!
+    "Whether the export of the instance is from snapshot or point-in-time."
+    isPointInTime: Boolean!
+    "Whether the new RDS instance is publicly accessible or not."
+    isPubliclyAccessible: Boolean!
+    "KMS Key ID of the exported RDS DB instance."
+    kmsKeyId: String = ""
+    "Name of the option group selected by the user for the new RDS instance."
+    optionGroupName: String = ""
+    "Name of the DB parameter group selected by the user for the new RDS instance."
+    parameterGroupName: String = ""
+    "Port on which the exported RDS DB instance accepts connections."
+    port: Long!
+    "Availability Zone (AZ) in which the exported RDS DB instance must be launched."
+    primaryAz: String = ""
+    "Rubrik ID of the RDS Instance to be exported."
+    rdsInstanceId: UUID!
+    "List of security group IDs for the new RDS instance. Default security group is used if empty list is provided here."
+    securityGroupIds: [String!] = []
+    "Whether tags will be exported to the new RDS instance."
+    shouldExportTags: Boolean!
+    "ID of the snapshot if the export is from snapshot."
+    snapshotId: String
+    "Storage type of the exported RDS DB instance."
+    storageType: AwsNativeRdsStorageTypeEnum = NOT_SPECIFIED
+    "Name of the subnet group for the new RDS instance."
+    subnetGroupName: String = ""
+    "List of subnet IDs for the newly created subnet group, which will be associated with the exported RDS DB instance. Default subnet ids are used if empty list is provided here."
+    subnetIds: [String!] = []
+}
+
 "Trigger AWS EC2 instance snapshot restore job."
 input StartRestoreAwsNativeEc2InstanceSnapshotJobInput {
+    "Whether to power on after restore completion."
     shouldPowerOn: Boolean!
+    "Whether to restore associated tags."
     shouldRestoreTags: Boolean!
+    "ID of snapshot to restore."
     snapshotId: String!
+    "Snapshot type to use if source snapshot is expired."
     snapshotTypeToUseIfSourceExpired: SnapshotTypeToUseIfSourceExpired
 }
 
@@ -32303,11 +32516,16 @@ input UnidirectionalReplicationSpecInput {
 }
 
 input UpdateAwsCloudAccountInput {
+    "Action to be taken for cloud account update."
     action: CloudAccountActionEnum!
+    "List of regions to be added."
     awsRegions: [AwsCloudAccountRegionEnum!]
     cloudAccountId: UUID!
+    "Native protection feature to be updated."
     feature: CloudAccountFeatureEnum!
+    "Role ARN for the cloud account."
     roleArn: String = ""
+    "Stack ARN for the cloud account."
     stackArn: String = ""
 }
 
@@ -32409,10 +32627,13 @@ input VSphereVirtualDiskFilter {
 }
 
 input ValidateAndCreateAwsCloudAccountInput {
+    "Action to be performed with the cloud account."
     action: CloudAccountActionEnum!
     "Admin account, required for bulk upload."
     awsAdminAccount: AwsCloudAccountInput
+    "Details for cloud accounts to be initiated."
     awsChildAccounts: [AwsCloudAccountInput!]!
+    "List of features to be enabled for cloud native protection."
     features: [CloudAccountFeatureEnum!]!
 }
 

@@ -30,7 +30,7 @@ class PolarisClient:
     from .lib.common.core import get_sla_domains, submit_on_demand, submit_assign_sla, get_task_status, \
         get_snapshots, get_event_series_list, get_report_data
     from .lib.accounts.aws import get_accounts_aws, get_accounts_aws_detail, get_account_aws_native_id, add_account_aws, delete_account_aws
-    from .lib.accounts.azure import get_accounts_azure
+    from .lib.accounts.azure import get_accounts_azure, add_account_azure, delete_account_azure, set_account_azure_default_sa
     from .lib.accounts.gcp import get_accounts_gcp, add_project_gcp, delete_project_gcp, \
         get_account_gcp_default_sa, set_account_gcp_default_sa
     from .lib.compute.ec2 import get_compute_object_ids_ec2, get_compute_ec2, submit_compute_export_ec2, submit_compute_restore_ec2
