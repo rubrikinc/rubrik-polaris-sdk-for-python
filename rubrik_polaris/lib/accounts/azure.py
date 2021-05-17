@@ -94,7 +94,7 @@ def add_account_azure(
         self,
         azure_tenant_domain_name=None,
         azure_cloud_type='AZUREPUBLICCLOUD',
-        feature='CLOUD_NATIVE_PROTECTION',
+        cloud_account_features='CLOUD_NATIVE_PROTECTION',
         azure_subscriptions=None,
         azure_regions=None,
         azure_policy_version=1007):
@@ -102,7 +102,7 @@ def add_account_azure(
     Args:
         azure_tenant_domain_name (str): Optional, Domain Name of the Azure tenant.
         azure_cloud_type (str): AZUREPUBLICCLOUD [default] or AZURECHINACLOUD
-        feature (str): Polaris cloud feature - CLOUDNATIVEPROTECTION [default]
+        cloud_account_features (str): Polaris cloud feature - CLOUDNATIVEPROTECTION [default]
         azure_subscriptions (arr): Array of [["subscription_id","subscription_name"],[...]]
         azure_regions (arr): Array of Azure Regions
         azure_policy_version (int): Azure Policy version
@@ -117,7 +117,7 @@ def add_account_azure(
         self._validate(
             mutation_name=_query_name,
             azure_cloud_type=azure_cloud_type,
-            feature=feature,
+            cloud_account_features=cloud_account_features,
             azure_regions=azure_regions,
 #            azure_subscriptions=azure_subscriptions
         )
@@ -129,7 +129,7 @@ def add_account_azure(
         _variables = {
             "azure_tenant_domain_name": azure_tenant_domain_name,
             "azure_cloud_type": self.azure_cloud_type,
-            "feature": self.feature,
+            "feature": self.cloud_account_features,
             "azure_subscriptions": azure_subscriptions_converted,
             "azure_regions": self.azure_regions,
             "azure_policy_version": azure_policy_version
