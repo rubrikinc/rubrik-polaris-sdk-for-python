@@ -65,10 +65,8 @@ class PolarisClient:
         self._domain = self._get_cred('rubrik_polaris_domain', domain)
         self._username = self._get_cred('rubrik_polaris_username', username)
         self._password = self._get_cred('rubrik_polaris_password', password)
-        print (username)
-        print(self._username)
 
-        if not self._domain and not self._username and not self._password :
+        if (not self._domain and not self._username and not self._password ) and not json_keyfile:
             raise Exception('Required credentials are missing! Please pass in username, password and domain, directly or through the OS environment, or .json key file.')
 
         # Set base variables
