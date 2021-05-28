@@ -5,6 +5,8 @@ query RubrikPolarisSDKRequest($filter: String = "" ) {
                 id:id
                 name: name
                 sla_assignment: slaAssignment
+                native_id: nativeId
+                tenant_id: tenantId
                 configured_sla_domain_name: configuredSlaDomain{name}
                 configured_sla_domain_id: configuredSlaDomain{id}
                 effective_sla_domain_name: effectiveSlaDomain{name}

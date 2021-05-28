@@ -25,22 +25,44 @@ Collection of functions that manipulate Azure account components.
 """
 
 
-def get_accounts_azure(self, filter=""):
-    """Retrieves Azure account information from Polaris
+def get_accounts_azure_native(self, filter=""):
+    """Retrieves Azure native account information from Polaris
 
     Args:
         filter (str): Search string to filter results
 
     Returns:
-        dict: Details of Azure accounts in Polaris
+        dict: Details of Azure native accounts in Polaris
 
     Raises:
         RequestException: If the query to Polaris returned an error
     """
     try:
-        query_name = "accounts_azure"
+        query_name = "accounts_azure_native"
         variables = {
             "filter": filter
+        }
+        return self._query(query_name, variables)
+    except Exception:
+        raise
+
+
+def get_accounts_azure_cloud(self, cloud_account_features="CLOUD_NATIVE_PROTECTION"):
+    """Retrieves Azure cloud account information from Polaris
+
+    Args:
+        cloud_account_features (str): Feature string to filter results
+
+    Returns:
+        dict: Details of Azure cloud accounts in Polaris
+
+    Raises:
+        RequestException: If the query to Polaris returned an error
+    """
+    try:
+        query_name = "accounts_azure_cloud"
+        variables = {
+            "cloud_account_features": cloud_account_features
         }
         return self._query(query_name, variables)
     except Exception:
@@ -95,7 +117,8 @@ def add_account_azure(
         azure_tenant_domain_name=None,
         azure_cloud_type='AZUREPUBLICCLOUD',
         cloud_account_features='CLOUD_NATIVE_PROTECTION',
-        azure_subscriptions=None,
+        azure_subscription_id=None,
+        azure_subscription_name=None,
         azure_regions=None,
         azure_policy_version=1007):
     """Add Azure subscription to Polaris
@@ -122,9 +145,7 @@ def add_account_azure(
 #            azure_subscriptions=azure_subscriptions
         )
 
-        azure_subscriptions_converted = []
-        for azure_subscription in azure_subscriptions:
-            azure_subscriptions_converted.append({'nativeId': azure_subscription[0], 'name': azure_subscription[1]})
+        azure_subscriptions_converted = [{'nativeId': azure_subscription_id, 'name': azure_subscription_name}]
 
         _variables = {
             "azure_tenant_domain_name": azure_tenant_domain_name,
@@ -140,30 +161,68 @@ def add_account_azure(
         raise PolarisException("Problem adding Azure Subscription: {}".format(e))
 
 
+def _get_native_subscription_id_and_name(self, azure_subscription_id=None, cloud_account_features=None):
+    azure_tenants = self.get_accounts_azure_cloud(cloud_account_features=cloud_account_features)
+    for tenant in azure_tenants:
+        for azure_subscription in tenant['subscriptions']:
+            if azure_subscription['featureDetail']['feature'] == cloud_account_features \
+                    and azure_subscription['nativeId'] == azure_subscription_id:
+                return azure_subscription['id'], azure_subscription['name']
+
+
 def delete_account_azure(
         self,
-        feature='CLOUDNATIVEPROTECTION',
-        azure_subscription_ids=None):
+        cloud_account_features='CLOUD_NATIVE_PROTECTION',
+        azure_subscription_id=None,
+        delete_snapshots=False):
     """Add Azure subscription to Polaris
     Args:
-        feature (str): Polaris cloud feature - CLOUDNATIVEPROTECTION [default]
-        azure_subscription_ids (arr): Array of ["polaris_subscription_id", ...]
+        cloud_account_features (str): Polaris cloud feature - CLOUDNATIVEPROTECTION [default]
+        azure_subscription_id (string): Subscription ID from Azure
+        delete_snapshots (bool): Delete Rubrik snapshots for subscription [default: False]
     Returns:
         dict: Status if unsuccessful
     Raises:
         RequestException: If the query to Polaris returned an error
     Examples:
     """
+    polaris_native_subscription_id = None
     try:
-        _query_name = "accounts_azure_delete"
+        # Get ID to delete subscription
+        polaris_subscription_id, polaris_subscription_name = \
+            self._get_native_subscription_id_and_name(azure_subscription_id=azure_subscription_id, \
+                                                      cloud_account_features=cloud_account_features)
+
+        # Get ID to disable subscription
+        suspect_subscriptions = self.get_accounts_azure_native(filter=polaris_subscription_name)
+        for subscription in suspect_subscriptions:
+            if subscription['native_id'] == azure_subscription_id:
+                polaris_native_subscription_id = subscription['id']
+    except Exception as e:
+        raise PolarisException("Problem mapping IDs required to remove subscription")
+
+    # Disable subscription in Polaris
+    if polaris_native_subscription_id:
+        try:
+            _query_name = "accounts_azure_disable_subscription"
+            _variables = {
+                "delete_snapshots": delete_snapshots,
+                "azure_subscription_id": polaris_native_subscription_id
+            }
+            response = self._query(_query_name, _variables)
+            results = self._monitor_task(response)
+        except Exception as e:
+            raise PolarisException("Problem disabling Azure Subscription: {}".format(e))
+
+    # Delete subscription in Polaris
+    try:
+        _query_name = "accounts_azure_delete_subscription"
         self._validate(
-            mutation_name=_query_name,
-            feature=feature,
-            azure_subscription_ids=azure_subscription_ids
+            cloud_account_features=cloud_account_features,
         )
         _variables = {
-            "feature": self.feature,
-            "azure_subscription_ids": self.azure_subscription_ids
+            "cloud_account_features": self.cloud_account_features,
+            "azure_subscription_ids": [polaris_subscription_id]
         }
         _request = self._query(_query_name, _variables)
         return _request
