@@ -144,6 +144,27 @@ def submit_assign_sla(self, object_ids=[], sla_id=None, apply_to_existing_snapsh
         raise
 
 
+def get_polaris_version(self):
+    """Retrieve deployment version from Polaris
+
+    Returns:
+        str: Polaris deployment version
+
+    Raises:
+        RequestException: If the query to Polaris returned an error
+    """
+
+    try:
+        query_name = "core_polaris_version"
+        try:
+            response = self._query(query_name, None)
+        except Exception as e:
+            return "Failed to retrieve Polaris Version"
+        return response
+    except Exception:
+        raise
+
+
 def get_task_status(self, task_chain_id):
     """Retrieve task status from Polaris
 
