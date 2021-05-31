@@ -104,7 +104,6 @@ def submit_on_demand(self, object_ids, sla_id, wait=False):
     except Exception:
         raise
 
-
 def submit_assign_sla(self, object_ids=[], sla_id=None, apply_to_existing_snapshots=None, existing_snapshot_retention=None, global_sla_assign_type="protectWithSlaId"):
     """Submits a Rubrik SLA change for objects
 
@@ -139,6 +138,27 @@ def submit_assign_sla(self, object_ids=[], sla_id=None, apply_to_existing_snapsh
             "slaId": sla_id
         }
         response = self._query(mutation_name, variables)
+        return response
+    except Exception:
+        raise
+
+
+def get_polaris_version(self):
+    """Retrieve deployment version from Polaris
+
+    Returns:
+        str: Task state
+
+    Raises:
+        RequestException: If the query to Polaris returned an error
+    """
+
+    try:
+        query_name = "core_polaris_version"
+        try:
+            response = self._query(query_name, None)
+        except Exception as e:
+            return "Failed to retrieve Polaris Version"
         return response
     except Exception:
         raise
