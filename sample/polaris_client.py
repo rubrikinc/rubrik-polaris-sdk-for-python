@@ -201,4 +201,4 @@ except Exception as err:
 # )
 
 ### Delete Azure Sub
-rubrik.delete_account_azure(azure_subscription_id='8fa81a5e-a236-4a73-8e28-e1dcf863c56d')
+# rubrik.delete_account_azure(azure_subscription_id='8fa81a5e-a236-4a73-8e28-e1dcf863c56d')

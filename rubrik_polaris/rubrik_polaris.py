@@ -56,7 +56,7 @@ class PolarisClient:
         _update_account_aws_initiate, _get_account_map_aws
     from .lib.accounts.gcp import _get_gcp_native_project, _delete_account_gcp_project, \
         _disable_account_gcp_project, _get_account_gcp_project, _get_account_gcp_permissions_cnp, _get_account_gcp_project_uuid_by_string
-    from .lib.accounts.azure import _get_native_subscription_id_and_name
+    from .lib.accounts.azure import _get_native_subscription_id_and_name, _get_accounts_azure_permission_version
     from .lib.common.connection import _get_access_token_keyfile, _get_access_token_basic
 
     def __init__(self, domain=None, username=None, password=None, json_keyfile=None, **kwargs):
