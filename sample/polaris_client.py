@@ -18,12 +18,15 @@ parser.add_argument('--insecure', help='Deactivate SSL Verification', action="st
 args = parser.parse_args()
 
 try:
-    ### Instantiate with username/password
-    # rubrik = rubrik_polaris.PolarisClient(domain=args.domain, username=args.username, password=args.password, root_domain=args.root_domain,
-    #                                       insecure=args.insecure)
 
-    ### Instantiate with json keyfile
-    rubrik = PolarisClient(json_keyfile=args.json_keyfile, insecure=args.insecure)
+### Instantiate with json keyfile
+    if args.json_keyfile:
+        rubrik = PolarisClient(json_keyfile=args.json_keyfile, insecure=args.insecure)
+    else:
+### Instantiate with username/password
+        rubrik = PolarisClient(domain=args.domain, username=args.username, password=args.password, root_domain=args.root_domain,
+                                       insecure=args.insecure)
+
 except Exception as err:
     print(err)
     sys.exit(1)
@@ -188,3 +191,14 @@ except Exception as err:
 # for vm in o:
 #     if len(o[vm]) > 1:
 #         print("{} : {}".format(vm, o[vm]))
+
+### Add Azure Sub
+# rubrik.add_account_azure(
+#     azure_subscription_id='8fa81a5e-a236-4a73-8e28-e1dcf863c56d',
+#     azure_subscription_name="TrinityFDSE",
+#     azure_regions=['WESTUS'],
+#     azure_tenant_domain_name='rubriktrinity.onmicrosoft.com'
+# )
+
+### Delete Azure Sub
+rubrik.delete_account_azure(azure_subscription_id='8fa81a5e-a236-4a73-8e28-e1dcf863c56d')

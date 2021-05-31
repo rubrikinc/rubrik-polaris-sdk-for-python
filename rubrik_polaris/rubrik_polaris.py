@@ -30,7 +30,8 @@ class PolarisClient:
     from .lib.common.core import get_sla_domains, submit_on_demand, submit_assign_sla, get_task_status, \
         get_snapshots, get_event_series_list, get_report_data
     from .lib.accounts.aws import get_accounts_aws, get_accounts_aws_detail, get_account_aws_native_id, add_account_aws, delete_account_aws
-    from .lib.accounts.azure import get_accounts_azure
+    from .lib.accounts.azure import get_accounts_azure_native, add_account_azure, delete_account_azure, \
+        set_account_azure_default_sa, get_accounts_azure_cloud
     from .lib.accounts.gcp import get_accounts_gcp, add_project_gcp, delete_project_gcp, \
         get_account_gcp_default_sa, set_account_gcp_default_sa
     from .lib.compute.ec2 import get_compute_object_ids_ec2, get_compute_ec2, submit_compute_export_ec2, submit_compute_restore_ec2
@@ -55,6 +56,7 @@ class PolarisClient:
         _update_account_aws_initiate, _get_account_map_aws
     from .lib.accounts.gcp import _get_gcp_native_project, _delete_account_gcp_project, \
         _disable_account_gcp_project, _get_account_gcp_project, _get_account_gcp_permissions_cnp, _get_account_gcp_project_uuid_by_string
+    from .lib.accounts.azure import _get_native_subscription_id_and_name
     from .lib.common.connection import _get_access_token_keyfile, _get_access_token_basic
 
     def __init__(self, domain=None, username=None, password=None, json_keyfile=None, **kwargs):
@@ -67,7 +69,7 @@ class PolarisClient:
         self._username = self._get_cred('rubrik_polaris_username', username)
         self._password = self._get_cred('rubrik_polaris_password', password)
 
-        if not (self._domain and self._username and self._password) and not json_keyfile:
+        if (not self._domain and not self._username and not self._password ) and not json_keyfile:
             raise Exception('Required credentials are missing! Please pass in username, password and domain, directly or through the OS environment, or .json key file.')
 
         # Set base variables

@@ -1,0 +1,6 @@
+query RubrikPolarisSDKRequest($filter: String = "") {
+    azureCloudAccountPermissionConfig(){
+        permissionVersion
+        rolePermissions
+    }
+}
