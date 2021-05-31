@@ -77,7 +77,6 @@ def set_account_azure_default_sa(
         azure_app_name=None,
         azure_tenant_domain_name=None,
         azure_cloud_type='AZUREPUBLICCLOUD'):
-
     """Set default SA for Azure
     Args:
         azure_app_id (str):  Client ID of the Application
@@ -112,6 +111,25 @@ def set_account_azure_default_sa(
         raise PolarisException("Problem setting Azure App default SA: {}".format(e))
 
 
+def _get_accounts_azure_permission_version(self, cloud_account_features):
+    """Retrieves Azure cloud account permissions information from Polaris
+
+    Returns:
+        dict: Details of Azure permission requirements from Polaris
+
+    Raises:
+        RequestException: If the query to Polaris returned an error
+    """
+    try:
+        query_name = "accounts_azure_get_permission_version"
+        variables = {
+            "cloud_account_features": cloud_account_features
+        }
+        return self._query(query_name, variables)
+    except Exception:
+        raise
+
+
 def add_account_azure(
         self,
         azure_tenant_domain_name=None,
@@ -119,14 +137,14 @@ def add_account_azure(
         cloud_account_features='CLOUD_NATIVE_PROTECTION',
         azure_subscription_id=None,
         azure_subscription_name=None,
-        azure_regions=None,
-        azure_policy_version=1007):
+        azure_regions=None):
     """Add Azure subscription to Polaris
     Args:
         azure_tenant_domain_name (str): Optional, Domain Name of the Azure tenant.
         azure_cloud_type (str): AZUREPUBLICCLOUD [default] or AZURECHINACLOUD
         cloud_account_features (str): Polaris cloud feature - CLOUDNATIVEPROTECTION [default]
-        azure_subscriptions (arr): Array of [["subscription_id","subscription_name"],[...]]
+        azure_subscription_id (str): Azure Subscription ID
+        azure_subscription_name (str): Azure Subscription friendly name
         azure_regions (arr): Array of Azure Regions
         azure_policy_version (int): Azure Policy version
     Returns:
@@ -142,10 +160,10 @@ def add_account_azure(
             azure_cloud_type=azure_cloud_type,
             cloud_account_features=cloud_account_features,
             azure_regions=azure_regions,
-#            azure_subscriptions=azure_subscriptions
         )
 
         azure_subscriptions_converted = [{'nativeId': azure_subscription_id, 'name': azure_subscription_name}]
+        azure_policy_version = self._get_accounts_azure_permission_version(cloud_account_features=cloud_account_features)['permissionVersion']
 
         _variables = {
             "azure_tenant_domain_name": azure_tenant_domain_name,
