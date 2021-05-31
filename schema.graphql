@@ -4196,6 +4196,16 @@ type AwsExocomputeSubnetType {
     subnetId: String!
 }
 
+"AWS feature configurations in an AWS account."
+type AwsFeatureConfig {
+    "Account details."
+    awsCloudAccount: AwsAccountResponse!
+    "Aws exocompute configurations."
+    exocomputeConfigs: [AwsExocomputeGetConfigResponse!]!
+    "Feature detail."
+    featureDetail: FeatureDetail!
+}
+
 type AwsInstanceType {
     instanceTypeId: Int!
     memoryMbs: Int!
@@ -4976,6 +4986,26 @@ type AzureCloudAccountOAuthInitiateResponse {
     sessionId: String!
 }
 
+"Role permissions and Polaris policy version required for Azure subscription setup."
+type AzureCloudAccountPermissionConfigResponse {
+    "Policy permission version to be used on Polaris for adding a subscription."
+    permissionVersion: Int!
+    "List of permissions to be applied on the role created in Azure for a subscription."
+    rolePermissions: [AzureCloudAccountRolePermission!]!
+}
+
+"Azure Permission type with included and excluded actions."
+type AzureCloudAccountRolePermission {
+    "Actions which should be explicitly disallowed on the Azure role for the subscription."
+    excludedActions: [String!]!
+    "Data actions which should be explicitly disallowed on the Azure role for the subscription."
+    excludedDataActions: [String!]!
+    "Actions which should be allowed on the Azure role for the subscription."
+    includedActions: [String!]!
+    "Data actions which should be allowed on the Azure role for the subscription."
+    includedDataActions: [String!]!
+}
+
 "Azure Subscription type with basic details."
 type AzureCloudAccountSubscription {
     isAuthorized: Boolean!
@@ -5232,7 +5262,6 @@ type AzureNativeResourceGroup implements HierarchyObject & PolarisHierarchyObjec
     authorizedOperations: [PolarisObjectAuthorizedOperationsEnum!]!
     "The configured SLA Domain of the hierarchy object."
     configuredSlaDomain: SlaDomain!
-    diskResourceGroupId: UUID!
     diskSla: AzureNativeResourceGroupSlaAssignment!
     disksCount: Int!
     "The Effective Retention SLA Domain of the hierarchy object."
@@ -5277,9 +5306,20 @@ type AzureNativeResourceGroup implements HierarchyObject & PolarisHierarchyObjec
         sortOrder: HierarchySortOrder,
         virtualMachineFilters: AzureNativeVirtualMachineFilters
     ): AzureNativeVirtualMachineConnection!
-    vmResourceGroupId: UUID!
     vmSla: AzureNativeResourceGroupSlaAssignment!
     vmsCount: Int!
+}
+
+type AzureNativeResourceGroupConnection {
+    count: Int!
+    edges: [AzureNativeResourceGroupEdge!]!
+    nodes: [AzureNativeResourceGroup!]!
+    pageInfo: PageInfo!
+}
+
+type AzureNativeResourceGroupEdge {
+    cursor: String!
+    node: AzureNativeResourceGroup!
 }
 
 "An Azure resource group SLA assignment"
@@ -5332,13 +5372,21 @@ type AzureNativeSubscription implements HierarchyObject & PolarisHierarchyObject
     "A sequential list containing this object's physical ancestors."
     physicalPath: [PathNode!]!
     "Lists Azure resource groups in the subscription"
-    resourceGroupList(
+    resourceGroupConnection(
+        "Returns the elements in the list that come after the specified cursor."
+        after: String,
+        "Returns the elements in the list that come before the specified cursor."
+        before: String,
         "Filters for listing Azure resource groups"
         commonResourceGroupFilters: AzureNativeCommonResourceGroupFilters,
+        "Returns the first n elements from the list."
+        first: Int,
+        "Returns the last n elements from the list."
+        last: Int,
         "Sort fields for listing Azure resource groups."
         sortBy: AzureNativeCommonResourceGroupSortFieldsEnum,
         sortOrder: HierarchySortOrder
-    ): [AzureNativeResourceGroup!]!
+    ): AzureNativeResourceGroupConnection!
     "The assignmennt type for this object's SLA"
     slaAssignment: SlaAssignmentTypeEnum!
     "The distribution of the snapshots of the hierarchy object"
@@ -6450,6 +6498,8 @@ type Cluster {
     isHealthy: Boolean!
     "Lambda config."
     lambdaConfig: GetLambdaConfigReply
+    "Lambda feature history."
+    lambdaFeatureHistory: LambdaFeatureHistory
     "The time the cluster was last connected"
     lastConnectionTime: DateTime
     "Metadata pull scheduler."
@@ -6665,8 +6715,13 @@ type ClusterSlaDomainEdge {
 
 "Metadata for rendering a cluster sla for filter."
 type ClusterSlaDomainForFilter {
+    "The name of the cluster the sla belongs to"
     clusterName: String
+    "The uuid of the cluster the sla belongs to"
+    clusterUuid: UUID!
+    "The fid of the sla"
     id: String!
+    "The name of the sla"
     name: String!
 }
 
@@ -10945,6 +11000,14 @@ type LabelRule {
     objectType: ManagedObjectType!
 }
 
+"History of Radar and Sonar features."
+type LambdaFeatureHistory {
+    "True is Radar was ever enabled."
+    wasRadarEverEnabled: Boolean!
+    "True is Sonar was ever enabled."
+    wasSonarEverEnabled: Boolean!
+}
+
 type LambdaSettings {
     anomalyThreshold: Float
     isAnomalyAlertEnabled: Boolean
@@ -12492,6 +12555,7 @@ type Mutation {
         snappableId: UUID!
     ): EnableLambdaForSnappableReply!
     enableO365SharePoint(exocomputeClusterId: String!): RequestStatus!
+    enableO365Teams(exocomputeClusterId: String!): RequestStatus!
     "Mark AWS native EBS volumes to be excluded from EC2 Instance snapshot."
     excludeAwsNativeEbsVolumesFromSnapshot(
         "Input to mark EBS volumes to be excluded for EC2 snapshot."
@@ -14334,6 +14398,8 @@ type O365Org implements HierarchyObject & PolarisHierarchyObject {
     past1DayOnedriveOutOfComplianceCount: Int!
     past1DaySharepointComplianceCount: Int!
     past1DaySharepointOutOfComplianceCount: Int!
+    past1DayTeamsComplianceCount: Int!
+    past1DayTeamsOutOfComplianceCount: Int!
     "A sequential list containing this object's physical ancestors."
     physicalPath: [PathNode!]!
     "List of all descendants of O365Org"
@@ -16005,6 +16071,11 @@ type Query {
         "Region in AWS."
         region: AwsNativeRegionEnum!
     ): [String!]!
+    "List of all AWS cloud account configurations with the given search query."
+    allAwsCloudAccountConfigs(
+        "Arguments for get cloud accounts."
+        awsCloudAccountsArg: AwsCloudAccountsInput!
+    ): [AwsFeatureConfig!]!
     "List all active AWS cloud accounts."
     allAwsCloudAccounts(
         "Arguments for get cloud accounts."
@@ -16095,8 +16166,6 @@ type Query {
     ): [String!]!
     "List user activity for a specific file on a specific snapshot."
     allFileActivities(
-        "Filters to apply when listing a file's user activities."
-        FileActivitiesFilter: FileActivitiesFilter!,
         "Sorts to apply when listing a file's user activities."
         FileActivitiesSort: FileActivitiesSort!,
         "Request for getting user activity for a specific path on a specific snapshot."
@@ -16376,6 +16445,11 @@ type Query {
         "List of subscription Ids."
         subscriptionIds: [UUID!]!
     ): [AzureCheckPermissionsOnSubscriptionResponse!]!
+    "List permissions and version required to enable the given feature for Azure subscription."
+    azureCloudAccountPermissionConfig(
+        "Cloud Account Feature."
+        feature: CloudAccountFeatureEnum!
+    ): AzureCloudAccountPermissionConfigResponse!
     "Get the details of the Azure tenant and all subscriptions in it configured for a feature"
     azureCloudAccountTenant(
         "Cloud Account Feature."
@@ -16454,13 +16528,21 @@ type Query {
         resourceGroupId: UUID!
     ): AzureNativeResourceGroup!
     "Lists Azure resource groups"
-    azureNativeResourceGroupList(
+    azureNativeResourceGroupConnection(
+        "Returns the elements in the list that come after the specified cursor."
+        after: String,
+        "Returns the elements in the list that come before the specified cursor."
+        before: String,
         "Filters for listing Azure resource groups"
         commonResourceGroupFilters: AzureNativeCommonResourceGroupFilters,
+        "Returns the first n elements from the list."
+        first: Int,
+        "Returns the last n elements from the list."
+        last: Int,
         "Sort fields for listing Azure resource groups."
         sortBy: AzureNativeCommonResourceGroupSortFieldsEnum,
         sortOrder: HierarchySortOrder
-    ): [AzureNativeResourceGroup!]!
+    ): AzureNativeResourceGroupConnection!
     "Lists security groups in the specified regionand subscription."
     azureNativeSecurityGroups(
         "The azure region."
@@ -19402,7 +19484,7 @@ type ReplicationSpecV2 {
     "Azure location used as the replication target"
     azureTarget: AzureReplicationTarget!
     "Cluster used as replication target"
-    cluster: Cluster
+    cluster: SlaReplicationCluster
     retentionDuration: SlaDuration
     targetMapping: TargetMapping
 }
@@ -20593,6 +20675,14 @@ type SlaInfo {
 
 type SlaLogFrequencyConfigResult {
     retention: SlaDuration
+}
+
+"Replication cluster specific information."
+type SlaReplicationCluster {
+    "Id of replication cluster."
+    id: UUID!
+    "Name of replication cluster."
+    name: String!
 }
 
 type SlaResult {
@@ -24785,6 +24875,7 @@ enum ActivityTypeEnum {
     Index
     Instantiate
     LegalHold
+    LocalRecovery
     Maintenance
     NutanixCluster
     RadarAnalysis
@@ -25673,8 +25764,9 @@ enum AzureHostTypeEnum {
 
 enum AzureNativeCommonResourceGroupSortFieldsEnum {
     AZURE_REGION
+    AZURE_RG_DISK_EFFECTIVE_SLA
     AZURE_RG_SUBSCRIPTION_NAME
-    EFFECTIVE_SLA_DOMAIN
+    AZURE_RG_VM_EFFECTIVE_SLA
     NAME
 }
 
@@ -26329,6 +26421,7 @@ enum DataTypeEnum {
 
 enum DataViewTypeEnum {
     BACKUP_COMPLIANCE
+    CDM_UPGRADES
     INDEXING
     MONITORING_ALL
     MONITORING_CANCELED
@@ -26484,6 +26577,7 @@ enum FailoverStatusEnum {
     FailoverFailed
     FailoverJobFailed
     FailoverJobSucceeded
+    LocalRecoverySucceeded
     Ongoing
     Paused
     TestFailoverSucceeded
@@ -26549,6 +26643,7 @@ enum FeatureFlagNameEnum {
     AzureCrossSubscriptionExportEnabled
     AzureLockSnapshotsEnabled
     AzureNationalCloudEnabled
+    AzureNativeArchivalEnabled
     AzureRecoverPoweredOffEnabled
     AzureSeparateResourceGroupEnabled
     AzureSnapshotIntegrityEnabled
@@ -26556,6 +26651,7 @@ enum FeatureFlagNameEnum {
     CapacityReportNativeSnappableEnabled
     CardPinningEnabled
     CdmUpgradesEnabled
+    CdmUpgradesReportNgEnabled
     CertMgmtEnabled
     CloudAccountForAppFlowsEnabled
     CloudAccountListCombinedEnabled
@@ -26571,7 +26667,9 @@ enum FeatureFlagNameEnum {
     ClusterAddForbidden
     ClusterListFilterEnabled
     ClusterStatusEnabled
+    ClusterSyncJobsAlertsEnabled
     ComplianceReportNativeSnappableEnabled
+    CreateNewClusterEnabled
     DarkSiteEnabled
     DataClassificationDevEnabled
     DataClassificationEnabled
@@ -26582,6 +26680,7 @@ enum FeatureFlagNameEnum {
     ExpandedGlobalSearchEnabled
     FederatedLoginEnabled
     FederatedLoginManagementEnabled
+    FilesetFeatureEnablementEnabled
     FilesetInventoryEAEnabled
     FilesetInventoryEnabled
     FilesetInventoryGAEnabled
@@ -26597,6 +26696,7 @@ enum FeatureFlagNameEnum {
     GlobalDashboardEntryPointEnabled
     GlobalDashboardPageEnabled
     GlobalSLAGPSEnabled
+    GoFeatureExtractionEnabled
     HyperVHierarchyEnabled
     HyperVInventoryViewEnabled
     JobMonitoringUIEnabled
@@ -26608,6 +26708,7 @@ enum FeatureFlagNameEnum {
     MetadataIncrementalSyncEnabled
     MetadataSyncAdvancedMetricsEnabled
     MetadataSyncEnabled
+    MfaLoginEnabled
     MssqlHierarchyEnabled
     NameSplitRefreshKorgJobEnabled
     NasFilesetRbacEnabled
@@ -26637,6 +26738,7 @@ enum FeatureFlagNameEnum {
     RadarDashboardEnabled
     RadarDemoEnabled
     RadarDevEnabled
+    RadarDownloadCsvEnabled
     RadarPipelineMergeEnabled
     RadarSIEMEnabled
     RecoverySearchEnabled
@@ -26670,11 +26772,13 @@ enum FeatureFlagNameEnum {
     SsoEnabled
     StaticRetentionEnabled
     SystemAnnouncementsEnabled
+    ThemedClusterCardEnabled
     UAFileCountsEnabled
     UAPermissionsTabEnabled
     UnmanagedObjectEnabled
     UserAwarenessV1Enabled
     UserAwarenessV2Enabled
+    UserPreferencesEnabled
     VSphereFeatureEnablementEnabled
     VSphereInventoryEnabled
     VSphereSearchAndRecoveryRolloutEnabled
@@ -26844,6 +26948,7 @@ enum GlobalSlaQueryFilterInputField {
     CLUSTER_UUID
     NAME
     OBJECT_TYPE
+    SHOW_CLUSTER_SLAS_ONLY
 }
 
 enum GroupByFieldEnum {
@@ -26931,6 +27036,7 @@ enum HierarchyFilterField {
     AZURE_DISK_SUBSCRIPTION_ID
     AZURE_DISK_TYPE
     AZURE_REGION
+    AZURE_RG_DISK_OR_VM_SLA
     AZURE_RG_SUBSCRIPTION_ID
     AZURE_TAG
     AZURE_VM_CRG_NAME
@@ -26956,6 +27062,7 @@ enum HierarchyFilterField {
     EFFECTIVE_SLA
     EFFECTIVE_SLA_SOURCE_OBJECT
     EFFECTIVE_SLA_TYPE
+    FAILOVER_CLUSTER_ID
     FILESET_SLA
     FILESET_TEMPLATE_ID
     FILESET_TEMPLATE_OS_TYPE
@@ -27097,8 +27204,10 @@ enum HierarchySortByField {
     AZURE_DISK_TYPE
     AZURE_REGION
     AZURE_RG_DISKCOUNT
+    AZURE_RG_DISK_EFFECTIVE_SLA
     AZURE_RG_SUBSCRIPTION_NAME
     AZURE_RG_VMCOUNT
+    AZURE_RG_VM_EFFECTIVE_SLA
     AZURE_SUBNET_NAME
     AZURE_SUBSCRIPTION_DISKCOUNT
     AZURE_SUBSCRIPTION_VMCOUNT
@@ -27317,6 +27426,7 @@ enum LocationType {
     AZURE
     CDM
     GCP
+    UNKNOWN_TYPE
 }
 
 "type of data location"
@@ -27723,6 +27833,7 @@ enum PendingActionSyncTypeEnum {
 
 enum PlanNameEnum {
     PROD
+    PROD_LOCAL
     TEST
 }
 
@@ -28982,6 +29093,7 @@ input AppBlueprintMountSnapshotJobConfig {
 
 input AppBlueprintRecoverySpecCreateReqInputType {
     childRecoverySpecs: [ChildRecoverySpecCreateReqInputType!]!
+    locationInfo: LocationInfo
     planType: PlanNameEnum!
     userData: String
 }
@@ -29429,7 +29541,7 @@ input AzureNativeCommonRGSubscriptionFilter {
 
 "Filters for listing Azure resource groups."
 input AzureNativeCommonResourceGroupFilters {
-    effectiveSlaFilter: EffectiveSlaFilter
+    effectiveSlaFilter: AzureNativeRGDiskOrVmSlaFilter
     nameSubstringFilter: NameSubstringFilter
     regionFilter: AzureNativeRegionFilter
     subscriptionFilter: AzureNativeCommonRGSubscriptionFilter
@@ -29450,19 +29562,24 @@ input AzureNativeDiskFilters {
 
 "Filter to return Azure disks which have resource group name in the given list of resource group names."
 input AzureNativeDiskResourceGroupFilter {
-    isCommonResourceGroupEnabled: Boolean = false
+    isCommonResourceGroupEnabled: Boolean = true
     resourceGroupNames: [String!]!
 }
 
 "Filter to return Azure disks which have rubrik subscription ID in the given list of rubrik subscription IDs."
 input AzureNativeDiskSubscriptionFilter {
-    isCommonResourceGroupEnabled: Boolean = false
+    isCommonResourceGroupEnabled: Boolean = true
     subscriptionIds: [String!]!
 }
 
 "Filter to return Azure virtual machine which have VM size in the given list of VM sizes."
 input AzureNativeDiskTypeFilter {
     diskTypes: [String!]!
+}
+
+"Filter to return Azure resource groups with either disk or VM SLA in the given list of SLA IDs"
+input AzureNativeRGDiskOrVmSlaFilter {
+    effectiveSlaIds: [String!]!
 }
 
 "Filter to return Azure virtual machine which have region in the given list of regions."
@@ -29483,7 +29600,7 @@ input AzureNativeTagFilter {
 
 "Filter to return Azure virtual machines which have resource group name in the given list of resource group names."
 input AzureNativeVMResourceGroupFilter {
-    isCommonResourceGroupEnabled: Boolean = false
+    isCommonResourceGroupEnabled: Boolean = true
     resourceGroupNames: [String!]!
 }
 
@@ -29494,7 +29611,7 @@ input AzureNativeVMSizeFilter {
 
 "Filter to return Azure virtual machines which have rubrik subscription ID in the given list of rubrik subscription IDs."
 input AzureNativeVMSubscriptionFilter {
-    isCommonResourceGroupEnabled: Boolean = false
+    isCommonResourceGroupEnabled: Boolean = true
     subscriptionIds: [String!]!
 }
 
@@ -30098,7 +30215,7 @@ input EmailAddressFilter {
 input EventDigestConfig {
     activitySeverity: [ActivitySeverityEnum!]
     activityStatus: [ActivityStatusEnum!]
-    "Activity type to filter for emails. Valid types are Storage, Classification, LegalHold, HypervScvmm, Hdfs, RadarAnalysis, VolumeGroup, Instantiate, HypervServer, Configuration, Upgrade, CloudNativeVm, StorageArray, Connection, Conversion, AuthDomain, UnknownEventType, CloudNativeVirtualMachine, Discovery, Replication, Maintenance, Support, Fileset, System, Failover, StormResource, Diagnostic, Vcd, Anomaly, Archive, CloudNativeSource, HostEvent, AwsEvent, ResourceOperations, Backup, Sync, Hardware, TestFailover, Recovery, Download, EmbeddedEvent, NutanixCluster, VCenter, Index, and OTHER_FILTER_ITEM"
+    "Activity type to filter for emails. Valid types are Storage, Classification, LegalHold, HypervScvmm, Hdfs, RadarAnalysis, VolumeGroup, Instantiate, HypervServer, Configuration, Upgrade, CloudNativeVm, StorageArray, Connection, Conversion, AuthDomain, UnknownEventType, CloudNativeVirtualMachine, Discovery, Replication, Maintenance, Support, Fileset, LocalRecovery, System, Failover, StormResource, Diagnostic, Vcd, Anomaly, Archive, CloudNativeSource, HostEvent, AwsEvent, ResourceOperations, Backup, Sync, Hardware, TestFailover, Recovery, Download, EmbeddedEvent, NutanixCluster, VCenter, Index, and OTHER_FILTER_ITEM"
     activityType: [String!]
     clusters: [String!]
     objectType: [ActivityObjectTypeEnum!]
@@ -30323,12 +30440,6 @@ input FederatedLoginStatusInput {
     enabled: Boolean!
     "Enable or Disable federated login inventory card."
     inventoryCardEnabled: Boolean!
-}
-
-"Filters to apply when listing a file's user activities."
-input FileActivitiesFilter {
-    "The types of activities to include. Empty signifies all activities."
-    activityTypes: [ActivityAccessTypeEnum!] = []
 }
 
 "Sorts to apply when listing a file's user activities."
@@ -31245,8 +31356,6 @@ input ListAccessUsersSortInput {
 input ListFileActivitiesInput {
     "The corresponding snappable's FID."
     snappableFid: String!
-    "The corresponding snapshot's FID."
-    snapshotFid: String!
     "The datetime to collect user activity from."
     startDateTime: String!
     "The standardized path to fetch user activities for."
@@ -31281,12 +31390,12 @@ input ListObjectFilesFiltersInput {
     whitelistEnabled: Boolean = false
 }
 
-"Target location information."
+"Location information."
 input LocationInfo {
-    "Id of the target location."
+    "Id of the location."
     locationId: String = ""
     "Location type: CDM, AZURE, AWS, GCP."
-    locationType: LocationType = CDM
+    locationType: LocationType = UNKNOWN_TYPE
 }
 
 input LogConfig {
@@ -32277,7 +32386,6 @@ input StartAwsNativeEbsVolumeSnapshotExportJobInput {
     shouldCopyTags: Boolean!
     "Whether to replace volume where attached."
     shouldReplaceAttached: Boolean!
-    shouldUseReplica: Boolean = false
     "ID of snapshot to be exported."
     snapshotId: UUID!
     "Type of snapshot used for export."
