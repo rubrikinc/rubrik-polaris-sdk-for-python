@@ -192,6 +192,9 @@ except Exception as err:
 #     if len(o[vm]) > 1:
 #         print("{} : {}".format(vm, o[vm]))
 
+### Retrieve polaris deployment version
+# pp.pprint(rubrik.get_polaris_version())
+
 ### Add Azure Sub
 # rubrik.add_account_azure(
 #     azure_subscription_id='8fa81a5e-a236-4a73-8e28-e1dcf863c56d',
