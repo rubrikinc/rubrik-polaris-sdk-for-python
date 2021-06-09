@@ -1,0 +1,5 @@
+mutation RubrikPolarisSDKRequest($cloud_account_uuid: UUID!) {
+    finalizeAwsCloudAccountDeletion(input: {cloudAccountId: $cloud_account_uuid, feature: CLOUD_NATIVE_PROTECTION}) {
+        message
+    }
+}

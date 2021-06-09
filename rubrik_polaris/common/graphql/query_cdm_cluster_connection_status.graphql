@@ -1,0 +1,9 @@
+query RubrikPolarisSDKRequest($filter: ClusterFilterInput) {
+  clusterConnection(filter: $filter) {
+    nodes{
+      state {
+        connectedState
+      }
+    }
+  }
+}

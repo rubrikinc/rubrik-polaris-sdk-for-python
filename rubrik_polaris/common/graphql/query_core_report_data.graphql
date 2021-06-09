@@ -1,0 +1,39 @@
+query RubrikPolarisSDKRequest($first: Int!, $filter: SnappableFilterInput, $after: String, $sortBy: SnappableSortByEnum, $sortOrder: SortOrderEnum) {
+  snappableConnection(first: $first, filter: $filter, after: $after, sortBy: $sortBy, sortOrder: $sortOrder) {
+    edges {
+      cursor
+      node {
+        name
+        objectType
+        fid
+        protectionStatus
+        lastSnapshot
+        location
+        archiveStorage
+        replicaStorage
+        pullTime
+        totalSnapshots
+        missedSnapshots
+        localSnapshots
+        logicalDataReduction
+        physicalBytes
+        logicalBytes
+        archiveSnapshots
+        replicaSnapshots
+        complianceStatus
+        slaDomain {
+          name
+          id
+        }
+        cluster {
+          name
+          id
+        }
+      }
+    }
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+  }
+}
