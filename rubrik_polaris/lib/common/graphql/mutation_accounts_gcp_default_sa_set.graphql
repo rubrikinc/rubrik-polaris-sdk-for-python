@@ -1,4 +1,0 @@
-mutation RubrikPolarisSDKRequest($jwt_config: String!, $name: String!)
-{
-    gcpSetDefaultServiceAccountJwtConfig(serviceAccountJWTConfig: $jwt_config, serviceAccountName: $name)
-}

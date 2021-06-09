@@ -1,8 +1,0 @@
-query RubrikPolarisSDKRequest($snapshot_id : UUID!){
-    polarisSnapshot(snapshotFid: $snapshot_id){
-        snappableId
-        isCorrupted
-        isDeletedFromSource
-        isExpired
-    }
-}

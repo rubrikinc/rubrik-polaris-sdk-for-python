@@ -1,9 +1,0 @@
-mutation RubrikPolarisSDKRequest($cloud_account_features: CloudAccountFeatureEnum!, $azure_subscription_ids: [UUID!]! ){
-    azureCloudAccountDeleteWithoutOAuth(feature: $cloud_account_features, subscriptionIds: $azure_subscription_ids){
-        status {
-            subscriptionId
-            success
-            error
-        }
-    }
-}

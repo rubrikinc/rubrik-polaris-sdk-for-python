@@ -1,7 +1,0 @@
-mutation RubrikPolarisSDKRequest($polaris_account_id: UUID!, $delete_native_snapshots: Boolean = false, $aws_native_protection_feature: AwsNativeProtectionFeatureEnum = EC2)
-{
-    startAwsNativeAccountDisableJob(input: {awsAccountRubrikId: $polaris_account_id, shouldDeleteNativeSnapshots: $delete_native_snapshots, awsNativeProtectionFeature: $aws_native_protection_feature})
-    {
-        jobId
-    }
-}

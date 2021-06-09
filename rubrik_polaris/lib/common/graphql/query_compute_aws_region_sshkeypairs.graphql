@@ -1,3 +1,0 @@
-query RubrikPolarisSDKRequest($region: AwsNativeRegionEnum!, $aws_native_account_id: UUID!) {
-  allEc2KeyPairsFromAws(region: $region, awsNativeAccountId: $aws_native_account_id)
-}
