@@ -27,40 +27,40 @@ from .exceptions import RequestException
 
 class PolarisClient:
     # Public
-    from .lib.common.core import get_sla_domains, submit_on_demand, submit_assign_sla, get_task_status, \
+    from .common.core import get_sla_domains, submit_on_demand, submit_assign_sla, get_task_status, \
         get_snapshots, get_event_series_list, get_report_data, get_polaris_version
-    from .lib.accounts.aws import get_accounts_aws, get_accounts_aws_detail, get_account_aws_native_id, add_account_aws, delete_account_aws
-    from .lib.accounts.azure import get_accounts_azure_native, add_account_azure, delete_account_azure, \
+    from .accounts.aws import get_accounts_aws, get_accounts_aws_detail, get_account_aws_native_id, add_account_aws, delete_account_aws
+    from .accounts.azure import get_accounts_azure_native, add_account_azure, delete_account_azure, \
         set_account_azure_default_sa, get_accounts_azure_cloud
-    from .lib.accounts.gcp import get_accounts_gcp, add_project_gcp, delete_project_gcp, \
+    from .accounts.gcp import get_accounts_gcp, add_project_gcp, delete_project_gcp, \
         get_account_gcp_default_sa, set_account_gcp_default_sa
-    from .lib.compute.ec2 import get_compute_object_ids_ec2, get_compute_ec2, submit_compute_export_ec2, submit_compute_restore_ec2
-    from .lib.compute.azurevm import get_compute_object_ids_azure, get_compute_azure, submit_compute_restore_azure
-    from .lib.compute.gce import get_compute_object_ids_gce, get_compute_gce, submit_compute_restore_gce
-    from .lib.compute.vsphere import get_compute_vsphere, get_compute_object_ids_vsphere
-    from .lib.storage.ebs import get_storage_object_ids_ebs, get_storage_ebs
-    from .lib.common.graphql import get_enum_values
-    from .lib.cluster import get_cdm_cluster_location, get_cdm_cluster_connection_status
-    from .lib.appflows import get_appflows_blueprints
+    from .compute.ec2 import get_compute_object_ids_ec2, get_compute_ec2, submit_compute_export_ec2, submit_compute_restore_ec2
+    from .compute.azurevm import get_compute_object_ids_azure, get_compute_azure, submit_compute_restore_azure
+    from .compute.gce import get_compute_object_ids_gce, get_compute_gce, submit_compute_restore_gce
+    from .compute.vsphere import get_compute_vsphere, get_compute_object_ids_vsphere
+    from .storage.ebs import get_storage_object_ids_ebs, get_storage_ebs
+    from .common.graphql import get_enum_values
+    from .cluster import get_cdm_cluster_location, get_cdm_cluster_connection_status
+    from .appflows import get_appflows_blueprints
 
     # Private
-    from .lib.common.connection import _query, _get_access_token_basic, _get_access_token_keyfile
-    from .lib.common.validations import _validate
-    from .lib.compute.ec2 import _get_aws_region_vpcs, _get_aws_region_kmskeys, _get_aws_region_sshkeypairs
-    from .lib.compute.common import _submit_compute_restore, _get_compute_object_ids, _submit_compute_export
-    from .lib.common.monitor import _monitor_job, _monitor_threader, _monitor_task
-    from .lib.common.graphql import _dump_nodes, _get_details_from_graphql_query
-    from .lib.common.core import _get_snapshot
-    from .lib.accounts.aws import _invoke_account_delete_aws, _invoke_aws_stack, _commit_account_delete_aws, _update_account_aws, \
+    from .common.connection import _query, _get_access_token_basic, _get_access_token_keyfile
+    from .common.validations import _validate
+    from .compute.ec2 import _get_aws_region_vpcs, _get_aws_region_kmskeys, _get_aws_region_sshkeypairs
+    from .compute.common import _submit_compute_restore, _get_compute_object_ids, _submit_compute_export
+    from .common.monitor import _monitor_job, _monitor_threader, _monitor_task
+    from .common.graphql import _dump_nodes, _get_details_from_graphql_query
+    from .common.core import _get_snapshot
+    from .accounts.aws import _invoke_account_delete_aws, _invoke_aws_stack, _commit_account_delete_aws, _update_account_aws, \
         _destroy_aws_stack, _disable_account_aws, _get_aws_profiles, _add_account_aws, _delete_account_aws, \
         _update_account_aws_initiate, _get_account_map_aws
-    from .lib.accounts.gcp import _get_gcp_native_project, _delete_account_gcp_project, \
+    from .accounts.gcp import _get_gcp_native_project, _delete_account_gcp_project, \
         _disable_account_gcp_project, _get_account_gcp_project, _get_account_gcp_permissions_cnp, _get_account_gcp_project_uuid_by_string
-    from .lib.accounts.azure import _get_native_subscription_id_and_name, _get_accounts_azure_permission_version
-    from .lib.common.connection import _get_access_token_keyfile, _get_access_token_basic
+    from .accounts.azure import _get_native_subscription_id_and_name, _get_accounts_azure_permission_version
+    from .common.connection import _get_access_token_keyfile, _get_access_token_basic
 
     def __init__(self, domain=None, username=None, password=None, json_keyfile=None, **kwargs):
-        from .lib.common.graphql import _build_graphql_maps
+        from .common.graphql import _build_graphql_maps
 
         self._pp = pprint.PrettyPrinter(indent=4)
 

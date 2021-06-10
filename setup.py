@@ -51,7 +51,7 @@ setuptools.setup(
     ],
     include_package_data=True,
     data_files = [
-        ('rubrik_polaris/graphql', glob('rubrik_polaris/lib/common/graphql/*'))
+        ('rubrik_polaris/graphql', glob('rubrik_polaris/common/graphql/*'))
     ],
     tests_require=[
         'pytest'
