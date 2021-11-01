@@ -1,0 +1,94 @@
+query RubrikPolarisSDKRequest($first: Int, $after: String, $filter: ClusterFilterInput, $sortBy: ClusterSortByEnum, $sortOrder: SortOrderEnum) {
+  clusterConnection(
+    filter: $filter
+    sortBy: $sortBy
+    sortOrder: $sortOrder
+    first: $first
+    after: $after
+  ) {
+    edges {
+      node {
+        id
+        ...ClusterListFragment
+      }
+    }
+    pageInfo {
+      startCursor
+      endCursor
+      hasNextPage
+      hasPreviousPage
+    }
+  }
+}
+
+fragment ClusterListFragment on Cluster {
+  id
+  name
+  type
+  status
+  version
+  defaultAddress
+  cdmUpgradeInfo {
+    clusterStatus {
+      message
+      status
+    }
+    overallProgress
+    scheduleUpgradeAt
+    downloadedVersion
+    version
+  }
+  productType
+  estimatedRunway
+  snapshotCount
+  geoLocation {
+    address
+  }
+  lastConnectionTime
+  metric {
+    totalCapacity
+    availableCapacity
+  }
+  snappableConnection(filter: {protectionStatus: Protected}) {
+    count
+  }
+  ...ClusterStateFragment
+  ...ClusterNodeConnectionFragment
+  ...ClusterGlobalManagerFragment
+  ...LambdaFeatureHistoryFragment
+}
+
+fragment ClusterNodeConnectionFragment on Cluster {
+  clusterNodeConnection {
+    nodes {
+      id
+      status
+      ipAddress
+    }
+  }
+}
+
+fragment ClusterStateFragment on Cluster {
+  state {
+    connectedState
+    clusterRemovalState
+  }
+}
+
+fragment ClusterGlobalManagerFragment on Cluster {
+  passesConnectivityCheck
+  globalManagerConnectivityStatus {
+    urls {
+      url
+      isReachable
+    }
+  }
+  connectivityLastUpdated
+}
+
+fragment LambdaFeatureHistoryFragment on Cluster {
+  lambdaFeatureHistory {
+    wasRadarEverEnabled
+    wasSonarEverEnabled
+  }
+}

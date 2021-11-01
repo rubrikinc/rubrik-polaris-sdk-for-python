@@ -1,0 +1,5 @@
+mutation RubrikPolarisSDKRequest($config: ExportSnapshotJobConfigV2Input!, $id: String!) {
+  vSphereVMExportSnapshotV2(config: $config, id: $id) {
+    id
+  }
+}

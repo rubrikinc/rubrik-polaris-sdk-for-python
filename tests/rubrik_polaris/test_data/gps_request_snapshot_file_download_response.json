@@ -1,0 +1,14 @@
+{
+    "data": {
+        "vsphereVMDownloadSnapshotFiles": {
+            "id": "DOWNLOAD_SNAPPABLE_FILE_868aa03d-4145-4cb1-808b-e10c4f7a3741-vm-247778_46538de8-a218-4a1d-b6b5-5899d9c5f769:::0",
+            "status": "QUEUED",
+            "links": [
+                {
+                    "href": "https://127.0.0.1/api/internal/vmware/vm/request/DOWNLOAD_SNAPPABLE_FILE_868aa03d-4145-4cb1-808b-e10c4f7a3741-vm-247778_46538de8-a218-4a1d-b6b5-5899d9c5f769:::0",
+                    "rel": "self"
+                }
+            ]
+        }
+    }
+}

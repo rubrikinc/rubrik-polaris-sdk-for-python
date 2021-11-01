@@ -1,0 +1,147 @@
+{
+  "data": {
+    "activitySeriesConnection": {
+      "edges": [
+        {
+          "node": {
+            "id": 0,
+            "startTime": "2021-10-17T12:40:36.300Z",
+            "fid": "dummy-fe37b2ae429f",
+            "activitySeriesId": "dummy-e075705f81c9",
+            "lastUpdated": "2021-10-17T12:45:43.537Z",
+            "lastActivityType": "Anomaly",
+            "lastActivityStatus": "Success",
+            "location": "dummy.com",
+            "objectName": "sx1-radar02",
+            "objectId": "dummy-vm-4335",
+            "objectType": "VmwareVm",
+            "severity": "Critical",
+            "progress": "100%",
+            "cluster": {
+              "id": "dummy-067a256543ba",
+              "name": "sand1-rbk01"
+            },
+            "activityConnection": {
+              "nodes": [
+                {
+                  "id": "dummy-1be72171c668",
+                  "message": "dummy",
+                  "severity": "Critical",
+                  "time": "2021-10-17T12:45:43.537Z"
+                },
+                {
+                  "id": "dummy-73db58a8a483",
+                  "message": "dummy",
+                  "severity": "Warning",
+                  "time": "2021-10-17T12:45:43.470Z"
+                },
+                {
+                  "id": "dummy-fc3fe9468b3d",
+                  "message": "dummy",
+                  "severity": "Info",
+                  "time": "2021-10-17T12:45:43.453Z"
+                },
+                {
+                  "id": "dummy-2176c2619388",
+                  "message": "dummy",
+                  "severity": "Warning",
+                  "time": "2021-10-17T12:45:28.477Z"
+                },
+                {
+                  "id": "dummy-a5f3715c0796",
+                  "message": "dummy",
+                  "severity": "Info",
+                  "time": "2021-10-17T12:40:37.500Z"
+                },
+                {
+                  "id": "dummy-df1164ec4ba7",
+                  "message": "dummy",
+                  "severity": "Info",
+                  "time": "2021-10-17T12:40:37.019Z"
+                },
+                {
+                  "id": "dummy-f95e0ebeac15",
+                  "message": "dummy",
+                  "severity": "Info",
+                  "time": "2021-10-17T12:40:36.300Z"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "node": {
+            "id": 0,
+            "startTime": "2021-10-17T11:57:01.898Z",
+            "fid": "dummy-6a55f43677be",
+            "activitySeriesId": "dummy-dd8a9f22b939",
+            "lastUpdated": "2021-10-17T12:04:54.392Z",
+            "lastActivityType": "Anomaly",
+            "lastActivityStatus": "Success",
+            "location": "dummy.com",
+            "objectName": "sx1-radar01",
+            "objectId": "dummy-vm-3713",
+            "objectType": "VmwareVm",
+            "severity": "Critical",
+            "progress": "100%",
+            "cluster": {
+              "id": "dummy",
+              "name": "sand1-rbk01"
+            },
+            "activityConnection": {
+              "nodes": [
+                {
+                  "id": "dummy-97e4026837e6",
+                  "message": "dummy",
+                  "severity": "Critical",
+                  "time": "2021-10-17T12:04:54.392Z"
+                },
+                {
+                  "id": "dummy-826544d9ffa0",
+                  "message": "dummy",
+                  "severity": "Warning",
+                  "time": "2021-10-17T12:04:54.305Z"
+                },
+                {
+                  "id": "dummy-5273a3a21a6e",
+                  "message": "dummy",
+                  "severity": "Info",
+                  "time": "2021-10-17T12:04:54.289Z"
+                },
+                {
+                  "id": "dummy-718bc32fc47a",
+                  "message": "dummy",
+                  "severity": "Warning",
+                  "time": "2021-10-17T12:04:39.315Z"
+                },
+                {
+                  "id": "dummy-9f8a09014176",
+                  "message": "dummy",
+                  "severity": "Info",
+                  "time": "2021-10-17T11:57:03.290Z"
+                },
+                {
+                  "id": "dummy-023f13a109c8",
+                  "message": "dummy",
+                  "severity": "Info",
+                  "time": "2021-10-17T11:57:02.575Z"
+                },
+                {
+                  "id": "dummy-edc01bf1b96a",
+                  "message": "dummy",
+                  "severity": "Info",
+                  "time": "2021-10-17T11:57:01.898Z"
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "pageInfo": {
+        "endCursor": "dummyUMTI6MDQ6NTQuMzkyWjo6NzY4MDcxMQ==",
+        "hasNextPage": true,
+        "hasPreviousPage": false
+      }
+    }
+  }
+}

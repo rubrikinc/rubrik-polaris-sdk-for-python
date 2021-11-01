@@ -1,0 +1,53 @@
+{
+  "data": {
+    "snappable": {
+      "id": "86db05d1-292f-5973-b616-2ae3977f4428",
+      "missedSnapshotGroupByConnection": {
+        "nodes": []
+      },
+      "snapshotGroupByConnection": {
+        "nodes": [
+          {
+            "groupByInfo": {
+              "unit": "Day",
+              "start": "2021-08-01T18:30:00.000Z",
+              "end": "2021-08-02T18:29:59.999Z"
+            },
+            "snapshotConnection": {
+              "count": 1,
+              "nodes": [
+                {
+                  "id": "8eae627c-74e7-5166-b2b6-b0531f958cdf",
+                  "isIndexed": true,
+                  "isUnindexable": false
+                }
+              ]
+            }
+          },
+          {
+            "groupByInfo": {
+              "unit": "Day",
+              "start": "2021-08-30T18:30:00.000Z",
+              "end": "2021-08-31T18:29:59.999Z"
+            },
+            "snapshotConnection": {
+              "count": 2,
+              "nodes": [
+                {
+                  "id": "53172621-1b96-561f-8205-ed539a4e78de",
+                  "isIndexed": true,
+                  "isUnindexable": false
+                },
+                {
+                  "id": "6e8ea906-edbc-57a3-a959-a32c1c4ad2d6",
+                  "isIndexed": true,
+                  "isUnindexable": false
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  }
+}

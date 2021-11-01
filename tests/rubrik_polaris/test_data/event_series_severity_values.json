@@ -1,0 +1,17 @@
+{
+  "data": {
+    "__type": {
+      "states": [
+        {
+          "name": "Critical"
+        },
+        {
+          "name": "Warning"
+        },
+        {
+          "name": "Info"
+        }
+      ]
+    }
+  }
+}

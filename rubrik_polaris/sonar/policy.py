@@ -19,26 +19,40 @@
 #  DEALINGS IN THE SOFTWARE.
 
 
-class PolarisException(Exception):
-    """Base class for exceptions in this module."""
-    pass
+"""
+Collection of methods for sonar policies
+"""
 
 
-class RequestException(PolarisException):
-    """Exceptions during requests, e.g. connection, timeout, HTTP errors."""
-    pass
+def list_policy_analyzer_groups(self):
+    """Retrieve the list of sonar policy analyzer groups.
+
+    Returns:
+        dict: Dictionary of sonar policy analyzer groups.
+
+    Raises:
+        RequestException: If the query to Polaris returned an error.
+    """
+    try:
+        query_name = "sonar_policy_analyzer_groups"
+        response = self._query_raw(query_name=query_name)
+        return response
+
+    except Exception:
+        raise
 
 
-class ValidationException(PolarisException):
-    """Exceptions during validation of requests."""
-    pass
+def list_policies(self):
+    """Retrieves available sonar policies
 
+    Returns:
+        dict: Details of policies
 
-class AuthenticationException(RequestException):
-    """Exceptions during authentication failure"""
-    pass
-
-
-class ProxyException(RequestException):
-    """Exception during proxy call"""
-    pass
+    Raises:
+        RequestException: If the query to Polaris returned an error
+    """
+    try:
+        query_name = "sonar_policies"
+        return self._query_raw(query_name=query_name)
+    except Exception:
+        raise

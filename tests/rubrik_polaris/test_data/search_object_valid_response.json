@@ -1,0 +1,74 @@
+{
+    "data": {
+        "globalSearchResults": {
+            "edges": [
+                {
+                    "node": {
+                        "id": "2e732288-748e-44c3-8ad6-ae73c62b54d3",
+                        "name": "UserName",
+                        "objectType": "O365Onedrive",
+                        "physicalPath": [],
+                        "effectiveSlaDomain": {
+                            "id": "00000000-0000-0000-0000-000000000002",
+                            "name": "Bronzecd",
+                            "description": "Rubrik default Bronze level SLA Domain policy"
+                        }
+                    }
+                },
+                {
+                    "node": {
+                        "id": "3b013cff-49a5-5460-a114-deffb93c4755",
+                        "name": "deviderr-sandbox-w1 08-31 00:19 0",
+                        "objectType": "VmwareVirtualMachine",
+                        "physicalPath": [
+                            {
+                                "fid": "804ef24d-5b5e-565c-a85b-ab772555b902",
+                                "name": "sjc-40402-sand1-esx01.rubrikdemo.com",
+                                "objectType": "VSphereHost"
+                            },
+                            {
+                                "fid": "72480b29-0eaa-57a9-8c5c-45b7e1c2c826",
+                                "name": "Sandbox-1 SJC Cluster",
+                                "objectType": "VSphereComputeCluster"
+                            },
+                            {
+                                "fid": "3f3a92de-c7f3-57f7-989f-3731db83aeab",
+                                "name": "Sandbox-1 Datacenter",
+                                "objectType": "VSphereDatacenter"
+                            },
+                            {
+                                "fid": "415859e2-fd22-53ea-8de1-041d99298fe3",
+                                "name": "sand1-vcsa.rubrikdemo.com",
+                                "objectType": "VSphereVCenter"
+                            }
+                        ],
+                        "cluster": {
+                            "id": "cc19573c-db6c-418a-9d48-067a256543ba",
+                            "name": "sand1-rbk01"
+                        },
+                        "primaryClusterLocation": {
+                            "id": "cc19573c-db6c-418a-9d48-067a256543ba"
+                        },
+                        "isRelic": true,
+                        "effectiveSlaDomain": {
+                            "id": "9fa49d40-e657-5742-a1e9-4bd7caf00504",
+                            "name": "7 years of daily snaps",
+                            "fid": "9fa49d40-e657-5742-a1e9-4bd7caf00504",
+                            "cluster": {
+                                "id": "cc19573c-db6c-418a-9d48-067a256543ba",
+                                "name": "sand1-rbk01"
+                            }
+                        },
+                        "pendingSla": null
+                    }
+                }
+            ],
+            "pageInfo": {
+                "endCursor": "Y3Vyc29yOmludDox",
+                "startCursor": "Y3Vyc29yOmludDow",
+                "hasNextPage": true,
+                "hasPreviousPage": false
+            }
+        }
+    }
+}

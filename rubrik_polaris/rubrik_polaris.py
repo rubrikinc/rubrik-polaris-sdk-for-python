@@ -21,8 +21,11 @@
 import os
 import pprint
 import urllib3
+import re
+import json
 
 from .exceptions import RequestException
+from .logger import logging_setup
 
 
 class PolarisClient:
@@ -42,15 +45,29 @@ class PolarisClient:
     from .common.graphql import get_enum_values
     from .cluster import get_cdm_cluster_location, get_cdm_cluster_connection_status
     from .appflows import get_appflows_blueprints
+    from .common.util import to_number, check_first_arg, to_boolean, validate_id
+    from .common.object import list_vm_objects, search_object, get_object_metadata, get_object_snapshot
+    from .sonar.policy import list_policy_analyzer_groups, list_policies
+    from .sonar.scan import trigger_on_demand_scan, get_on_demand_scan_status, get_on_demand_scan_result
+    from .sonar.object import get_sensitive_hits_object_list, get_sensitive_hits_object_detail, get_sensitive_hits
+    from .radar.csv import get_csv_result
+    from .sonar.csv import get_csv_download, get_csv_result_download
+    from .gps.files import get_snapshot_files, request_download_snapshot_files
+    from .gps.vm import create_vm_snapshot, create_vm_livemount, list_vsphere_hosts, export_vm_snapshot, list_vsphere_datastores
+    from .gps.sla import list_sla_domains
+    from .gps.cluster import list_clusters
+    from .radar.anomaly import get_analysis_status
+    from .common.core import list_event_series
 
     # Private
-    from .common.connection import _query, _get_access_token_basic, _get_access_token_keyfile
+    from .common.connection import _query, _query_raw, _get_access_token_basic, _get_access_token_keyfile
     from .common.validations import _validate
     from .compute.ec2 import _get_aws_region_vpcs, _get_aws_region_kmskeys, _get_aws_region_sshkeypairs
     from .compute.common import _submit_compute_restore, _get_compute_object_ids, _submit_compute_export
     from .common.monitor import _monitor_job, _monitor_threader, _monitor_task
     from .common.graphql import _dump_nodes, _get_details_from_graphql_query
     from .common.core import _get_snapshot
+    from .common.user import get_user_downloads
     from .accounts.aws import _invoke_account_delete_aws, _invoke_aws_stack, _commit_account_delete_aws, _update_account_aws, \
         _destroy_aws_stack, _disable_account_aws, _get_aws_profiles, _add_account_aws, _delete_account_aws, \
         _update_account_aws_initiate, _get_account_map_aws
@@ -64,13 +81,22 @@ class PolarisClient:
 
         self._pp = pprint.PrettyPrinter(indent=4)
 
+        self.logger = logging_setup()
+
         # Set credentials
         self._domain = self._get_cred('rubrik_polaris_domain', domain)
         self._username = self._get_cred('rubrik_polaris_username', username)
         self._password = self._get_cred('rubrik_polaris_password', password)
+        self._verify = not kwargs.get('insecure', False)
+        self._proxies = kwargs.get('proxies')
+        self._json_data = kwargs.get('json_data')
+        self._json_keyfile = json_keyfile
 
-        if (not self._domain and not self._username and not self._password ) and not json_keyfile:
-            raise Exception('Required credentials are missing! Please pass in username, password and domain, directly or through the OS environment, or .json key file.')
+        if (not self._domain or not self._username or not self._password) and not json_keyfile \
+                and not self._json_data:
+            self.logger.critical("Required credentials are missing!")
+            raise Exception('Required credentials are missing! Please pass in username, password and domain, directly'
+                            ' or through the OS environment, or .json key file, or JSON data.')
 
         # Set base variables
         self._kwargs = kwargs
@@ -87,22 +113,18 @@ class PolarisClient:
             self._baseurl = "https://{}.my.rubrik.com/api".format(self._domain)
 
         try:
-            if self._username and self._password:
-                self._access_token = self._get_access_token_basic()
-                del(self._username, self._password)
-            elif json_keyfile:
-                import json
-                import re
-                with open(json_keyfile) as f:
+            self._access_token = None
+            self._headers = None
+
+            if self._json_keyfile:
+                with open(self._json_keyfile) as f:
                     json_key = json.load(f)
                 self._baseurl = re.sub(r"/client_token", "", json_key['access_token_uri'])
-                self._access_token = self._get_access_token_keyfile(json_key=json_key)
 
-            self._headers = {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'Authorization': 'Bearer ' + self._access_token
-            }
+            elif self._json_data:
+                json_data = json.loads(self._json_data)
+                self._baseurl = re.sub(r"/client_token", "", json_data['access_token_uri'])
+
             # Get graphql content
             (self._graphql_query_map) = _build_graphql_maps(self)
 
@@ -111,6 +133,7 @@ class PolarisClient:
         except OSError as os_err:
             raise
         except Exception as e:
+            self.logger.error(e)
             raise
 
     @staticmethod
@@ -124,3 +147,34 @@ class PolarisClient:
             cred = override
 
         return cred
+
+    def authenticate(self):
+        if self._json_keyfile:
+            with open(self._json_keyfile) as f:
+                json_key = json.load(f)
+            self._access_token = self._get_access_token_keyfile(json_key=json_key)
+            self.logger.info("Retrieved access token using json key file.")
+
+        elif self._json_data:
+            json_data = json.loads(self._json_data)
+            self._access_token = self._get_access_token_keyfile(json_key=json_data)
+            self.logger.info("Retrieved access token using json data.")
+
+        elif self._username and self._password:
+            self._access_token = self._get_access_token_basic()
+            del (self._username, self._password)
+            self.logger.info("Retrieved access token using username and password.")
+
+        return self._access_token
+
+    def prepare_headers(self):
+        self._headers = {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+        }
+        if self._access_token:
+            self._headers['Authorization'] = 'Bearer ' + self._access_token
+        else:
+            self._headers['Authorization'] = 'Bearer ' + self.authenticate()
+
+        return self._headers

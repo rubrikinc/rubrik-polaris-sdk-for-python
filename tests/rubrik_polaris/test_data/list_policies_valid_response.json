@@ -1,0 +1,144 @@
+{
+    "data": {
+        "policyConnection": {
+            "nodes": [
+                {
+                    "id": "bdb8c043-ee89-43ef-a3e2-73e94b5b3900",
+                    "name": "CCPA",
+                    "description": "California Consumer Privacy Act",
+                    "creator": null,
+                    "totalObjects": 3,
+                    "numAnalyzers": 5,
+                    "objectStatuses": [
+                        {
+                            "id": "1b174c2e-f77b-5006-baea-fe37b2ae429f",
+                            "latestSnapshotResult": {
+                                "snapshotFid": "f232639f-cfe3-54fb-baf4-5fdc8ff1016c"
+                            },
+                            "policyStatuses": [
+                                {
+                                    "policyId": "12953409-e9ac-4baa-8a12-d62a770c885a",
+                                    "status": "UP_TO_DATE"
+                                },
+                                {
+                                    "policyId": "24b7ba8f-57eb-4cc9-aeba-5452cd67c391",
+                                    "status": "UP_TO_DATE"
+                                },
+                                {
+                                    "policyId": "3ac1d039-b32e-4402-9581-4ca657206f6c",
+                                    "status": "UP_TO_DATE"
+                                },
+                                {
+                                    "policyId": "53e447ed-9114-4fcd-b5a6-7ac759980fde",
+                                    "status": "UP_TO_DATE"
+                                },
+                                {
+                                    "policyId": "98c36d6e-3b9a-4d1d-99d8-f74d71e10432",
+                                    "status": "UP_TO_DATE"
+                                },
+                                {
+                                    "policyId": "a74058fa-cbb4-414a-9fbd-ea9396f1541b",
+                                    "status": "UP_TO_DATE"
+                                },
+                                {
+                                    "policyId": "bdb8c043-ee89-43ef-a3e2-73e94b5b3900",
+                                    "status": "UP_TO_DATE"
+                                }
+                            ]
+                        },
+                        {
+                            "id": "a82e888c-2440-5af9-8c2a-447a97f6746c",
+                            "latestSnapshotResult": {
+                                "snapshotFid": "8c9ca97d-465e-5784-87f2-be47995e3da1"
+                            },
+                            "policyStatuses": [
+                                {
+                                    "policyId": "bdb8c043-ee89-43ef-a3e2-73e94b5b3900",
+                                    "status": "UNKNOWN"
+                                }
+                            ]
+                        },
+                        {
+                            "id": "ac0a6844-a2fc-52b0-bb71-6a55f43677be",
+                            "latestSnapshotResult": {
+                                "snapshotFid": "e90ab105-455d-51e9-b5fc-223e2da6f242"
+                            },
+                            "policyStatuses": [
+                                {
+                                    "policyId": "12953409-e9ac-4baa-8a12-d62a770c885a",
+                                    "status": "UP_TO_DATE"
+                                },
+                                {
+                                    "policyId": "24b7ba8f-57eb-4cc9-aeba-5452cd67c391",
+                                    "status": "UP_TO_DATE"
+                                },
+                                {
+                                    "policyId": "3ac1d039-b32e-4402-9581-4ca657206f6c",
+                                    "status": "UP_TO_DATE"
+                                },
+                                {
+                                    "policyId": "53e447ed-9114-4fcd-b5a6-7ac759980fde",
+                                    "status": "UP_TO_DATE"
+                                },
+                                {
+                                    "policyId": "98c36d6e-3b9a-4d1d-99d8-f74d71e10432",
+                                    "status": "UP_TO_DATE"
+                                },
+                                {
+                                    "policyId": "a74058fa-cbb4-414a-9fbd-ea9396f1541b",
+                                    "status": "UP_TO_DATE"
+                                },
+                                {
+                                    "policyId": "bdb8c043-ee89-43ef-a3e2-73e94b5b3900",
+                                    "status": "UP_TO_DATE"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "01e1df79-9b33-4f22-986d-4dcde12728c8",
+                    "name": "Custom Policy 08/24/2021",
+                    "description": "",
+                    "creator": {
+                        "email": "dummy_email"
+                    },
+                    "totalObjects": 2,
+                    "numAnalyzers": 2,
+                    "objectStatuses": [
+                        {
+                            "id": "953aad46-89ac-5873-b4f2-9cbab4ee61d6",
+                            "latestSnapshotResult": {
+                                "snapshotFid": "959f9f11-37ac-5b3f-ab21-8254017d32c6"
+                            },
+                            "policyStatuses": [
+                                {
+                                    "policyId": "01e1df79-9b33-4f22-986d-4dcde12728c8",
+                                    "status": "UNKNOWN"
+                                },
+                                {
+                                    "policyId": "98c36d6e-3b9a-4d1d-99d8-f74d71e10432",
+                                    "status": "UP_TO_DATE"
+                                }
+                            ]
+                        },
+                        {
+                            "id": "d25142ba-ec52-57b9-9efb-1ff0d49729d4",
+                            "latestSnapshotResult": null,
+                            "policyStatuses": [
+                                {
+                                    "policyId": "01e1df79-9b33-4f22-986d-4dcde12728c8",
+                                    "status": "UNKNOWN"
+                                },
+                                {
+                                    "policyId": "53e447ed-9114-4fcd-b5a6-7ac759980fde",
+                                    "status": "UNKNOWN"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}

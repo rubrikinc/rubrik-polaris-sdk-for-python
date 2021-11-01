@@ -1,0 +1,38 @@
+{
+  "data": {
+    "__type": {
+      "states": [
+        {
+          "name": "TaskFailure"
+        },
+        {
+          "name": "Canceling"
+        },
+        {
+          "name": "TaskSuccess"
+        },
+        {
+          "name": "Info"
+        },
+        {
+          "name": "Failure"
+        },
+        {
+          "name": "Running"
+        },
+        {
+          "name": "Queued"
+        },
+        {
+          "name": "Warning"
+        },
+        {
+          "name": "Canceled"
+        },
+        {
+          "name": "Success"
+        }
+      ]
+    }
+  }
+}

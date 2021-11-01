@@ -19,26 +19,25 @@
 #  DEALINGS IN THE SOFTWARE.
 
 
-class PolarisException(Exception):
-    """Base class for exceptions in this module."""
-    pass
+"""
+Collection of methods for user.
+"""
 
 
-class RequestException(PolarisException):
-    """Exceptions during requests, e.g. connection, timeout, HTTP errors."""
-    pass
+def get_user_downloads(self):
+    """
+    To retrieve the user.
 
+    Returns:
+        dict: Dictionary containing download user information.
 
-class ValidationException(PolarisException):
-    """Exceptions during validation of requests."""
-    pass
+    Raises:
+        RequestException: If the query to Polaris returned an error.
+    """
+    try:
 
+        response = self._query_raw(query_name="user_downloads")
+        return response
 
-class AuthenticationException(RequestException):
-    """Exceptions during authentication failure"""
-    pass
-
-
-class ProxyException(RequestException):
-    """Exception during proxy call"""
-    pass
+    except Exception:
+        raise

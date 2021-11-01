@@ -1,0 +1,47 @@
+query RubrikPolarisSDKRequest($snappableFid: String!, $snapshotFid: String!) {
+    policyObj(snappableFid: $snappableFid, snapshotFid: $snapshotFid) {
+        id
+        rootFileResult {
+            hits {
+                totalHits
+            }
+            analyzerGroupResults {
+                analyzerGroup {
+                    name
+                }
+                analyzerResults {
+                    hits {
+                        totalHits
+                    }
+                    analyzer {
+                        name
+                    }
+                }
+                hits {
+                    totalHits
+                }
+            }
+            filesWithHits {
+                totalHits
+            }
+            openAccessFiles {
+                totalHits
+            }
+            openAccessFolders {
+                totalHits
+            }
+            openAccessFilesWithHits {
+                totalHits
+            }
+            staleFiles {
+                totalHits
+            }
+            staleFilesWithHits {
+                totalHits
+            }
+            openAccessStaleFiles {
+                totalHits
+            }
+        }
+    }
+}

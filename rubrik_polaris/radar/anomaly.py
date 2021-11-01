@@ -18,27 +18,33 @@
 #  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 #  DEALINGS IN THE SOFTWARE.
 
-
-class PolarisException(Exception):
-    """Base class for exceptions in this module."""
-    pass
-
-
-class RequestException(PolarisException):
-    """Exceptions during requests, e.g. connection, timeout, HTTP errors."""
-    pass
+"""
+Collection of methods for analysis.
+"""
 
 
-class ValidationException(PolarisException):
-    """Exceptions during validation of requests."""
-    pass
+def get_analysis_status(self, activity_series_id, cluster_id):
+    """Retrieve the analysis status result.
 
+    Args:
+        activity_series_id: The ID of the Polaris Event Series.
+        cluster_id: Cluster UUID for analysis.
 
-class AuthenticationException(RequestException):
-    """Exceptions during authentication failure"""
-    pass
+    Returns:
+        dict: Dictionary containing download link
 
+    Raises:
+        RequestException: If the query to Polaris returned an error
 
-class ProxyException(RequestException):
-    """Exception during proxy call"""
-    pass
+    """
+    try:
+        variables = {
+            'activitySeriesId': self.validate_id(activity_series_id, "activity_series_id"),
+            'clusterUuid': self.validate_id(cluster_id, "cluster_id")
+        }
+
+        response = self._query_raw(query_name="radar_analysis_status", variables=variables)
+        return response
+
+    except Exception:
+        raise
