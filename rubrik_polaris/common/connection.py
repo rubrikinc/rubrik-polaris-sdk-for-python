@@ -77,15 +77,15 @@ def _query(self, query_name=None, variables=None, timeout=60):
         raise RequestException(err)
 
 
-def _get_access_token_basic(self):
+def _get_access_token_basic(self, username:str, password: str):
     import requests
     from rubrik_polaris.exceptions import RequestException
 
     try:
         session_url = "{}/session".format(self._baseurl)
         payload = {
-            "username": self._username,
-            "password": self._password
+            "username": username,
+            "password": password
         }
         headers = {
             'Content-Type': 'application/json;charset=UTF-8',
