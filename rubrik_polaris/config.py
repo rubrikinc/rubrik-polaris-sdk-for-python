@@ -10,6 +10,12 @@ def get_conf_val(
         override: Optional[str] = None,
         default: Optional[str] = None,
         raise_if_none: Optional[bool] = True) -> Optional[str]:
+    """Looks up a configuration value, in this order:
+       1. if `override` given, return that.
+       2. if not defined, look up the env variable 'rubrik_polaris_'+name
+       3. if not defined, use `default`
+       4. if not defined, raise if `raise_if_none` or return None.
+    """
     val = override if override is not None else \
         _rubrik_env.get(ENV_VAR_PREFIX + name, default)
 

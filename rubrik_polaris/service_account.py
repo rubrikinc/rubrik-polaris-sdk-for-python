@@ -1,11 +1,19 @@
 import json
 import re
-from typing import Optional, Tuple, Dict
+from typing import Optional, Tuple, Dict, Union
 from requests import post
 from .config import get_conf_val
+from pathlib import Path
 
 
 class BaseUrl:
+    """Represents the base URL of a Polaris instance.
+
+    Typically, for an account `my-account`, the base url is:
+    https://my-account.my.rubrik.com/api
+
+    """
+
     def __init__(self, baseurl: str):
         self.baseurl = baseurl
 
@@ -20,7 +28,10 @@ class BaseUrl:
     def __str__(self) -> str:
         return self.baseurl
 
+
 class ServiceAccount:
+    """A Polaris service account."""
+
     def __init__(
             self,
             client_id: str,
@@ -51,7 +62,8 @@ class ServiceAccount:
             'access_token_uri', f'https://{self.baseurl}/client_token')
 
     @classmethod
-    def from_json(cls, d: Dict[str]) -> 'ServiceAccount':
+    def from_json(cls, d: Dict[str, str]) -> 'ServiceAccount':
+        """Make a ServiceAccount object from a JSON-like dict."""
         return ServiceAccount(
             client_id=d['client_id'],
             client_secret=d['client_secret'],
@@ -60,8 +72,9 @@ class ServiceAccount:
         )
 
     @classmethod
-    def from_json_file(cls, path) -> 'ServiceAccount':
-        with open(path) as f:
+    def from_json_file(cls, path: Union[str, Path]) -> 'ServiceAccount':
+        """Make a ServiceAccount object from a JSON file."""
+        with Path(path).expanduser().open() as f:
             return ServiceAccount.from_json(json.load(f))
 
     @classmethod
@@ -71,6 +84,8 @@ class ServiceAccount:
                  domain_override: Optional[str] = None,
                  root_domain_override: Optional[str] = None,
                  ) -> 'ServiceAccount':
+        """Make a ServiceAccount object from environment variables and
+           argument overrides."""
         return ServiceAccount(
             client_id=get_conf_val('client_id', client_id_override),
             client_secret=get_conf_val('client_secret', client_secret_override),
@@ -130,8 +145,8 @@ class ServiceAccount:
             expiration = '2021-11-05T23:35:51Z'
         """
         r = post(
-            url=f'https://{self.baseurl}/cdm_client_token',
-            data=dict(
+            url=f'{self.baseurl}/cdm_client_token',
+            json=dict(
                 client_id=self.client_id,
                 client_secret=self.client_secret,
                 cluster_uuid=cluster_uuid,

@@ -1,0 +1,22 @@
+---
+#
+# Example configuration for get_cdm_cluster_client_token.py
+#
+
+# Service account info
+service_account:
+  # Service account client id.
+  client_id: client|pfsNd270LO7SdfoTUsJhAL7kAt1ytNvA
+  # Service account client secret.
+  client_secret: aouEvKmdiMBZlNdY0i5FU6sEE-bAjW-sgVKwBgS633K3NxoIwWFd_COAesYRJvjw
+  # Service account name.
+  name: admin service account
+  # Access token URI
+  access_token_uri: https://my-company.my.rubrik.com/api/client_token
+
+# CDM Cluster info
+appliance:
+  # Cluster UUID
+  cluster_uuid: 40505837-9772-4a91-a18a-db6108c66b59
+  # CDM node host name or IP address.
+  cluster_node:
