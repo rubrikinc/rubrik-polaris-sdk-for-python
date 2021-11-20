@@ -1,13 +1,15 @@
 import json
 import re
-from typing import Optional, Tuple, Dict, Union
-from requests import post
-from .config import get_conf_val
 from pathlib import Path
+from typing import Optional, Tuple, Dict, Union
+
+from requests import post
+
+from .config import get_conf_val
 
 
 class BaseUrl:
-    """Represents the base URL of a Polaris instance.
+    """Represents the base URL of a Rubrik instance.
 
     Typically, for an account `my-account`, the base url is:
     https://my-account.my.rubrik.com/api
@@ -28,47 +30,48 @@ class BaseUrl:
     def __str__(self) -> str:
         return self.baseurl
 
+    def access_token_uri(self) -> str:
+        return f'{self.baseurl}/client_token'
+
 
 class ServiceAccount:
-    """A Polaris service account."""
+    """A Rubrik service account."""
 
     def __init__(
             self,
+            name: str,
             client_id: str,
             client_secret: str,
-            baseurl: BaseUrl,
-            **kwargs):
-        """A Polaris service account.
+            access_token_uri: str):
+        """A Rubrik service account.
 
-        :param client_id: Polaris service account client id.
+        :param name: service account name (as entered in the UI).
+               Example value:
+               'my service account'
+        :param client_id: service account client id.
                Example value:
                'client|rjSOLdenk7gtFWSnSiSgX4G1SprdkF6I'
-        :param client_secret: Polaris service account client secret
+        :param client_secret: service account client secret
                Example value:
                'qzY2TtYxPB0WYvqviWtHvK2w5P3wvQ39YXTPpIAEZCxLkSkfDCE0IV4DTWu3_o2S'
-        :param domain: Polaris domain. If not given here, must be given as
-               environment variable 'rubrik_polaris_domain'.
+        :param access_token_uri: access token URI
                Example value:
-               'my-company'
-        :param kwargs: uncommon options:
-               - kwargs['root_domain'] to change Polaris root domain.
-                 Default: 'my.rubrik.com'
-
+               'https://my-account.my.rubrik.com/api/client_token'
         """
-        self.client_id: str = get_conf_val('client_id', client_id)
-        self.client_secret: str = get_conf_val('client_secret', client_secret)
-        self.baseurl: BaseUrl = baseurl
-        self._access_token_uri: Optional[str] = kwargs.get(
-            'access_token_uri', f'https://{self.baseurl}/client_token')
+        self.name: str = name
+        self.client_id: str = client_id
+        self.client_secret: str = client_secret
+        self.access_token_uri: str = access_token_uri
+        self.baseurl: BaseUrl = BaseUrl.from_access_token_uri(access_token_uri)
 
     @classmethod
     def from_json(cls, d: Dict[str, str]) -> 'ServiceAccount':
         """Make a ServiceAccount object from a JSON-like dict."""
         return ServiceAccount(
+            name=d['name'],
             client_id=d['client_id'],
             client_secret=d['client_secret'],
-            baseurl=BaseUrl.from_access_token_uri(d['access_token_uri']),
-            access_token_uri=d['access_token_uri'],
+            access_token_uri=d['access_token_uri']
         )
 
     @classmethod
@@ -79,56 +82,67 @@ class ServiceAccount:
 
     @classmethod
     def from_env(cls,
+                 name: str,
                  client_id_override: Optional[str] = None,
                  client_secret_override: Optional[str] = None,
                  domain_override: Optional[str] = None,
                  root_domain_override: Optional[str] = None,
                  ) -> 'ServiceAccount':
         """Make a ServiceAccount object from environment variables and
-           argument overrides."""
+           argument overrides.
+
+           see: get_conf_val for info on environment variables.
+        """
+        baseurl = BaseUrl.from_domain(
+            get_conf_val('domain', domain_override),
+            get_conf_val('root_domain', root_domain_override,
+                         'my.rubrik.com')
+        )
         return ServiceAccount(
+            name=name,
             client_id=get_conf_val('client_id', client_id_override),
             client_secret=get_conf_val('client_secret', client_secret_override),
-            baseurl=BaseUrl.from_domain(
-                get_conf_val('domain', domain_override),
-                get_conf_val('root_domain', root_domain_override,
-                             'my.rubrik.com')
-            )
+            access_token_uri=baseurl.access_token_uri()
         )
 
-    def get_client_token(self) -> str:
+    def get_token(self) -> str:
         """Retrieve a client access token using a service account.
 
         :return: client access token.
         """
 
         r = post(
-            url=self._access_token_uri,
-            data=dict(
+            url=self.access_token_uri,
+            json=dict(
                 client_id=self.client_id,
                 client_secret=self.client_secret,
+                name=self.name
             ),
+            headers={
+                'Content-Type': 'application/json;charset=UTF-8',
+                'Accept': 'application/json, text/plain'
+            }
         )
         r.raise_for_status()  # raise only if 4xx or 5xx error.
         session: Dict[str] = r.json()
         assert session['client_id'] == self.client_id
         return session['access_token']
 
-    def get_cluster_client_token(self, cluster_uuid: str) \
+    def get_appliance_token(self, appliance_uuid: str) \
             -> Tuple[str, str, str]:
-        """Create a CDM session on a given cluster with a Polaris service account,
+        """Create a session on a given appliance with a service account,
         retrieve client access token for it.
 
         Notes:
         - this function does not use username & password credentials, but a
-          service account instead. The CDM session can be created here without
-          any active Polaris session.
-        - your service account must have sufficient permissions to access the
-          CDM cluster.
-        - the cluster must be registered with the current Polaris instance.
+          service account instead. The appliance session can be created here
+          without any active Rubrik session.
+        - the service account must have sufficient permissions to access the
+          appliance.
+        - the appliance must be registered with the current Rubrik instance.
         - see list_cdm_clusters to retrieve your cluster ID.
 
-        :param cluster_uuid: Cluster ID.
+        :param appliance_uuid: Appliance or cluster UUID.
                Example value:
                '40505837-9772-4a91-a18a-db6108c66b59'
         :return: tuple of 3 strings: session id, token and expiration date.
@@ -149,7 +163,7 @@ class ServiceAccount:
             json=dict(
                 client_id=self.client_id,
                 client_secret=self.client_secret,
-                cluster_uuid=cluster_uuid,
+                cluster_uuid=appliance_uuid,
             ),
         )
         r.raise_for_status()  # raise only if 4xx or 5xx error.

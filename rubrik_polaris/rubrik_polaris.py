@@ -20,16 +20,18 @@
 
 import os
 import pprint
+from pathlib import Path
+from typing import Union
+
 import urllib3
 
-from .exceptions import RequestException
-from .service_account import ServiceAccount, BaseUrl
 from .config import get_conf_val
+from .service_account import ServiceAccount, BaseUrl
 
 
 class PolarisClient:
     """
-    There are 2 ways to create a Polaris client object:
+    There are 2 recommended ways to create a Polaris client object:
     - from credentials, by providing domain, username and password ->
         PolarisClient.from_credentials()
     - with a service account, either with a ServiceAccount object or
@@ -37,6 +39,8 @@ class PolarisClient:
         PolarisClient.from_service_account()
         PolarisClient.from_service_account_file()
 
+    Although a PolarisClient object can be created with its constructor,
+    we recommend using the `from_X` factory methods as they are clearer.
     """
     # Public
     from .common.core import get_sla_domains, submit_on_demand, submit_assign_sla, get_task_status, \
@@ -87,31 +91,44 @@ class PolarisClient:
 
         # Set base variables
         self._kwargs = kwargs
-        self._data_path = "{}/graphql/".format(os.path.dirname(os.path.realpath(__file__)))
+        self._baseurl = kwargs.get('baseurl')
+        self._access_token = kwargs.get('access_token')
+
+        # Determine location of the GraphQL data directory:
+        # When running from installed package, data path is
+        # <this_dir>/graphql ,
+        # When running from source files, data path is
+        # <this_dir>/common/graphql
+        this_dir = os.path.dirname(os.path.realpath(__file__))
+        data_path = Path(this_dir) / 'graphql'
+        if not data_path.is_dir():
+            data_path = Path(this_dir) / 'common' / 'graphql'
+            if not data_path.is_dir():
+                raise NotADirectoryError('Could not find graphql/ directory')
+        self._data_path = f'{data_path}/'
 
         # Switch off SSL checks if needed
         if self._kwargs.get('insecure', False):
             urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-        if 'service_account' in kwargs:
-            sa: ServiceAccount = kwargs['service_account']
-            self._baseurl = sa.baseurl
-            self._access_token = sa.get_client_token()
-        elif json_keyfile is not None:
+        if self._baseurl:
+            assert self._access_token, \
+                'baseurl and access_token must both be given'
+        elif json_keyfile:
             sa: ServiceAccount = ServiceAccount.from_json_file(json_keyfile)
             self._baseurl = sa.baseurl
-            self._access_token = sa.get_client_token()
+            self._access_token = sa.get_token()
         else:
             # from credentials
             domain = get_conf_val('domain', domain)
-            username = get_conf_val('username', username)
-            password = get_conf_val('password', password)
             # Adjust Polaris domain if a custom root is defined
             root_domain = get_conf_val('root_domain',
                                        self._kwargs.get('root_domain'),
                                        'my.rubrik.com')
             self._baseurl = BaseUrl.from_domain(domain, root_domain).baseurl
-            self._access_token = self._get_access_token_basic(username, password)
+            self._access_token = self._get_access_token_basic(
+                username=get_conf_val('username', username),
+                password=get_conf_val('password', password))
 
         self._headers = {
             'Content-Type': 'application/json',
@@ -122,18 +139,21 @@ class PolarisClient:
         (self._graphql_query_map) = _build_graphql_maps(self)
 
     @classmethod
-    def from_service_account(cls, service_account: ServiceAccount, **kwargs):
+    def from_service_account(cls, service_account: ServiceAccount,
+                             **kwargs) -> 'PolarisClient':
         return PolarisClient(
-            service_account=service_account,
+            baseurl=service_account.baseurl,
+            access_token=service_account.get_token(),
             **kwargs)
 
     @classmethod
-    def from_service_account_file(cls, path, **kwargs):
-        return PolarisClient(
+    def from_service_account_file(cls, path: Union[str, Path],
+                                  **kwargs) -> 'PolarisClient':
+        return PolarisClient.from_service_account(
             service_account=ServiceAccount.from_json_file(path),
             **kwargs)
 
     @classmethod
-    def from_credentials(cls, username: str, password: str, domain: str,
-                         **kwargs):
+    def from_credentials(cls, domain: str, username: str, password: str,
+                         **kwargs) -> 'PolarisClient':
         return PolarisClient(domain, username, password, **kwargs)
