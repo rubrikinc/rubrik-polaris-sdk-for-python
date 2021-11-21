@@ -3,7 +3,7 @@ import re
 from pathlib import Path
 from typing import Optional, Tuple, Dict, Union
 
-from requests import post
+from requests import post, HTTPError
 
 from .config import get_conf_val
 
@@ -123,7 +123,9 @@ class ServiceAccount:
                 'Accept': 'application/json, text/plain'
             }
         )
-        r.raise_for_status()  # raise only if 4xx or 5xx error.
+        # In case of error, response is guaranteed to include error message
+        if r.status_code >= 400:
+            raise HTTPError(r.text)
         session: Dict[str] = r.json()
         assert session['client_id'] == self.client_id
         return session['access_token']
@@ -166,6 +168,8 @@ class ServiceAccount:
                 cluster_uuid=appliance_uuid,
             ),
         )
-        r.raise_for_status()  # raise only if 4xx or 5xx error.
+        # In case of error, response is guaranteed to include error message
+        if r.status_code >= 400:
+            raise HTTPError(r.text)
         session: Dict[str] = r.json()['session']
         return session['id'], session['token'], session['expiration']
