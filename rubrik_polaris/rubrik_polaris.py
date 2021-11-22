@@ -58,11 +58,13 @@ class PolarisClient:
     from .compute.vsphere import get_compute_vsphere, get_compute_object_ids_vsphere
     from .storage.ebs import get_storage_object_ids_ebs, get_storage_ebs
     from .common.graphql import get_enum_values
-    from .cluster import get_cdm_cluster_location, get_cdm_cluster_connection_status
+    from .cluster import get_cdm_cluster_location, \
+        get_cdm_cluster_connection_status, \
+        get_cdm_cluster_ipaddr
     from .appflows import get_appflows_blueprints
 
     # Private
-    from .common.connection import _query, _get_access_token_basic, _get_access_token_keyfile
+    from .common.connection import _query, _get_access_token_basic
     from .common.validations import _validate
     from .compute.ec2 import _get_aws_region_vpcs, _get_aws_region_kmskeys, _get_aws_region_sshkeypairs
     from .compute.common import _submit_compute_restore, _get_compute_object_ids, _submit_compute_export
@@ -77,7 +79,6 @@ class PolarisClient:
         _disable_account_gcp_project, _get_account_gcp_project, _get_account_gcp_permissions_cnp, \
         _get_account_gcp_project_uuid_by_string
     from .accounts.azure import _get_native_subscription_id_and_name, _get_accounts_azure_permission_version
-    from .common.connection import _get_access_token_keyfile, _get_access_token_basic
 
     def __init__(
             self,

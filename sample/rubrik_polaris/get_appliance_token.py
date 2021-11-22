@@ -10,6 +10,7 @@ This sample script needs 3 pieces of information to run:
 from argparse import ArgumentParser
 from os import environ
 from pathlib import Path
+from typing import Union
 
 import requests
 import urllib3
@@ -25,12 +26,26 @@ except ImportError:
     rubrik_cdm = None
 
 
-def get_appliance_token(conf_file, appliance_uuid, appliance_node_ip,
+def get_cluster_ipaddr(sa: rubrik_polaris.ServiceAccount,
+                       uuid: str) -> str:
+    """Retrieve cluster IP address from the Rubrik GraphQL API.
+    Raises if `uuid` is invalid, or refers to a
+    disconnected cluster.
+    """
+    rubrik = rubrik_polaris.PolarisClient.from_service_account(sa)
+    return rubrik.get_cdm_cluster_ipaddr(uuid)
+
+
+def get_appliance_token(conf_file: Union[str, Path],
+                        appliance_uuid: str,
                         insecure=False):
     # Create a service account from configuration:
     sa = rubrik_polaris.ServiceAccount.from_json_file(conf_file)
 
-    # Retrieve a token from the appliance:
+    # Retrieve appliance IP address from the GraphQL API:
+    ipaddr = get_cluster_ipaddr(sa, appliance_uuid)
+
+    # Retrieve an appliance token from the service account API:
     session_id, token, expiration = \
         sa.get_appliance_token(appliance_uuid)
     print(f'Appliance token:\n'
@@ -44,19 +59,19 @@ def get_appliance_token(conf_file, appliance_uuid, appliance_node_ip,
     # Try to use the Rubrik CDM Python SDK:
     if rubrik_cdm:
         # Send request using Rubrik CDM Python SDK:
-        environ['rubrik_cdm_node_ip'] = appliance_node_ip
+        environ['rubrik_cdm_node_ip'] = ipaddr
         environ['rubrik_cdm_token'] = token
         environ.pop('rubrik_cdm_username', None)
         environ.pop('rubrik_cdm_password', None)
-        rubrik = rubrik_cdm.Connect()
+        appliance = rubrik_cdm.Connect()
         print('rubrik_cdm.Connect().cluster_version()')
-        cluster_version = rubrik.cluster_version()
+        cluster_version = appliance.cluster_version()
         print('Cluster version: ', cluster_version)
     else:
         # If Rubrik CDM Python SDK not on the path, send the request
         # directly with an HTTP GET:
         print('Rubrik CDM Python SDK not found on path.')
-        appliance_url = f'http://{appliance_node_ip}/api/v1/cluster/me/version'
+        appliance_url = f'http://{ipaddr}/api/v1/cluster/me/version'
         print(f'GET {appliance_url}')
         r = requests.get(appliance_url,
                          headers={'Authorization': f'Bearer {token}'},
@@ -70,11 +85,9 @@ if __name__ == '__main__':
                         help='Path to service account JSON file.')
     parser.add_argument('uuid',
                         help='Appliance/cluster UUID')
-    parser.add_argument('node_ip',
-                        help='Appliance/cluster node IP address or hostname')
     parser.add_argument('-k', '--insecure', action="store_true", default=False,
                         help='Allow connections to be insecure.')
     args = parser.parse_args()
     if args.insecure:
         urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
-    get_appliance_token(args.conf_file, args.uuid, args.node_ip, args.insecure)
+    get_appliance_token(args.conf_file, args.uuid, args.insecure)
