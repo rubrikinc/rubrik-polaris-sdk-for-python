@@ -20,107 +20,141 @@
 
 import os
 import pprint
+from pathlib import Path
+from typing import Union
+
 import urllib3
 
-from .exceptions import RequestException
+from .config import get_conf_val
+from .service_account import ServiceAccount, BaseUrl
 
 
 class PolarisClient:
+    """
+    There are 2 recommended ways to create a Polaris client object:
+    - from credentials, by providing domain, username and password ->
+        PolarisClient.from_credentials()
+    - with a service account, either with a ServiceAccount object or
+      a service account JSON file ->
+        PolarisClient.from_service_account()
+        PolarisClient.from_service_account_file()
+
+    Although a PolarisClient object can be created with its constructor,
+    we recommend using the `from_X` factory methods as they are clearer.
+    """
     # Public
     from .common.core import get_sla_domains, submit_on_demand, submit_assign_sla, get_task_status, \
         get_snapshots, get_event_series_list, get_report_data, get_polaris_version
-    from .accounts.aws import get_accounts_aws, get_accounts_aws_detail, get_account_aws_native_id, add_account_aws, delete_account_aws
+    from .accounts.aws import get_accounts_aws, get_accounts_aws_detail, get_account_aws_native_id, add_account_aws, \
+        delete_account_aws
     from .accounts.azure import get_accounts_azure_native, add_account_azure, delete_account_azure, \
         set_account_azure_default_sa, get_accounts_azure_cloud
     from .accounts.gcp import get_accounts_gcp, add_project_gcp, delete_project_gcp, \
         get_account_gcp_default_sa, set_account_gcp_default_sa
-    from .compute.ec2 import get_compute_object_ids_ec2, get_compute_ec2, submit_compute_export_ec2, submit_compute_restore_ec2
+    from .compute.ec2 import get_compute_object_ids_ec2, get_compute_ec2, submit_compute_export_ec2, \
+        submit_compute_restore_ec2
     from .compute.azurevm import get_compute_object_ids_azure, get_compute_azure, submit_compute_restore_azure
     from .compute.gce import get_compute_object_ids_gce, get_compute_gce, submit_compute_restore_gce
     from .compute.vsphere import get_compute_vsphere, get_compute_object_ids_vsphere
     from .storage.ebs import get_storage_object_ids_ebs, get_storage_ebs
     from .common.graphql import get_enum_values
-    from .cluster import get_cdm_cluster_location, get_cdm_cluster_connection_status
+    from .cluster import get_cdm_cluster_location, \
+        get_cdm_cluster_connection_status, \
+        get_cdm_cluster_ipaddr
     from .appflows import get_appflows_blueprints
 
     # Private
-    from .common.connection import _query, _get_access_token_basic, _get_access_token_keyfile
+    from .common.connection import _query, _get_access_token_basic
     from .common.validations import _validate
     from .compute.ec2 import _get_aws_region_vpcs, _get_aws_region_kmskeys, _get_aws_region_sshkeypairs
     from .compute.common import _submit_compute_restore, _get_compute_object_ids, _submit_compute_export
     from .common.monitor import _monitor_job, _monitor_threader, _monitor_task
     from .common.graphql import _dump_nodes, _get_details_from_graphql_query
     from .common.core import _get_snapshot
-    from .accounts.aws import _invoke_account_delete_aws, _invoke_aws_stack, _commit_account_delete_aws, _update_account_aws, \
+    from .accounts.aws import _invoke_account_delete_aws, _invoke_aws_stack, _commit_account_delete_aws, \
+        _update_account_aws, \
         _destroy_aws_stack, _disable_account_aws, _get_aws_profiles, _add_account_aws, _delete_account_aws, \
         _update_account_aws_initiate, _get_account_map_aws
     from .accounts.gcp import _get_gcp_native_project, _delete_account_gcp_project, \
-        _disable_account_gcp_project, _get_account_gcp_project, _get_account_gcp_permissions_cnp, _get_account_gcp_project_uuid_by_string
+        _disable_account_gcp_project, _get_account_gcp_project, _get_account_gcp_permissions_cnp, \
+        _get_account_gcp_project_uuid_by_string
     from .accounts.azure import _get_native_subscription_id_and_name, _get_accounts_azure_permission_version
-    from .common.connection import _get_access_token_keyfile, _get_access_token_basic
 
-    def __init__(self, domain=None, username=None, password=None, json_keyfile=None, **kwargs):
+    def __init__(
+            self,
+            domain=None,
+            username=None,
+            password=None,
+            json_keyfile=None,
+            **kwargs):
         from .common.graphql import _build_graphql_maps
-
         self._pp = pprint.PrettyPrinter(indent=4)
-
-        # Set credentials
-        self._domain = self._get_cred('rubrik_polaris_domain', domain)
-        self._username = self._get_cred('rubrik_polaris_username', username)
-        self._password = self._get_cred('rubrik_polaris_password', password)
-
-        if (not self._domain and not self._username and not self._password ) and not json_keyfile:
-            raise Exception('Required credentials are missing! Please pass in username, password and domain, directly or through the OS environment, or .json key file.')
 
         # Set base variables
         self._kwargs = kwargs
-        self._data_path = "{}/graphql/".format(os.path.dirname(os.path.realpath(__file__)))
+        self._baseurl = kwargs.get('baseurl')
+        self._access_token = kwargs.get('access_token')
+
+        # Determine location of the GraphQL data directory:
+        # When running from installed package, data path is
+        # <this_dir>/graphql ,
+        # When running from source files, data path is
+        # <this_dir>/common/graphql
+        this_dir = os.path.dirname(os.path.realpath(__file__))
+        data_path = Path(this_dir) / 'graphql'
+        if not data_path.is_dir():
+            data_path = Path(this_dir) / 'common' / 'graphql'
+            if not data_path.is_dir():
+                raise NotADirectoryError('Could not find graphql/ directory')
+        self._data_path = f'{data_path}/'
 
         # Switch off SSL checks if needed
-        if 'insecure' in self._kwargs and self._kwargs['insecure']:
+        if self._kwargs.get('insecure', False):
             urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-        # Adjust Polaris domain if a custom root is defined
-        if 'root_domain' in self._kwargs and self._kwargs['root_domain'] is not None:
-            self._baseurl = "https://{}.{}/api".format(self._domain, self._kwargs['root_domain'])
+        if self._baseurl:
+            assert self._access_token, \
+                'baseurl and access_token must both be given'
+        elif json_keyfile:
+            sa: ServiceAccount = ServiceAccount.from_json_file(json_keyfile)
+            self._baseurl = sa.baseurl
+            self._access_token = sa.get_token()
         else:
-            self._baseurl = "https://{}.my.rubrik.com/api".format(self._domain)
+            # from credentials
+            domain = get_conf_val('domain', domain)
+            # Adjust Polaris domain if a custom root is defined
+            root_domain = get_conf_val('root_domain',
+                                       self._kwargs.get('root_domain'),
+                                       'my.rubrik.com')
+            self._baseurl = BaseUrl.from_domain(domain, root_domain).baseurl
+            self._access_token = self._get_access_token_basic(
+                username=get_conf_val('username', username),
+                password=get_conf_val('password', password))
 
-        try:
-            if self._username and self._password:
-                self._access_token = self._get_access_token_basic()
-                del(self._username, self._password)
-            elif json_keyfile:
-                import json
-                import re
-                with open(json_keyfile) as f:
-                    json_key = json.load(f)
-                self._baseurl = re.sub(r"/client_token", "", json_key['access_token_uri'])
-                self._access_token = self._get_access_token_keyfile(json_key=json_key)
+        self._headers = {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Authorization': 'Bearer ' + self._access_token
+        }
+        # Get graphql content
+        (self._graphql_query_map) = _build_graphql_maps(self)
 
-            self._headers = {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'Authorization': 'Bearer ' + self._access_token
-            }
-            # Get graphql content
-            (self._graphql_query_map) = _build_graphql_maps(self)
+    @classmethod
+    def from_service_account(cls, service_account: ServiceAccount,
+                             **kwargs) -> 'PolarisClient':
+        return PolarisClient(
+            baseurl=service_account.baseurl,
+            access_token=service_account.get_token(),
+            **kwargs)
 
-        except RequestException as err:
-            raise
-        except OSError as os_err:
-            raise
-        except Exception as e:
-            raise
+    @classmethod
+    def from_service_account_file(cls, path: Union[str, Path],
+                                  **kwargs) -> 'PolarisClient':
+        return PolarisClient.from_service_account(
+            service_account=ServiceAccount.from_json_file(path),
+            **kwargs)
 
-    @staticmethod
-    def _get_cred(env_key, override=None):
-        cred = None
-
-        if env_key in os.environ:
-            cred = os.environ[env_key]
-
-        if override:
-            cred = override
-
-        return cred
+    @classmethod
+    def from_credentials(cls, domain: str, username: str, password: str,
+                         **kwargs) -> 'PolarisClient':
+        return PolarisClient(domain, username, password, **kwargs)

@@ -2,34 +2,45 @@
 import argparse
 import pprint
 import sys
-from rubrik_polaris.rubrik_polaris import PolarisClient
 
+from rubrik_polaris.rubrik_polaris import PolarisClient
 
 pp = pprint.PrettyPrinter(indent=4)
 
 parser = argparse.ArgumentParser()
-parser.add_argument('-p', '--password', dest='password', help="Polaris Password", default=None)
-parser.add_argument('-u', '--username', dest='username', help="Polaris UserName", default=None)
-parser.add_argument('-d', '--domain', dest='domain', help="Polaris Domain", default=None)
-parser.add_argument('-k', '--keyfile', dest='json_keyfile', help="JSON Keyfile", default=None)
-parser.add_argument('-r', '--root', dest='root_domain', help="Polaris Root Domain", default=None)
-parser.add_argument('--insecure', help='Deactivate SSL Verification', action="store_true")
+parser.add_argument('-p', '--password', dest='password',
+                    help="Polaris Password", default=None)
+parser.add_argument('-u', '--username', dest='username',
+                    help="Polaris UserName", default=None)
+parser.add_argument('-d', '--domain', dest='domain',
+                    help="Polaris Domain", default=None)
+parser.add_argument('-k', '--keyfile', dest='json_keyfile',
+                    help="JSON Keyfile", default=None)
+parser.add_argument('-r', '--root', dest='root_domain',
+                    help="Polaris Root Domain", default=None)
+parser.add_argument('--insecure', action="store_true",
+                    help='Deactivate SSL Verification')
 
 args = parser.parse_args()
 
-try:
+# try:
 
 ### Instantiate with json keyfile
-    if args.json_keyfile:
-        rubrik = PolarisClient(json_keyfile=args.json_keyfile, insecure=args.insecure)
-    else:
-### Instantiate with username/password
-        rubrik = PolarisClient(domain=args.domain, username=args.username, password=args.password, root_domain=args.root_domain,
-                                       insecure=args.insecure)
+if args.json_keyfile:
+    rubrik = PolarisClient.from_service_account_file(
+        args.json_keyfile, insecure=args.insecure)
+else:
+    ### Instantiate with username/password
+    rubrik = PolarisClient.from_credentials(
+        domain=args.domain, username=args.username,
+        password=args.password, root_domain=args.root_domain,
+        insecure=args.insecure)
 
-except Exception as err:
-    print(err)
-    sys.exit(1)
+# except Exception as err:
+#     print(err)
+#     sys.exit(1)
+
+print(f'version: {rubrik.get_polaris_version()}')
 
 ### Get GCP SA
 # pp.pprint(rubrik.get_account_gcp_default_sa())

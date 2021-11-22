@@ -55,7 +55,11 @@ def _query(self, query_name=None, variables=None, timeout=60):
             api_response = api_request.json()
             if 'errors' in api_response and len(api_response['errors']) == 1:
                 error = api_response['errors'][0]
-                raise RequestException("Failed request to Polaris, got {}({}) on {}".format(error['message'], error['extensions']['code'], error['path']))
+                raise RequestException(
+                    "Failed request to Polaris, got {}({}) on {}".format(
+                        error['message'],
+                        error['extensions']['code'],
+                        error['path']))
             elif 'code' in api_response and 'message' in api_response and api_response['code'] >= 400:
                 raise RequestException(api_response['message'])
             else:
@@ -77,48 +81,15 @@ def _query(self, query_name=None, variables=None, timeout=60):
         raise RequestException(err)
 
 
-def _get_access_token_basic(self):
+def _get_access_token_basic(self, username: str, password: str):
     import requests
     from rubrik_polaris.exceptions import RequestException
 
     try:
         session_url = "{}/session".format(self._baseurl)
         payload = {
-            "username": self._username,
-            "password": self._password
-        }
-        headers = {
-            'Content-Type': 'application/json;charset=UTF-8',
-            'Accept': 'application/json, text/plain'
-        }
-        request = requests.post(session_url, json=payload, headers=headers, verify=False)
-
-        del payload
-
-        response_json = request.json()
-        if 'access_token' not in response_json:
-            raise RequestException("Authentication failed!")
-
-        return response_json['access_token']
-
-    except requests.exceptions.RequestException as request_err:
-        raise RequestException(request_err)
-    except ValueError as value_err:
-        raise RequestException(value_err)
-    except Exception as err:
-        raise
-
-
-def _get_access_token_keyfile(self, json_key=None):
-    import requests
-    from rubrik_polaris.exceptions import RequestException
-
-    try:
-        session_url = json_key['access_token_uri']
-        payload = {
-            "client_id": json_key['client_id'],
-            "client_secret": json_key['client_secret'],
-            "name": json_key['name']
+            "username": username,
+            "password": password
         }
         headers = {
             'Content-Type': 'application/json;charset=UTF-8',
