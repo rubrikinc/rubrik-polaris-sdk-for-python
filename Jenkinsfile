@@ -24,14 +24,16 @@ pipeline {
             }
         }
         stage('Function Tests') {
+            agent {
+                docker {
+                    image 'python:3.8'
+                }
+            }
             steps {
                 echo 'Run Tests'
-                withCredentials([
-                    usernamePassword(credentialsId: 'polaris_beta', usernameVariable: 'POLARIS_BETA_USR', passwordVariable: 'POLARIS_BETA_PWD'),
-                    usernamePassword(credentialsId: 'polaris_prod', usernameVariable: 'POLARIS_PROD_USR', passwordVariable: 'POLARIS_PROD_PWD')
-                ]) {
-                    sh 'printenv'
-                }
+                sh 'printenv'
+                sh 'pwd'
+                sh 'ls'
             }
         }
     }
