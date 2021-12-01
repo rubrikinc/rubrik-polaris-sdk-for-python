@@ -46,7 +46,7 @@ def test_list_event_series_when_valid_values_are_provided(requests_mock, client)
 @pytest.mark.parametrize("first, severity, sort_order, error", [
     (0, None, None, ERROR_MESSAGES["INVALID_FIRST"].format(0)),
     (-1, None, None, ERROR_MESSAGES["INVALID_FIRST"].format(-1)),
-    (1, "a", None, ERROR_MESSAGES['INVALID_FIELD_TYPE'].format("a", "severity", ['Critical', 'Warning', 'Info'])),
+    (1, "a", None, ERROR_MESSAGES['INVALID_FIELD_TYPE'].format(['a'], "severity", ['Critical', 'Warning', 'Info'])),
     (1, None, "a", ERROR_MESSAGES['INVALID_FIELD_TYPE'].format("a", "sort_order", ['Asc', 'Desc']))
 ])
 def test_search_object_when_invalid_values_are_provided(client, first, severity, sort_order, error, requests_mock):

@@ -1,4 +1,6 @@
-mutation RubrikPolarisSDKRequest($snappableId: UUID!, $slaID: String) {  vsphereOnDemandSnapshot(snappableFid: $snappableId, slaID: $slaID) {
-id
-status
-}}
+mutation RubrikPolarisSDKRequest($snappableId: UUID!, $slaID: String) {
+    vsphereOnDemandSnapshot(snappableFid: $snappableId, slaID: $slaID) {
+        id
+        status
+    }
+}

@@ -45,6 +45,7 @@ def list_clusters(self, first: int = None, after: str = None, filters: dict = No
     Returns:
         dict: Dictionary containing list of clusters.
     Raises:
+        ValueError: If input is invalid
         RequestException: If the query to Polaris returned an error.
 
     """

@@ -336,49 +336,6 @@ def get_report_data(self, object_type=[], cluster_ids=[]):
         raise
 
 
-def str_to_list(value):
-    """
-    Convert str containing multiple values to list
-
-    Args:
-        value: string containing multiple values separated by comma
-    Returns:
-        list: list of values
-    """
-    result_list = []
-    if isinstance(value, str) and "," in value:
-        list_of_values = value.split(",")
-        for item in list_of_values:
-            result_list.append(item.strip())
-
-    else:
-        result_list.append(value)
-    return result_list
-
-
-def check_list_enum(self, values, field_name, enum_name):
-    """
-    Verify the list of values are present in list of enum values
-
-    Args:
-        values: List of values to verify
-        field_name: Name of the field to verify
-        enum_name: Name of the enum
-    Raises:
-        If values are not present, it raises exception
-    Returns:
-        list: List of verified values
-    """
-    if isinstance(values, list):
-        list_of_enum = self.get_enum_values(name=enum_name)
-        values = [x for x in values if x]
-        for value in values:
-            if value and value not in list_of_enum:
-                raise ValueError(ERROR_MESSAGES['INVALID_FIELD_TYPE'].format(
-                    value, field_name, list_of_enum))
-    return values
-
-
 def list_event_series(self, activity_status=None, activity_type=None, object_name=None, object_type=None,
                       start_date=None, end_date=None, severity=None, cluster_id=None, sort_by=None,
                       sort_order=None, after=None, first: int = 20, filters=None):
@@ -403,6 +360,7 @@ def list_event_series(self, activity_status=None, activity_type=None, object_nam
     Returns:
         dict: Response from the API
     Raises:
+        ValueError: If input is invalid
         RequestException: If the query to Polaris returned an error
     """
     try:
@@ -415,23 +373,23 @@ def list_event_series(self, activity_status=None, activity_type=None, object_nam
             filters_ = {}
 
         if activity_status:
-            activity_status = str_to_list(activity_status)
-            filters_['lastActivityStatus'] = check_list_enum(self, values=activity_status, field_name="activity_status",
+            activity_status = [x.strip() for x in activity_status.split(',')]
+            filters_['lastActivityStatus'] = self.check_enum(value=activity_status, field_name="activity_status",
                                                              enum_name="ActivityStatusEnum")
         if activity_type:
-            activity_type = str_to_list(activity_type)
-            filters_['lastActivityType'] = check_list_enum(self, values=activity_type, field_name="activity_type",
+            activity_type = [x.strip() for x in activity_type.split(',')]
+            filters_['lastActivityType'] = self.check_enum(value=activity_type, field_name="activity_type",
                                                            enum_name="ActivityTypeEnum")
         if object_type:
-            object_type = str_to_list(object_type)
-            filters_['objectType'] = check_list_enum(self, values=object_type, field_name="object_type",
+            object_type = [x.strip() for x in object_type.split(',')]
+            filters_['objectType'] = self.check_enum(value=object_type, field_name="object_type",
                                                      enum_name="ActivityObjectTypeEnum")
         if severity:
-            severity = str_to_list(severity)
-            filters_['severity'] = check_list_enum(self, values=severity, field_name="severity",
+            severity = [x.strip() for x in severity.split(',')]
+            filters_['severity'] = self.check_enum(value=severity, field_name="severity",
                                                    enum_name="ActivitySeverityEnum")
         if cluster_id:
-            cluster_id = str_to_list(cluster_id)
+            cluster_id = [x.strip() for x in cluster_id.split(',')]
 
         sort_by_enum = self.get_enum_values("ActivitySeriesSortByEnum")
         if sort_by and sort_by not in sort_by_enum:

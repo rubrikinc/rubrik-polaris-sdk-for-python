@@ -40,6 +40,7 @@ def get_csv_result(self, cluster_id, snapshot_id, snappable_id):
         dict: Dictionary containing download link
 
     Raises:
+        ValueError: If input is invalid
         RequestException: If the query to Polaris returned an error
 
     """

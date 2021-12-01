@@ -2,7 +2,7 @@ import os
 import pytest
 from conftest import util_load_json, BASE_URL
 from rubrik_polaris.sonar.csv import ERROR_MESSAGES
-from rubrik_polaris.common import util
+from rubrik_polaris.common import validations
 
 
 def test_get_csv_download_when_valid_values_are_provided(requests_mock, client):
@@ -59,4 +59,4 @@ def test_get_csv_result_download_when_invalid_values_are_provided(client):
 
     with pytest.raises(ValueError) as e:
         get_csv_result_download(client, download_id="")
-    assert str(e.value) == util.ERROR_MESSAGES['REQUIRED_ARGUMENT'].format("download_id")
+    assert str(e.value) == validations.ERROR_MESSAGES['REQUIRED_ARGUMENT'].format("download_id")

@@ -3,14 +3,14 @@ import os
 import pytest
 
 from conftest import util_load_json, BASE_URL
-from rubrik_polaris.common import util
+from rubrik_polaris.common import validations
 from rubrik_polaris.gps.files import ERROR_MESSAGES
 
 
 @pytest.mark.parametrize("snapshot_id, first, path, after, search_prefix, err_msg", [
-    ("", 10, "", "", "", util.ERROR_MESSAGES['REQUIRED_ARGUMENT'].format("snapshot_id")),
-    ("dummy_id", "abc", "", "", "", util.ERROR_MESSAGES['INVALID_NUMBER'].format("abc")),
-    ("dummy_id", -1, "", "", "", util.ERROR_MESSAGES['INVALID_FIRST'].format(-1))
+    ("", 10, "", "", "", validations.ERROR_MESSAGES['REQUIRED_ARGUMENT'].format("snapshot_id")),
+    ("dummy_id", "abc", "", "", "", validations.ERROR_MESSAGES['INVALID_NUMBER'].format("abc")),
+    ("dummy_id", -1, "", "", "", validations.ERROR_MESSAGES['INVALID_FIRST'].format(-1))
 ])
 def test_get_snapshot_files_when_invalid_values_are_provided(client, snapshot_id, first, path, after, search_prefix,
                                                              err_msg):
@@ -75,7 +75,7 @@ def test_request_snapshot_files_when_valid_values_are_provided_with_empty_paths(
 
 
 @pytest.mark.parametrize("snapshot_id, paths, delta, nxt_snapshot_id, err_msg", [
-    (" ", [], "", "", util.ERROR_MESSAGES['REQUIRED_ARGUMENT'].format("snapshot_id")),
+    (" ", [], "", "", validations.ERROR_MESSAGES['REQUIRED_ARGUMENT'].format("snapshot_id")),
     ("dummy_id", "", "", "", ERROR_MESSAGES['MISSING_PATHS_PARAMETER_IN_FILES']),
 ])
 def test_request_snapshot_files_when_invalid_values_are_provided(client, snapshot_id, paths, delta, nxt_snapshot_id,

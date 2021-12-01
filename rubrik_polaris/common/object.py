@@ -24,15 +24,15 @@ Collection of methods that are related to objects (virtual machines, filesets et
 """
 
 ERROR_MESSAGES = {
-    'INVALID_FIELD_TYPE': "'{}' is an invalid value for '{}'. Value must be in {}.",
-    'INVALID_CLUSTER_CONNECTED': "'{}' is an invalid value for 'cluster_connected'. Value must be either boolean True or"
-                                 " boolean False.",
+    'INVALID_CLUSTER_CONNECTED': "'{}' is an invalid value for 'cluster_connected'. Value must be either boolean True "
+                                 "or boolean False.",
     'INVALID_TIMEZONE_OFFSET': "'{}' is an invalid value for 'timezone_offset'. Value must be of type float.",
     'INVALID_FIRST': "'{}' is an invalid value for 'first'. Value must be an integer greater than 0.",
     'MISSING_PARAMETERS_IN_METADATA': 'object_id field is required.',
     'MISSING_PARAMETERS_IN_SNAPSHOT': 'object_id, snapshot_group_by, missed_snapshot_group_by, time_range, '
                                       'timezone_offset, and cluster_connected fields are required.',
-    'SORT_FIELDS_REQUIRED': 'sort_by and sort_order both fields must be initialized or both must be uninitialized.'
+    'SORT_FIELDS_REQUIRED': 'sort_by and sort_order both fields must be initialized or both must be uninitialized.',
+    'DATES_REQUIRED': 'both start_date and end_date fields must be initialized or both must be uninitialized.'
 }
 
 
@@ -51,6 +51,7 @@ def list_vm_objects(self, filters: list = None, first=20, sort_by: str = None,
         dict: Dictionary of VsphereVm objects
 
     Raises:
+        ValueError: If input is invalid
         RequestException: If the query to Polaris returned an error
 
     """
@@ -59,23 +60,17 @@ def list_vm_objects(self, filters: list = None, first=20, sort_by: str = None,
     try:
         if not first or (isinstance(first, int) and first <= 0):
             raise ValueError(ERROR_MESSAGES['INVALID_FIRST'].format(first))
-
-        sort_by_enum = self.get_enum_values(name="HierarchySortByField")
-        if sort_by and sort_by not in sort_by_enum:
-            raise ValueError(ERROR_MESSAGES['INVALID_FIELD_TYPE'].format(
-                sort_by, 'sort_by', sort_by_enum))
-
-        sort_order_enum = self.get_enum_values(name="HierarchySortOrder")
-        if sort_order and sort_order not in sort_order_enum:
-            raise ValueError(ERROR_MESSAGES['INVALID_FIELD_TYPE'].format(
-                sort_order, 'sort_order', sort_order_enum))
+        if sort_by:
+            sort_by = self.check_enum(value=sort_by, field_name='sort_by', enum_name='HierarchySortByField')
+        if sort_order:
+            sort_order = self.check_enum(value=sort_order, field_name='sort_order', enum_name='HierarchySortOrder')
 
         query_name = "polaris_vm_object_list"
         variables = {"first": first, "filter": filters}
         if sort_by and sort_order:
             variables["sortBy"] = sort_by
             variables["sortOrder"] = sort_order
-        if (sort_order and not sort_by) or (sort_by and not sort_order):
+        elif (sort_order and not sort_by) or (sort_by and not sort_order):
             raise ValueError(ERROR_MESSAGES['SORT_FIELDS_REQUIRED'])
         if after:
             variables["after"] = after
@@ -112,16 +107,10 @@ def search_object(self, filters: list = None, first: int = 20, sort_by: str = No
     try:
         if not first or (isinstance(first, int) and first <= 0):
             raise ValueError(ERROR_MESSAGES['INVALID_FIRST'].format(first))
-
-        sort_by_enum = self.get_enum_values(name="HierarchySortByField")
-        if sort_by and sort_by not in sort_by_enum:
-            raise ValueError(ERROR_MESSAGES['INVALID_FIELD_TYPE'].format(
-                sort_by, 'sort_by', sort_by_enum))
-
-        sort_order_enum = self.get_enum_values(name="HierarchySortOrder")
-        if sort_order and sort_order not in sort_order_enum:
-            raise ValueError(ERROR_MESSAGES['INVALID_FIELD_TYPE'].format(
-                sort_order, 'sort_order', sort_order_enum))
+        if sort_by:
+            sort_by = self.check_enum(value=sort_by, field_name='sort_by', enum_name='HierarchySortByField')
+        if sort_order:
+            sort_order = self.check_enum(value=sort_order, field_name='sort_order', enum_name='HierarchySortOrder')
 
         query_name = "polaris_object_search"
         variables = {
@@ -150,6 +139,7 @@ def get_object_metadata(self, object_id):
     Returns:
         dict: Response from the API.
     Raises:
+        ValueError: If input is invalid
         RequestException: If the query to Polaris returned an error
     """
     try:
@@ -189,24 +179,22 @@ def get_object_snapshot(self, object_id, snapshot_group_by, missed_snapshot_grou
     Returns:
         dict: Response from the API.
     Raises:
+        ValueError: If input is invalid
         RequestException: If the query to Polaris returned an error
     """
 
     try:
 
-        if not object_id or not snapshot_group_by or not missed_snapshot_group_by or not time_range\
+        if not object_id or not snapshot_group_by or not missed_snapshot_group_by or not time_range \
                 or not timezone_offset or cluster_connected in ['', None]:
             raise ValueError(ERROR_MESSAGES['MISSING_PARAMETERS_IN_SNAPSHOT'])
 
-        snapshot_group_by_enum = self.get_enum_values(name="CdmSnapshotGroupByEnum")
-        if snapshot_group_by not in snapshot_group_by_enum:
-            raise ValueError(ERROR_MESSAGES['INVALID_FIELD_TYPE'].format(
-                snapshot_group_by, 'snapshot_group_by', snapshot_group_by_enum))
+        snapshot_group_by = self.check_enum(value=snapshot_group_by, field_name='snapshot_group_by',
+                                            enum_name='CdmSnapshotGroupByEnum')
 
-        missed_snapshot_group_by_enum = self.get_enum_values(name="MissedSnapshotGroupByEnum")
-        if missed_snapshot_group_by not in missed_snapshot_group_by_enum:
-            raise ValueError(ERROR_MESSAGES['INVALID_FIELD_TYPE'].format(
-                missed_snapshot_group_by, 'missed_snapshot_group_by', missed_snapshot_group_by_enum))
+        missed_snapshot_group_by = self.check_enum(value=missed_snapshot_group_by,
+                                                   field_name='missed_snapshot_group_by',
+                                                   enum_name='MissedSnapshotGroupByEnum')
 
         if not isinstance(cluster_connected, bool):
             raise ValueError(ERROR_MESSAGES['INVALID_CLUSTER_CONNECTED'].format(cluster_connected))
@@ -229,6 +217,117 @@ def get_object_snapshot(self, object_id, snapshot_group_by, missed_snapshot_grou
         query = self._query_raw(query_name=query_name, variables=variables)
 
         return query
+
+    except Exception:
+        raise
+
+
+def list_objects(self, first=20, type_filter=None, sort_by=None, sort_order=None, after=None, filters=None):
+    """
+    Retrieve list of objects
+
+    Args:
+        first (int): Number of objects to retrieve. Defaults to 20, if not provided.
+        type_filter (str): Type of objects to retrieve. Multiple values can be separated by comma.
+        sort_by (str): Field to sort the results.
+        sort_order (str): Sort order for the results.
+        after (str): The cursor token to retrieve the next set of results.
+        filters (dict): Additional filters
+
+    Returns:
+        dict: Response from the API.
+    Raises:
+        RequestException: If the query to Polaris returned an error
+    """
+    if filters is None:
+        filters = {}
+    try:
+        first = self.check_first_arg(first)
+        if sort_by:
+            sort_by = self.check_enum(value=sort_by, field_name='sort_by', enum_name="HierarchySortByField")
+        if sort_order:
+            sort_order = self.check_enum(value=sort_order, field_name='sort_order', enum_name="HierarchySortOrder")
+
+        type_filter_ = []
+        if type_filter:
+            type_filter = [x.strip() for x in type_filter.split(',')]
+            for type_value in type_filter:
+                type_filter_.append(self.check_enum(value=type_value, field_name='type_filter',
+                                                    enum_name="HierarchyObjectTypeEnum"))
+            type_filter = [x for x in type_filter_ if x]
+        query_name = "polaris_object_list"
+        variables = {"first": first}
+        if filters:
+            variables['filter'] = filters
+        if type_filter:
+            variables['typeFilter'] = type_filter
+        if sort_by:
+            variables["sortBy"] = sort_by
+        if sort_order:
+            variables["sortOrder"] = sort_order
+        if after:
+            variables["after"] = after
+
+        response = self._query_raw(query_name=query_name, variables=variables)
+        return response
+
+    except Exception:
+        raise
+
+
+def list_object_snapshots(self, object_id, first=20, snapshot_filter=None, sort_by=None, sort_order=None, after=None,
+                          start_date=None, end_date=None):
+    """
+    Retrieve list of snapshots based on object/snappable Id.
+
+    Args:
+        object_id (str): Snappable/Object ID to get list of snapshots.
+        first (int): Number of objects to retrieve. Defaults to 20, if not provided.
+        snapshot_filter (str): Raw filter, to filter the results.
+        sort_by (str): Field to sort the results.
+        sort_order (str): Sort order for the results.
+        after (str): The cursor token to retrieve the next set of results.
+        start_date (str): The start date to retrieve results from.
+        end_date (str): The end date to retrieve results until.
+    Returns:
+        dict: Response from the API.
+    Raises:
+        ValueError: If input is invalid
+        RequestException: If the query to Polaris returned an error
+    """
+    try:
+        first = self.check_first_arg(first)
+        if sort_by:
+            sort_by = self.check_enum(value=sort_by, field_name='sort_by', enum_name="SnapshotQuerySortByField")
+        if sort_order:
+            sort_order = self.check_enum(value=sort_order, field_name='sort_order', enum_name="SortOrderEnum")
+
+        if (start_date and not end_date) or (end_date and not start_date):
+            raise ValueError(ERROR_MESSAGES['DATES_REQUIRED'])
+        time_range = {}
+        if start_date and end_date:
+            time_range = {
+                "start": start_date,
+                "end": end_date
+            }
+
+        query_name = "polaris_object_snapshot"
+        variables = {"first": first, "snappableId": object_id}
+
+        if isinstance(snapshot_filter, str):
+            snapshot_filter = [snapshot_filter]
+        if snapshot_filter:
+            variables['snapshotFilter'] = snapshot_filter
+        if sort_by:
+            variables["sortBy"] = sort_by
+        if sort_order:
+            variables["sortOrder"] = sort_order
+        if after:
+            variables["after"] = after
+        if time_range:
+            variables['timeRange'] = time_range
+        response = self._query_raw(query_name=query_name, variables=variables)
+        return response
 
     except Exception:
         raise

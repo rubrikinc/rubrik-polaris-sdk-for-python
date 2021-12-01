@@ -84,7 +84,7 @@ def create_vm_livemount(self, snapshot_fid: str, host_id: str = None, vm_name: s
             variables['shouldRecoverTags'] = self.to_boolean(should_recover_tags)
 
         if vlan:
-            variables['vlan'] = self.to_number(vlan)
+            variables['vlan'] = int(vlan)
 
         response = self._query_raw(query_name=query_name, variables=variables)
         return response
@@ -135,6 +135,7 @@ def list_vsphere_hosts(self, first: int, after: str = None, filters: list = None
     Returns:
         dict: Dictionary containing list of Vsphere hosts.
     Raises:
+        ValueError: If input is invalid
         RequestException: If the query to Polaris returned an error.
 
     """
@@ -146,7 +147,7 @@ def list_vsphere_hosts(self, first: int, after: str = None, filters: list = None
         first = self.check_first_arg(first)
         variables['first'] = first
 
-        if isinstance(filter, str):
+        if isinstance(filters, str):
             filters = [filters]
 
         if filters:
@@ -186,6 +187,7 @@ def export_vm_snapshot(self, config: dict, id_: str):
     Returns:
         dict: Dictionary containing snapshot information.
     Raises:
+        ValueError: If input is invalid
         RequestException: If the query to Polaris returned an error
 
     """
@@ -232,6 +234,7 @@ def list_vsphere_datastores(self, host_id: str, first: int = None, after: str = 
     Returns:
         dict: Dictionary containing list of Vsphere datastores.
     Raises:
+        ValueError: If input is invalid
         RequestException: If the query to Polaris returned an error.
 
     """
@@ -245,7 +248,7 @@ def list_vsphere_datastores(self, host_id: str, first: int = None, after: str = 
         if first:
             variables['first'] = first
 
-        if isinstance(filter, str):
+        if isinstance(filters, str):
             filters = [filters]
 
         if filters:
@@ -270,5 +273,37 @@ def list_vsphere_datastores(self, host_id: str, first: int = None, after: str = 
             variables['sortOrder'] = sort_order
 
         return self._query_raw(query_name="gps_vm_datastores", variables=variables)
+    except Exception:
+        raise
+
+
+def get_async_request_result(self, request_id: str, cluster_id: str):
+    """
+    Retrieves the result of an asynchronous request. These requests can be triggered by calling functions such as
+    export_vm_snapshot, create_vm_livemount, request_download_snapshot_files or create_vm_snapshot.
+    Args:
+        request_id: The ID of the asynchronous request.
+        cluster_id: The ID of the cluster where the request was made.
+
+    Returns:
+        dict: Dictionary containing the result of the request.
+    Raises:
+        ValueError: If input is invalid
+        RequestException: If the query to Polaris returned an error.
+
+    """
+    try:
+        query_name = "gps_async_request_result"
+        variables = {}
+
+        if not request_id:
+            raise ValueError(ERROR_MESSAGES['REQUIRED_ARGUMENT'].format("request_id"))
+        variables['id'] = request_id
+
+        if not cluster_id:
+            raise ValueError(ERROR_MESSAGES['REQUIRED_ARGUMENT'].format("cluster_id"))
+        variables['clusterUuid'] = cluster_id
+
+        return self._query_raw(query_name=query_name, variables=variables)
     except Exception:
         raise

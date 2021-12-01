@@ -42,6 +42,7 @@ def get_sensitive_hits_object_list(self, day: str, timezone: str):
         dict: Dictionary containing list of sonar sensitive hits object.
 
     Raises:
+        ValueError: If input is invalid
         RequestException: If the query to Polaris returned an error.
     """
     try:
@@ -73,6 +74,7 @@ def get_sensitive_hits_object_detail(self, snapshot_id: str, snappable_id: str):
         dict: Dictionary containing details of sonar sensitive hits object.
 
     Raises:
+        ValueError: If input is invalid
         RequestException: If the query to Polaris returned an error.
     """
     try:
@@ -105,41 +107,28 @@ def get_sensitive_hits(self, search_time_period: int = 7, object_name=None):
         RequestException: If the query to Polaris returned an error.
     """
     try:
-        search_time_period = self.to_number(search_time_period)
+        search_time_period = int(search_time_period)
         search_day = date.today()
         object_details = {}
 
-        sonar_object_detail = self.get_sensitive_hits_object_list(day=search_day.strftime("%Y-%m-%d"), timezone="UTC")
-        for sonar_object in sonar_object_detail["data"]["policyObjConnection"]["edges"]:
-            if object_name:
-                if sonar_object["node"]["snappable"]["name"] == object_name:
-                    object_details["snappable_id"] = sonar_object["node"]["snappable"]["id"]
-                    object_details["snapshot_fid"] = sonar_object["node"]["objectStatus"]["latestSnapshotResult"][
-                        "snapshotFid"]
-            else:
-                object_details["snappable_id"] = sonar_object["node"]["snappable"]["id"]
-                object_details["snapshot_fid"] = sonar_object["node"]["objectStatus"]["latestSnapshotResult"][
-                    "snapshotFid"]
+        for d in range(0, search_time_period):
+            past_search_day = search_day - timedelta(days=d)
 
-        if len(object_details) == 0:
-            for d in range(1, search_time_period):
-                past_search_day = search_day - timedelta(days=d)
-
-                sonar_object_detail = self.get_sensitive_hits_object_list(day=past_search_day.strftime("%Y-%m-%d"),
-                                                                          timezone="UTC")
-                for sonar_object in sonar_object_detail["data"]["policyObjConnection"]["edges"]:
-                    if object_name:
-                        if sonar_object["node"]["snappable"]["name"] == object_name:
-                            object_details["snappable_id"] = sonar_object["node"]["snappable"]["id"]
-                            object_details["snapshot_fid"] = sonar_object["node"]["objectStatus"]["latestSnapshotResult"][
-                                "snapshotFid"]
-                    else:
+            sonar_object_detail = self.get_sensitive_hits_object_list(day=past_search_day.strftime("%Y-%m-%d"),
+                                                                      timezone="UTC")
+            for sonar_object in sonar_object_detail["data"]["policyObjConnection"]["edges"]:
+                if object_name:
+                    if sonar_object["node"]["snappable"]["name"] == object_name:
                         object_details["snappable_id"] = sonar_object["node"]["snappable"]["id"]
                         object_details["snapshot_fid"] = sonar_object["node"]["objectStatus"]["latestSnapshotResult"][
                             "snapshotFid"]
+                else:
+                    object_details["snappable_id"] = sonar_object["node"]["snappable"]["id"]
+                    object_details["snapshot_fid"] = sonar_object["node"]["objectStatus"]["latestSnapshotResult"][
+                        "snapshotFid"]
 
-                if len(object_details) == 1:
-                    break
+            if len(object_details) >= 1:
+                break
 
         if len(object_details) == 0:
             return {}

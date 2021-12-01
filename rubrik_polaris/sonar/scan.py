@@ -42,6 +42,7 @@ def trigger_on_demand_scan(self, scan_name, resources, analyzer_groups):
     Returns:
         dict: Response from the API.
     Raises:
+        ValueError: If input is invalid
         RequestException: If the query to Polaris returned an error
     """
     try:
@@ -71,6 +72,7 @@ def get_on_demand_scan_status(self, crawl_id):
         dict: Dictionary of list of scan status details.
 
     Raises:
+        ValueError: If input is invalid
         RequestException: If the query to Polaris returned an error.
     """
     try:
@@ -99,6 +101,7 @@ def get_on_demand_scan_result(self, crawl_id, filters):
         dict: Dictionary containing download link for the result file.
 
     Raises:
+        ValueError: If input is invalid
         RequestException: If the query to Polaris returned an error.
     """
     try:

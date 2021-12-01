@@ -1,0 +1,293 @@
+{
+  "data": {
+    "__type": {
+      "states": [
+        {
+          "name": "FilesetTemplate"
+        },
+        {
+          "name": "VcdOrgVdc"
+        },
+        {
+          "name": "ManagedVolume"
+        },
+        {
+          "name": "ShareFileset"
+        },
+        {
+          "name": "KuprNamespace"
+        },
+        {
+          "name": "O365Group"
+        },
+        {
+          "name": "AwsNativeEbsVolume"
+        },
+        {
+          "name": "OracleDatabase"
+        },
+        {
+          "name": "O365Mailbox"
+        },
+        {
+          "name": "AzureNativeResourceGroup"
+        },
+        {
+          "name": "AZURE_SQL_MANAGED_INSTANCE_DB"
+        },
+        {
+          "name": "VolumeGroup"
+        },
+        {
+          "name": "AzureNativeVm"
+        },
+        {
+          "name": "VcdOrg"
+        },
+        {
+          "name": "PhysicalHost"
+        },
+        {
+          "name": "AwsNativeRdsInstance"
+        },
+        {
+          "name": "CassandraKeyspace"
+        },
+        {
+          "name": "AzureSqlManagedInstanceServer"
+        },
+        {
+          "name": "O365Site"
+        },
+        {
+          "name": "VmwareVirtualMachine"
+        },
+        {
+          "name": "PolarisEc2Instance"
+        },
+        {
+          "name": "O365User"
+        },
+        {
+          "name": "AwsNativeEc2Instance"
+        },
+        {
+          "name": "PolarisEbsVolume"
+        },
+        {
+          "name": "MssqlInstance"
+        },
+        {
+          "name": "NutanixVirtualMachine"
+        },
+        {
+          "name": "O365Org"
+        },
+        {
+          "name": "FailoverClusterApp"
+        },
+        {
+          "name": "OracleHost"
+        },
+        {
+          "name": "MongoCollection"
+        },
+        {
+          "name": "SapHanaDatabase"
+        },
+        {
+          "name": "AllSubHierarchyType"
+        },
+        {
+          "name": "NasSystem"
+        },
+        {
+          "name": "O365Teams"
+        },
+        {
+          "name": "VSphereFolder"
+        },
+        {
+          "name": "VSphereResourcePool"
+        },
+        {
+          "name": "GcpNativeDisk"
+        },
+        {
+          "name": "AwsNativeAccount"
+        },
+        {
+          "name": "VSphereDatacenter"
+        },
+        {
+          "name": "VSphereComputeCluster"
+        },
+        {
+          "name": "HypervCluster"
+        },
+        {
+          "name": "CassandraSource"
+        },
+        {
+          "name": "VSphereTag"
+        },
+        {
+          "name": "VcdVapp"
+        },
+        {
+          "name": "NasVolume"
+        },
+        {
+          "name": "NasNamespace"
+        },
+        {
+          "name": "Vcd"
+        },
+        {
+          "name": "VcdVimServer"
+        },
+        {
+          "name": "AZURE_SQL_DATABASE_DB"
+        },
+        {
+          "name": "MssqlDatabaseBatchMaintenance"
+        },
+        {
+          "name": "VcdCatalog"
+        },
+        {
+          "name": "O365File"
+        },
+        {
+          "name": "HypervSCVMM"
+        },
+        {
+          "name": "Blueprint"
+        },
+        {
+          "name": "AzureSqlDatabaseServer"
+        },
+        {
+          "name": "FeldsparSite"
+        },
+        {
+          "name": "CloudNativeTagRule"
+        },
+        {
+          "name": "Mssql"
+        },
+        {
+          "name": "HostShare"
+        },
+        {
+          "name": "SnapMirrorCloud"
+        },
+        {
+          "name": "O365Calendar"
+        },
+        {
+          "name": "O365SharePointDrive"
+        },
+        {
+          "name": "VSphereNetwork"
+        },
+        {
+          "name": "Fileset"
+        },
+        {
+          "name": "SapHanaSystem"
+        },
+        {
+          "name": "MongoSource"
+        },
+        {
+          "name": "O365Onedrive"
+        },
+        {
+          "name": "Hdfs"
+        },
+        {
+          "name": "Ec2Instance"
+        },
+        {
+          "name": "WindowsCluster"
+        },
+        {
+          "name": "GcpNativeProject"
+        },
+        {
+          "name": "VSphereDatastore"
+        },
+        {
+          "name": "HypervServer"
+        },
+        {
+          "name": "VSphereHost"
+        },
+        {
+          "name": "HostFailoverCluster"
+        },
+        {
+          "name": "AppBlueprint"
+        },
+        {
+          "name": "MssqlAvailabilityGroup"
+        },
+        {
+          "name": "CassandraColumnFamily"
+        },
+        {
+          "name": "LinuxFileset"
+        },
+        {
+          "name": "HypervVirtualMachine"
+        },
+        {
+          "name": "GcpNativeGCEInstance"
+        },
+        {
+          "name": "StorageArrayVolumeGroup"
+        },
+        {
+          "name": "O365SharePointList"
+        },
+        {
+          "name": "NutanixCluster"
+        },
+        {
+          "name": "AzureNativeManagedDisk"
+        },
+        {
+          "name": "AzureNativeSubscription"
+        },
+        {
+          "name": "VSphereVCenter"
+        },
+        {
+          "name": "NasShare"
+        },
+        {
+          "name": "KuprCluster"
+        },
+        {
+          "name": "AppflowsBlueprint"
+        },
+        {
+          "name": "OracleRac"
+        },
+        {
+          "name": "MongoDb"
+        },
+        {
+          "name": "VSphereTagCategory"
+        },
+        {
+          "name": "WindowsVolumeGroup"
+        },
+        {
+          "name": "WindowsFileset"
+        }
+      ]
+    }
+  }
+}

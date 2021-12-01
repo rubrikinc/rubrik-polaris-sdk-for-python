@@ -41,6 +41,7 @@ def get_csv_download(self, snapshot_id, snappable_id, filters=None):
         dict: Dictionary containing status of sonar csv snapshot results file download .
 
     Raises:
+        ValueError: If input is invalid
         RequestException: If the query to Polaris returned an error.
     """
     try:

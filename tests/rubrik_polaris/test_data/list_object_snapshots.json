@@ -1,0 +1,41 @@
+{
+  "data": {
+    "snapshotsListConnection": {
+      "edges": [
+        {
+          "node": {
+            "id": "10e21108-f20c-57c1-9125-4be8d76a46b0",
+            "date": "2019-12-10T11:27:24.000Z",
+            "expirationDate": null,
+            "isOnDemandSnapshot": false,
+            "cdmVersion": "",
+            "isDownloadedSnapshot": false,
+            "cluster": {
+              "id": "cc19573c-db6c-418a-9d48-067a256543ba",
+              "name": "sand1-rbk01",
+              "version": "7.0.0-MR2-14041",
+              "status": "Connected"
+            },
+            "pendingSnapshotDeletion": null,
+            "slaDomain": {
+              "name": "TestSLA",
+              "fid": "bf4a9c63-732c-5a33-ba47-56cf31bee137",
+              "cluster": {
+                "id": "cc19573c-db6c-418a-9d48-067a256543ba",
+                "name": "sand1-rbk01"
+              }
+            },
+            "pendingSla": null,
+            "snapshotRetentionInfo": null,
+            "sapHanaAppMetadata": null,
+            "legalHoldInfo": null
+          }
+        }
+      ],
+      "pageInfo": {
+        "endCursor": "Y3Vyc29yOmludDow",
+        "hasNextPage": false
+      }
+    }
+  }
+}

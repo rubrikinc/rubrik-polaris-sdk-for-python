@@ -44,6 +44,7 @@ def list_sla_domains(self, after: str = None, first: int = None, filters: list =
     Returns:
         dict: Dictionary containing list of SLAs.
     Raises:
+        ValueError: If input is invalid
         RequestException: If the query to Polaris returned an error.
     """
     try:

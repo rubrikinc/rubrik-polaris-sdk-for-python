@@ -1,7 +1,7 @@
 import os
 import pytest
 from conftest import util_load_json, BASE_URL
-from rubrik_polaris.common import util
+from rubrik_polaris.common import validations
 
 
 def test_get_analysis_status_when_valid_values_are_provided(requests_mock, client):
@@ -20,8 +20,8 @@ def test_get_analysis_status_when_valid_values_are_provided(requests_mock, clien
 
 
 @pytest.mark.parametrize("activity_series_id, cluster_id, err_msg", [
-    ("", "cc19573c-db6c-418a-9d48-067a256543ba", util.ERROR_MESSAGES['REQUIRED_ARGUMENT'].format('activity_series_id')),
-    ("cc19573c-db6c-418a-9d48-067a256543ba", "", util.ERROR_MESSAGES['REQUIRED_ARGUMENT'].format('cluster_id'))
+    ("", "cc19573c-db6c-418a-9d48-067a256543ba", validations.ERROR_MESSAGES['REQUIRED_ARGUMENT'].format('activity_series_id')),
+    ("cc19573c-db6c-418a-9d48-067a256543ba", "", validations.ERROR_MESSAGES['REQUIRED_ARGUMENT'].format('cluster_id'))
 ])
 def test_get_analysis_status_when_invalid_values_are_provided(client, activity_series_id, cluster_id, err_msg):
     """

@@ -5,7 +5,7 @@ MAXIMUM_FILE_SIZE = 10000000
 BACKUP_COUNT = 3
 
 
-def logging_setup(logging_level=logging.DEBUG) -> logging.Logger:
+def logging_setup(logging_level=logging.WARNING) -> logging.Logger:
     """ Init logger object for logging in rubrik-sdk
         For more info - https://docs.python.org/3/library/logging.html
     Args:

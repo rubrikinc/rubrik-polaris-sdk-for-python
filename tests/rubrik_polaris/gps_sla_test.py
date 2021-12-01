@@ -1,14 +1,14 @@
 import pytest
 import os
-from rubrik_polaris.common import util
+from rubrik_polaris.common import validations
 from rubrik_polaris.gps.sla import ERROR_MESSAGES
 from conftest import util_load_json, BASE_URL
 
 
 @pytest.mark.parametrize("after, first, filters, sort_by,sort_order, show_protected_object_count, err_msg", [
-    (None, -10, None, None, None, None, util.ERROR_MESSAGES['INVALID_FIRST'].format(-10)),
-    (None, "x", None, None, None, None, util.ERROR_MESSAGES['INVALID_NUMBER'].format("x")),
-    (None, 10, None, None, None, "t", util.ERROR_MESSAGES['INVALID_BOOLEAN']),
+    (None, -10, None, None, None, None, validations.ERROR_MESSAGES['INVALID_FIRST'].format(-10)),
+    (None, "x", None, None, None, None, validations.ERROR_MESSAGES['INVALID_NUMBER'].format("x")),
+    (None, 10, None, None, None, "t", validations.ERROR_MESSAGES['INVALID_BOOLEAN']),
     (None, 10, None, "NAME", "BOTH", "False",
      ERROR_MESSAGES['INVALID_FIELD_TYPE'].format("BOTH", "sort_order", ['ASC', 'DESC']))
 ])

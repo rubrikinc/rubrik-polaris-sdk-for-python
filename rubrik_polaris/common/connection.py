@@ -218,7 +218,7 @@ def _get_access_token_basic(self):
             'Content-Type': 'application/json;charset=UTF-8',
             'Accept': 'application/json, text/plain'
         }
-        request = requests.post(
+        response = requests.post(
             session_url,
             json=payload,
             headers=headers,
@@ -228,7 +228,7 @@ def _get_access_token_basic(self):
 
         del payload
 
-        response_json = request.json()
+        response_json = response.json()
         if 'access_token' not in response_json:
             self.logger.error(ERROR_MESSAGES["ACCESS_TOKEN_NOT_FOUND"])
             raise AuthenticationException(ERROR_MESSAGES["ACCESS_TOKEN_NOT_FOUND"])
@@ -246,7 +246,7 @@ def _get_access_token_basic(self):
             "mfa_remember_token": mfa_token
         }
 
-        request = requests.post(
+        response = requests.post(
             session_url,
             json=payload,
             headers=headers,
@@ -254,7 +254,7 @@ def _get_access_token_basic(self):
             proxies=self._proxies
         )
 
-        response_json = request.json()
+        response_json = response.json()
         if 'access_token' not in response_json:
             self.logger.error(ERROR_MESSAGES["ACCESS_TOKEN_NOT_FOUND"])
             raise AuthenticationException(ERROR_MESSAGES["ACCESS_TOKEN_NOT_FOUND"])
@@ -286,7 +286,7 @@ def _get_access_token_keyfile(self, json_key=None):
             'Content-Type': 'application/json;charset=UTF-8',
             'Accept': 'application/json, text/plain'
         }
-        request = requests.post(
+        response = requests.post(
             session_url,
             json=payload,
             headers=headers,
@@ -294,7 +294,7 @@ def _get_access_token_keyfile(self, json_key=None):
             proxies=self._proxies
         )
 
-        response_json = request.json()
+        response_json = response.json()
         if 'access_token' not in response_json:
             self.logger.error(ERROR_MESSAGES["ACCESS_TOKEN_NOT_FOUND"])
             raise AuthenticationException(ERROR_MESSAGES["ACCESS_TOKEN_NOT_FOUND"])

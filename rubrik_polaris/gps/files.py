@@ -84,6 +84,7 @@ def request_download_snapshot_files(self, snapshot_id: str, paths: list, delta_t
     Returns:
         dict: Dictionary containing list of files
     Raises:
+        ValueError: If input is invalid
         RequestException: If the query to Polaris returned an error
     """
 

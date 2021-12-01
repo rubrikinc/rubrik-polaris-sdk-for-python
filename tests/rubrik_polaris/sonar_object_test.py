@@ -1,7 +1,7 @@
 import os
 import pytest
 from conftest import util_load_json, BASE_URL
-from rubrik_polaris.common.util import ERROR_MESSAGES
+from rubrik_polaris.common.validations import ERROR_MESSAGES
 
 
 def test_get_sensitive_hits_object_list_when_valid_values_are_provided(requests_mock, client):
@@ -79,17 +79,3 @@ def test_get_sensitive_hits_when_valid_values_are_provided(requests_mock, client
     response = get_sensitive_hits(client)
     assert response == expected_response_details
 
-
-@pytest.mark.parametrize("search_time_period, object_name, error", [
-    ("dummy", "", ERROR_MESSAGES['INVALID_NUMBER'].format("dummy"))
-])
-def test_get_sensitive_hits_when_invalid_values_are_provided(client, search_time_period, object_name, error):
-    """
-    Tests get_sensitive_hits method of PolarisClient when invalid values are provided
-    """
-    from rubrik_polaris.sonar.object import get_sensitive_hits
-
-    with pytest.raises(ValueError) as e:
-        get_sensitive_hits(client, search_time_period=search_time_period, object_name=object_name)
-
-    assert str(e.value) == error

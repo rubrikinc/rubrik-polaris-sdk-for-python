@@ -1,6 +1,6 @@
 import pytest
 import os
-from rubrik_polaris.common import util
+from rubrik_polaris.common import validations
 from rubrik_polaris.gps.cluster import ERROR_MESSAGES
 from conftest import util_load_json, BASE_URL
 
@@ -20,8 +20,8 @@ def test_list_clusters_when_valid_values_are_provided(requests_mock, client):
 
 
 @pytest.mark.parametrize("first, after, filters, sort_by,sort_order, err_msg", [
-    (-10, None, None, None, None, util.ERROR_MESSAGES['INVALID_FIRST'].format(-10)),
-    ("x", None, None, None, None, util.ERROR_MESSAGES['INVALID_NUMBER'].format("x")),
+    (-10, None, None, None, None, validations.ERROR_MESSAGES['INVALID_FIRST'].format(-10)),
+    ("x", None, None, None, None, validations.ERROR_MESSAGES['INVALID_NUMBER'].format("x")),
     (10, None, None, "Name", None,
      ERROR_MESSAGES['INVALID_FIELD_TYPE'].format("Name", "sort_by", ['RegisteredAt', 'ClusterName', 'ClusterType'])),
     (10, None, None, "ClusterName", "BOTH",

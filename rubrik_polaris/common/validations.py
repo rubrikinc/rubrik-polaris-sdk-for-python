@@ -21,6 +21,15 @@
 from rubrik_polaris.exceptions import ValidationException
 from uuid import UUID
 
+ERROR_MESSAGES = {
+    'INVALID_FIRST': "'{}' is an invalid value for 'first'. Value must be an integer greater than 0.",
+    'INVALID_BOOLEAN': 'Un-supported boolean type.',
+    'REQUIRED_ARGUMENT': '{} field is required.',
+    'INVALID_FIELD_TYPE': "'{}' is an invalid value for '{}'. Value must be in {}.",
+    'INVALID_INPUT': "{} is an invalid input type. Value must be str or list.",
+    'INVALID_NUMBER': "'{}' is an invalid number."
+}
+
 
 def _validate(self, **kwargs):
     for validation in kwargs:
@@ -172,3 +181,101 @@ def _azure_subscription_ids(self, test_variable=None):
     if not _uuid_validation(test_variable=test_variable):
         raise ValidationException("{} is not a UUID".format(test_variable))
     return test_variable
+
+
+def check_first_arg(self, first):
+    """Function to validate a common argument named first
+
+    Args:
+        first (Any): Number of results to retrieve in the response.
+
+    Returns:
+        Optional[int]: An integer value if the 'first' argument is valid
+
+    Raises:
+        ValueError: If the 'first' argument contains invalid value
+    """
+    if not isinstance(first, int) or (isinstance(first, str) and not first.isdigit()):
+        raise ValueError(ERROR_MESSAGES['INVALID_NUMBER'].format(first))
+    first = int(first)
+    if first <= 0:
+        raise ValueError(ERROR_MESSAGES['INVALID_FIRST'].format(first))
+
+    return first
+
+
+def to_boolean(self, value):
+    """
+    Converts value into a boolean type.
+    Args:
+        value: argument for type casting
+
+    Returns:
+        Either True or False
+
+    Raises ValueError
+    """
+    if isinstance(value, bool):
+        return value
+
+    if isinstance(value, str):
+        if value.lower() == 'true':
+            return True
+        elif value.lower() == 'false':
+            return False
+    raise ValueError(ERROR_MESSAGES['INVALID_BOOLEAN'])
+
+
+def validate_id(self, id_: str, field_name: str):
+    """
+    Performs validation for ID
+    Args:
+        field_name: The field name for which validation is performed.
+        id_: ID to validate.
+
+    Returns: return without any error.
+
+    Raises: ValueError exception
+    """
+    if isinstance(id_, str):
+        id_ = id_.strip()
+
+    if not id_:
+        raise ValueError(ERROR_MESSAGES['REQUIRED_ARGUMENT'].format(field_name))
+
+    return id_
+
+
+def check_enum(self, value, field_name, enum_name):
+    """
+    Verify the value(s) is/are present in the list of enum values
+
+    Args:
+        value: Value(s) to verify
+        field_name: Name of the field to verify
+        enum_name: Name of the enum
+    Raises:
+        ValueError: If input is invalid
+    Returns:
+        Optional[list, str]: Verified value(s)
+    """
+    list_of_enum = self.get_enum_values(name=enum_name)
+
+    if isinstance(value, str):
+        if value and value not in list_of_enum:
+            raise ValueError(ERROR_MESSAGES['INVALID_FIELD_TYPE'].format(
+                value, field_name, list_of_enum))
+
+    elif isinstance(value, list):
+        value = [x for x in value if x]
+        invalid = [val for val in value if val and val not in list_of_enum]
+        if invalid:
+            raise ValueError(ERROR_MESSAGES['INVALID_FIELD_TYPE'].format(
+                invalid, field_name, list_of_enum))
+
+    elif not value:
+        return
+
+    else:
+        raise ValueError(ERROR_MESSAGES['INVALID_INPUT'].format(value))
+    return value

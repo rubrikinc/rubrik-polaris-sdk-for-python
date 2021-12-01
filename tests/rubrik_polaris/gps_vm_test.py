@@ -3,7 +3,7 @@ import os
 import pytest
 
 from conftest import util_load_json, BASE_URL
-from rubrik_polaris.common import util
+from rubrik_polaris.common import validations
 from rubrik_polaris.gps.vm import ERROR_MESSAGES
 
 
@@ -22,7 +22,7 @@ def test_create_vm_snapshot_when_valid_values_are_provided(requests_mock, client
 
 
 @pytest.mark.parametrize("snapshot_id, sla_id, err_msg", [
-    ("", "", util.ERROR_MESSAGES['REQUIRED_ARGUMENT'].format('snapshot_id'))
+    ("", "", validations.ERROR_MESSAGES['REQUIRED_ARGUMENT'].format('snapshot_id'))
 ])
 def test_create_vm_snapshot_when_invalid_values_are_provided(client, snapshot_id, sla_id, err_msg):
     """
@@ -58,13 +58,11 @@ def test_create_vm_livemount_when_valid_values_are_provided(requests_mock, clien
     "create_data_store_only, vlan, should_recover_tags, err_msg",
     [
         ("", None, None, None, None, None, None, None, None, None, None,
-         util.ERROR_MESSAGES['REQUIRED_ARGUMENT'].format("snapshot_fid")),
+         validations.ERROR_MESSAGES['REQUIRED_ARGUMENT'].format("snapshot_fid")),
         ("1234", None, None, "abc", None, None, None, None, None, None, None,
-         util.ERROR_MESSAGES['INVALID_BOOLEAN']),
+         validations.ERROR_MESSAGES['INVALID_BOOLEAN']),
         ("1234", None, None, None, "abc", None, None, None, None, None, None,
-         util.ERROR_MESSAGES['INVALID_BOOLEAN']),
-        ("1234", None, None, None, None, None, None, None, None, "abc", None,
-         util.ERROR_MESSAGES['INVALID_NUMBER'].format("abc")),
+         validations.ERROR_MESSAGES['INVALID_BOOLEAN']),
     ])
 def test_create_vm_livemount_when_invalid_values_are_provided(client, snapshot_fid, host_id, vm_name, disable_network,
                                                               remove_network_devices, power_on, keep_mac_addresses,
@@ -102,8 +100,8 @@ def test_list_vsphere_hosts_when_valid_values_are_provided(requests_mock, client
 
 @pytest.mark.parametrize("first, after, filters, sort_by,sort_order, err_msg", [
     (None, None, None, None, None, ERROR_MESSAGES['REQUIRED_ARGUMENT'].format("first")),
-    (-10, None, None, None, None, util.ERROR_MESSAGES['INVALID_FIRST'].format(-10)),
-    ("x", None, None, None, None, util.ERROR_MESSAGES['INVALID_NUMBER'].format("x")),
+    (-10, None, None, None, None, validations.ERROR_MESSAGES['INVALID_FIRST'].format(-10)),
+    ("x", None, None, None, None, validations.ERROR_MESSAGES['INVALID_NUMBER'].format("x")),
     (10, None, None, "NAME", "BOTH",
      ERROR_MESSAGES['INVALID_FIELD_TYPE'].format("BOTH", "sort_order", ['ASC', 'DESC']))
 ])
@@ -153,7 +151,7 @@ def test_export_vm_snapshot_when_valid_values_are_provided(requests_mock, client
 
 
 @pytest.mark.parametrize("id_, config, err_msg", [
-    (None, None, util.ERROR_MESSAGES['REQUIRED_ARGUMENT'].format("id_")),
+    (None, None, validations.ERROR_MESSAGES['REQUIRED_ARGUMENT'].format("id_")),
     ("dc4f1b47-da71-5a62-a4eb-b94406d74cbc", None, ERROR_MESSAGES['REQUIRED_ARGUMENT'].format('config')),
     ("dc4f1b47-da71-5a62-a4eb-b94406d74cbc", "x", ERROR_MESSAGES['INVALID_CONFIG'].format("x")),
     ("dc4f1b47-da71-5a62-a4eb-b94406d74cbc", {"dummy_key": "dummy_value"},
@@ -187,8 +185,8 @@ def test_list_vsphere_datastores_when_valid_values_are_provided(requests_mock, c
 
 @pytest.mark.parametrize("host_id, first, after, filters, sort_by,sort_order, err_msg", [
     (None, None, None, None, None, None, ERROR_MESSAGES['REQUIRED_ARGUMENT'].format("host_id")),
-    ("dummy", -10, None, None, None, None, util.ERROR_MESSAGES['INVALID_FIRST'].format(-10)),
-    ("dummy", "x", None, None, None, None, util.ERROR_MESSAGES['INVALID_NUMBER'].format("x")),
+    ("dummy", -10, None, None, None, None, validations.ERROR_MESSAGES['INVALID_FIRST'].format(-10)),
+    ("dummy", "x", None, None, None, None, validations.ERROR_MESSAGES['INVALID_NUMBER'].format("x")),
     ("dummy", 10, None, None, "NAME", "BOTH",
      ERROR_MESSAGES['INVALID_FIELD_TYPE'].format("BOTH", "sort_order", ['ASC', 'DESC']))
 ])
@@ -216,4 +214,33 @@ def test_list_vsphere_datastores_when_invalid_values_are_provided(client, reques
         list_vsphere_datastores(client, host_id=host_id, after=after, first=first, filters=filters, sort_by=sort_by,
                                 sort_order=sort_order)
 
+    assert str(e.value) == err_msg
+
+
+def test_get_async_request_result_when_valid_values_are_provided(requests_mock, client):
+    """
+    Tests get_async_request_result method of PolarisClient when valid values are provided
+    """
+    from rubrik_polaris.gps.vm import get_async_request_result
+
+    expected_response = util_load_json(os.path.join(os.path.dirname(os.path.realpath(__file__)),
+                                                    "test_data/gps_get_async_request_result_response.json"))
+    requests_mock.post(BASE_URL + "/graphql", json=expected_response)
+
+    response = get_async_request_result(client, "dummy-request-id", "dummy-cluster-id")
+    assert response == expected_response
+
+
+@pytest.mark.parametrize("request_id, cluster_id, err_msg", [
+    ("", "dummy-cluster-id", ERROR_MESSAGES['REQUIRED_ARGUMENT'].format('request_id')),
+    ("dummy-request-id", "", ERROR_MESSAGES['REQUIRED_ARGUMENT'].format('cluster_id'))
+])
+def test_get_async_request_result_when_invalid_values_are_provided(client, request_id, cluster_id, err_msg):
+    """
+    Tests get_async_request_result method of PolarisClient when invalid values are provided
+    """
+    from rubrik_polaris.gps.vm import get_async_request_result
+
+    with pytest.raises(ValueError) as e:
+        get_async_request_result(client, request_id=request_id, cluster_id=cluster_id)
     assert str(e.value) == err_msg

@@ -1,0 +1,81 @@
+{
+  "data": {
+    "inventoryRoot": {
+      "descendantConnection": {
+        "edges": [
+          {
+            "node": {
+              "id": "982dc602-e47c-5da9-b6d9-60798ee83abc",
+              "effectiveSlaDomain": {
+                "id": "UNPROTECTED",
+                "name": "UNPROTECTED",
+                "description": ""
+              },
+              "pendingSla": null,
+              "cluster": {
+                "id": "4d4a41d5-8910-4e4d-9dca-0798f5fc6d61",
+                "name": "sand2-rbk01"
+              },
+              "primaryClusterLocation": {
+                "id": "4d4a41d5-8910-4e4d-9dca-0798f5fc6d61"
+              },
+              "logicalPath": [],
+              "physicalPath": [],
+              "name": "172.24.106.151",
+              "objectType": "PhysicalHost"
+            }
+          },
+          {
+            "node": {
+              "id": "d113ea15-bc80-5c68-9034-217abd1dec24",
+              "effectiveSlaDomain": {
+                "id": "UNPROTECTED",
+                "name": "UNPROTECTED",
+                "description": ""
+              },
+              "pendingSla": null,
+              "cluster": {
+                "id": "4d4a41d5-8910-4e4d-9dca-0798f5fc6d61",
+                "name": "sand2-rbk01"
+              },
+              "primaryClusterLocation": {
+                "id": "4d4a41d5-8910-4e4d-9dca-0798f5fc6d61"
+              },
+              "logicalPath": [],
+              "physicalPath": [],
+              "name": "172.24.106.44",
+              "objectType": "PhysicalHost"
+            }
+          },
+          {
+            "node": {
+              "id": "f49330dd-8228-5341-9791-3eca8887958b",
+              "effectiveSlaDomain": {
+                "id": "UNPROTECTED",
+                "name": "UNPROTECTED",
+                "description": ""
+              },
+              "pendingSla": null,
+              "cluster": {
+                "id": "4d4a41d5-8910-4e4d-9dca-0798f5fc6d61",
+                "name": "sand2-rbk01"
+              },
+              "primaryClusterLocation": {
+                "id": "4d4a41d5-8910-4e4d-9dca-0798f5fc6d61"
+              },
+              "logicalPath": [],
+              "physicalPath": [],
+              "name": "172.24.106.45",
+              "objectType": "PhysicalHost"
+            }
+          }
+        ],
+        "pageInfo": {
+          "endCursor": "Y3Vyc29yOmludDo1",
+          "hasNextPage": true,
+          "hasPreviousPage": true
+        }
+      }
+    }
+  }
+}
