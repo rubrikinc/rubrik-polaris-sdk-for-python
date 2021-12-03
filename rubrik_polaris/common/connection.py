@@ -25,6 +25,7 @@ Collection of methods that control connection with Polaris.
 
 import requests
 import re
+import http
 import os
 from rubrik_polaris.exceptions import RequestException, AuthenticationException, ProxyException
 from rubrik_polaris.logger import logging_setup
@@ -90,18 +91,18 @@ def _query(self, query_name=None, variables=None, timeout=60):
                 if error.get('path'):
                     raise RequestException(ERROR_MESSAGES['REQUEST_ERROR_WITH_PATH'].format(
                         status_code,
-                        HTTP_ERRORS[status_code],
+                        return_http_error_message(status_code),
                         trace_id,
                         error['path'], error['message']))
                 raise RequestException(
                     ERROR_MESSAGES['REQUEST_ERROR_WITHOUT_PATH'].format(
-                        status_code, HTTP_ERRORS[status_code],
+                        status_code, return_http_error_message(status_code),
                         trace_id,
                         error['message']))
             elif 'code' in api_response and 'message' in api_response and api_response['code'] >= 400:
                 status_code = api_response['code']
                 raise RequestException(ERROR_MESSAGES['REQUEST_INVALID_STATUS'].format(status_code,
-                                                                                       HTTP_ERRORS[status_code],
+                                                                                       return_http_error_message(status_code),
                                                                                        api_response['message']))
             else:
                 api_request.raise_for_status()
@@ -170,10 +171,7 @@ def _query_raw(self, query_name, raw_query=None, variables=None, timeout=60):
             error = api_response['errors'][0]
             self.logger.error(error)
             status_code = error['extensions']['code']
-            if status_code >= 500:
-                error_msg = HTTP_ERRORS[500]
-            else:
-                error_msg = HTTP_ERRORS[status_code]
+            error_msg = return_http_error_message(status_code)
             if error['extensions'].get('trace', ''):
                 trace_id = error['extensions']['trace']['traceId']
             else:
@@ -192,7 +190,7 @@ def _query_raw(self, query_name, raw_query=None, variables=None, timeout=60):
         elif 'code' in api_response and 'message' in api_response and api_response['code'] >= 400:
             status_code = api_response['code']
             raise RequestException(ERROR_MESSAGES['REQUEST_INVALID_STATUS'].format(status_code,
-                                                                                   HTTP_ERRORS[status_code],
+                                                                                   return_http_error_message(status_code),
                                                                                    api_response['message']))
         else:
             api_request.raise_for_status()
@@ -310,3 +308,18 @@ def _get_access_token_keyfile(self, json_key=None):
     except Exception as err:
         self.logger.error(err)
         raise
+
+
+def return_http_error_message(status_code):
+    """
+    Returns HTTP error message, either custom or standard based on the status code input
+
+    :param status_code: Error status code
+
+    :return: Http error message
+    """
+    if status_code in HTTP_ERRORS.keys():
+        return HTTP_ERRORS[status_code]
+    else:
+        return http.HTTPStatus(status_code).description
+

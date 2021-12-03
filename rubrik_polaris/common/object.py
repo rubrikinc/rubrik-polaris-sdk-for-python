@@ -120,7 +120,7 @@ def search_object(self, filters: list = None, first: int = 20, sort_by: str = No
         if sort_by and sort_order:
             variables["sortBy"] = sort_by
             variables["sortOrder"] = sort_order
-        if (sort_order and not sort_by) or (sort_by and not sort_order):
+        elif (sort_order and not sort_by) or (sort_by and not sort_order):
             raise ValueError(ERROR_MESSAGES['SORT_FIELDS_REQUIRED'])
         if after:
             variables["after"] = after

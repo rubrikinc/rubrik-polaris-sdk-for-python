@@ -23,7 +23,7 @@ import pprint
 import urllib3
 import re
 import json
-
+import logging
 from .exceptions import RequestException
 from .logger import logging_setup
 
@@ -84,12 +84,13 @@ class PolarisClient:
     from .accounts.azure import _get_native_subscription_id_and_name, _get_accounts_azure_permission_version
     from .common.connection import _get_access_token_keyfile, _get_access_token_basic
 
-    def __init__(self, domain=None, username=None, password=None, json_keyfile=None, **kwargs):
+    def __init__(self, domain=None, username=None, password=None, json_keyfile=None,
+                 logging_handler=logging.NullHandler(), logging_level=logging.WARNING, **kwargs):
         from .common.graphql import _build_graphql_maps
 
         self._pp = pprint.PrettyPrinter(indent=4)
 
-        self.logger = logging_setup()
+        self.logger = logging_setup(logging_handler, logging_level)
 
         # Set credentials
         self._domain = self._get_cred('rubrik_polaris_domain', domain)

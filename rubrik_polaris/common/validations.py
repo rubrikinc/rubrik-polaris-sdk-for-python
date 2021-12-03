@@ -195,7 +195,7 @@ def check_first_arg(self, first):
     Raises:
         ValueError: If the 'first' argument contains invalid value
     """
-    if not isinstance(first, int) or (isinstance(first, str) and not first.isdigit()):
+    if not isinstance(first, (int, str)) or (isinstance(first, str) and not first.isdigit()):
         raise ValueError(ERROR_MESSAGES['INVALID_NUMBER'].format(first))
     first = int(first)
     if first <= 0:
