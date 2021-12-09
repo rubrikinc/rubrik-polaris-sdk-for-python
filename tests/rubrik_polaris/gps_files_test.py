@@ -75,7 +75,7 @@ def test_request_snapshot_files_when_valid_values_are_provided_with_empty_paths(
 
 
 @pytest.mark.parametrize("snapshot_id, paths, delta, nxt_snapshot_id, err_msg", [
-    (" ", [], "", "", validations.ERROR_MESSAGES['REQUIRED_ARGUMENT'].format("snapshot_id")),
+    (" ", [], "", "", validations.ERROR_MESSAGES['INVALID_ID_FORMAT'].format(" ", "snapshot_id")),
     ("dummy_id", "", "", "", ERROR_MESSAGES['MISSING_PATHS_PARAMETER_IN_FILES']),
 ])
 def test_request_snapshot_files_when_invalid_values_are_provided(client, snapshot_id, paths, delta, nxt_snapshot_id,

@@ -27,7 +27,8 @@ ERROR_MESSAGES = {
     'REQUIRED_ARGUMENT': '{} field is required.',
     'INVALID_FIELD_TYPE': "'{}' is an invalid value for '{}'. Value must be in {}.",
     'INVALID_INPUT': "{} is an invalid input type. Value must be str or list.",
-    'INVALID_NUMBER': "'{}' is an invalid number."
+    'INVALID_NUMBER': "'{}' is an invalid number.",
+    'INVALID_ID_FORMAT': "'{}' is an invalid value for '{}'. Please remove leading/trailing spaces."
 }
 
 
@@ -39,7 +40,8 @@ def _validate(self, **kwargs):
             for test in kwargs[validation]:
                 setattr(self, validation, globals()['_' + validation + '_validation'](self, test_variable=test))
         else:
-            setattr(self, validation, globals()['_' + validation + '_validation'](self, test_variable=kwargs[validation]))
+            setattr(self, validation,
+                    globals()['_' + validation + '_validation'](self, test_variable=kwargs[validation]))
 
 
 def _mutation_name_validation(self, test_variable=None):
@@ -65,11 +67,13 @@ def _aws_native_account_id_validation(self, test_variable=None):
 def _aws_account_number_validation(self, test_variable=None):
     self.aws_account_map = self._get_account_map_aws()
     connected_accounts = []
-    if not test_variable or test_variable not in self.aws_account_map or self.aws_account_map[test_variable]['status'].lower() != 'connected':
+    if not test_variable or test_variable not in self.aws_account_map or self.aws_account_map[test_variable][
+        'status'].lower() != 'connected':
         for account in self.aws_account_map:
             if self.aws_account_map[account]['status'].lower() == 'connected':
                 connected_accounts.append(account)
-        raise ValidationException("{} not found or not connected, valid account numbers are {}".format(test_variable, connected_accounts))
+        raise ValidationException(
+            "{} not found or not connected, valid account numbers are {}".format(test_variable, connected_accounts))
     return test_variable
 
 
@@ -119,13 +123,15 @@ def _aws_vpc_validation(self, test_variable=None):
 
 def _aws_subnet_validation(self, test_variable=None):
     if not test_variable or test_variable not in self.aws_vpcs[self.aws_vpc]['subnets']:
-        raise ValidationException("{} not found, valid subnets are {}".format(test_variable, list(self.aws_vpcs[self.aws_vpc]['subnets'])))
+        raise ValidationException(
+            "{} not found, valid subnets are {}".format(test_variable, list(self.aws_vpcs[self.aws_vpc]['subnets'])))
     return test_variable
 
 
 def _aws_security_group_validation(self, test_variable=None):
     if not test_variable or test_variable not in self.aws_vpcs[self.aws_vpc]['security_groups']:
-        raise ValidationException("{} not found, valid security_groups are {}".format(test_variable, list(self.aws_vpcs[self.aws_vpc]['security_groups'])))
+        raise ValidationException("{} not found, valid security_groups are {}".format(test_variable, list(
+            self.aws_vpcs[self.aws_vpc]['security_groups'])))
     return test_variable
 
 
@@ -195,10 +201,11 @@ def check_first_arg(self, first):
     Raises:
         ValueError: If the 'first' argument contains invalid value
     """
-    if not isinstance(first, (int, str)) or (isinstance(first, str) and not first.isdigit()):
-        raise ValueError(ERROR_MESSAGES['INVALID_NUMBER'].format(first))
-    first = int(first)
-    if first <= 0:
+    if first:
+        if not isinstance(first, (int, str)) or (isinstance(first, str) and not first.isdigit()):
+            raise ValueError(ERROR_MESSAGES['INVALID_NUMBER'].format(first))
+        first = int(first)
+    if first is not None and first <= 0:
         raise ValueError(ERROR_MESSAGES['INVALID_FIRST'].format(first))
 
     return first
@@ -237,12 +244,10 @@ def validate_id(self, id_: str, field_name: str):
 
     Raises: ValueError exception
     """
-    if isinstance(id_, str):
-        id_ = id_.strip()
-
     if not id_:
         raise ValueError(ERROR_MESSAGES['REQUIRED_ARGUMENT'].format(field_name))
-
+    elif isinstance(id_, str) and id_.strip() != id_:
+        raise ValueError(ERROR_MESSAGES['INVALID_ID_FORMAT'].format(id_, field_name))
     return id_
 
 

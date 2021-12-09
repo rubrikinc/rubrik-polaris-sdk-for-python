@@ -187,7 +187,7 @@ def test_list_vsphere_datastores_when_valid_values_are_provided(requests_mock, c
     (None, None, None, None, None, None, ERROR_MESSAGES['REQUIRED_ARGUMENT'].format("host_id")),
     ("dummy", -10, None, None, None, None, validations.ERROR_MESSAGES['INVALID_FIRST'].format(-10)),
     ("dummy", "x", None, None, None, None, validations.ERROR_MESSAGES['INVALID_NUMBER'].format("x")),
-    ("dummy", 10, None, None, "NAME", "BOTH",
+    ("dummy", None, None, None, "NAME", "BOTH",
      ERROR_MESSAGES['INVALID_FIELD_TYPE'].format("BOTH", "sort_order", ['ASC', 'DESC']))
 ])
 def test_list_vsphere_datastores_when_invalid_values_are_provided(client, requests_mock, host_id, first, after,
