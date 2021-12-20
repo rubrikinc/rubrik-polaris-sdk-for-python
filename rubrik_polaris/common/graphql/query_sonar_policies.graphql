@@ -1,0 +1,28 @@
+query RubrikPolarisSDKRequest {
+  policyConnection(policyObjectFilter: HAS_OBJECTS) {
+    nodes {
+      ...PolicyDetailFragment
+    }
+  }
+}
+
+fragment PolicyDetailFragment on ClassificationPolicyDetail {
+  id
+  name
+  description
+  creator {
+    email
+  }
+  totalObjects
+  numAnalyzers
+  objectStatuses {
+    id
+    latestSnapshotResult {
+      snapshotFid
+    }
+    policyStatuses {
+      policyId
+      status
+    }
+  }
+}

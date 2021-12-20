@@ -1,0 +1,35 @@
+{
+  "data": {
+    "__type": {
+      "states": [
+        {
+          "name": "LastUpdated"
+        },
+        {
+          "name": "Location"
+        },
+        {
+          "name": "ObjectType"
+        },
+        {
+          "name": "ClusterName"
+        },
+        {
+          "name": "ObjectName"
+        },
+        {
+          "name": "StartTime"
+        },
+        {
+          "name": "ActivityType"
+        },
+        {
+          "name": "Severity"
+        },
+        {
+          "name": "ActivityStatus"
+        }
+      ]
+    }
+  }
+}

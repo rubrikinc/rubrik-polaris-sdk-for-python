@@ -1,0 +1,6 @@
+mutation RubrikPolarisSDKRequest($input: RunDetectMalwareInput!){
+    startMalwareDetection(input: $input){
+        id
+        status
+    }
+}

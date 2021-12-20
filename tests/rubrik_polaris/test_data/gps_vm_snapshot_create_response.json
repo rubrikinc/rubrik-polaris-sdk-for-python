@@ -1,0 +1,8 @@
+{
+  "data": {
+    "vsphereOnDemandSnapshot": {
+      "id": "CREATE_VMWARE_SNAPSHOT_868aa03d-4145-4cb1-808b-e10c4f7a3741-vm-247778_932386ca-0d9e-4080-9d85-1d5f79d473a7:::0",
+      "status": "QUEUED"
+    }
+  }
+}

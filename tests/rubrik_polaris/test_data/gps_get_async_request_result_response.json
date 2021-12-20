@@ -1,0 +1,19 @@
+{
+    "data": {
+        "vSphereVMAsyncRequestStatus": {
+            "id": "dummy-request-id",
+            "nodeId": "cluster:::RVM12345678",
+            "status": "Running",
+            "progress": 2,
+            "links": [
+                {
+                    "href": "https://dummy-ip/api/v1/vmware/vm/request/dummy-request-id",
+                    "rel": "self"
+                }
+            ],
+            "error": {
+                "message": ""
+            }
+        }
+    }
+}

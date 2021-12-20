@@ -1,0 +1,13 @@
+ mutation RubrikPolarisSDKRequest(
+    $filters: DownloadResultsCsvFiltersInput
+    $snappableFid: String!
+    $snapshotFid: String!
+  ) {
+    downloadSnapshotResultsCsv(
+      snappableFid: $snappableFid
+      snapshotFid: $snapshotFid
+      downloadFilter: $filters
+    ) {
+      isSuccessful
+    }
+  }

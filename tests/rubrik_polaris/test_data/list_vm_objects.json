@@ -1,0 +1,104 @@
+{
+    "data": {
+        "vSphereVmNewConnection": {
+            "edges": [
+                {
+                    "node": {
+                        "id": "4c6aa03c-c235-5a23-99b6-66717f261749",
+                        "name": "deviderr-sandbox-w1",
+                        "objectType": "VmwareVirtualMachine",
+                        "replicatedObjectCount": 2,
+                        "cluster": {
+                            "id": "4d4a41d5-8910-4e4d-9dca-0798f5fc6d61",
+                            "name": "sand2-rbk01",
+                            "version": "6.0.0-p1-12566",
+                            "status": "Disconnected"
+                        },
+                        "effectiveSlaDomain": {
+                            "id": "DO_NOT_PROTECT",
+                            "name": "DO_NOT_PROTECT",
+                            "description": ""
+                        },
+                        "pendingSla": null,
+                        "effectiveSlaSourceObject": {
+                            "fid": "4c6aa03c-c235-5a23-99b6-66717f261749",
+                            "name": "deviderr-sandbox-w1",
+                            "objectType": "VmwareVirtualMachine"
+                        },
+                        "slaAssignment": "Direct",
+                        "isRelic": true,
+                        "authorizedOperations": [
+                            "Mount",
+                            "ViewReport",
+                            "ConfigureDataClassGlobal",
+                            "ManageProtection",
+                            "ViewDataClassGlobal",
+                            "ViewInventory",
+                            "CancelRunningActivity",
+                            "CategoryRecovery",
+                            "DeleteReport",
+                            "ExportDataClassGlobal",
+                            "ExportSnapshots",
+                            "TakeOnDemandSnapshot",
+                            "ViewAuditLog",
+                            "ViewSystemEvent",
+                            "CategoryProtection",
+                            "CategoryViewDataSource",
+                            "Download",
+                            "DownloadFromArchivalLocation",
+                            "ExportFiles",
+                            "ModifyReport",
+                            "ProvisionOnInfrastructure",
+                            "RefreshDataSource",
+                            "CreateReport",
+                            "DeleteSnapshot",
+                            "RestoreToOrigin",
+                            "ViewNonSystemEvent"
+                        ],
+                        "primaryClusterLocation": {
+                            "id": "cc19573c-db6c-418a-9d48-067a256543ba",
+                            "name": "sand1-rbk01"
+                        },
+                        "logicalPath": [
+                            {
+                                "fid": "1d520717-2b33-5ca3-92c5-fae99e89001d",
+                                "name": "vm",
+                                "objectType": "VSphereFolder"
+                            },
+                            {
+                                "fid": "8e955ddd-1491-5fc6-b719-7cfde75fc368",
+                                "name": "Sandbox-1 Datacenter",
+                                "objectType": "VSphereDatacenter"
+                            },
+                            {
+                                "fid": "0dc2cee9-ad2a-5b74-aa88-7dd9a631641c",
+                                "name": "sand1-vcsa.rubrikdemo.com",
+                                "objectType": "VSphereVCenter"
+                            }
+                        ],
+                        "snapshotDistribution": {
+                            "id": "4c6aa03c-c235-5a23-99b6-66717f261749",
+                            "onDemandCount": 16,
+                            "retrievedCount": 0,
+                            "scheduledCount": 0,
+                            "totalCount": 16
+                        },
+                        "reportSnappable": {
+                            "id": "dummy_id",
+                            "archiveStorage": 0,
+                            "physicalBytes": 8215753075
+                        },
+                        "vmwareToolsInstalled": true,
+                        "agentStatus": null
+                    }
+                }
+            ],
+            "pageInfo": {
+                "startCursor": "Y3Vyc29yOmludDow",
+                "endCursor": "Y3Vyc29yOmludDow",
+                "hasNextPage": true,
+                "hasPreviousPage": false
+            }
+        }
+    }
+}

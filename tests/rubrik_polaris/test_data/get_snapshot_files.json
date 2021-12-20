@@ -1,0 +1,35 @@
+{
+  "data": {
+    "browseSnapshotFileConnection": {
+      "edges": [
+        {
+          "node": {
+            "absolutePath": "/C:/Windows/Microsoft.NET/Framework/v4.0.30319/ASP.NETWebAdminFiles/WebAdminHelp.aspx",
+            "displayPath": "C:\\Windows\\Microsoft.NET\\Framework\\v4.0.30319\\ASP.NETWebAdminFiles\\WebAdminHelp.aspx",
+            "path": "C:\\Windows\\Microsoft.NET\\Framework\\v4.0.30319\\ASP.NETWebAdminFiles",
+            "filename": "WebAdminHelp.aspx",
+            "fileMode": "FILE",
+            "size": 6738,
+            "lastModified": "2016-07-16T13:21:30.000Z"
+          }
+        },
+        {
+          "node": {
+            "absolutePath": "/C:/Windows/Microsoft.NET/Framework/v4.0.30319/ASP.NETWebAdminFiles/WebAdminHelp_Application.aspx",
+            "displayPath": "C:\\Windows\\Microsoft.NET\\Framework\\v4.0.30319\\ASP.NETWebAdminFiles\\WebAdminHelp_Application.aspx",
+            "path": "C:\\Windows\\Microsoft.NET\\Framework\\v4.0.30319\\ASP.NETWebAdminFiles",
+            "filename": "WebAdminHelp_Application.aspx",
+            "fileMode": "FILE",
+            "size": 13571,
+            "lastModified": "2016-07-16T13:21:30.000Z"
+          }
+        }
+      ],
+      "pageInfo": {
+        "endCursor": "Y3Vyc29yOmludDoxOQ==",
+        "hasNextPage": true,
+        "hasPreviousPage": true
+      }
+    }
+  }
+}

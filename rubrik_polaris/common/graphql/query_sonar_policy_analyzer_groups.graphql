@@ -1,0 +1,14 @@
+query RubrikPolarisSDKRequest {
+  analyzerGroupConnection {
+    nodes {
+      id
+      name
+      groupType
+      analyzers {
+        id
+        name
+        analyzerType
+      }
+    }
+  }
+}

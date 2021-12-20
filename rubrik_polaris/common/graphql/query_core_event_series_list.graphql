@@ -1,19 +1,32 @@
 query RubrikPolarisSDKRequest($after: String, $filters: ActivitySeriesFilterInput, $first: Int, $sortBy: ActivitySeriesSortByEnum, $sortOrder: SortOrderEnum) {
     activitySeriesConnection(after: $after, first: $first, filters: $filters, sortBy: $sortBy, sortOrder: $sortOrder) {
         edges {
-              node {
-                  id
-                  startTime
-                  lastActivityType
-                  lastActivityStatus
-                  location
-                  objectName
-                  objectId
-                  severity
-                  objectType
-                  clusterName
-                  clusterUuid
-                  failureReason
+            node {
+                id
+                fid
+                activitySeriesId
+                startTime
+                lastUpdated
+                lastActivityType
+                lastActivityStatus
+                location
+                objectName
+                objectId
+                objectType
+                severity
+                progress
+                cluster {
+                    id
+                    name
+                }
+                activityConnection {
+                    nodes {
+                        id
+                        message
+                        severity
+                        time
+                    }
+                }
             }
         }
         pageInfo {
@@ -22,4 +35,5 @@ query RubrikPolarisSDKRequest($after: String, $filters: ActivitySeriesFilterInpu
             hasPreviousPage
         }
     }
+
 }

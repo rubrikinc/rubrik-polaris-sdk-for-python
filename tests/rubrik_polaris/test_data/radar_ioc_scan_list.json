@@ -1,0 +1,60 @@
+{
+  "data": {
+    "malwareScans": {
+      "data": [
+        {
+          "startTime": "2021-10-28T06:17:23.169Z",
+          "id": "42c72a58-40dc-4727-822b-53e11c54ef09",
+          "snapshots": [
+            {
+              "id": "VirtualMachine:::998aa03d-4145-4cb1-808b-e10c4f7a3741-vm-12345",
+              "snapshots": [
+                "0103f7bf-1d03-4926-b960-4faaad9725b6",
+                "0289e18a-11bd-4bba-882f-3c20ceae84a6",
+                "ee469af7-9392-405c-99af-fa37910754a5",
+                "f37bab41-2b3c-49f4-8127-b50c152dc82b",
+                "fc25ffdc-5383-495a-8c3f-81f9f7d77dd0"
+              ]
+            },
+            {
+              "id": "VirtualMachine:::998aa03d-4145-4cb1-808b-e10c4f7a3741-vm-54321",
+              "snapshots": [
+                "17271143-617f-4738-ab12-01c8520f78f2",
+                "1ab04498-b930-4959-b825-814677f58a54",
+                "407185e2-017d-403a-8605-f586e94af6ea",
+                "ff6a8d03-83fd-4584-ae62-e5b5df21d925"
+              ]
+            }
+          ],
+          "endTime": "2021-10-28T09:38:30.394Z"
+        },
+        {
+          "startTime": "2021-10-29T12:09:03.113Z",
+          "id": "bf687fcf-84d7-47f6-8bd1-54e8cf439680",
+          "snapshots": [
+            {
+              "id": "VirtualMachine:::998aa03d-4145-4cb1-808b-e10c4f7a3741-vm-54321",
+              "snapshots": [
+                "3779a895-94bf-437e-b63a-61e73e215901",
+                "a871683f-f4fa-475f-806c-58f06e6782dc",
+                "b7d6b871-796e-4e7c-99cf-328007c9d5c1",
+                "fc25ffdc-5383-495a-8c3f-81f9f7d77dd0"
+              ]
+            },
+            {
+              "id": "VirtualMachine:::998aa03d-4145-4cb1-808b-e10c4f7a3741-vm-54321",
+              "snapshots": [
+                "129f22f4-0359-4e7d-aa53-9edf4e33cff1",
+                "505962ca-aafd-45b3-b937-1e41629abe9a",
+                "9f12b533-b740-4fb9-af94-4411b0aee01d",
+                "b9264942-c71c-4b91-b9a7-74a7ba0f6166"
+              ]
+            }
+          ],
+          "endTime": "2021-10-29T12:37:41.613Z"
+        }
+      ],
+      "total": 2
+    }
+  }
+}

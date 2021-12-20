@@ -1,0 +1,5 @@
+mutation RubrikPolarisSDKRequest($crawlName: String!, $resources: [ResourceInput!]!, $analyzerGroups: [AnalyzerGroupInput!]!) {
+ startCrawl(name: $crawlName, resources: $resources, analyzerGroups: $analyzerGroups) {
+   crawlId
+ }
+}

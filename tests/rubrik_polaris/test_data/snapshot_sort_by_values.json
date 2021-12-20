@@ -1,0 +1,14 @@
+{
+  "data": {
+    "__type": {
+      "states": [
+        {
+          "name": "UNKNOWN"
+        },
+        {
+          "name": "CREATION_TIME"
+        }
+      ]
+    }
+  }
+}

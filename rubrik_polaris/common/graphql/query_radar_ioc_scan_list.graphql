@@ -1,0 +1,15 @@
+query RubrikPolarisSDKRequest($input: ListMalwareScansInput!)
+{
+    malwareScans(input: $input) {
+        data {
+            startTime
+            id
+            snapshots {
+                id
+                snapshots
+            }
+            endTime
+        }
+        total
+    }
+}

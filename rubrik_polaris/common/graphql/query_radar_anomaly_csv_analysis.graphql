@@ -1,0 +1,9 @@
+query RubrikPolarisSDKRequest($clusterUuid: UUID!, $snapshotId: String!, $snappableIdNotFid: String!) {
+  investigationCsvDownloadLink(
+    snappableIdNotFid: $snappableIdNotFid
+    clusterUuid: $clusterUuid
+    snapshotId: $snapshotId
+  ) {
+    downloadLink
+  }
+}

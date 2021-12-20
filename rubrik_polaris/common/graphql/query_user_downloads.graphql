@@ -1,0 +1,11 @@
+query RubrikPolarisSDKRequest {
+    getUserDownloads {
+        id
+        name
+        status
+        progress
+        identifier
+        createTime
+        completeTime
+    }
+}

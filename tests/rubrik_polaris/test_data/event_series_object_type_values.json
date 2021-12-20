@@ -1,0 +1,269 @@
+{
+  "data": {
+    "__type": {
+      "states": [
+        {
+          "name": "VmwareVm"
+        },
+        {
+          "name": "ManagedVolume"
+        },
+        {
+          "name": "CASSANDRA_KEYSPACE"
+        },
+        {
+          "name": "ShareFileset"
+        },
+        {
+          "name": "KuprNamespace"
+        },
+        {
+          "name": "O365Group"
+        },
+        {
+          "name": "StorageLocation"
+        },
+        {
+          "name": "AwsNativeEbsVolume"
+        },
+        {
+          "name": "O365Mailbox"
+        },
+        {
+          "name": "NutanixVm"
+        },
+        {
+          "name": "JobInstance"
+        },
+        {
+          "name": "Storm"
+        },
+        {
+          "name": "Ldap"
+        },
+        {
+          "name": "AwsEventType"
+        },
+        {
+          "name": "VolumeGroup"
+        },
+        {
+          "name": "AzureNativeVm"
+        },
+        {
+          "name": "SmbDomain"
+        },
+        {
+          "name": "VmwareComputeCluster"
+        },
+        {
+          "name": "AwsAccount"
+        },
+        {
+          "name": "SupportBundle"
+        },
+        {
+          "name": "AwsNativeRdsInstance"
+        },
+        {
+          "name": "O365Site"
+        },
+        {
+          "name": "ObjectProtection"
+        },
+        {
+          "name": "PolarisEc2Instance"
+        },
+        {
+          "name": "CASSANDRA_SOURCE"
+        },
+        {
+          "name": "AwsNativeEc2Instance"
+        },
+        {
+          "name": "PolarisEbsVolume"
+        },
+        {
+          "name": "CapacityBundle"
+        },
+        {
+          "name": "DataLocation"
+        },
+        {
+          "name": "PolarisAccount"
+        },
+        {
+          "name": "NasHost"
+        },
+        {
+          "name": "FailoverClusterApp"
+        },
+        {
+          "name": "OracleHost"
+        },
+        {
+          "name": "Host"
+        },
+        {
+          "name": "OracleDb"
+        },
+        {
+          "name": "CloudNativeVirtualMachine"
+        },
+        {
+          "name": "WindowsHost"
+        },
+        {
+          "name": "O365Team"
+        },
+        {
+          "name": "Certificate"
+        },
+        {
+          "name": "PublicCloudMachineInstance"
+        },
+        {
+          "name": "GcpNativeDisk"
+        },
+        {
+          "name": "AwsNativeAccount"
+        },
+        {
+          "name": "CloudNativeVm"
+        },
+        {
+          "name": "Envoy"
+        },
+        {
+          "name": "LinuxHost"
+        },
+        {
+          "name": "AuthDomain"
+        },
+        {
+          "name": "VcdVapp"
+        },
+        {
+          "name": "HypervVm"
+        },
+        {
+          "name": "Vcd"
+        },
+        {
+          "name": "SapHanaDb"
+        },
+        {
+          "name": "ComputeInstance"
+        },
+        {
+          "name": "AzureNativeDisk"
+        },
+        {
+          "name": "Mssql"
+        },
+        {
+          "name": "SlaDomain"
+        },
+        {
+          "name": "SnapMirrorCloud"
+        },
+        {
+          "name": "Cluster"
+        },
+        {
+          "name": "O365Calendar"
+        },
+        {
+          "name": "O365SharePointDrive"
+        },
+        {
+          "name": "SapHanaSystem"
+        },
+        {
+          "name": "Oracle"
+        },
+        {
+          "name": "O365Onedrive"
+        },
+        {
+          "name": "Hdfs"
+        },
+        {
+          "name": "Ec2Instance"
+        },
+        {
+          "name": "GcpNativeProject"
+        },
+        {
+          "name": "UnknownObjectType"
+        },
+        {
+          "name": "SamlSso"
+        },
+        {
+          "name": "StorageArray"
+        },
+        {
+          "name": "AzureSqlDatabase"
+        },
+        {
+          "name": "Vcenter"
+        },
+        {
+          "name": "HypervServer"
+        },
+        {
+          "name": "HypervScvmm"
+        },
+        {
+          "name": "AppBlueprint"
+        },
+        {
+          "name": "LinuxFileset"
+        },
+        {
+          "name": "StorageArrayVolumeGroup"
+        },
+        {
+          "name": "O365SharePointList"
+        },
+        {
+          "name": "Upgrade"
+        },
+        {
+          "name": "NutanixCluster"
+        },
+        {
+          "name": "AzureNativeSubscription"
+        },
+        {
+          "name": "User"
+        },
+        {
+          "name": "Exocompute"
+        },
+        {
+          "name": "KuprCluster"
+        },
+        {
+          "name": "OracleRac"
+        },
+        {
+          "name": "AzureSqlManagedInstance"
+        },
+        {
+          "name": "CASSANDRA_COLUMN_FAMILY"
+        },
+        {
+          "name": "O365Organization"
+        },
+        {
+          "name": "GcpNativeGceInstance"
+        },
+        {
+          "name": "WindowsFileset"
+        }
+      ]
+    }
+  }
+}

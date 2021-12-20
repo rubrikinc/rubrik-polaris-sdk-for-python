@@ -1,0 +1,40 @@
+query RubrikPolarisSDKRequest($input: GetLambdaDetectMalwareResultInput!)
+{
+    malwareDetectionTaskResult(input: $input) {
+        id
+        indicatorsOfCompromise{
+            iocType
+            iocValue
+        }
+        results {
+            objectId
+            snapshotResults {
+                status
+                snapshotDate
+                snapshotId
+                scanStats {
+                    numFiles
+                    numFilesScanned
+                    totalFilesScannedSizeBytes
+                }
+                matches {
+                    indicatorIndex
+                    paths {
+                        aclDetails
+                        creationTime
+                        modificationTime
+                        path
+                        yaraMatchDetails {
+                            name
+                            tags
+                        }
+                        requestedHashDetails {
+                            hashType
+                            hashValue
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

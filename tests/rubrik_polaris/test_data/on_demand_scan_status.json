@@ -1,0 +1,46 @@
+{
+  "data": {
+    "crawl": {
+      "id": "587d147a-add9-4152-b7a0-5a667d99f395",
+      "crawlObjConnection": {
+        "nodes": [
+          {
+            "crawlId": "587d147a-add9-4152-b7a0-5a667d99f395",
+            "error": "",
+            "snappable": {
+              "id": "953aad46-89ac-5873-b4f2-9cbab4ee61d6",
+              "name": "BMR",
+              "objectType": "LinuxFileset"
+            },
+            "snapshotTime": 1611216184000,
+            "status": "COMPLETE",
+            "progress": 1,
+            "totalHits": 0,
+            "analyzerGroupResults": [
+              {
+                "analyzerGroup": {
+                  "groupType": "PCI_DSS",
+                  "id": "16bd3864-bad6-513b-b38d-a108e648cf4a",
+                  "name": "PCI DSS"
+                },
+                "analyzerResults": [],
+                "hits": {
+                  "totalHits": 0,
+                  "violations": 0,
+                  "permittedHits": 0,
+                  "violationsDelta": 0,
+                  "totalHitsDelta": 0
+                }
+              }
+            ],
+            "cluster": {
+              "id": "cc19573c-db6c-418a-9d48-067a256543ba",
+              "name": "sand1-rbk01",
+              "type": "OnPrem"
+            }
+          }
+        ]
+      }
+    }
+  }
+}

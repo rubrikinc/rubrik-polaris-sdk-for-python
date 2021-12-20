@@ -1,0 +1,26 @@
+{
+  "data": {
+    "__type": {
+      "states": [
+        {
+          "name": "Month"
+        },
+        {
+          "name": "Day"
+        },
+        {
+          "name": "Year"
+        },
+        {
+          "name": "Week"
+        },
+        {
+          "name": "Hour"
+        },
+        {
+          "name": "Quarter"
+        }
+      ]
+    }
+  }
+}
