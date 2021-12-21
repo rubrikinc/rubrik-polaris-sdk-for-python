@@ -244,3 +244,51 @@ def test_get_async_request_result_when_invalid_values_are_provided(client, reque
     with pytest.raises(ValueError) as e:
         get_async_request_result(client, request_id=request_id, cluster_id=cluster_id)
     assert str(e.value) == err_msg
+
+
+@pytest.mark.parametrize("snapshot_id, cluster_id, restore_config, err_msg", [
+    ("", "", {
+        "path": "/var/empty",
+        "restorePath": "/usr/share"
+    }, ERROR_MESSAGES['REQUIRED_ARGUMENT'].format("snapshot_id")),
+    (" 123 ", "", {
+        "path": "/var/empty",
+        "restorePath": "/usr/share"
+    }, validations.ERROR_MESSAGES['INVALID_ID_FORMAT'].format(" 123 ", "snapshot_id")),
+    ("dummy-snapshot-id", "", {
+        "path": "/var/empty",
+        "restorePath": "/usr/share"
+    }, ERROR_MESSAGES['REQUIRED_ARGUMENT'].format("cluster_id")),
+    ("dummy-snapshot-id", " 123 ", {
+        "path": "/var/empty",
+        "restorePath": "/usr/share"
+    }, validations.ERROR_MESSAGES['INVALID_ID_FORMAT'].format(" 123 ", "cluster_id")),
+    ("dummy-snapshot-id", "dummy-cluster-id", {}, ERROR_MESSAGES['REQUIRED_ARGUMENT'].format("restore_config")),
+    ("dummy-snapshot-id", "dummy-cluster-id", [], ERROR_MESSAGES['REQUIRED_ARGUMENT'].format("restore_config"))
+])
+def test_recover_files_when_invalid_values_are_provided(client, snapshot_id, cluster_id, restore_config, err_msg):
+    """
+    Tests recover_files method of PolarisClient when invalid values are provided
+    """
+    from rubrik_polaris.gps.vm import recover_files
+
+    with pytest.raises(ValueError) as e:
+        recover_files(client, snapshot_id, cluster_id, {})
+    assert str(e.value) == err_msg
+
+
+def test_recover_files_when_valid_values_are_provided(requests_mock, client):
+    """
+    Tests recover_files method of PolarisClient when valid values are provided
+    """
+    from rubrik_polaris.gps.vm import recover_files
+
+    expected_response = util_load_json(os.path.join(os.path.dirname(os.path.realpath(__file__)),
+                                                    "test_data/gps_recover_files_response.json"))
+    requests_mock.post(BASE_URL + "/graphql", json=expected_response)
+
+    response = recover_files(client, "dummy-request-id", "dummy-cluster-id", [{
+        "path": "/var/empty",
+        "restorePath": "/usr/share"
+    }])
+    assert response == expected_response
