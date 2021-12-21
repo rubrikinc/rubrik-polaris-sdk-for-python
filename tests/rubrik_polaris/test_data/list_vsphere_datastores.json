@@ -1,0 +1,35 @@
+{
+  "data": {
+    "vSphereHost": {
+      "descendantConnection": {
+        "edges": [
+          {
+            "node": {
+              "id": "05a42350-fa53-5f0c-80f3-36e19996bc91",
+              "name": "rubrik_b574d935701d400c9b70481595b07b23",
+              "capacity": 30064772308992,
+              "isLocal": true,
+              "freeSpace": 19531910598656,
+              "datastoreType": "NFS"
+            }
+          },
+          {
+            "node": {
+              "id": "95dd2ccd-10a9-526a-89b4-94dcdd52e716",
+              "name": "sand1-vol01-purex50",
+              "capacity": 4397778075648,
+              "isLocal": false,
+              "freeSpace": 716978520064,
+              "datastoreType": "VMFS"
+            }
+          }
+        ],
+        "pageInfo": {
+          "endCursor": "Y3Vyc29yOmludDoz",
+          "hasNextPage": true,
+          "hasPreviousPage": true
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,88 @@
+{
+  "data": {
+    "policyObjConnection": {
+      "edges": [
+        {
+          "node": {
+            "snapshotFid": "8ef33f4e-4889-5377-9209-2e0faec8aa25",
+            "snapshotTimestamp": 1629762052866,
+            "objectStatus": {
+              "latestSnapshotResult": {
+                "snapshotTime": 1632630067871,
+                "snapshotFid": "ec59365d-500c-5484-a7da-15b43de55846"
+              }
+            },
+            "snappable": {
+              "name": "sx1-radar02",
+              "id": "1b174c2e-f77b-5006-baea-fe37b2ae429f"
+            }
+          }
+        },
+        {
+          "node": {
+            "snapshotFid": "959f9f11-37ac-5b3f-ab21-8254017d32c6",
+            "snapshotTimestamp": 1611216184000,
+            "objectStatus": {
+              "latestSnapshotResult": {
+                "snapshotTime": 1611216184000,
+                "snapshotFid": "959f9f11-37ac-5b3f-ab21-8254017d32c6"
+              }
+            },
+            "snappable": {
+              "name": "BMR",
+              "id": "953aad46-89ac-5873-b4f2-9cbab4ee61d6"
+            }
+          }
+        },
+        {
+          "node": {
+            "snapshotFid": "b41c64e7-80c5-5d92-92cb-830128045faf",
+            "snapshotTimestamp": 1629762952858,
+            "objectStatus": {
+              "latestSnapshotResult": {
+                "snapshotTime": 1632699341898,
+                "snapshotFid": "ee8a4942-c81c-5035-b3e5-6e01d79aca15"
+              }
+            },
+            "snappable": {
+              "name": "sx1-radar01",
+              "id": "ac0a6844-a2fc-52b0-bb71-6a55f43677be"
+            }
+          }
+        },
+        {
+          "node": {
+            "snapshotFid": "afa78cc7-ec6c-5a94-91ca-0d730cede43d",
+            "snapshotTimestamp": 1610179206000,
+            "objectStatus": {
+              "latestSnapshotResult": {
+                "snapshotTime": 1610179206000,
+                "snapshotFid": "afa78cc7-ec6c-5a94-91ca-0d730cede43d"
+              }
+            },
+            "snappable": {
+              "name": "BMR-CENTOS",
+              "id": "be727b7c-46ce-5d06-bde3-ec50f2583be9"
+            }
+          }
+        },
+        {
+          "node": {
+            "snapshotFid": "5e37cb07-5e31-516f-926a-b6f8cd3d6015",
+            "snapshotTimestamp": 1611130732000,
+            "objectStatus": {
+              "latestSnapshotResult": {
+                "snapshotTime": 1611130732000,
+                "snapshotFid": "5e37cb07-5e31-516f-926a-b6f8cd3d6015"
+              }
+            },
+            "snappable": {
+              "name": "C",
+              "id": "f9fab095-7d05-52c0-880d-c883f2186c6e"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

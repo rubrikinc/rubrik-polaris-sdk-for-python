@@ -1,0 +1,15 @@
+{
+  "data": {
+    "getUserDownloads": [
+      {
+        "id": 107,
+        "name": "sx1-radar01",
+        "status": "COMPLETED",
+        "progress": 100,
+        "identifier": "SONAR_DOWNLOAD",
+        "createTime": "2021-09-29T11:57:59.103477261Z",
+        "completeTime": "2021-09-29T11:57:59.556729183Z"
+      }
+    ]
+  }
+}

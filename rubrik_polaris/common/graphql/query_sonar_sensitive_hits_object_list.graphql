@@ -1,0 +1,20 @@
+query RubrikPolarisSDKRequest($day: String!, $timezone: String!) {
+    policyObjConnection(day: $day, timezone: $timezone) {
+        edges {
+            node {
+                snapshotFid
+                snapshotTimestamp
+                objectStatus {
+                    latestSnapshotResult {
+                        snapshotTime
+                        snapshotFid
+                    }
+                }
+                snappable {
+                    name
+                    id
+                }
+            }
+        }
+    }
+}

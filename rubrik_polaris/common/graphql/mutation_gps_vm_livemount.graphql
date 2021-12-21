@@ -1,0 +1,29 @@
+mutation RubrikPolarisSDKRequest(
+    $snapshotFid: UUID!
+    $vmName: String
+    $disableNetwork: Boolean
+    $removeNetworkDevices: Boolean
+    $powerOn: Boolean
+    $keepMacAddresses: Boolean
+    $hostID: String
+    $datastoreName: String
+    $createDatastoreOnly: Boolean
+    $vlan: Int
+    $shouldRecoverTags: Boolean
+  ) {
+    vsphereVMInitiateLiveMount(
+      snapshotFid: $snapshotFid
+      vmName: $vmName
+      disableNetwork: $disableNetwork
+      removeNetworkDevices: $removeNetworkDevices
+      powerOn: $powerOn
+      keepMacAddresses: $keepMacAddresses
+      hostID: $hostID
+      datastoreName: $datastoreName
+      createDatastoreOnly: $createDatastoreOnly
+      vlan: $vlan
+      shouldRecoverTags: $shouldRecoverTags
+    ) {
+      id
+    }
+  }

@@ -1,0 +1,226 @@
+{
+  "data": {
+    "vSphereDetailData": {
+      "id": "86db05d1-292f-5973-b616-2ae3977f4428",
+      "authorizedOperations": [
+        "ProvisionOnInfrastructure",
+        "RefreshDataSource",
+        "CategoryViewDataSource",
+        "DeleteSnapshot",
+        "ExportSnapshots",
+        "ViewInventory",
+        "CategoryRecovery",
+        "ModifyReport",
+        "Mount",
+        "ExportDataClassGlobal",
+        "ExportFiles",
+        "ViewAuditLog",
+        "ViewNonSystemEvent",
+        "ViewReport",
+        "CancelRunningActivity",
+        "ConfigureDataClassGlobal",
+        "DeleteReport",
+        "ViewSystemEvent",
+        "DownloadFromArchivalLocation",
+        "ManageProtection",
+        "RestoreToOrigin",
+        "TakeOnDemandSnapshot",
+        "ViewDataClassGlobal",
+        "CategoryProtection",
+        "CreateReport",
+        "Download"
+      ],
+      "name": "deviderr-sandbox-w1",
+      "isRelic": true,
+      "effectiveSlaDomain": {
+        "id": "00000000-0000-0000-0000-000000000001",
+        "name": "Silver"
+      },
+      "effectiveSlaSourceObject": {
+        "fid": "86db05d1-292f-5973-b616-2ae3977f4428",
+        "name": "deviderr-sandbox-w1",
+        "objectType": "VmwareVirtualMachine"
+      },
+      "pendingSla": null,
+      "protectionDate": "2021-07-28T18:19:22.000Z",
+      "reportSnappable": {
+        "id": "VirtualMachine:::868aa03d-4145-4cb1-808b-e10c4f7a3741-vm-247778",
+        "logicalBytes": 4005057003520,
+        "physicalBytes": 32175486919,
+        "archiveStorage": 28801406904
+      },
+      "cluster": {
+        "id": "cc19573c-db6c-418a-9d48-067a256543ba",
+        "name": "sand1-rbk01",
+        "status": "Connected",
+        "version": "6.0.1-12847",
+        "lastConnectionTime": "2021-09-09T06:05:37.000Z",
+        "defaultAddress": "sand1-rbk01.rubrikdemo.com",
+        "clusterNodeConnection": {
+          "nodes": [
+            {
+              "id": "RVM16CS014306",
+              "status": "OK",
+              "ipAddress": "dummy.ip.address.1"
+            },
+            {
+              "id": "RVM16CS014476",
+              "status": "OK",
+              "ipAddress": "dummy.ip.address.2"
+            },
+            {
+              "id": "RVM16CS014479",
+              "status": "OK",
+              "ipAddress": "dummy.ip.address.3"
+            },
+            {
+              "id": "RVM16CS015037",
+              "status": "OK",
+              "ipAddress": "dummy.ip.address.4"
+            }
+          ]
+        },
+        "state": {
+          "connectedState": "Connected",
+          "clusterRemovalState": "REGISTERED"
+        },
+        "passesConnectivityCheck": true,
+        "globalManagerConnectivityStatus": {
+          "urls": [
+            {
+              "url": "dummy_url",
+              "isReachable": true
+            },
+            {
+              "url": "dummy_url",
+              "isReachable": true
+            },
+            {
+              "url": "dummy_url",
+              "isReachable": true
+            },
+            {
+              "url": "dummy_url",
+              "isReachable": true
+            },
+            {
+              "url": "dummy_url",
+              "isReachable": true
+            }
+          ]
+        },
+        "connectivityLastUpdated": "2021-09-08T22:47:27.000Z"
+      },
+      "primaryClusterLocation": {
+        "id": "cc19573c-db6c-418a-9d48-067a256543ba",
+        "name": "sand1-rbk01"
+      },
+      "arrayIntegrationEnabled": false,
+      "snapshotConsistencyMandate": "Unknown",
+      "agentStatus": {
+        "agentStatus": "Unregistered"
+      },
+      "preBackupScript": null,
+      "postBackupScript": null,
+      "postSnapScript": null,
+      "logicalPath": [
+        {
+          "fid": "3f3a92de-c7f3-57f7-989f-3731db83aeab",
+          "objectType": "VSphereDatacenter",
+          "name": "Sandbox-1 Datacenter"
+        },
+        {
+          "fid": "415859e2-fd22-53ea-8de1-041d99298fe3",
+          "objectType": "VSphereVCenter",
+          "name": "sand1-vcsa.rubrikdemo.com"
+        }
+      ],
+      "physicalPath": [
+        {
+          "fid": "804ef24d-5b5e-565c-a85b-ab772555b902",
+          "objectType": "VSphereHost",
+          "name": "sjc-40402-sand1-esx01.rubrikdemo.com"
+        },
+        {
+          "fid": "72480b29-0eaa-57a9-8c5c-45b7e1c2c826",
+          "objectType": "VSphereComputeCluster",
+          "name": "Sandbox-1 SJC Cluster"
+        },
+        {
+          "fid": "3f3a92de-c7f3-57f7-989f-3731db83aeab",
+          "objectType": "VSphereDatacenter",
+          "name": "Sandbox-1 Datacenter"
+        },
+        {
+          "fid": "415859e2-fd22-53ea-8de1-041d99298fe3",
+          "objectType": "VSphereVCenter",
+          "name": "sand1-vcsa.rubrikdemo.com"
+        }
+      ],
+      "vsphereTagPath": [
+        {
+          "fid": "415859e2-fd22-53ea-8de1-041d99298fe3",
+          "objectType": "VSphereVCenter",
+          "name": "sand1-vcsa.rubrikdemo.com"
+        }
+      ],
+      "oldestSnapshot": {
+        "id": "90858c2f-e572-5b9c-b455-ba309d50c1a2",
+        "date": "2021-06-11T21:14:08.000Z",
+        "isIndexed": true
+      },
+      "totalSnapshots": {
+        "count": 53
+      },
+      "replicatedObjects": [
+        {
+          "id": "86db05d1-292f-5973-b616-2ae3977f4428",
+          "primaryClusterLocation": {
+            "id": "cc19573c-db6c-418a-9d48-067a256543ba",
+            "name": "sand1-rbk01"
+          },
+          "cluster": {
+            "name": "sand1-rbk01",
+            "id": "cc19573c-db6c-418a-9d48-067a256543ba"
+          }
+        },
+        {
+          "id": "4c6aa03c-c235-5a23-99b6-66717f261749",
+          "primaryClusterLocation": {
+            "id": "cc19573c-db6c-418a-9d48-067a256543ba",
+            "name": "sand1-rbk01"
+          },
+          "cluster": {
+            "name": "sand2-rbk01",
+            "id": "4d4a41d5-8910-4e4d-9dca-0798f5fc6d61"
+          }
+        }
+      ],
+      "newestArchivedSnapshot": {
+        "id": "f5606bea-0ecd-524c-8cc3-1bba48a110b2",
+        "date": "2021-07-28T15:18:20.000Z",
+        "isIndexed": true,
+        "archivalLocations": [
+          {
+            "id": "1e246e20-586d-47c1-8a38-51cdaf74da75",
+            "name": "S3:gaia-sand1-oracledemo"
+          }
+        ]
+      },
+      "newestReplicatedSnapshot": {
+        "id": "4486ea63-086f-58cf-9372-acbc115f35c9",
+        "date": "2021-09-01T19:06:26.000Z",
+        "isIndexed": true,
+        "replicationLocations": []
+      },
+      "newestSnapshot": {
+        "id": "4486ea63-086f-58cf-9372-acbc115f35c9",
+        "date": "2021-09-01T19:06:26.000Z",
+        "isIndexed": true
+      },
+      "onDemandSnapshotCount": 17,
+      "vmwareToolsInstalled": true,
+      "cdmLink": "dummy_link"
+    }
+  }
+}

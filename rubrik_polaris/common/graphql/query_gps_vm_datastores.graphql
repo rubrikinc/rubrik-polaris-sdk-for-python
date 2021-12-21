@@ -1,0 +1,34 @@
+query RubrikPolarisSDKRequest($hostId: UUID!, $first: Int, $after: String, $filter: [Filter!], $sortBy: HierarchySortByField, $sortOrder: HierarchySortOrder) {
+    vSphereHost(fid: $hostId) {
+        descendantConnection(
+            first: $first
+            after: $after
+            filter: $filter
+            sortBy: $sortBy
+            sortOrder: $sortOrder
+            typeFilter: [VSphereDatastore]
+        ) {
+            edges {
+                node {
+                    id
+                    ...HierarchyObjectNameColumnFragment
+                    ... on VSphereDatastore {
+                        capacity
+                        isLocal
+                        freeSpace
+                        datastoreType
+                    }
+                }
+            }
+            pageInfo {
+                endCursor
+                hasNextPage
+                hasPreviousPage
+            }
+        }
+    }
+}
+
+fragment HierarchyObjectNameColumnFragment on HierarchyObject {
+    name
+}

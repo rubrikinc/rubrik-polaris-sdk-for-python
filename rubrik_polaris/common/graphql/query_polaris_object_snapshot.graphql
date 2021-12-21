@@ -1,0 +1,101 @@
+query RubrikPolarisSDKRequest($snappableId: String!, $first: Int, $after: String, $snapshotFilter: [SnapshotQueryFilterInput!], $sortBy: SnapshotQuerySortByField, $sortOrder: SortOrderEnum, $timeRange: TimeRangeInput) {
+  snapshotsListConnection: snapshotOfASnappableConnection(
+    snappableId: $snappableId
+    first: $first
+    after: $after
+    snapshotFilter: $snapshotFilter
+    sortBy: $sortBy
+    sortOrder: $sortOrder
+    timeRange: $timeRange
+  ) {
+    edges {
+      node {
+        id
+        date
+        expirationDate
+        isOnDemandSnapshot
+        ... on CdmSnapshot {
+          cdmVersion
+          isDownloadedSnapshot
+          cluster {
+            id
+            name
+            version
+            status
+          }
+          pendingSnapshotDeletion {
+            id: snapshotFid
+            status
+          }
+          slaDomain {
+            name
+            ... on ClusterSlaDomain {
+              fid
+              cluster {
+                id
+                name
+              }
+            }
+            ... on GlobalSla {
+              id
+            }
+          }
+          pendingSla {
+            id
+            name
+          }
+          snapshotRetentionInfo {
+            archivalInfos {
+              name
+              isExpirationDateCalculated
+              expirationTime
+            }
+            localInfo {
+              name
+              isExpirationDateCalculated
+              expirationTime
+            }
+            replicationInfos {
+              name
+              isExpirationDateCalculated
+              expirationTime
+            }
+          }
+          sapHanaAppMetadata {
+            backupId
+            backupPrefix
+            snapshotType
+            files {
+              backupFileSizeInBytes
+            }
+          }
+          legalHoldInfo {
+            shouldHoldInPlace
+          }
+        }
+        ... on PolarisSnapshot {
+          isDownloadedSnapshot
+          isReplica
+          isArchivalCopy
+          slaDomain {
+            name
+            ... on ClusterSlaDomain {
+              fid
+              cluster {
+                id
+                name
+              }
+            }
+            ... on GlobalSla {
+              id
+            }
+          }
+        }
+      }
+    }
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+  }
+}

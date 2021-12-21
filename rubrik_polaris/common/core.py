@@ -22,6 +22,10 @@
 """
 Collection of methods that interact with Polaris primitives.
 """
+ERROR_MESSAGES = {
+    'INVALID_FIELD_TYPE': "'{}' is an invalid value for '{}'. Value must be in {}.",
+    'INVALID_FIRST': "'{}' is an invalid value for 'first'. Value must be an integer greater than 0.",
+}
 
 
 def get_sla_domains(self, sla_domain_name=""):
@@ -328,5 +332,95 @@ def get_report_data(self, object_type=[], cluster_ids=[]):
         }
         response = self._query(query_name, variables)
         return response
+    except Exception:
+        raise
+
+
+def list_event_series(self, activity_status=None, activity_type=None, object_name=None, object_type=None,
+                      start_date=None, end_date=None, severity=None, cluster_id=None, sort_by=None,
+                      sort_order=None, after=None, first: int = 20, filters=None):
+    """
+    Retrieve the series event list from Rubrik.
+
+    Args:
+        first (int): Number of objects to retrieve. Defaults to 20, if not provided.
+        activity_status (str): Activity status of events to retrieve.
+        activity_type (str): Activity type of events to retrieve.
+        object_name (str): Object name of events to retrieve.
+        object_type (str): Object Type of events to retrieve.
+        start_date (str): Start date of events to retrieve.
+        end_date (str): End date of events to retrieve.
+        severity (str): Severity of events to retrieve.
+        cluster_id (str): Cluster id of events to retrieve.
+        sort_by (str): Sorting the events to retrieve by specific field.
+        sort_order (str): Sorting the events to retrieve in specific order.
+        after (str): The cursor token to retrieve the next set of results.
+        filters (dict): Additional filters, if any, to filter events to retrieve.
+
+    Returns:
+        dict: Response from the API
+    Raises:
+        ValueError: If input is invalid
+        RequestException: If the query to Polaris returned an error
+    """
+    try:
+        if not first or (isinstance(first, int) and first <= 0):
+            raise ValueError(ERROR_MESSAGES['INVALID_FIRST'].format(first))
+
+        if filters:
+            filters_ = filters
+        else:
+            filters_ = {}
+
+        if activity_status:
+            activity_status = [x.strip() for x in activity_status.split(',')]
+            filters_['lastActivityStatus'] = self.check_enum(value=activity_status, field_name="activity_status",
+                                                             enum_name="ActivityStatusEnum")
+        if activity_type:
+            activity_type = [x.strip() for x in activity_type.split(',')]
+            filters_['lastActivityType'] = self.check_enum(value=activity_type, field_name="activity_type",
+                                                           enum_name="ActivityTypeEnum")
+        if object_type:
+            object_type = [x.strip() for x in object_type.split(',')]
+            filters_['objectType'] = self.check_enum(value=object_type, field_name="object_type",
+                                                     enum_name="ActivityObjectTypeEnum")
+        if severity:
+            severity = [x.strip() for x in severity.split(',')]
+            filters_['severity'] = self.check_enum(value=severity, field_name="severity",
+                                                   enum_name="ActivitySeverityEnum")
+        if cluster_id:
+            cluster_id = [x.strip() for x in cluster_id.split(',')]
+
+        sort_by_enum = self.get_enum_values("ActivitySeriesSortByEnum")
+        if sort_by and sort_by not in sort_by_enum:
+            raise ValueError(ERROR_MESSAGES['INVALID_FIELD_TYPE'].format(
+                    sort_by, "sort_by", sort_by_enum))
+
+        sort_order_enum = self.get_enum_values("SortOrderEnum")
+        if sort_order and sort_order not in sort_order_enum:
+            raise ValueError(ERROR_MESSAGES['INVALID_FIELD_TYPE'].format(
+                sort_order, "sort_order", sort_order_enum))
+
+        if object_name:
+            filters_['objectName'] = object_name
+        if cluster_id:
+            filters_['cluster'] = {"id": cluster_id}
+        if start_date:
+            filters_['lastUpdated_gt'] = start_date
+        if end_date:
+            filters_['lastUpdated_lt'] = end_date
+
+        variables = {
+            "first": first,
+            "filters": filters_
+        }
+        if after:
+            variables['after'] = after
+        if sort_by:
+            variables['sortBy'] = sort_by
+        if sort_order:
+            variables['sortOrder'] = sort_order
+
+        return self._query_raw(query_name="core_event_series_list", variables=variables)
     except Exception:
         raise

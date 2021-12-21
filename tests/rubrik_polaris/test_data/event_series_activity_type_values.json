@@ -1,0 +1,143 @@
+{
+  "data": {
+    "__type": {
+      "states": [
+        {
+          "name": "Sync"
+        },
+        {
+          "name": "LocalRecovery"
+        },
+        {
+          "name": "TestFailover"
+        },
+        {
+          "name": "Anomaly"
+        },
+        {
+          "name": "RadarAnalysis"
+        },
+        {
+          "name": "Archive"
+        },
+        {
+          "name": "VolumeGroup"
+        },
+        {
+          "name": "VCenter"
+        },
+        {
+          "name": "Index"
+        },
+        {
+          "name": "CloudNativeVirtualMachine"
+        },
+        {
+          "name": "StormResource"
+        },
+        {
+          "name": "HostEvent"
+        },
+        {
+          "name": "Recovery"
+        },
+        {
+          "name": "Conversion"
+        },
+        {
+          "name": "CloudNativeVm"
+        },
+        {
+          "name": "EmbeddedEvent"
+        },
+        {
+          "name": "Maintenance"
+        },
+        {
+          "name": "Failover"
+        },
+        {
+          "name": "AuthDomain"
+        },
+        {
+          "name": "LegalHold"
+        },
+        {
+          "name": "Vcd"
+        },
+        {
+          "name": "Instantiate"
+        },
+        {
+          "name": "Configuration"
+        },
+        {
+          "name": "Fileset"
+        },
+        {
+          "name": "Discovery"
+        },
+        {
+          "name": "System"
+        },
+        {
+          "name": "Hdfs"
+        },
+        {
+          "name": "Classification"
+        },
+        {
+          "name": "StorageArray"
+        },
+        {
+          "name": "Storage"
+        },
+        {
+          "name": "Backup"
+        },
+        {
+          "name": "Hardware"
+        },
+        {
+          "name": "HypervServer"
+        },
+        {
+          "name": "HypervScvmm"
+        },
+        {
+          "name": "Diagnostic"
+        },
+        {
+          "name": "UnknownEventType"
+        },
+        {
+          "name": "Upgrade"
+        },
+        {
+          "name": "NutanixCluster"
+        },
+        {
+          "name": "Replication"
+        },
+        {
+          "name": "AwsEvent"
+        },
+        {
+          "name": "Support"
+        },
+        {
+          "name": "CloudNativeSource"
+        },
+        {
+          "name": "Download"
+        },
+        {
+          "name": "Connection"
+        },
+        {
+          "name": "ResourceOperations"
+        }
+      ]
+    }
+  }
+}

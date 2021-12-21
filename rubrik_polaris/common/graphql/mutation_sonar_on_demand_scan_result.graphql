@@ -1,0 +1,7 @@
+mutation RubrikPolarisSDKRequest($crawlId: String!, $filter: DownloadResultsCsvFiltersInput!)
+{
+    downloadResultsCsv(crawlId: $crawlId, downloadFilter: $filter)
+    {
+        downloadLink
+    }
+}

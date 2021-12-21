@@ -1,0 +1,33 @@
+query RubrikPolarisSDKRequest($first: Int!, $after: String, $filter: [Filter!], $sortBy: HierarchySortByField, $sortOrder: HierarchySortOrder) {
+  vSphereHostConnection(
+    first: $first
+    after: $after
+    filter: $filter
+    sortBy: $sortBy
+    sortOrder: $sortOrder
+  ) {
+    edges {
+      node {
+        id
+        ...VSphereHostNameFragment
+        ...VSphereHostPhysicalPathFragment
+      }
+    }
+    pageInfo {
+      endCursor
+      hasNextPage
+      hasPreviousPage
+    }
+  }
+}
+fragment VSphereHostNameFragment on VSphereHost {
+  name
+}
+fragment VSphereHostPhysicalPathFragment on VSphereHost {
+  physicalPath {
+    fid
+    name
+    objectType
+
+  }
+}

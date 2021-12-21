@@ -1,0 +1,44 @@
+{
+  "data": {
+    "globalSearchResults": {
+      "edges": [
+        {
+          "node": {
+            "id": "2a169bef-7a83-4807-a848-d7252aa1d465",
+            "name": "absrecoveryvmsmall-osdisk-20210610-135505",
+            "objectType": "AzureNativeManagedDisk",
+            "physicalPath": [],
+            "azureRegion": "EastUS",
+            "isRelic": false,
+            "effectiveSlaDomain": {
+              "id": "UNPROTECTED",
+              "name": "UNPROTECTED",
+              "description": ""
+            }
+          }
+        },
+        {
+          "node": {
+            "id": "87906a5f-8061-452f-9972-91e89e5de871",
+            "name": "ABS-Recovery-VM-Small",
+            "objectType": "AzureNativeVm",
+            "physicalPath": [],
+            "azureRegion": "EastUS",
+            "isRelic": false,
+            "effectiveSlaDomain": {
+              "id": "DO_NOT_PROTECT",
+              "name": "DO_NOT_PROTECT",
+              "description": ""
+            }
+          }
+        }
+      ],
+      "pageInfo": {
+        "endCursor": "Y3Vyc29yOmludDoz",
+        "startCursor": "Y3Vyc29yOmludDow",
+        "hasNextPage": true,
+        "hasPreviousPage": false
+      }
+    }
+  }
+}

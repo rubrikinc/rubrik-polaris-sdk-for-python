@@ -1,0 +1,17 @@
+{
+  "data": {
+    "__type": {
+      "states": [
+        {
+          "name": "RegisteredAt"
+        },
+        {
+          "name": "ClusterName"
+        },
+        {
+          "name": "ClusterType"
+        }
+      ]
+    }
+  }
+}

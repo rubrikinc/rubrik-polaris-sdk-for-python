@@ -1,0 +1,20 @@
+mutation RubrikPolarisSDKRequest(
+    $snapshotFid: UUID!
+    $paths: [String!]!
+    $deltaTypeFilter: [DeltaTypeEnum!]
+    $nextSnapshotFid: UUID
+  ) {
+    vsphereVMDownloadSnapshotFiles(
+      snapshotFid: $snapshotFid
+      paths: $paths
+      deltaTypeFilter: $deltaTypeFilter
+      nextSnapshotFid: $nextSnapshotFid
+    ) {
+      id
+      status
+      links {
+        href
+        rel
+      }
+    }
+  }

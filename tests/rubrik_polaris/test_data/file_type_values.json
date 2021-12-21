@@ -1,0 +1,26 @@
+{
+  "data": {
+    "__type": {
+      "states": [
+        {
+          "name": "ANY"
+        },
+        {
+          "name": "HITS"
+        },
+        {
+          "name": "STALE"
+        },
+        {
+          "name": "OPEN_ACCESS"
+        },
+        {
+          "name": "STALE_HITS"
+        },
+        {
+          "name": "OPEN_ACCESS_HITS"
+        }
+      ]
+    }
+  }
+}

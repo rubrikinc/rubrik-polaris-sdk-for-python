@@ -92,7 +92,6 @@ def _add_account_aws(self, aws_regions=[], cloud_account_features=None, profile=
 
 def _add_account_aws_commit(self, aws_regions=None, cloud_account_features=None, account_name_list=None, aws_account_id=None, account_initiate_result=None):
     cloud_account_action = 'CREATE'
-    cloud_account_features = cloud_account_features
     query_name = "accounts_aws_add_commit"
     self._validate(
         cloud_account_action=cloud_account_action,
@@ -118,7 +117,6 @@ def _add_account_aws_commit(self, aws_regions=None, cloud_account_features=None,
 
 def _add_account_aws_initiate(self, cloud_account_features=None, account_name_list=None, aws_account_id=None ):
     cloud_account_action = 'CREATE'
-    cloud_account_features = cloud_account_features
     query_name = "accounts_aws_add_initiate"
     self._validate(
         cloud_account_action=cloud_account_action,

@@ -1,0 +1,5 @@
+mutation RubrikPolarisSDKRequest($downloadId: Long!) {
+    getDownloadUrl(downloadId: $downloadId) {
+        url
+    }
+}

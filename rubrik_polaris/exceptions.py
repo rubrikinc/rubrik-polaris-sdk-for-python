@@ -32,3 +32,13 @@ class RequestException(PolarisException):
 class ValidationException(PolarisException):
     """Exceptions during validation of requests."""
     pass
+
+
+class AuthenticationException(RequestException):
+    """Exceptions during authentication failure"""
+    pass
+
+
+class ProxyException(RequestException):
+    """Exception during proxy call"""
+    pass
