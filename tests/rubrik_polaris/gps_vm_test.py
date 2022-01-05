@@ -266,28 +266,28 @@ def test_get_async_request_result_when_invalid_values_are_provided(client, reque
     ("dummy-snapshot-id", "dummy-cluster-id", {}, ERROR_MESSAGES['REQUIRED_ARGUMENT'].format("restore_config")),
     ("dummy-snapshot-id", "dummy-cluster-id", [], ERROR_MESSAGES['REQUIRED_ARGUMENT'].format("restore_config"))
 ])
-def test_recover_files_when_invalid_values_are_provided(client, snapshot_id, cluster_id, restore_config, err_msg):
+def test_recover_vsphere_vm_files_when_invalid_values_are_provided(client, snapshot_id, cluster_id, restore_config, err_msg):
     """
-    Tests recover_files method of PolarisClient when invalid values are provided
+    Tests recover_vsphere_vm_files method of PolarisClient when invalid values are provided
     """
-    from rubrik_polaris.gps.vm import recover_files
+    from rubrik_polaris.gps.vm import recover_vsphere_vm_files
 
     with pytest.raises(ValueError) as e:
-        recover_files(client, snapshot_id, cluster_id, {})
+        recover_vsphere_vm_files(client, snapshot_id, cluster_id, {})
     assert str(e.value) == err_msg
 
 
-def test_recover_files_when_valid_values_are_provided(requests_mock, client):
+def test_recover_vsphere_vm_files_when_valid_values_are_provided(requests_mock, client):
     """
-    Tests recover_files method of PolarisClient when valid values are provided
+    Tests recover_vsphere_vm_files method of PolarisClient when valid values are provided
     """
-    from rubrik_polaris.gps.vm import recover_files
+    from rubrik_polaris.gps.vm import recover_vsphere_vm_files
 
     expected_response = util_load_json(os.path.join(os.path.dirname(os.path.realpath(__file__)),
-                                                    "test_data/gps_recover_files_response.json"))
+                                                    "test_data/gps_recover_vsphere_vm_files_response.json"))
     requests_mock.post(BASE_URL + "/graphql", json=expected_response)
 
-    response = recover_files(client, "dummy-request-id", "dummy-cluster-id", [{
+    response = recover_vsphere_vm_files(client, "dummy-request-id", "dummy-cluster-id", [{
         "path": "/var/empty",
         "restorePath": "/usr/share"
     }])

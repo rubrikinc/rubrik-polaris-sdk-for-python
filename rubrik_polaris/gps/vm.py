@@ -312,11 +312,11 @@ def get_async_request_result(self, request_id: str, cluster_id: str):
         raise
 
 
-def recover_files(self, snapshot_id: str, cluster_id: str, restore_config: Union[dict, list],
+def recover_vsphere_vm_files(self, snapshot_id: str, cluster_id: str, restore_config: Union[dict, list],
                   destination_object_id: str = None, should_use_agent: bool = False, should_restore_x_attrs: bool = False,
                   ignore_errors: bool = False):
     """
-    Recover files from a snapshot back into a system.
+    Recover files from a snapshot back into a Vsphere VM.
     Args:
         snapshot_id: ID of the snapshot from which to recover files.
         cluster_id: ID of the cluster where the snapshot resides.
@@ -334,7 +334,7 @@ def recover_files(self, snapshot_id: str, cluster_id: str, restore_config: Union
         RequestException: If the query to Polaris returned an error
     """
     try:
-        query_name = "gps_vm_files_recover"
+        query_name = "gps_vsphere_vm_files_recover"
         variables = {"id": self.validate_id(snapshot_id, "snapshot_id"),
                      "clusterUuid": self.validate_id(cluster_id, "cluster_id")}
         config = {}
