@@ -36,7 +36,7 @@ def trigger_ioc_scan(self, object_ids: Union[str, List[str]], cluster_id: str,
                      snapshot_scan_limit: dict = None,
                      maximum_file_size_to_scan: int = None, minimum_file_size_to_scan: int = None,
                      path_to_include: Union[str, List[str]] = None, path_to_exclude: Union[str, List[str]] = None,
-                     path_to_exempt: Union[str, List[str]] = None, requested_hash_types: str = None):
+                     path_to_exempt: Union[str, List[str]] = None, requested_hash_types: Union[str, List[str]] = None):
     """Triggers an Radar IOC scan on multiple systems for specified IOC's in a cluster.
 
    Args:
@@ -54,7 +54,7 @@ def trigger_ioc_scan(self, object_ids: Union[str, List[str]], cluster_id: str,
        path_to_include (str|list): Paths that will be included in the scan.
        path_to_exclude (str|list): Paths that will be excluded from the scan.
        path_to_exempt (str|list): Paths that will be exempted from exclusion in the scan.
-       requested_hash_types (str): `HashTypeEnum` type enum value
+       requested_hash_types (str|list): `HashTypeEnum` type enum value.
 
    Returns:
        dict: Dictionary containing the scan results
@@ -117,10 +117,12 @@ def trigger_ioc_scan(self, object_ids: Union[str, List[str]], cluster_id: str,
             malware_scan_config["fileScanCriteria"] = file_scan_criteria
 
         if requested_hash_types:
+            if not isinstance(requested_hash_types, list):
+                requested_hash_types = [requested_hash_types]
             supported_hash_types = self.get_enum_values(name="HashTypeEnum")
-            if requested_hash_types not in supported_hash_types:
+            if not set(requested_hash_types).issubset(supported_hash_types):
                 raise ValueError(
-                    ERROR_MESSAGES['INVALID_FIELD_TYPE'].format(requested_hash_types, 'requested_hash_types',
+                    ERROR_MESSAGES['INVALID_FIELD_TYPE'].format(requested_hash_types, 'requested_hash_types', 
                                                                 supported_hash_types))
             malware_scan_config["requestedMatchDetails"] = {
                 "requestedHashTypes": requested_hash_types
