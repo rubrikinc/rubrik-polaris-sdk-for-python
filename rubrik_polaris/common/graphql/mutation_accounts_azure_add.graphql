@@ -1,9 +1,20 @@
-mutation RubrikPolarisSDKRequest($azure_tenant_domain_name: String!, $azure_cloud_type: AzureCloudTypeEnum!, $azure_regions: [AzureCloudAccountRegionEnum!]!, $feature: CloudAccountFeatureEnum!, $azure_subscriptions: [AzureSubscriptionInput!]!, $azure_policy_version: Int! ){
-    azureCloudAccountAddWithoutOAuth(tenantDomainName: $azure_tenant_domain_name, azureCloudType: $azure_cloud_type, feature: $feature, subscriptions: $azure_subscriptions, regions: $azure_regions, policyVersion: $azure_policy_version ){
+mutation RubrikPolarisSDKRequest($azure_tenant_domain_name: String!, $azure_cloud_type: AzureCloudTypeEnum!, $azure_regions: [AzureCloudAccountRegionEnum!]!, $feature: AddAzureCloudAccountFeatureInputWithoutOauth!, $subscription_name: String!, $subscription_id: String! ){
+    addAzureCloudAccountWithoutOAuth(input: {
+        tenantDomainName: $azure_tenant_domain_name,
+        azureCloudType: $azure_cloud_type,
+        subscriptions: {
+            subscription: {
+                name: $subscription_name,
+                nativeId: $subscription_id
+            }
+            features: [$feature]
+        }
+        regions: $azure_regions,
+    }){
         tenantId
         status {
-            subscriptionId
-            subscriptionNativeId
+            azureSubscriptionRubrikId
+            azureSubscriptionNativeId
             error
         }
     }
