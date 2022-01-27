@@ -162,16 +162,20 @@ def add_account_azure(
             azure_regions=azure_regions,
         )
 
-        azure_subscriptions_converted = [{'nativeId': azure_subscription_id, 'name': azure_subscription_name}]
         azure_policy_version = self._get_accounts_azure_permission_version(cloud_account_features=cloud_account_features)['permissionVersion']
+
+        _feature = {
+            "policyVersion" : azure_policy_version,
+            "featureType": cloud_account_features,
+        }
 
         _variables = {
             "azure_tenant_domain_name": azure_tenant_domain_name,
             "azure_cloud_type": self.azure_cloud_type,
-            "feature": self.cloud_account_features,
-            "azure_subscriptions": azure_subscriptions_converted,
+            "feature": _feature,
+            "subscription_name": azure_subscription_name,
+            "subscription_id": azure_subscription_id,
             "azure_regions": self.azure_regions,
-            "azure_policy_version": azure_policy_version
         }
         _request = self._query(_query_name, _variables)
         return _request
@@ -204,12 +208,16 @@ def delete_account_azure(
         RequestException: If the query to Polaris returned an error
     Examples:
     """
+    self._validate(
+        cloud_account_features=cloud_account_features,
+    )
+
     polaris_native_subscription_id = None
     try:
         # Get ID to delete subscription
         polaris_subscription_id, polaris_subscription_name = \
             self._get_native_subscription_id_and_name(azure_subscription_id=azure_subscription_id, \
-                                                      cloud_account_features=cloud_account_features)
+                                                      cloud_account_features=self.cloud_account_features)
 
         # Get ID to disable subscription
         suspect_subscriptions = self.get_accounts_azure_native(filter=polaris_subscription_name)
@@ -225,7 +233,8 @@ def delete_account_azure(
             _query_name = "accounts_azure_disable_subscription"
             _variables = {
                 "delete_snapshots": delete_snapshots,
-                "azure_subscription_id": polaris_native_subscription_id
+                "azure_subscription_rubrik_id": polaris_native_subscription_id,
+                "feature": "VM"
             }
             response = self._query(_query_name, _variables)
             results = self._monitor_task(response)
@@ -235,11 +244,8 @@ def delete_account_azure(
     # Delete subscription in Polaris
     try:
         _query_name = "accounts_azure_delete_subscription"
-        self._validate(
-            cloud_account_features=cloud_account_features,
-        )
         _variables = {
-            "cloud_account_features": self.cloud_account_features,
+            "cloud_account_features": [self.cloud_account_features],
             "azure_subscription_ids": [polaris_subscription_id]
         }
         _request = self._query(_query_name, _variables)

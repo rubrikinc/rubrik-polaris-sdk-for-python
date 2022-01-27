@@ -1,6 +1,6 @@
 query RubrikPolarisSDKRequest($cloud_account_features: CloudAccountFeatureEnum! ) {
-    azureCloudAccountTenants(feature: $cloud_account_features, includeSubscriptionDetails: true){
-        id
+    allAzureCloudAccountTenants(feature: $cloud_account_features, includeSubscriptionDetails: true){
+        azureCloudAccountTenantRubrikId
         domainName
         subscriptionCount
         subscriptions {
