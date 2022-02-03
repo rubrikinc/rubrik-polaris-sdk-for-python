@@ -1,0 +1,6 @@
+query RubrikPolarisSDKRequest($kupr_cluster_id: UUID!) {
+    k8sCluster(fid: $kupr_cluster_id) {
+        status
+        slaAssignment
+    }
+}
