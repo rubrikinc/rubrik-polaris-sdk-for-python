@@ -123,8 +123,7 @@ class PolarisClient:
 
         try:
             self._access_token = None
-            self._user_agent = self._kwargs.get('user_agent')
-            self._headers = {"User-Agent": self._user_agent} if self._user_agent else {}
+            self._headers = None
 
             if self._json_keyfile:
                 with open(self._json_keyfile) as f:
@@ -178,6 +177,8 @@ class PolarisClient:
         return self._access_token
 
     def prepare_headers(self):
+        _user_agent = self._kwargs.get('user_agent')
+        self._headers = {"User-Agent": _user_agent} if _user_agent else {}
         self._headers['Content-Type'] = 'application/json'
         self._headers['Accept'] = 'application/json'
 
