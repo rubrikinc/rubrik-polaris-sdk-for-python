@@ -1,0 +1,36 @@
+query RubrikPolarisSDKRequest($polaris_id: UUID!) {
+    k8sNamespace(
+        fid: $polaris_id
+    )   {
+        k8sClusterID
+        namespaceName
+        clusterScoped
+        apiVersion
+        resourceVersion
+        isRelic
+        numWorkloads
+        numPvcs
+        authorizedOperations
+        id
+        name
+        objectType
+        slaAssignment
+        effectiveSlaDomain
+        slaPauseStatus
+        snapshotDistribution
+        effectiveRetentionSlaDomain
+        configuredSlaDomain
+        effectiveSlaSourceObject
+        logicalPath
+        physicalPath
+        numSnappableDescendants
+        snapshotConnection
+        snapshotsOfSnappableConnection
+        snapshotGroupByConnection
+        snapshotGroupByNewConnection
+        newestSnapshot
+        oldestSnapshot
+        onDemandSnapshotCount
+        newestIndexedSnapshot
+    }
+}

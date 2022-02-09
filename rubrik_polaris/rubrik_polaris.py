@@ -64,6 +64,8 @@ class PolarisClient:
     from .common.core import list_event_series
     from .common.object import list_objects
     from .common.object import list_object_snapshots
+    from .k8s.cluster import create_k8s_cluster, refresh_k8s_cluster, list_k8s_clusters, get_k8s_status
+    from .k8s.namespace import get_k8s_namespaces, get_k8s_namespace
 
     # Private
     from .common.connection import _query, _query_raw, _get_access_token_basic, _get_access_token_keyfile
