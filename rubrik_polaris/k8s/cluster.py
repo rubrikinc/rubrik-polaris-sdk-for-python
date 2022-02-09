@@ -29,7 +29,7 @@ def create_k8s_cluster(self,
     host_list,
     k8s_cluster_name,
     kupr_ingress_port,
-    rba_port_ranges,
+    rbs_port_ranges,
     kupr_cluster_type
     ):
     """Add a Kubernetes cluster
@@ -39,7 +39,7 @@ def create_k8s_cluster(self,
         host_list (list): List of host IPs/hostnames of the k8s nodes.
         k8s_cluster_name (str): Name of the k8s cluster.
         kupr_ingress_port (int): Port on the k8s node for the kupr Ingress Controller.
-        rba_port_ranges (dict): Ports in the range of node port service range of the Kubernetes cluster.
+        rbs_port_ranges (dict): Ports in the range of node port service range of the Kubernetes cluster.
         kupr_cluster_type (str): KuprClusterType of the k8s cluster.
 
     Returns:
@@ -57,7 +57,7 @@ def create_k8s_cluster(self,
             mutation_name=_query_name,
             cdm_cluster_id=cdm_cluster_id,
             host_list=host_list,
-            rba_port_ranges=rba_port_ranges,
+            rbs_port_ranges=rbs_port_ranges,
             kupr_cluster_type=kupr_cluster_type,
         )
         _variables = {
@@ -65,7 +65,7 @@ def create_k8s_cluster(self,
             "host_list": self.host_list,
             "k8s_cluster_name": k8s_cluster_name,
             "kupr_ingress_port": kupr_ingress_port,
-            "rba_port_ranges": self.rba_port_ranges,
+            "rbs_port_ranges": self.rbs_port_ranges,
             "cluster_type": self.kupr_cluster_type,
         }
         return self._query(self.mutation_name, _variables)

@@ -208,14 +208,14 @@ def _host_list_validation(self, test_variable=None):
     return hosts
 
 
-def _rba_port_ranges_validation(self, test_variable=None):
+def _rbs_port_ranges_validation(self, test_variable=None):
     if not test_variable:
-        raise ValidationException("rba_port_ranges not specified : {}".format(test_variable))
+        raise ValidationException("rbs_port_ranges not specified : {}".format(test_variable))
 
     for k in ['portMin', 'portMax']:
         v = test_variable.get(k)
         if v is None or not isinstance(v, int):
-            raise ValidationException("rba_port_ranges['{}'] must be an int: {}".format(k, test_variable))
+            raise ValidationException("rbs_port_ranges['{}'] must be an int: {}".format(k, test_variable))
     return test_variable
 
 
