@@ -93,6 +93,12 @@ def main(raw_data: pd.DataFrame, rubrik: PolarisClient, dry_run: bool = True):
     for k8s_cluster_id in to_refresh.keys():
         print(f"refreshing k8s cluster id {k8s_cluster_id}")
         _refresh_k8s_cluster(k8s_cluster_id)
+
+        # The refresh can be successful even if the cluster wasn't connected so we need to
+        # check the status explicitly afterwards
+        status = rubrik.get_k8s_status(k8s_cluster_id)['status']
+        if status != 'STATUS_CONNECTED':
+            raise Exception(f'failed to connect k8s cluster {k8s_cluster_id}, status: {status}')
         sla_name = to_refresh[k8s_cluster_id]
         to_sla_assign[k8s_cluster_id] = sla_name
 
