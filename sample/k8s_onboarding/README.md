@@ -5,6 +5,11 @@ including assigning a default SLA.
 
 ## Usage
 
+Install required dependencies if not present already:
+```
+$ pip install -r requirements.txt
+```
+
 Create an input file accoding to [the input format](#input-file).
 
 Run `python onboard.py -k polaris-service-account.json -i input.csv` to validate the input file.
