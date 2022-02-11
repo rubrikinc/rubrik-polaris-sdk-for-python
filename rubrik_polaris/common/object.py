@@ -75,7 +75,7 @@ def list_vm_objects(self, filters: list = None, first=20, sort_by: str = None,
         if after:
             variables["after"] = after
 
-        response = self._query_raw(query_name=query_name, variables=variables)
+        response = self._named_raw_query(query_name=query_name, variables=variables)
         return response
 
     except Exception:
@@ -125,7 +125,7 @@ def search_object(self, filters: list = None, first: int = 20, sort_by: str = No
         if after:
             variables["after"] = after
 
-        return self._query_raw(query_name=query_name, variables=variables)
+        return self._named_raw_query(query_name=query_name, variables=variables)
     except Exception:
         raise
 
@@ -150,7 +150,7 @@ def get_object_metadata(self, object_id):
         variables = {
             "id": object_id
         }
-        query = self._query_raw(query_name=query_name, variables=variables)
+        query = self._named_raw_query(query_name=query_name, variables=variables)
 
         return query
 
@@ -214,7 +214,7 @@ def get_object_snapshot(self, object_id, snapshot_group_by, missed_snapshot_grou
             "timezoneOffset": timezone_offset,
             "clusterConnected": cluster_connected
         }
-        query = self._query_raw(query_name=query_name, variables=variables)
+        query = self._named_raw_query(query_name=query_name, variables=variables)
 
         return query
 
@@ -268,7 +268,7 @@ def list_objects(self, first=20, type_filter=None, sort_by=None, sort_order=None
         if after:
             variables["after"] = after
 
-        response = self._query_raw(query_name=query_name, variables=variables)
+        response = self._named_raw_query(query_name=query_name, variables=variables)
         return response
 
     except Exception:
@@ -326,7 +326,7 @@ def list_object_snapshots(self, object_id, first=20, snapshot_filter=None, sort_
             variables["after"] = after
         if time_range:
             variables['timeRange'] = time_range
-        response = self._query_raw(query_name=query_name, variables=variables)
+        response = self._named_raw_query(query_name=query_name, variables=variables)
         return response
 
     except Exception:

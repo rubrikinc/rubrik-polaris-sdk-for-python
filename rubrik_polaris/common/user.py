@@ -36,7 +36,7 @@ def get_user_downloads(self):
     """
     try:
 
-        response = self._query_raw(query_name="user_downloads")
+        response = self._named_raw_query(query_name="user_downloads")
         return response
 
     except Exception:

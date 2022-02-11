@@ -55,7 +55,7 @@ def get_sensitive_hits_object_list(self, day: str, timezone: str):
             'timezone': timezone
         }
 
-        response = self._query_raw(query_name="sonar_sensitive_hits_object_list", variables=variables)
+        response = self._named_raw_query(query_name="sonar_sensitive_hits_object_list", variables=variables)
         return response
 
     except Exception:
@@ -86,7 +86,7 @@ def get_sensitive_hits_object_detail(self, snapshot_id: str, snappable_id: str):
             "snapshotFid": snapshot_id,
             "snappableFid": snappable_id
         }
-        response = self._query_raw(query_name="sonar_sensitive_hits_object_detail", variables=variables)
+        response = self._named_raw_query(query_name="sonar_sensitive_hits_object_detail", variables=variables)
         return response
 
     except Exception:

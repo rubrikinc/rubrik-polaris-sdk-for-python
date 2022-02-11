@@ -421,6 +421,6 @@ def list_event_series(self, activity_status=None, activity_type=None, object_nam
         if sort_order:
             variables['sortOrder'] = sort_order
 
-        return self._query_raw(query_name="core_event_series_list", variables=variables)
+        return self._named_raw_query(query_name="core_event_series_list", variables=variables)
     except Exception:
         raise
