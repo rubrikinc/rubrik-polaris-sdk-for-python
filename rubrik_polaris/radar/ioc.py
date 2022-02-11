@@ -32,7 +32,8 @@ ERROR_MESSAGES = {
 
 
 def trigger_ioc_scan(self, object_ids: Union[str, List[str]], cluster_id: str,
-                     indicators_of_compromise: Union[dict, list], max_matches_per_snapshot: int = None,
+                     indicators_of_compromise: Union[dict, list], scan_name: str = None,
+                     max_matches_per_snapshot: int = None,
                      snapshot_scan_limit: dict = None,
                      maximum_file_size_to_scan: int = None, minimum_file_size_to_scan: int = None,
                      path_to_include: Union[str, List[str]] = None, path_to_exclude: Union[str, List[str]] = None,
@@ -44,6 +45,7 @@ def trigger_ioc_scan(self, object_ids: Union[str, List[str]], cluster_id: str,
        cluster_id (str): Cluster ID on which to run the IOC scan.
        indicators_of_compromise (dict|list): Indicators to scan for. Provide a single object or list of
                                              objects of type `IndicatorOfCompromiseInput`.
+       scan_name (str): Name of the scan to trigger.
        max_matches_per_snapshot (int): Maximum number of matches per snapshot, per IOC.
                                         Scanning for an IOC within a snapshot
                                         will terminate once this many matches have been detected.
@@ -86,6 +88,9 @@ def trigger_ioc_scan(self, object_ids: Union[str, List[str]], cluster_id: str,
                 indicators_of_compromise, list) else [indicators_of_compromise]
         else:
             raise ValueError(ERROR_MESSAGES['REQUIRED_ARGUMENT'].format('indicators_of_compromise'))
+
+        if scan_name:
+            malware_scan_config["name"] = scan_name
 
         if snapshot_scan_limit:
             malware_scan_config["snapshotScanLimit"] = snapshot_scan_limit
