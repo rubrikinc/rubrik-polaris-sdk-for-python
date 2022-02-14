@@ -78,6 +78,6 @@ def list_clusters(self, first: int = None, after: str = None, filters: dict = No
 
             variables['sortOrder'] = sort_order
 
-        return self._query_raw(query_name="gps_clusters", variables=variables)
+        return self._named_raw_query(query_name="gps_clusters", variables=variables)
     except Exception:
         raise
