@@ -35,7 +35,7 @@ def list_policy_analyzer_groups(self):
     """
     try:
         query_name = "sonar_policy_analyzer_groups"
-        response = self._query_raw(query_name=query_name)
+        response = self._named_raw_query(query_name=query_name)
         return response
 
     except Exception:
@@ -53,6 +53,6 @@ def list_policies(self):
     """
     try:
         query_name = "sonar_policies"
-        return self._query_raw(query_name=query_name)
+        return self._named_raw_query(query_name=query_name)
     except Exception:
         raise

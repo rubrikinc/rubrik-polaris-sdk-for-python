@@ -54,7 +54,7 @@ def trigger_on_demand_scan(self, scan_name, resources, analyzer_groups):
             "resources": resources,
             "analyzerGroups": analyzer_groups
         }
-        query = self._query_raw(query_name=query_name, variables=variables)
+        query = self._named_raw_query(query_name=query_name, variables=variables)
 
         return query
 
@@ -82,7 +82,7 @@ def get_on_demand_scan_status(self, crawl_id):
         variables = {
             "crawlId": crawl_id
         }
-        response = self._query_raw(query_name=query_name, variables=variables)
+        response = self._named_raw_query(query_name=query_name, variables=variables)
         return response
 
     except Exception:
@@ -118,7 +118,7 @@ def get_on_demand_scan_result(self, crawl_id, filters):
             "crawlId": crawl_id,
             "filter": filters
         }
-        query = self._query_raw(query_name=query_name, variables=variables)
+        query = self._named_raw_query(query_name=query_name, variables=variables)
 
         return query
 

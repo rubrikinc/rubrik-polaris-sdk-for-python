@@ -135,7 +135,7 @@ def trigger_ioc_scan(self, object_ids: Union[str, List[str]], cluster_id: str,
 
         variables["input"]["malwareScanConfig"] = malware_scan_config
         
-        response = self._query_raw(query_name=query_name, variables=variables)
+        response = self._named_raw_query(query_name=query_name, variables=variables)
         return response
 
     except Exception:
@@ -166,7 +166,7 @@ def get_ioc_scan_list(self, cluster_id):
             }
         }
 
-        response = self._query_raw(query_name=query_name, variables=variables)
+        response = self._named_raw_query(query_name=query_name, variables=variables)
         return response
 
     except Exception:
@@ -199,7 +199,7 @@ def get_ioc_scan_result(self, scan_id: str, cluster_id: str):
             }
         }
 
-        response = self._query_raw(query_name=query_name, variables=variables)
+        response = self._named_raw_query(query_name=query_name, variables=variables)
         return response
 
     except Exception:
