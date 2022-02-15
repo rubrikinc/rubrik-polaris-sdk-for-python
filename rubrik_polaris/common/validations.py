@@ -175,7 +175,7 @@ def _cloud_account_features_validation(self, test_variable=None):
     return test_variable
 
 
-def _uuid_validation(self, test_variable=None):
+def _uuid_validation(test_variable=None):
     try:
         UUID(test_variable)
         return test_variable
