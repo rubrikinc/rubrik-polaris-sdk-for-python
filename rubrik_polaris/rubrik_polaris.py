@@ -68,7 +68,7 @@ class PolarisClient:
     from .k8s.namespace import get_k8s_namespaces, get_k8s_namespace
 
     # Private
-    from .common.connection import _query, _query_paginated, _query_raw, _get_access_token_basic, _get_access_token_keyfile
+    from .common.connection import _query, _query_paginated, _query_raw, _named_raw_query, _get_access_token_basic, _get_access_token_keyfile
     from .common.validations import _validate
     from .compute.ec2 import _get_aws_region_vpcs, _get_aws_region_kmskeys, _get_aws_region_sshkeypairs
     from .compute.common import _submit_compute_restore, _get_compute_object_ids, _submit_compute_export
