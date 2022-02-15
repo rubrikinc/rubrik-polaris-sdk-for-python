@@ -38,13 +38,13 @@ The input file is a csv-file (tab separated with header row) with the following 
 | NAME | Name of Kubernetes Cluster to use in Polaris (unique) | my_k8s_cluster |
 | IPADDRESSES | Comma-separated list of IPs/hostnames of the k8s nodes | 10.2.3.4 |
 | PORT | Port on the k8s node for the kupr Ingress Controller | 30000 |
-| RBAPORTS | Comma-separated range of ports for RBS data traffic | 30100,30200 |
+| RBSPORTS | Comma-separated range of ports for RBS data traffic | 30100,30200 |
 | KUBECONTEXT | kubectl Kubernetes context with access to apply manifest | kubectx |
 | SLANAME | Name of SLA to assign as default to the created k8s cluster | Silver |
 
 ```
 $ cat input.csv
-NAME	IPADDRESSES	PORT	RBAPORTS	CDMCLUSTERNAME	KUBECONTEXT	SLANAME
+NAME	IPADDRESSES	PORT	RBSPORTS	CDMCLUSTERNAME	KUBECONTEXT	SLANAME
 my-k8s-1	10.1.0.10	32001	32101,32200	cdm-cluster-foo	my_kubectx	Bronze
 my-k8s-2	10.2.0.20	32002	32201,32300	cdm-cluster-bar	other_kubectx	Silver
 my-k8s-3	10.3.0.30,10.3.0.31,10.3.0.32	32003	32301,32400	cdm-cluster-foo	third_kubectl	Gold
