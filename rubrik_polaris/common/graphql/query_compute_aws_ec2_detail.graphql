@@ -52,7 +52,7 @@ query RubrikPolarisSDKRequest($object_id: UUID!) {
       volumeNativeId
       volumeName
       volumeType
-      sizeInGBs
+      sizeInGiBs
       __typename
     }
     __typename
