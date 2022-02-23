@@ -22,6 +22,9 @@
 """
 Collection of methods for live mount of a virtual machine.
 """
+
+from typing import Union
+
 ERROR_MESSAGES = {
     'INVALID_FIELD_TYPE': "'{}' is an invalid value for '{}'. Value must be in {}.",
     'REQUIRED_ARGUMENT': '{} field is required.',
@@ -86,7 +89,7 @@ def create_vm_livemount(self, snapshot_fid: str, host_id: str = None, vm_name: s
         if vlan:
             variables['vlan'] = int(vlan)
 
-        response = self._query_raw(query_name=query_name, variables=variables)
+        response = self._named_raw_query(query_name=query_name, variables=variables)
         return response
 
     except Exception:
@@ -116,7 +119,7 @@ def create_vm_snapshot(self, snapshot_id: str, sla_id: str = None):
         if sla_id:
             variables['slaID'] = sla_id.strip()
 
-        return self._query_raw(query_name="gps_vm_snapshot_create", variables=variables)
+        return self._named_raw_query(query_name="gps_vm_snapshot_create", variables=variables)
     except Exception:
         raise
 
@@ -171,7 +174,7 @@ def list_vsphere_hosts(self, first: int, after: str = None, filters: list = None
 
             variables['sortOrder'] = sort_order
 
-        return self._query_raw(query_name="gps_vm_hosts", variables=variables)
+        return self._named_raw_query(query_name="gps_vm_hosts", variables=variables)
     except Exception:
         raise
 
@@ -214,7 +217,7 @@ def export_vm_snapshot(self, config: dict, id_: str):
 
         variables['config'] = config
 
-        return self._query_raw(query_name="gps_vm_export", variables=variables)
+        return self._named_raw_query(query_name="gps_vm_export", variables=variables)
     except Exception:
         raise
 
@@ -272,7 +275,7 @@ def list_vsphere_datastores(self, host_id: str, first: int = None, after: str = 
 
             variables['sortOrder'] = sort_order
 
-        return self._query_raw(query_name="gps_vm_datastores", variables=variables)
+        return self._named_raw_query(query_name="gps_vm_datastores", variables=variables)
     except Exception:
         raise
 
@@ -304,6 +307,59 @@ def get_async_request_result(self, request_id: str, cluster_id: str):
             raise ValueError(ERROR_MESSAGES['REQUIRED_ARGUMENT'].format("cluster_id"))
         variables['clusterUuid'] = cluster_id
 
-        return self._query_raw(query_name=query_name, variables=variables)
+        return self._named_raw_query(query_name=query_name, variables=variables)
+    except Exception:
+        raise
+
+
+def recover_vsphere_vm_files(self, snapshot_id: str, cluster_id: str, restore_config: Union[dict, list],
+                  destination_object_id: str = None, should_use_agent: bool = False, should_restore_x_attrs: bool = False,
+                  ignore_errors: bool = False):
+    """
+    Recover files from a snapshot back into a Vsphere VM.
+    Args:
+        snapshot_id: ID of the snapshot from which to recover files.
+        cluster_id: ID of the cluster where the snapshot resides.
+        restore_config: List or dict of type RestorePathPairInput.
+        destination_object_id: ID of the object where the files will be restored into. If not provided, Rubrik will use
+         the snapshots object.
+        should_use_agent: Whether to use an agent.
+        should_restore_x_attrs: Whether to preserve custom attributes of the machine.
+        ignore_errors: Whether to ignore errors.
+
+    Returns:
+        dict: Dictionary containing recovery request ID.
+    Raises:
+        ValueError: If input is invalid
+        RequestException: If the query to Polaris returned an error
+    """
+    try:
+        query_name = "gps_vsphere_vm_files_recover"
+        variables = {"id": self.validate_id(snapshot_id, "snapshot_id"),
+                     "clusterUuid": self.validate_id(cluster_id, "cluster_id")}
+        config = {}
+
+        if destination_object_id:
+            config["destObjectId"] = destination_object_id
+
+        if should_use_agent:
+            config["shouldUseAgent"] = self.to_boolean(should_use_agent)
+
+        if should_restore_x_attrs:
+            config["shouldRestoreXAttrs"] = self.to_boolean(should_restore_x_attrs)
+
+        if ignore_errors:
+            config["ignoreErrors"] = self.to_boolean(ignore_errors)
+
+        if not restore_config:
+            raise ValueError(ERROR_MESSAGES['REQUIRED_ARGUMENT'].format('restore_config'))
+
+        if isinstance(restore_config, dict):
+            restore_config = [restore_config]
+
+        config["restoreConfig"] = [{"restorePathPair": path_pair} for path_pair in restore_config]
+        variables["config"] = config
+
+        return self._named_raw_query(query_name=query_name, variables=variables)
     except Exception:
         raise

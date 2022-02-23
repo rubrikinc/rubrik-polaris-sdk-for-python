@@ -43,7 +43,7 @@ def get_analysis_status(self, activity_series_id, cluster_id):
             'clusterUuid': self.validate_id(cluster_id, "cluster_id")
         }
 
-        response = self._query_raw(query_name="radar_analysis_status", variables=variables)
+        response = self._named_raw_query(query_name="radar_analysis_status", variables=variables)
         return response
 
     except Exception:

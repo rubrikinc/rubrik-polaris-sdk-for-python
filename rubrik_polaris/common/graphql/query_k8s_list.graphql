@@ -1,0 +1,19 @@
+query RubrikPolarisSDKRequest($first: Int, $after: String, $filter: [Filter!], $sortBy: HierarchySortByField, $sortOrder: HierarchySortOrder) {
+    k8sClusters(
+        filter: $filter
+        first: $first
+        after: $after
+        sortBy: $sortBy
+        sortOrder: $sortOrder
+    ){
+        edges {
+            node {
+                id
+                name
+                status
+                slaAssignment
+                lastRefreshTime
+            }
+        }
+    }
+}

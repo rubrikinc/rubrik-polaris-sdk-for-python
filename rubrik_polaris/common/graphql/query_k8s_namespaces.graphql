@@ -1,0 +1,28 @@
+query RubrikPolarisSDKRequest($filter: [Filter!]) {
+    k8sNamespaces(
+        filter: $filter
+    )   {
+        edges {
+            node {
+              id,
+              k8sClusterID,
+              namespaceName,
+              isRelic,
+              configuredSlaDomain{
+                  id,
+                  name,
+                  version,
+              },
+              effectiveSlaDomain{
+                  id,
+                  name,
+                  version,
+              }
+            }
+        },
+        pageInfo {
+            endCursor,
+            hasNextPage,
+        }
+    }
+}

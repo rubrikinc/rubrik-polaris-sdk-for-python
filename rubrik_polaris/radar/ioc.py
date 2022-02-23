@@ -32,11 +32,12 @@ ERROR_MESSAGES = {
 
 
 def trigger_ioc_scan(self, object_ids: Union[str, List[str]], cluster_id: str,
-                     indicators_of_compromise: Union[dict, list], max_matches_per_snapshot: int = None,
+                     indicators_of_compromise: Union[dict, list], scan_name: str = None,
+                     max_matches_per_snapshot: int = None,
                      snapshot_scan_limit: dict = None,
                      maximum_file_size_to_scan: int = None, minimum_file_size_to_scan: int = None,
                      path_to_include: Union[str, List[str]] = None, path_to_exclude: Union[str, List[str]] = None,
-                     path_to_exempt: Union[str, List[str]] = None, requested_hash_types: str = None):
+                     path_to_exempt: Union[str, List[str]] = None, requested_hash_types: Union[str, List[str]] = None):
     """Triggers an Radar IOC scan on multiple systems for specified IOC's in a cluster.
 
    Args:
@@ -44,6 +45,7 @@ def trigger_ioc_scan(self, object_ids: Union[str, List[str]], cluster_id: str,
        cluster_id (str): Cluster ID on which to run the IOC scan.
        indicators_of_compromise (dict|list): Indicators to scan for. Provide a single object or list of
                                              objects of type `IndicatorOfCompromiseInput`.
+       scan_name (str): Name of the scan to trigger.
        max_matches_per_snapshot (int): Maximum number of matches per snapshot, per IOC.
                                         Scanning for an IOC within a snapshot
                                         will terminate once this many matches have been detected.
@@ -54,7 +56,7 @@ def trigger_ioc_scan(self, object_ids: Union[str, List[str]], cluster_id: str,
        path_to_include (str|list): Paths that will be included in the scan.
        path_to_exclude (str|list): Paths that will be excluded from the scan.
        path_to_exempt (str|list): Paths that will be exempted from exclusion in the scan.
-       requested_hash_types (str): `HashTypeEnum` type enum value
+       requested_hash_types (str|list): `HashTypeEnum` type enum value.
 
    Returns:
        dict: Dictionary containing the scan results
@@ -87,6 +89,9 @@ def trigger_ioc_scan(self, object_ids: Union[str, List[str]], cluster_id: str,
         else:
             raise ValueError(ERROR_MESSAGES['REQUIRED_ARGUMENT'].format('indicators_of_compromise'))
 
+        if scan_name:
+            malware_scan_config["name"] = scan_name
+
         if snapshot_scan_limit:
             malware_scan_config["snapshotScanLimit"] = snapshot_scan_limit
 
@@ -117,10 +122,12 @@ def trigger_ioc_scan(self, object_ids: Union[str, List[str]], cluster_id: str,
             malware_scan_config["fileScanCriteria"] = file_scan_criteria
 
         if requested_hash_types:
+            if not isinstance(requested_hash_types, list):
+                requested_hash_types = [requested_hash_types]
             supported_hash_types = self.get_enum_values(name="HashTypeEnum")
-            if requested_hash_types not in supported_hash_types:
+            if not set(requested_hash_types).issubset(supported_hash_types):
                 raise ValueError(
-                    ERROR_MESSAGES['INVALID_FIELD_TYPE'].format(requested_hash_types, 'requested_hash_types',
+                    ERROR_MESSAGES['INVALID_FIELD_TYPE'].format(requested_hash_types, 'requested_hash_types', 
                                                                 supported_hash_types))
             malware_scan_config["requestedMatchDetails"] = {
                 "requestedHashTypes": requested_hash_types
@@ -128,7 +135,7 @@ def trigger_ioc_scan(self, object_ids: Union[str, List[str]], cluster_id: str,
 
         variables["input"]["malwareScanConfig"] = malware_scan_config
         
-        response = self._query_raw(query_name=query_name, variables=variables)
+        response = self._named_raw_query(query_name=query_name, variables=variables)
         return response
 
     except Exception:
@@ -159,7 +166,7 @@ def get_ioc_scan_list(self, cluster_id):
             }
         }
 
-        response = self._query_raw(query_name=query_name, variables=variables)
+        response = self._named_raw_query(query_name=query_name, variables=variables)
         return response
 
     except Exception:
@@ -192,7 +199,7 @@ def get_ioc_scan_result(self, scan_id: str, cluster_id: str):
             }
         }
 
-        response = self._query_raw(query_name=query_name, variables=variables)
+        response = self._named_raw_query(query_name=query_name, variables=variables)
         return response
 
     except Exception:

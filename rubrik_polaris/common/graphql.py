@@ -23,6 +23,7 @@
 Collection of methods that interact with the raw GraphQL.
 """
 
+import re
 
 def _build_graphql_maps(self):
     from os import listdir
@@ -48,7 +49,11 @@ def _build_graphql_maps(self):
         try:
             graphql_file = open("{}{}".format(self._data_path, f), 'r').read()
             graphql_details[query_name] = self._get_details_from_graphql_query(graphql_file)
-            graphql_details[query_name]['query_text'] = """{}""".format(graphql_file)
+            op_name = "SdkPython" + ''.join(w[:1].upper() + w[1:] for w in query_name.split('_'))
+            graphql_details[query_name]['operation_name'] = op_name
+            query_text = """{}""".format(graphql_file)
+            query_text = re.sub("RubrikPolarisSDKRequest", op_name, query_text)
+            graphql_details[query_name]['query_text'] = query_text
 
         except OSError as e:
             raise  # TODO: Should we bail immediately or go on to the next file?
@@ -57,7 +62,6 @@ def _build_graphql_maps(self):
 
 
 def _get_details_from_graphql_query(self, graphql_query_text):
-    import re
     import sys
     try:
         o = {}

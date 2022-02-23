@@ -56,7 +56,7 @@ class PolarisClient:
     from .sonar.csv import get_csv_download, get_csv_result_download
     from .gps.files import get_snapshot_files, request_download_snapshot_files
     from .gps.vm import create_vm_snapshot, create_vm_livemount, list_vsphere_hosts, export_vm_snapshot, \
-        list_vsphere_datastores, get_async_request_result
+        list_vsphere_datastores, get_async_request_result, recover_vsphere_vm_files
     from .gps.sla import list_sla_domains
     from .gps.cluster import list_clusters
     from .radar.anomaly import get_analysis_status
@@ -64,9 +64,11 @@ class PolarisClient:
     from .common.core import list_event_series
     from .common.object import list_objects
     from .common.object import list_object_snapshots
+    from .k8s.cluster import create_k8s_cluster, refresh_k8s_cluster, list_k8s_clusters, get_k8s_status
+    from .k8s.namespace import get_k8s_namespaces, get_k8s_namespace
 
     # Private
-    from .common.connection import _query, _query_raw, _get_access_token_basic, _get_access_token_keyfile
+    from .common.connection import _query, _query_paginated, _query_raw, _named_raw_query, _get_access_token_basic, _get_access_token_keyfile
     from .common.validations import _validate
     from .compute.ec2 import _get_aws_region_vpcs, _get_aws_region_kmskeys, _get_aws_region_sshkeypairs
     from .compute.common import _submit_compute_restore, _get_compute_object_ids, _submit_compute_export
@@ -123,7 +125,8 @@ class PolarisClient:
 
         try:
             self._access_token = None
-            self._headers = None
+            self._user_agent = self._kwargs.get('user_agent')
+            self._headers = {}
 
             if self._json_keyfile:
                 with open(self._json_keyfile) as f:
@@ -177,10 +180,11 @@ class PolarisClient:
         return self._access_token
 
     def prepare_headers(self):
-        self._headers = {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-        }
+        if self._user_agent:
+            self._headers['User-Agent'] = self._user_agent
+        self._headers['Content-Type'] = 'application/json'
+        self._headers['Accept'] = 'application/json'
+
         if self._access_token:
             self._headers['Authorization'] = 'Bearer ' + self._access_token
         else:

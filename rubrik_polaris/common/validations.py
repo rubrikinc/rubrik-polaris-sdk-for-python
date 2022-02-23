@@ -175,10 +175,12 @@ def _cloud_account_features_validation(self, test_variable=None):
     return test_variable
 
 
-def _uuid_validation(self, test_variable=None):
-    if not UUID(test_variable):
+def _uuid_validation(test_variable=None):
+    try:
+        UUID(test_variable)
+        return test_variable
+    except:
         raise ValidationException("{} not a UUID".format(test_variable))
-    return test_variable
 
 
 def _azure_subscription_ids(self, test_variable=None):
@@ -186,6 +188,47 @@ def _azure_subscription_ids(self, test_variable=None):
         raise ValidationException("No subscription ids in list")
     if not _uuid_validation(test_variable=test_variable):
         raise ValidationException("{} is not a UUID".format(test_variable))
+    return test_variable
+
+
+def _cdm_cluster_id_validation(self, test_variable=None):
+    if not test_variable:
+        raise ValidationException("cdm_cluster_id not specified: ".format(test_variable))
+    if not _uuid_validation(test_variable=test_variable):
+        raise ValidationException("{} is not a UUID".format(test_variable))
+    return test_variable
+
+
+def _host_list_validation(self, test_variable=None):
+    if not test_variable:
+        raise ValidationException("host_list not specified : {}".format(test_variable))
+    if isinstance(test_variable, list):
+        return test_variable
+    hosts = [host.strip() for host in test_variable.split(",")]
+    return hosts
+
+
+def _rbs_port_ranges_validation(self, test_variable=None):
+    if not test_variable:
+        raise ValidationException("rbs_port_ranges not specified : {}".format(test_variable))
+
+    for k in ['portMin', 'portMax']:
+        v = test_variable.get(k)
+        if v is None or not isinstance(v, int):
+            raise ValidationException("rbs_port_ranges['{}'] must be an int: {}".format(k, test_variable))
+    return test_variable
+
+
+def _kupr_cluster_type_validation(self, test_variable=None):
+    test = self.get_enum_values(name="K8sClusterProtoType")
+    if not test_variable or test_variable not in test:
+        raise ValidationException("{} not found, valid kupr cluster types are {}".format(test_variable, list(test)))
+    return test_variable
+
+
+def _kupr_cluster_id_validation(self, test_variable=None):
+    if not UUID(test_variable):
+        raise ValidationException("{} not a UUID".format(test_variable))
     return test_variable
 
 

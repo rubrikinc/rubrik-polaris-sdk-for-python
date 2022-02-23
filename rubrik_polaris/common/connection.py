@@ -24,7 +24,6 @@ Collection of methods that control connection with Polaris.
 """
 
 import requests
-import re
 import http
 import os
 from rubrik_polaris.exceptions import RequestException, AuthenticationException, ProxyException
@@ -54,155 +53,101 @@ ERROR_MESSAGES = {
 }
 
 
-def _query(self, query_name=None, variables=None, timeout=60):
-    try:
-        operation_name = "SdkPython" + ''.join(w[:1].upper() + w[1:] for w in query_name.split('_'))
-        query = re.sub("RubrikPolarisSDKRequest", operation_name, self._graphql_query_map[query_name]['query_text'])
-        gql_query_name = self._graphql_query_map[query_name]['gql_name']
-        start = True
-        while start or \
-                (api_response['data'][gql_query_name]
-                 and not isinstance(api_response['data'][gql_query_name], bool)
-                 and 'pageInfo' in api_response['data'][gql_query_name]
-                 and api_response['data'][gql_query_name]['pageInfo']['hasNextPage']):
-            if not start:
-                variables['after'] = api_response['data'][gql_query_name]['pageInfo']['endCursor']
-            api_request = requests.post(
-                "{}/graphql".format(self._baseurl),
-                headers=self.prepare_headers(),
-                json={
-                    "operationName": operation_name,
-                    "variables": variables,
-                    "query": "{}".format(query)
-                },
-                verify=self._verify,
-                proxies=self._proxies,
-                timeout=timeout
-            )
-            api_response = api_request.json()
-            if 'errors' in api_response and len(api_response['errors']) >= 1:
-                error = api_response['errors'][0]
-                self.logger.error(error)
-                status_code = error['extensions']['code']
-                if error['extensions'].get('trace', ''):
-                    trace_id = error['extensions']['trace']['traceId']
-                else:
-                    trace_id = "N/A"
-                if error.get('path'):
-                    raise RequestException(ERROR_MESSAGES['REQUEST_ERROR_WITH_PATH'].format(
-                        status_code,
-                        return_http_error_message(status_code),
-                        trace_id,
-                        error['path'], error['message']))
-                raise RequestException(
-                    ERROR_MESSAGES['REQUEST_ERROR_WITHOUT_PATH'].format(
-                        status_code, return_http_error_message(status_code),
-                        trace_id,
-                        error['message']))
-            elif 'code' in api_response and 'message' in api_response and api_response['code'] >= 400:
-                status_code = api_response['code']
-                raise RequestException(ERROR_MESSAGES['REQUEST_INVALID_STATUS'].format(status_code,
-                                                                                       return_http_error_message(status_code),
-                                                                                       api_response['message']))
-            else:
-                api_request.raise_for_status()
-
-            if start:
-                out_data = self._dump_nodes(api_response)
-                start = False
-            else:
-                out_data += self._dump_nodes(api_response)
-
-        return out_data
-
-    except requests.exceptions.RequestException as request_err:
-        raise RequestException(request_err)
-    except ValueError as value_err:
-        raise RequestException(value_err)
-    except Exception as err:
-        raise RequestException(err)
-
-
-def _query_raw(self, query_name, raw_query=None, variables=None, timeout=60):
+def _query_paginated(self, query_name=None, variables=None, timeout=60):
+    """ Perform query against Polaris and return an iterator of entries. It
+    handles responses that has more than one page of entries by requesting
+    consecutive pages as entries are read from the iterator.
     """
-    Function to return raw response from the API based on the specified query and variables.
 
-    :param self: client object
-    :param query_name: Name of the query
-    :param raw_query: Raw query for the request
-    :param variables: Dictionary of variables
-    :param timeout: Value of timeout for request
-    :return: Response from the API
-    """
-    try:
-        operation_name = "SdkPython" + ''.join(w[:1].upper() + w[1:] for w in query_name.split('_'))
-        if raw_query:
-            if "RubrikPolarisSDKRequest" not in raw_query:
-                self.logger.error(ERROR_MESSAGES['INVALID_RAW_QUERY'])
-                raise ValueError(ERROR_MESSAGES['INVALID_RAW_QUERY'])
-            query = re.sub("RubrikPolarisSDKRequest", operation_name, raw_query)
+    q = self._graphql_query_map[query_name]
+    gql_query_name = q['gql_name']
+
+    start = True
+    while start or \
+           (api_response['data'][gql_query_name]
+            and not isinstance(api_response['data'][gql_query_name], bool)
+            and 'pageInfo' in api_response['data'][gql_query_name]
+            and api_response['data'][gql_query_name]['pageInfo']['hasNextPage']):
+        if not start:
+            variables['after'] = api_response['data'][gql_query_name]['pageInfo']['endCursor']
+        api_response = self._query_raw(q['query_text'], q['operation_name'], variables, timeout)
+        start = False
+        nodes = self._dump_nodes(api_response)
+        if isinstance(nodes, list):
+            yield from nodes
         else:
-            query = re.sub("RubrikPolarisSDKRequest", operation_name, self._graphql_query_map[query_name]['query_text'])
+            yield nodes
 
-        try:
-            timeout = int(timeout)
-        except Exception:
-            self.logger.error(ERROR_MESSAGES['NOT_A_NUMBER'].format(timeout))
-            raise ValueError(ERROR_MESSAGES['NOT_A_NUMBER'].format(timeout))
 
-        if timeout <= 0:
-            self.logger.error(ERROR_MESSAGES['INVALID_TIMEOUT'].format(timeout))
-            raise ValueError(ERROR_MESSAGES['INVALID_TIMEOUT'].format(timeout))
+def _query(self, query_name=None, variables=None, timeout=60):
+    """ Perform query against Polaris
+    """
+    q = self._graphql_query_map[query_name]
+    api_response = self._query_raw(q['query_text'], q['operation_name'], variables, timeout)
+    if api_response['data'].get('pageInfo'):
+        raise Exception("use _query_paginated instead of _query for when expected response is paged")
 
-        api_request = requests.post(
+    return self._dump_nodes(api_response)
+
+
+def _named_raw_query(self, query_name=None, variables=None, timeout=60):
+    """ Perform query against Polaris and return the raw GraphQL response.
+    NOTE! This shouldn't be used in normal circumstances, use _query instead (or
+    _query_paginated when the response is paginated).
+    """
+    q = self._graphql_query_map[query_name]
+    return self._query_raw(q['query_text'], q['operation_name'], variables, timeout)
+
+
+def _query_raw(self, raw_query, operation_name, variables, timeout):
+    """ Perform raw GraphQL request and return the raw response in json format.
+    NOTE! This shouldn't be used in normal circumstances, use _query instead (or
+    _query_paginated when the response is paginated).
+    """
+    try:
+        body = {"query": "{}".format(raw_query)}
+        if variables:
+            body['variables'] = variables
+        if operation_name:
+            body['operationName'] = operation_name
+
+        raw_resp = requests.post(
             "{}/graphql".format(self._baseurl),
             headers=self.prepare_headers(),
-            json={
-                "operationName": operation_name,
-                "variables": variables,
-                "query": "{}".format(query)
-            },
+            json=body,
             verify=self._verify,
             proxies=self._proxies,
             timeout=timeout
         )
-        api_response = api_request.json()
-        if 'errors' in api_response and len(api_response['errors']) >= 1:
-            error = api_response['errors'][0]
+
+        resp = raw_resp.json()
+        if 'errors' in resp and len(resp['errors']) > 0:
+            error = resp['errors'][0]
             self.logger.error(error)
             status_code = error['extensions']['code']
-            error_msg = return_http_error_message(status_code)
-            if error['extensions'].get('trace', ''):
-                trace_id = error['extensions']['trace']['traceId']
-            else:
-                trace_id = "N/A"
+            trace_id = error['extensions'].get('trace') if error['extensions']['trace'].get('traceId', "N/A") else "N/A"
             if error.get('path'):
                 raise RequestException(ERROR_MESSAGES['REQUEST_ERROR_WITH_PATH'].format(
                     status_code,
-                    error_msg,
+                    return_http_error_message(status_code),
                     trace_id,
                     error['path'], error['message']))
-            raise RequestException(
-                ERROR_MESSAGES['REQUEST_ERROR_WITHOUT_PATH'].format(
-                    status_code, error_msg,
-                    trace_id,
-                    error['message']))
-        elif 'code' in api_response and 'message' in api_response and api_response['code'] >= 400:
-            status_code = api_response['code']
-            raise RequestException(ERROR_MESSAGES['REQUEST_INVALID_STATUS'].format(status_code,
-                                                                                   return_http_error_message(status_code),
-                                                                                   api_response['message']))
-        else:
-            api_request.raise_for_status()
+            raise RequestException(ERROR_MESSAGES['REQUEST_ERROR_WITHOUT_PATH'].format(
+                status_code, return_http_error_message(status_code),
+                trace_id,
+                error['message']))
 
-        return api_response
+        if 'code' in resp and 'message' in resp and resp['code'] >= 400:
+            raise RequestException(ERROR_MESSAGES['REQUEST_INVALID_STATUS'].format(resp['code'],
+                return_http_error_message(resp['code']),
+                resp['message']))
 
-    except requests.exceptions.RequestException as request_err:
-        raise RequestException(request_err)
-    except ValueError as value_err:
-        raise RequestException(value_err)
-    except Exception as err:
-        raise RequestException(err)
+        raw_resp.raise_for_status()
+
+        return resp
+
+    except Exception as e:
+        raise RequestException(e)
 
 
 def _get_access_token_basic(self):
