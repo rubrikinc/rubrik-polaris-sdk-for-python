@@ -85,7 +85,7 @@ def list_sla_domains(self, after: str = None, first: int = None, filters: list =
             variables['sortOrder'] = sort_order
 
         if show_protected_object_count:
-            variables['showProtectedObjectCount'] = self.to_boolean(show_protected_object_count)
+            variables['shouldShowProtectedObjectCount'] = self.to_boolean(show_protected_object_count)
 
         return self._query_raw(query_name="gps_sla_domain", variables=variables)
     except Exception:
