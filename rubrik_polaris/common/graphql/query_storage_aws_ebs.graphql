@@ -7,7 +7,7 @@ query RubrikPolarisSDKRequest($first: Int, $after: String, $filters: AwsNativeEb
         volumeName
         volumeType
         region
-        sizeInGBs
+        sizeInGiBs
         isRelic
         isExocomputeConfigured
         isIndexingEnabled

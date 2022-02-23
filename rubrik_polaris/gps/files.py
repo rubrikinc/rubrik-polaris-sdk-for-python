@@ -64,7 +64,7 @@ def get_snapshot_files(self, snapshot_id: str, first: int = None, path: str = No
         if search_prefix:
             variables['searchPrefix'] = search_prefix
 
-        response = self._query_raw(query_name=query_name, variables=variables)
+        response = self._named_raw_query(query_name=query_name, variables=variables)
         return response
 
     except Exception:
@@ -104,6 +104,6 @@ def request_download_snapshot_files(self, snapshot_id: str, paths: list, delta_t
             "nextSnapshotFid": next_snapshot_fid
         }
 
-        return self._query_raw(query_name="gps_file_download", variables=variables)
+        return self._named_raw_query(query_name="gps_file_download", variables=variables)
     except Exception:
         raise

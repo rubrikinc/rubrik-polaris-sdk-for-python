@@ -89,7 +89,7 @@ def create_vm_livemount(self, snapshot_fid: str, host_id: str = None, vm_name: s
         if vlan:
             variables['vlan'] = int(vlan)
 
-        response = self._query_raw(query_name=query_name, variables=variables)
+        response = self._named_raw_query(query_name=query_name, variables=variables)
         return response
 
     except Exception:
@@ -119,7 +119,7 @@ def create_vm_snapshot(self, snapshot_id: str, sla_id: str = None):
         if sla_id:
             variables['slaID'] = sla_id.strip()
 
-        return self._query_raw(query_name="gps_vm_snapshot_create", variables=variables)
+        return self._named_raw_query(query_name="gps_vm_snapshot_create", variables=variables)
     except Exception:
         raise
 
@@ -174,7 +174,7 @@ def list_vsphere_hosts(self, first: int, after: str = None, filters: list = None
 
             variables['sortOrder'] = sort_order
 
-        return self._query_raw(query_name="gps_vm_hosts", variables=variables)
+        return self._named_raw_query(query_name="gps_vm_hosts", variables=variables)
     except Exception:
         raise
 
@@ -217,7 +217,7 @@ def export_vm_snapshot(self, config: dict, id_: str):
 
         variables['config'] = config
 
-        return self._query_raw(query_name="gps_vm_export", variables=variables)
+        return self._named_raw_query(query_name="gps_vm_export", variables=variables)
     except Exception:
         raise
 
@@ -275,7 +275,7 @@ def list_vsphere_datastores(self, host_id: str, first: int = None, after: str = 
 
             variables['sortOrder'] = sort_order
 
-        return self._query_raw(query_name="gps_vm_datastores", variables=variables)
+        return self._named_raw_query(query_name="gps_vm_datastores", variables=variables)
     except Exception:
         raise
 
@@ -307,7 +307,7 @@ def get_async_request_result(self, request_id: str, cluster_id: str):
             raise ValueError(ERROR_MESSAGES['REQUIRED_ARGUMENT'].format("cluster_id"))
         variables['clusterUuid'] = cluster_id
 
-        return self._query_raw(query_name=query_name, variables=variables)
+        return self._named_raw_query(query_name=query_name, variables=variables)
     except Exception:
         raise
 
@@ -360,6 +360,6 @@ def recover_vsphere_vm_files(self, snapshot_id: str, cluster_id: str, restore_co
         config["restoreConfig"] = [{"restorePathPair": path_pair} for path_pair in restore_config]
         variables["config"] = config
 
-        return self._query_raw(query_name=query_name, variables=variables)
+        return self._named_raw_query(query_name=query_name, variables=variables)
     except Exception:
         raise

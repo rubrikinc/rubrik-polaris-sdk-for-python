@@ -60,7 +60,7 @@ def get_csv_download(self, snapshot_id, snappable_id, filters=None):
             "snapshotFid": snapshot_id,
             "snappableFid": snappable_id
         }
-        response = self._query_raw(query_name=query_name, variables=variables)
+        response = self._named_raw_query(query_name=query_name, variables=variables)
         return response
 
     except Exception:
@@ -87,7 +87,7 @@ def get_csv_result_download(self, download_id: int):
         variables = {
             "downloadId": download_id
         }
-        response = self._query_raw(query_name=query_name, variables=variables)
+        response = self._named_raw_query(query_name=query_name, variables=variables)
         return response
 
     except Exception:

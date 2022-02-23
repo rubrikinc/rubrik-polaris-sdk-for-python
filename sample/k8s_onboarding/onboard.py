@@ -72,7 +72,7 @@ def main(raw_data: pd.DataFrame, rubrik: PolarisClient, dry_run: bool = True):
             print(f'skipped creating k8s cluster "{row.NAME}" since it already exist')
             continue
 
-        minPort, maxPort = row.RBAPORTS.split(",")
+        minPort, maxPort = row.RBSPORTS.split(",")
         ips = [ip.strip() for ip in row.IPADDRESSES.split(",")]
         resp = rubrik.create_k8s_cluster(
                 cdm_cluster_id[row.CDMCLUSTERNAME],
@@ -143,7 +143,7 @@ def _validate_sla_map(configured_sla_names: List[str], input_sla_names: List[str
 
 
 def _validate_input(raw_data: pd.DataFrame):
-    missing = {'NAME', 'IPADDRESSES', 'PORT', 'RBAPORTS', 'CDMCLUSTERNAME', 'KUBECONTEXT', 'SLANAME'} - set(raw_data.columns)
+    missing = {'NAME', 'IPADDRESSES', 'PORT', 'RBSPORTS', 'CDMCLUSTERNAME', 'KUBECONTEXT', 'SLANAME'} - set(raw_data.columns)
     if len(missing) > 0:
         raise ValidationException(f'input file missing column(s) "{missing}"')
     if len(raw_data) == 0:
