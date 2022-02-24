@@ -12,9 +12,9 @@
               "duration": 1,
               "unit": "DAYS"
             },
-            "archivalSpecList": [],
+            "archivalSpecs": [],
             "replicationSpec": null,
-            "replicationSpecV2": [],
+            "replicationSpecsV2": [],
             "localRetentionLimit": null,
             "snapshotSchedule": {
               "minute": null,
@@ -51,7 +51,7 @@
               "sapHanaConfig": null,
               "vmwareVmConfig": null
             },
-            "objectTypeList": []
+            "objectTypes": []
           }
         },
         {
@@ -64,9 +64,9 @@
               "duration": 4,
               "unit": "HOURS"
             },
-            "archivalSpecList": [],
+            "archivalSpecs": [],
             "replicationSpec": null,
-            "replicationSpecV2": [],
+            "replicationSpecsV2": [],
             "localRetentionLimit": null,
             "snapshotSchedule": {
               "minute": null,
@@ -109,7 +109,7 @@
               "sapHanaConfig": null,
               "vmwareVmConfig": null
             },
-            "objectTypeList": []
+            "objectTypes": []
           }
         },
         {
@@ -122,9 +122,9 @@
               "duration": 7,
               "unit": "DAYS"
             },
-            "archivalSpecList": [],
+            "archivalSpecs": [],
             "replicationSpec": null,
-            "replicationSpecV2": [],
+            "replicationSpecsV2": [],
             "localRetentionLimit": null,
             "snapshotSchedule": {
               "minute": null,
@@ -156,7 +156,7 @@
               },
               "vmwareVmConfig": null
             },
-            "objectTypeList": [
+            "objectTypes": [
               "SAP_HANA_OBJECT_TYPE"
             ]
           }
