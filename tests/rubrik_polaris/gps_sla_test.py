@@ -45,11 +45,13 @@ def test_get_sla_domain_valid_input(requests_mock, client):
     """
     from rubrik_polaris.gps.sla import list_sla_domains
 
+    raw_resp = util_load_json(os.path.join(os.path.dirname(os.path.realpath(__file__)),
+        "test_data/get_sla_domain_response_raw.json"))
     expected_response = util_load_json(os.path.join(os.path.dirname(os.path.realpath(__file__)),
                                                     "test_data/get_sla_domain_response.json"))
-    requests_mock.post(BASE_URL + "/graphql", json=expected_response)
+    requests_mock.post(BASE_URL + "/graphql", json=raw_resp)
 
     response = list_sla_domains(
         client, first=10
     )
-    assert response == expected_response
+    assert list(response) == expected_response

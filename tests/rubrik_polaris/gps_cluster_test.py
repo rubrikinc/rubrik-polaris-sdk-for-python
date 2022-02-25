@@ -11,12 +11,14 @@ def test_list_clusters_when_valid_values_are_provided(requests_mock, client):
     """
     from rubrik_polaris.gps.cluster import list_clusters
 
+    raw_resp = util_load_json(os.path.join(os.path.dirname(os.path.realpath(__file__)),
+                                                    "test_data/list_clusters_raw.json"))
+    requests_mock.post(BASE_URL + "/graphql", json=raw_resp)
+    response = list_clusters(client, first=1)
+
     expected_response = util_load_json(os.path.join(os.path.dirname(os.path.realpath(__file__)),
                                                     "test_data/list_clusters.json"))
-    requests_mock.post(BASE_URL + "/graphql", json=expected_response)
-
-    response = list_clusters(client, first=1)
-    assert response == expected_response
+    assert list(response) == expected_response
 
 
 @pytest.mark.parametrize("first, after, filters, sort_by,sort_order, err_msg", [
