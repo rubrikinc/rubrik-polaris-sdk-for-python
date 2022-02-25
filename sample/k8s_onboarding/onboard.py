@@ -163,9 +163,8 @@ def _validate_kubecontext(contexts: List[str]):
 
 def _cdm_cluster_map(rubrik: PolarisClient) -> dict:
     cluster_map = {}
-    clusters = rubrik.list_clusters()
-    for edge in clusters['data']['clusterConnection']['edges']:
-        cluster_map[edge['node']['name']] = edge['node']['id']
+    for cluster in rubrik.list_clusters():
+        cluster_map[cluster['name']] = cluster['id']
     return cluster_map
 
 def _sla_name_map(rubrik: PolarisClient) -> dict:

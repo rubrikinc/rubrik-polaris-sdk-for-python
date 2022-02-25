@@ -43,7 +43,7 @@ def list_clusters(self, first: int = None, after: str = None, filters: dict = No
         sort_order: Sorting orders ASC or DESC.
 
     Returns:
-        dict: Dictionary containing list of clusters.
+        iterator: List of clusters.
     Raises:
         ValueError: If input is invalid
         RequestException: If the query to Polaris returned an error.
@@ -78,6 +78,6 @@ def list_clusters(self, first: int = None, after: str = None, filters: dict = No
 
             variables['sortOrder'] = sort_order
 
-        return self._named_raw_query(query_name="gps_clusters", variables=variables)
+        return self._query_paginated(query_name="gps_clusters", variables=variables)
     except Exception:
         raise
