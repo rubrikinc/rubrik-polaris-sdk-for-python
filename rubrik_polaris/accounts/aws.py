@@ -222,7 +222,7 @@ def get_accounts_aws_detail(self, filter):
 
 def get_account_aws_native_id(self, profile='', aws_id=None, aws_secret=None):
     """Retrieves AWS Account ID from local config
-    
+
     Args:
         profile (str): Profile name of local configuration
         aws_access_key_id (str): AWS Access key to import to Polaris
@@ -436,17 +436,17 @@ def _update_account_aws(self, profile=None, aws_id=None, aws_secret=None,  _aws_
         _aws_account_id, _aws_account_name = self.get_account_aws_native_id(aws_id=aws_id, aws_secret=aws_secret)
     if _aws_account_id  == '':
         return
-    else:
-        _polaris_account_info = self.get_accounts_aws_detail(_aws_account_id)['awsCloudAccounts']
-        if not _polaris_account_info:
-            return
-        for _feature in _polaris_account_info[0]['featureDetails']:
-            if _feature['feature'] == "CLOUD_NATIVE_PROTECTION":
-                if _feature['status'] == 'MISSING_PERMISSIONS':
-                    _update_info = self._update_account_aws_initiate(_feature['feature'], _polaris_account_info[0]['awsCloudAccount']['id'])
-                    self._pp.pprint(_update_info)
-                if _feature['status'] == 'DISCONNECTED':
-                    print("account needs to be recreated")
+
+    _polaris_account_info = self.get_accounts_aws_detail(_aws_account_id)['awsCloudAccounts']
+    if not _polaris_account_info:
+        return
+    for _feature in _polaris_account_info[0]['featureDetails']:
+        if _feature['feature'] == "CLOUD_NATIVE_PROTECTION":
+            if _feature['status'] == 'MISSING_PERMISSIONS':
+                _update_info = self._update_account_aws_initiate(_feature['feature'], _polaris_account_info[0]['awsCloudAccount']['id'])
+                self._pp.pprint(_update_info)
+            if _feature['status'] == 'DISCONNECTED':
+                print("account needs to be recreated")
 
 
 def _get_account_map_aws(self):

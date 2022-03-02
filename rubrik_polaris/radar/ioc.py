@@ -127,14 +127,14 @@ def trigger_ioc_scan(self, object_ids: Union[str, List[str]], cluster_id: str,
             supported_hash_types = self.get_enum_values(name="HashTypeEnum")
             if not set(requested_hash_types).issubset(supported_hash_types):
                 raise ValueError(
-                    ERROR_MESSAGES['INVALID_FIELD_TYPE'].format(requested_hash_types, 'requested_hash_types', 
+                    ERROR_MESSAGES['INVALID_FIELD_TYPE'].format(requested_hash_types, 'requested_hash_types',
                                                                 supported_hash_types))
             malware_scan_config["requestedMatchDetails"] = {
                 "requestedHashTypes": requested_hash_types
             }
 
         variables["input"]["malwareScanConfig"] = malware_scan_config
-        
+
         response = self._named_raw_query(query_name=query_name, variables=variables)
         return response
 

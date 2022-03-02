@@ -119,13 +119,13 @@ def submit_assign_sla(self, object_ids=[], sla_id=None, apply_to_existing_snapsh
         apply_to_existing_snapshots (bool): Apply retention policy to pre-existing snapshots
         existing_snapshot_retention (str): Snapshot handling on doNotProtect RETAIN_SNAPSHOTS/KEEP_FOREVER/EXPIRE_IMMEDIATELY
         global_sla_assign_type (str): ...
-    
+
     Returns:
         list: List of objects assigned the SLA
 
     Raises:
         RequestException: If the query to Polaris returned an error
-    
+
     Examples:
         >>> object_ids = client.get_object_ids_gce(region='us-west-1')
         >>> sla_domain_id = client.get_sla_domains('Gold')[0]['id']
@@ -217,7 +217,7 @@ def get_snapshots(self, snappable_id=None, recovery_point=None):
     Args:
         snappable_id (str): Object UUID
         recovery_point (str): Optional datetime of snapshot to return, or 'latest', or not defined to return all
-        
+
     Returns:
         dict: A dictionary of snapshots or a single snapshot if 'latest' was passed as `recovery_point`. If no snapshots are found, an empty dict is returned.
 

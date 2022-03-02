@@ -42,10 +42,8 @@ jobs:
         # C0415 - import-outside-toplevel
         # W0212 - protected-access
         # C0115 - missing-class-docstring
-        # C0121 - singleton-comparision
         # C0201 - consider-iterating-dictionary
         # C0206 - consider-using-dict-items
-        # C0303 - trailing-whitespace
         # C0304 - missing-final-newline
         # C0305 - trailing-newlines
         # C0411 - wrong-import-order
@@ -53,7 +51,6 @@ jobs:
         # C0414 - useless-import-alias
         # E0102 - function-redefined
         # E0401 - import-error
-        # E0601 - used-before-assignment
         # E0611 - no-name-in-module
         # E1101 - no-member
         # R0902 - too-many-instance-attributes
@@ -61,7 +58,6 @@ jobs:
         # R0915 - too-many-statements
         # R0916 - too-many-boolean-expressions
         # R1702 - too-many-nested-blocks
-        # R1705 - no-else-return
         # R1710 - inconsistent-return-statement
         # R1720 - no-else-raise
         # R1732 - consider-using-with
@@ -79,7 +75,6 @@ jobs:
         # W0703 - broad-except
         # W0706 - try-except-raise
         # W0707 - raise-missing-from
-        # W1310 - format-string-without-interpolation
         # W1510 - subprocess-run-check
         # W1514 - unspecified-encoding
         run: |
@@ -96,10 +91,8 @@ jobs:
             -d C0415 \
             -d W0212 \
             -d C0115 \
-            -d C0121 \
             -d C0201 \
             -d C0206 \
-            -d C0303 \
             -d C0304 \
             -d C0305 \
             -d C0411 \
@@ -107,7 +100,6 @@ jobs:
             -d C0414 \
             -d E0102 \
             -d E0401 \
-            -d E0601 \
             -d E0611 \
             -d E1101 \
             -d R0902 \
@@ -115,7 +107,6 @@ jobs:
             -d R0915 \
             -d R0916 \
             -d R1702 \
-            -d R1705 \
             -d R1710 \
             -d R1720 \
             -d R1732 \
@@ -133,7 +124,6 @@ jobs:
             -d W0703 \
             -d W0706 \
             -d W0707 \
-            -d W1310 \
             -d W1510 \
             -d W1514
         shell: bash

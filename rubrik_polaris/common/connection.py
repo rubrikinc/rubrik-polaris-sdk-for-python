@@ -19,7 +19,7 @@
 #  DEALINGS IN THE SOFTWARE.
 
 
-""" 
+"""
 Collection of methods that control connection with Polaris.
 """
 
@@ -62,6 +62,7 @@ def _query_paginated(self, query_name=None, variables=None, timeout=60):
     q = self._graphql_query_map[query_name]
     gql_query_name = q['gql_name']
 
+    api_response = {}
     start = True
     while start or \
            (api_response['data'][gql_query_name]
@@ -265,6 +266,4 @@ def return_http_error_message(status_code):
     """
     if status_code in HTTP_ERRORS.keys():
         return HTTP_ERRORS[status_code]
-    else:
-        return http.HTTPStatus(status_code).description
-
+    return http.HTTPStatus(status_code).description
