@@ -1,4 +1,4 @@
-query RubrikPolarisSDKRequest($awsNativeProtectionFeature: AwsNativeProtectionFeatureEnum = EC2, $filter: String = "" ) {
+query RubrikPolarisSDKRequest($awsNativeProtectionFeature: AwsNativeProtectionFeature = EC2, $filter: String = "" ) {
     awsNativeAccounts(awsNativeProtectionFeature: $awsNativeProtectionFeature, accountFilters: {
         nameSubstringFilter: {
             nameSubstring: $filter
@@ -8,7 +8,9 @@ query RubrikPolarisSDKRequest($awsNativeProtectionFeature: AwsNativeProtectionFe
         edges {
             node {
                 id:id
-                regions
+                regionSpecs {
+                    region
+                }
                 status
                 name: name
                 sla_assignment: slaAssignment

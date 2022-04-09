@@ -1,4 +1,4 @@
-mutation RubrikPolarisSDKRequest($azure_cloud_type: AzureCloudTypeEnum!, $azure_app_id: String!, $azure_app_name: String, $azure_app_secret_key: String!, $azure_app_tenant_id: String, $azure_tenant_domain_name: String) {
+mutation RubrikPolarisSDKRequest($azure_cloud_type: AzureCloudType!, $azure_app_id: String!, $azure_app_name: String, $azure_app_secret_key: String!, $azure_app_tenant_id: String, $azure_tenant_domain_name: String) {
     setAzureCloudAccountCustomerAppCredentials(input: {
         appId:            $azure_app_id,
         appSecretKey:     $azure_app_secret_key,
