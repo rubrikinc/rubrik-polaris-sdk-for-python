@@ -84,12 +84,12 @@ def get_compute_ec2(self, object_id=None):
                 "object_id": object_id
             }
             return self._query(self.query_name, variables)
-        else:
-            query_name = "compute_aws_ec2"
-            self._validate(
-                query_name=query_name
-            )
-            return self._query(self.query_name, None)
+
+        query_name = "compute_aws_ec2"
+        self._validate(
+            query_name=query_name
+        )
+        return self._query(self.query_name, None)
     except Exception:
         raise
 
@@ -102,7 +102,7 @@ def submit_compute_restore_ec2(self, snapshot_id, **kwargs):
         should_power_on (bool): Defaults to `False`
         should_restore_tags (bool): Defaults to `False`
         wait (bool): Return once complete Defaults to `False`
-    
+
     Returns:
         dict -- List of errors if any occurred during the restore
     """
