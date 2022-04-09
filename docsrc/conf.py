@@ -17,7 +17,7 @@ sys.path.insert(0, os.path.abspath('..'))
 
 # -- Project information -----------------------------------------------------
 
-# The following are set from setup.py when building using the distutils 
+# The following are set from setup.py when building using the distutils
 # custom command 'build_sphinx'
 #
 #project = 'Rubrik Polaris SDK for Python'
@@ -34,11 +34,11 @@ master_doc = 'index'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
-    'sphinx.ext.autodoc', 
-    'sphinx.ext.autosummary', 
-    'sphinx.ext.coverage', 
-    'sphinx.ext.napoleon', 
-    'myst_parser', 
+    'sphinx.ext.autodoc',
+    'sphinx.ext.autosummary',
+    'sphinx.ext.coverage',
+    'sphinx.ext.napoleon',
+    'myst_parser',
     'sphinx_copybutton'
 ]
 
