@@ -72,7 +72,8 @@ def main(raw_data: pd.DataFrame, rubrik: PolarisClient, dry_run: bool = True):
             print(f'skipped creating k8s cluster "{row.NAME}" since it already exist')
             continue
 
-        minPort, maxPort = row.RBSPORTS.split(",")
+        rbsMinPort, rbsMaxPort = row.RBSPORTS.split(",")
+        userMinPort, userMaxPort = row.USERPORTS.split(",")
         ips = [ip.strip() for ip in row.IPADDRESSES.split(",")]
         resp = rubrik.create_k8s_cluster(
                 cdm_cluster_id[row.CDMCLUSTERNAME],
@@ -80,8 +81,12 @@ def main(raw_data: pd.DataFrame, rubrik: PolarisClient, dry_run: bool = True):
                 row.NAME,
                 int(row.PORT),
                 {
-                    "portMin": int(minPort),
-                    "portMax": int(maxPort),
+                    "portMin": int(userMinPort),
+                    "portMax": int(userMaxPort),
+                },
+                {
+                    "portMin": int(rbsMinPort),
+                    "portMax": int(rbsMaxPort),
                 },
                 "ON_PREM",
         )

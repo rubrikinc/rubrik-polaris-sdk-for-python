@@ -68,7 +68,7 @@ def _aws_account_number_validation(self, test_variable=None):
     self.aws_account_map = self._get_account_map_aws()
     connected_accounts = []
     if not test_variable or test_variable not in self.aws_account_map or self.aws_account_map[test_variable][
-        'status'].lower() != 'connected':
+            'status'].lower() != 'connected':
         for account in self.aws_account_map:
             if self.aws_account_map[account]['status'].lower() == 'connected':
                 connected_accounts.append(account)
@@ -89,7 +89,7 @@ def _snapshot_id_validation(self, test_variable=None):
             raise ValidationException("snapshot_id has been deleted from the source : {}".format(test_variable))
         if self.snapshot_details['isExpired']:
             raise ValidationException("snapshot_id is expired : {}".format(test_variable))
-    except Exception as e:
+    except Exception:
         raise ValidationException("not a valid snapshot_id : {}".format(test_variable))
     return test_variable
 
@@ -135,13 +135,13 @@ def _aws_security_group_validation(self, test_variable=None):
     return test_variable
 
 
-def _copy_tags_validation(self, test_variable=None):
+def _copy_tags_validation(test_variable=None):
     if not test_variable:
         test_variable = True
     return test_variable
 
 
-def _use_replica_validation(self, test_variable=None):
+def _use_replica_validation(test_variable=None):
     if not test_variable:
         test_variable = False
     return test_variable
@@ -179,11 +179,11 @@ def _uuid_validation(test_variable=None):
     try:
         UUID(test_variable)
         return test_variable
-    except:
+    except Exception:
         raise ValidationException("{} not a UUID".format(test_variable))
 
 
-def _azure_subscription_ids(self, test_variable=None):
+def _azure_subscription_ids(test_variable=None):
     if not test_variable:
         raise ValidationException("No subscription ids in list")
     if not _uuid_validation(test_variable=test_variable):
@@ -191,7 +191,7 @@ def _azure_subscription_ids(self, test_variable=None):
     return test_variable
 
 
-def _cdm_cluster_id_validation(self, test_variable=None):
+def _cdm_cluster_id_validation(test_variable=None):
     if not test_variable:
         raise ValidationException("cdm_cluster_id not specified: {}".format(test_variable))
     if not _uuid_validation(test_variable=test_variable):
@@ -199,7 +199,7 @@ def _cdm_cluster_id_validation(self, test_variable=None):
     return test_variable
 
 
-def _host_list_validation(self, test_variable=None):
+def _host_list_validation(test_variable=None):
     if not test_variable:
         raise ValidationException("host_list not specified : {}".format(test_variable))
     if isinstance(test_variable, list):
@@ -208,9 +208,20 @@ def _host_list_validation(self, test_variable=None):
     return hosts
 
 
-def _rbs_port_ranges_validation(self, test_variable=None):
+def _rbs_port_ranges_validation(test_variable=None):
     if not test_variable:
         raise ValidationException("rbs_port_ranges not specified : {}".format(test_variable))
+
+    for k in ['portMin', 'portMax']:
+        v = test_variable.get(k)
+        if v is None or not isinstance(v, int):
+            raise ValidationException("rbs_port_ranges['{}'] must be an int: {}".format(k, test_variable))
+    return test_variable
+
+
+def _user_port_ranges_validation(test_variable=None):
+    if not test_variable:
+        raise ValidationException("user_port_ranges not specified : {}".format(test_variable))
 
     for k in ['portMin', 'portMax']:
         v = test_variable.get(k)
@@ -226,13 +237,13 @@ def _kupr_cluster_type_validation(self, test_variable=None):
     return test_variable
 
 
-def _kupr_cluster_id_validation(self, test_variable=None):
+def _kupr_cluster_id_validation(test_variable=None):
     if not UUID(test_variable):
         raise ValidationException("{} not a UUID".format(test_variable))
     return test_variable
 
 
-def check_first_arg(self, first):
+def check_first_arg(first):
     """Function to validate a common argument named first
 
     Args:
@@ -254,7 +265,7 @@ def check_first_arg(self, first):
     return first
 
 
-def to_boolean(self, value):
+def to_boolean(value):
     """
     Converts value into a boolean type.
     Args:
@@ -276,7 +287,7 @@ def to_boolean(self, value):
     raise ValueError(ERROR_MESSAGES['INVALID_BOOLEAN'])
 
 
-def validate_id(self, id_: str, field_name: str):
+def validate_id(id_: str, field_name: str):
     """
     Performs validation for ID
     Args:
@@ -299,6 +310,7 @@ def check_enum(self, value, field_name, enum_name):
     Verify the value(s) is/are present in the list of enum values
 
     Args:
+        self
         value: Value(s) to verify
         field_name: Name of the field to verify
         enum_name: Name of the enum
