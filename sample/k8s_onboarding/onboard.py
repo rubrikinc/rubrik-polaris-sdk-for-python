@@ -90,7 +90,7 @@ def main(raw_data: pd.DataFrame, rubrik: PolarisClient, dry_run: bool = True):
                 "portMin": int(userMinPort),
                 "portMax": int(userMaxPort),
             },
-            "ON_PREM",
+            "ON_PREM"
         )
 
         _kubectl_apply(row.KUBECONTEXT, resp['yamlUrl'])
