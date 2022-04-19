@@ -78,6 +78,7 @@ def main(raw_data: pd.DataFrame, rubrik: PolarisClient, dry_run: bool = True):
         userMinPort, userMaxPort = row.USERPORTS.split(",")
         ips = [ip.strip() for ip in row.IPADDRESSES.split(",")]
         resp = rubrik.create_k8s_cluster(
+            cdm_cluster_id[row.CDMCLUSTERNAME],
             ips,
             row.NAME,
             int(row.PORT),
@@ -90,7 +91,6 @@ def main(raw_data: pd.DataFrame, rubrik: PolarisClient, dry_run: bool = True):
                 "portMax": int(userMaxPort),
             },
             "ON_PREM",
-            cdm_cluster_id[row.CDMCLUSTERNAME]
         )
 
         _kubectl_apply(row.KUBECONTEXT, resp['yamlUrl'])
