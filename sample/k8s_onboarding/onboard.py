@@ -11,9 +11,11 @@ from tenacity import retry, stop_after_delay, wait_exponential
 
 from rubrik_polaris.rubrik_polaris import PolarisClient
 
+
 class ValidationException(Exception):
     """ Exception during validation """
     pass
+
 
 def main(raw_data: pd.DataFrame, rubrik: PolarisClient, dry_run: bool = True):
     try:
@@ -29,7 +31,7 @@ def main(raw_data: pd.DataFrame, rubrik: PolarisClient, dry_run: bool = True):
         # Ensure that kubectl is runnable. The k8s SDK for python doesn't support
         # the equivalent of "kubectl apply -f https://.." so we use kubectl.
         ctx = raw_data.iloc[0].KUBECONTEXT
-        res = subprocess.run(["kubectl","version","--context",ctx], capture_output=True)
+        res = subprocess.run(["kubectl", "version", "--context", ctx], capture_output=True)
         if res.returncode != 0:
             raise ValidationException(f"failed to run 'kubectl version --context {ctx}':\n{res.stderr.decode()}")
 
@@ -76,19 +78,19 @@ def main(raw_data: pd.DataFrame, rubrik: PolarisClient, dry_run: bool = True):
         userMinPort, userMaxPort = row.USERPORTS.split(",")
         ips = [ip.strip() for ip in row.IPADDRESSES.split(",")]
         resp = rubrik.create_k8s_cluster(
-                cdm_cluster_id[row.CDMCLUSTERNAME],
-                ips,
-                row.NAME,
-                int(row.PORT),
-                {
-                    "portMin": int(userMinPort),
-                    "portMax": int(userMaxPort),
-                },
-                {
-                    "portMin": int(rbsMinPort),
-                    "portMax": int(rbsMaxPort),
-                },
-                "ON_PREM",
+            ips,
+            row.NAME,
+            int(row.PORT),
+            {
+                "portMin": int(rbsMinPort),
+                "portMax": int(rbsMaxPort),
+            },
+            {
+                "portMin": int(userMinPort),
+                "portMax": int(userMaxPort),
+            },
+            "ON_PREM",
+            cdm_cluster_id[row.CDMCLUSTERNAME]
         )
 
         _kubectl_apply(row.KUBECONTEXT, resp['yamlUrl'])
@@ -148,7 +150,7 @@ def _validate_sla_map(configured_sla_names: List[str], input_sla_names: List[str
 
 
 def _validate_input(raw_data: pd.DataFrame):
-    missing = {'NAME', 'IPADDRESSES', 'PORT', 'RBSPORTS', 'CDMCLUSTERNAME', 'KUBECONTEXT', 'SLANAME'} - set(raw_data.columns)
+    missing = {'NAME', 'IPADDRESSES', 'PORT', 'RBSPORTS', 'USERPORTS', 'CDMCLUSTERNAME', 'KUBECONTEXT', 'SLANAME'} - set(raw_data.columns)
     if len(missing) > 0:
         raise ValidationException(f'input file missing column(s) "{missing}"')
     if len(raw_data) == 0:
@@ -162,7 +164,7 @@ def _validate_kubecontext(contexts: List[str]):
     configured_contexts, active_context = config.list_kube_config_contexts()
     configured_context_names = [c['name'] for c in configured_contexts]
     if not set(contexts).issubset(configured_context_names):
-        missing = list(set(contexts)-set(configured_context_names))
+        missing = list(set(contexts) - set(configured_context_names))
         raise ValidationException('kubectl context(s) "{}" in input not found'.format(','.join(missing)))
 
 
@@ -172,11 +174,13 @@ def _cdm_cluster_map(rubrik: PolarisClient) -> dict:
         cluster_map[cluster['name']] = cluster['id']
     return cluster_map
 
+
 def _sla_name_map(rubrik: PolarisClient) -> dict:
     sla_map = {}
     for sla in rubrik.get_sla_domains():
-        sla_map[sla['name']] =  sla['id']
+        sla_map[sla['name']] = sla['id']
     return sla_map
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
