@@ -68,8 +68,8 @@ def create_k8s_cluster(self,
             "host_list": self.host_list,
             "k8s_cluster_name": k8s_cluster_name,
             "kupr_ingress_port": kupr_ingress_port,
-            "user_port_ranges": user_port_ranges,
-            "rbs_port_ranges": self.rbs_port_ranges,
+            "user_port_ranges": [self.user_port_ranges],
+            "rbs_port_ranges": [self.rbs_port_ranges],
             "cluster_type": self.kupr_cluster_type,
         }
         return self._query(self.mutation_name, _variables)

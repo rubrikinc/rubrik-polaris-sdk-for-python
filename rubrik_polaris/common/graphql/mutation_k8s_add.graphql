@@ -4,7 +4,7 @@ mutation RubrikPolarisSDKRequest($cdm_cluster_id: UUID, $host_list: [String!]!, 
         hostList:      $host_list,
         name:          $k8s_cluster_name,
         port:          $kupr_ingress_port,
-        userDrivenPortRanges: $user_port_ranges
+        userDrivenPortRanges: $user_port_ranges,
         rbsPortRanges: $rbs_port_ranges,
         type:          $cluster_type
     }){
