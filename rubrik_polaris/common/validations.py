@@ -219,6 +219,17 @@ def _rbs_port_ranges_validation(self, test_variable=None):
     return test_variable
 
 
+def _user_port_ranges_validation(self, test_variable=None):
+    if not test_variable:
+        raise ValidationException("user_port_ranges not specified : {}".format(test_variable))
+
+    for k in ['portMin', 'portMax']:
+        v = test_variable.get(k)
+        if v is None or not isinstance(v, int):
+            raise ValidationException("rbs_port_ranges['{}'] must be an int: {}".format(k, test_variable))
+    return test_variable
+
+
 def _kupr_cluster_type_validation(self, test_variable=None):
     test = self.get_enum_values(name="K8sClusterProtoType")
     if not test_variable or test_variable not in test:
