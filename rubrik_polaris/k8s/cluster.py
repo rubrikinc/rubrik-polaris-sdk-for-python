@@ -24,15 +24,16 @@ from rubrik_polaris.exceptions import PolarisException
 Collection of functions related to kubernetes support.
 """
 
-def create_k8s_cluster(self,
-    cdm_cluster_id,
-    host_list,
-    k8s_cluster_name,
-    kupr_ingress_port,
-    user_port_ranges,
-    rbs_port_ranges,
-    kupr_cluster_type
-    ):
+
+def create_k8s_cluster(
+                       cdm_cluster_id,
+                       host_list,
+                       k8s_cluster_name,
+                       kupr_ingress_port,
+                       user_port_ranges,
+                       rbs_port_ranges,
+                       kupr_cluster_type
+                       ):
     """Add a Kubernetes cluster
 
     Args:
@@ -51,7 +52,7 @@ def create_k8s_cluster(self,
         PolarisException: If the query to Polaris returned an error
 
     Examples:
-        >>> rubrik.create_k8s_cluster( ["1.2.3.4", "1.2.3.5"], 30000, {"portMin": 30100, "portMax": 30200},  {"portMin": 30300, "portMax": 30400}, "ON_PREM", cdm_cluster_id = "b946faa1-ee98-4924-affb-9b4315686879")
+        >>> rubrik.create_k8s_cluster(  "b946faa1-ee98-4924-affb-9b4315686879", ["1.2.3.4", "1.2.3.5"], 30000, {"portMin": 30100, "portMax": 30200},  {"portMin": 30300, "portMax": 30400}, "ON_PREM" )
     """
     try:
         _query_name = "k8s_add"
@@ -101,7 +102,7 @@ def refresh_k8s_cluster(self, kupr_cluster_id, wait=False):
         }
         _response = self._query(self.mutation_name, _variables)
         if wait:
-            return self._monitor_task({'taskchainUuid':_response.get('taskchainId')})
+            return self._monitor_task({'taskchainUuid': _response.get('taskchainId')})
         return _response
     except Exception as e:
         raise PolarisException("Failed to refresh k8s cluster: {}".format(e))
