@@ -26,14 +26,15 @@ Collection of functions related to kubernetes support.
 
 
 def create_k8s_cluster(
-                       cdm_cluster_id,
-                       host_list,
-                       k8s_cluster_name,
-                       kupr_ingress_port,
-                       user_port_ranges,
-                       rbs_port_ranges,
-                       kupr_cluster_type
-                       ):
+        self,
+        cdm_cluster_id,
+        host_list,
+        k8s_cluster_name,
+        kupr_ingress_port,
+        user_port_ranges,
+        rbs_port_ranges,
+        kupr_cluster_type
+):
     """Add a Kubernetes cluster
 
     Args:
