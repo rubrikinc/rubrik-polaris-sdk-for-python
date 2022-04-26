@@ -1,5 +1,6 @@
 query RubrikPolarisSDKRequest($feature: CloudAccountFeature = CLOUD_NATIVE_PROTECTION) {
-    gcpCloudAccountListPermissions(feature: $feature){
+    allFeaturePermissionsForGcpCloudAccount(feature: $feature){
         permission
     }
+
 }
