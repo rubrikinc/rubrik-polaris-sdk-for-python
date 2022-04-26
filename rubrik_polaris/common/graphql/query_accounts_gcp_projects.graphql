@@ -1,5 +1,5 @@
 query RubrikPolarisSDKRequest($feature: CloudAccountFeature = CLOUD_NATIVE_PROTECTION, $search_text: String!, $status_filters: [CloudAccountStatus!]!) {
-    gcpCloudAccountListProjects(feature: $feature, projectStatusFilters: $status_filters, projectSearchText: $search_text){
+    allGcpCloudAccountProjectsByFeature(feature: $feature, projectStatusFilters: $status_filters, projectSearchText: $search_text){
         project{
             projectId,
             projectNumber,
