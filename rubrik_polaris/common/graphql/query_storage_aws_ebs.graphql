@@ -1,9 +1,9 @@
 query RubrikPolarisSDKRequest($first: Int, $after: String, $filters: AwsNativeEbsVolumeFilters) {
-  ebsVolumesList: awsNativeEbsVolumeConnection(first: $first, after: $after, ebsVolumeFilters: $filters) {
+  ebsVolumesList: awsNativeEbsVolumes(first: $first, after: $after, ebsVolumeFilters: $filters) {
     edges {
       node {
         id
-        volumeId
+        volumeNativeId
         volumeName
         volumeType
         region
@@ -39,7 +39,7 @@ query RubrikPolarisSDKRequest($first: Int, $after: String, $filters: AwsNativeEb
         attachedEc2Instances {
           id
           instanceName
-          instanceId
+          instanceNativeId
         }
         authorizedOperations
         effectiveSlaSourceObject {

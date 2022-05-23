@@ -1,5 +1,5 @@
 query RubrikPolarisSDKRequest {
-  analyzerGroupConnection {
+  analyzerGroups {
     nodes {
       id
       name

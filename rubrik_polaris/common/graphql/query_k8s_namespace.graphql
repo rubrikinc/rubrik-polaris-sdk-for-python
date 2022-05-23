@@ -15,22 +15,47 @@ query RubrikPolarisSDKRequest($polaris_id: UUID!) {
         name
         objectType
         slaAssignment
-        effectiveSlaDomain
+        effectiveSlaDomain {
+            name
+            id
+        }
         slaPauseStatus
-        snapshotDistribution
-        effectiveRetentionSlaDomain
-        configuredSlaDomain
-        effectiveSlaSourceObject
-        logicalPath
-        physicalPath
+        effectiveRetentionSlaDomain{
+            id
+            name
+        }
+        configuredSlaDomain{
+            id
+            name
+        }
+        effectiveSlaSourceObject{
+            fid
+            name
+            objectType
+        }
+        logicalPath{
+            fid
+            name
+            objectType
+        }
+        physicalPath{
+            fid
+            name
+            objectType
+        }
         numSnappableDescendants
-        snapshotConnection
-        snapshotsOfSnappableConnection
-        snapshotGroupByConnection
-        snapshotGroupByNewConnection
-        newestSnapshot
-        oldestSnapshot
+        newestSnapshot{
+            id
+            date
+        }
+        oldestSnapshot{
+            id
+            date
+        }
         onDemandSnapshotCount
-        newestIndexedSnapshot
+        newestIndexedSnapshot{
+            id
+            date
+        }
     }
 }
