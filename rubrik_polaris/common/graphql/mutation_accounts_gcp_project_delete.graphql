@@ -8,8 +8,10 @@ mutation RubrikPolarisSDKRequest($native_protection_ids: [UUID!]!, $shared_vpc_h
         }
     )
     {
-        projectUuid
-        success
-        error
+        gcpProjectDeleteStatuses {
+            projectUuid
+            success
+            error
+        }
     }
 }
