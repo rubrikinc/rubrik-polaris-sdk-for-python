@@ -1,5 +1,5 @@
 query RubrikPolarisSDKRequest {
-  policyConnection(policyObjectFilter: HAS_OBJECTS) {
+  policies(policyObjectFilter: HAS_OBJECTS, ) {
     nodes {
       ...PolicyDetailFragment
     }
