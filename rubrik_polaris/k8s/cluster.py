@@ -33,7 +33,9 @@ def create_k8s_cluster(
         kupr_ingress_port,
         user_port_ranges,
         rbs_port_ranges,
-        kupr_cluster_type
+        kupr_cluster_type,
+        proxy_url = None
+
 ):
     """Add a Kubernetes cluster
 
@@ -45,6 +47,7 @@ def create_k8s_cluster(
         user_port_ranges (dict): Node port ranges dedicated for export operations.
         rbs_port_ranges (dict): Ports in the range of node port service range of the Kubernetes cluster.
         kupr_cluster_type (str): KuprClusterType of the k8s cluster.
+        proxy_url (str): Proxy URL for egress calls into Polaris
 
     Returns:
         dict: Details of created k8s cluster in Polaris
@@ -73,6 +76,7 @@ def create_k8s_cluster(
             "user_port_ranges": [self.user_port_ranges],
             "rbs_port_ranges": [self.rbs_port_ranges],
             "cluster_type": self.kupr_cluster_type,
+            "proxy_url": proxy_url
         }
         return self._query(self.mutation_name, _variables)
     except Exception as e:

@@ -1,10 +1,11 @@
-mutation RubrikPolarisSDKRequest($cdm_cluster_id: UUID, $host_list: [String!]!, $k8s_cluster_name: String!, $kupr_ingress_port: Int!, $rbs_port_ranges: [PortRange!]!, $user_port_ranges: [PortRange!]!, $cluster_type: K8sClusterProtoType!) {
+mutation RubrikPolarisSDKRequest($cdm_cluster_id: UUID, $host_list: [String!]!, $k8s_cluster_name: String!, $kupr_ingress_port: Int!, $rbs_port_ranges: [PortRange!]!, $user_port_ranges: [PortRange!]!, $proxy_url: String, $cluster_type: K8sClusterProtoType!) {
     createK8sCluster(k8sClusterCreateRequest: {
         cdmClusterId:  $cdm_cluster_id,
         hostList:      $host_list,
         name:          $k8s_cluster_name,
         port:          $kupr_ingress_port,
         userDrivenPortRanges: $user_port_ranges,
+        proxyUrl: $proxy_url,
         rbsPortRanges: $rbs_port_ranges,
         type:          $cluster_type
     }){
