@@ -1,10 +1,11 @@
 <!doctype html>
 <html class="no-js">
   <head><meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width,initial-scale=1"/><link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Storage Functions" href="storage_functions.html" /><link rel="prev" title="Account Functions" href="account_functions.html" />
+    <meta name="viewport" content="width=device-width,initial-scale=1"/><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" />
 
     <link rel="shortcut icon" href="../_static/rubrik.ico"/><meta name="generator" content="sphinx-3.5.2, furo 2021.02.28.beta28"/>
-        <title>Compute Functions - Rubrik Polaris SDK for Python 2021.01.08-beta documentation</title>
+        <title>Compute Functions - Python documentation</title>
       <link rel="stylesheet" href="../_static/rubrik.css">
     <link rel="stylesheet" href="../_static/pygments.css">
     <link media="(prefers-color-scheme: dark)" rel="stylesheet" href="../_static/pygments_dark.css">
@@ -86,7 +87,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../index.html"><div class="brand">Rubrik Polaris SDK for Python 2021.01.08-beta documentation</div></a>
+      <a href="../index.html"><div class="brand">Python  documentation</div></a>
     </div>
     <div class="header-right">
       <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
@@ -103,24 +104,20 @@
     <img class="sidebar-logo" src="../_static/rubrik.png" alt="Logo"/>
   </div>
   
-  <span class="sidebar-brand-text">Rubrik Polaris SDK for Python 2021.01.08-beta documentation</span>
+  <span class="sidebar-brand-text">Python  documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../search.html">
   <input class="sidebar-search" placeholder=Search name="q">
   <input type="hidden" name="check_keywords" value="yes">
   <input type="hidden" name="area" value="default">
 </form><div class="sidebar-scroll"><div class="sidebar-tree">
-  <ul class="current">
+  <ul>
 <li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quickstart</a></li>
-<li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">Reference</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label for="toctree-checkbox-1"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="core_functions.html">Core Functions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="account_functions.html">Account Functions</a></li>
-<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Compute Functions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="storage_functions.html">Storage Functions</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="index.html">Reference</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label for="toctree-checkbox-1"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="simple">
 </ul>
 </li>
 </ul>
-<p class="caption"><span class="caption-text">Other</span></p>
+<p><span class="caption-text">Other</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../changelog.html">Change Log</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
@@ -139,248 +136,20 @@
         <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
           <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
         </label>
-        <div class="section" id="module-rubrik_polaris.lib.compute">
-<span id="compute-functions"></span><h1>Compute Functions<a class="headerlink" href="#module-rubrik_polaris.lib.compute" title="Permalink to this headline">¶</a></h1>
-<p>Collection of functions that manipulate compute components</p>
-<dl class="py function">
-<dt id="rubrik_polaris.lib.compute.get_compute_azure">
-<code class="sig-prename descclassname"><span class="pre">rubrik_polaris.lib.compute.</span></code><code class="sig-name descname"><span class="pre">get_compute_azure</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.lib.compute.get_compute_azure" title="Permalink to this definition">¶</a></dt>
-<dd><p>Retrieves all Azure IAAS object details</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>details of Azure IAAS objects</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>dict</p>
-</dd>
-<dt class="field-odd">Raises</dt>
-<dd class="field-odd"><p><strong>RequestException</strong> – If the query to Polaris returned an error</p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py function">
-<dt id="rubrik_polaris.lib.compute.get_compute_ec2">
-<code class="sig-prename descclassname"><span class="pre">rubrik_polaris.lib.compute.</span></code><code class="sig-name descname"><span class="pre">get_compute_ec2</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">object_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.lib.compute.get_compute_ec2" title="Permalink to this definition">¶</a></dt>
-<dd><p>Retrieves all AWS EC2 object details</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>object_id</strong> (<em>str</em>) – optional specific object id to return</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>details of AWS instance objects</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>dict</p>
-</dd>
-<dt class="field-even">Raises</dt>
-<dd class="field-even"><p><strong>RequestException</strong> – If the query to Polaris returned an error</p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py function">
-<dt id="rubrik_polaris.lib.compute.get_compute_gce">
-<code class="sig-prename descclassname"><span class="pre">rubrik_polaris.lib.compute.</span></code><code class="sig-name descname"><span class="pre">get_compute_gce</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.lib.compute.get_compute_gce" title="Permalink to this definition">¶</a></dt>
-<dd><p>Retrieves all GCP GCE object details</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>details of GCP GCE objects</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>dict</p>
-</dd>
-<dt class="field-odd">Raises</dt>
-<dd class="field-odd"><p><strong>RequestException</strong> – If the query to Polaris returned an error</p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py function">
-<dt id="rubrik_polaris.lib.compute.get_compute_object_ids_azure">
-<code class="sig-prename descclassname"><span class="pre">rubrik_polaris.lib.compute.</span></code><code class="sig-name descname"><span class="pre">get_compute_object_ids_azure</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">match_all</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.lib.compute.get_compute_object_ids_azure" title="Permalink to this definition">¶</a></dt>
-<dd><p>Retrieves all AWS EC2 object IDs that match query</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>match_all</strong> (<em>bool</em>) – Set to false to match ANY defined criteria</p></li>
-<li><p><strong>kwargs</strong> (<em>str</em>) – Any top level object from the get_compute_ec2 call</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>List of all the EC2 object id’s</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>list</p>
-</dd>
-<dt class="field-even">Raises</dt>
-<dd class="field-even"><p><strong>RequestException</strong> – If the query to Polaris returned an error</p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py function">
-<dt id="rubrik_polaris.lib.compute.get_compute_object_ids_ec2">
-<code class="sig-prename descclassname"><span class="pre">rubrik_polaris.lib.compute.</span></code><code class="sig-name descname"><span class="pre">get_compute_object_ids_ec2</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">match_all</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.lib.compute.get_compute_object_ids_ec2" title="Permalink to this definition">¶</a></dt>
-<dd><p>Retrieves all AWS EC2 object IDs that match query</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>match_all</strong> (<em>bool</em>) – Set to false to match ANY defined criteria</p></li>
-<li><p><strong>tags</strong> (<em>dict</em>) – Tags in {Name: Value} format to filter on</p></li>
-<li><p><strong>kwargs</strong> (<em>str</em>) – Any top level object from the get_compute_ec2 call</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>List of all the EC2 object id’s</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>list</p>
-</dd>
-<dt class="field-even">Raises</dt>
-<dd class="field-even"><p><strong>RequestException</strong> – If the query to Polaris returned an error</p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py function">
-<dt id="rubrik_polaris.lib.compute.get_compute_object_ids_gce">
-<code class="sig-prename descclassname"><span class="pre">rubrik_polaris.lib.compute.</span></code><code class="sig-name descname"><span class="pre">get_compute_object_ids_gce</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">match_all</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.lib.compute.get_compute_object_ids_gce" title="Permalink to this definition">¶</a></dt>
-<dd><p>Retrieves all AWS EC2 object IDs that match query</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>match_all</strong> (<em>bool</em>) – Set to false to match ANY defined criteria</p></li>
-<li><p><strong>kwargs</strong> (<em>str</em>) – Any top level object from the get_compute_ec2 call</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>List of all the EC2 object id’s</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>list</p>
-</dd>
-<dt class="field-even">Raises</dt>
-<dd class="field-even"><p><strong>RequestException</strong> – If the query to Polaris returned an error</p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py function">
-<dt id="rubrik_polaris.lib.compute.get_compute_vsphere">
-<code class="sig-prename descclassname"><span class="pre">rubrik_polaris.lib.compute.</span></code><code class="sig-name descname"><span class="pre">get_compute_vsphere</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.lib.compute.get_compute_vsphere" title="Permalink to this definition">¶</a></dt>
-<dd><p>Retrieves all VMware VM object details (Under development)</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>details of VMware VM objects</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>dict</p>
-</dd>
-<dt class="field-odd">Raises</dt>
-<dd class="field-odd"><p><strong>RequestException</strong> – If the query to Polaris returned an error</p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py function">
-<dt id="rubrik_polaris.lib.compute.submit_compute_export_ec2">
-<code class="sig-prename descclassname"><span class="pre">rubrik_polaris.lib.compute.</span></code><code class="sig-name descname"><span class="pre">submit_compute_export_ec2</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snapshot_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aws_account_number</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aws_region</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aws_vpc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aws_security_groups</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aws_subnet</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wait</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aws_instance_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aws_instance_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">copy_tags</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_replica</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.lib.compute.submit_compute_export_ec2" title="Permalink to this definition">¶</a></dt>
-<dd><p>Submits an export of a EC2 instance</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>snapshot_id</strong> (<em>str</em>) – snapshot_id to export</p></li>
-<li><p><strong>aws_account_number</strong> (<em>str</em>) – aws account number to recover to</p></li>
-<li><p><strong>aws_region</strong> (<em>str</em>) – aws region to export to</p></li>
-<li><p><strong>aws_vpc</strong> (<em>str</em>) – aws vpc to assign to export</p></li>
-<li><p><strong>aws_security_groups</strong> (<em>list</em>) – aws security groups to assign to export</p></li>
-<li><p><strong>aws_subnet</strong> (<em>str</em>) – aws subnet to assign to export</p></li>
-<li><p><strong>wait</strong> (<em>bool</em>) – Return once complete Defaults to False</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>dict – List of errors if any occurred during the export</p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py function">
-<dt id="rubrik_polaris.lib.compute.submit_compute_restore_azure">
-<code class="sig-prename descclassname"><span class="pre">rubrik_polaris.lib.compute.</span></code><code class="sig-name descname"><span class="pre">submit_compute_restore_azure</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snapshot_id</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.lib.compute.submit_compute_restore_azure" title="Permalink to this definition">¶</a></dt>
-<dd><p>Submits a Restore of a Azure VM</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>snapshot_id</strong> (<em>str</em>) – Snapshot ID to be restored</p></li>
-<li><p><strong>should_power_on</strong> (<em>bool</em>) – Defaults to <cite>False</cite></p></li>
-<li><p><strong>should_restore_tags</strong> (<em>bool</em>) – Defaults to <cite>False</cite></p></li>
-<li><p><strong>wait</strong> (<em>bool</em>) – Return once complete Defaults to <cite>False</cite></p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>dict – List of errors if any occurred during the restore</p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py function">
-<dt id="rubrik_polaris.lib.compute.submit_compute_restore_ec2">
-<code class="sig-prename descclassname"><span class="pre">rubrik_polaris.lib.compute.</span></code><code class="sig-name descname"><span class="pre">submit_compute_restore_ec2</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snapshot_id</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.lib.compute.submit_compute_restore_ec2" title="Permalink to this definition">¶</a></dt>
-<dd><p>Submits a Restore of an EC2 instance</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>snapshot_id</strong> (<em>str</em>) – Snapshot ID to be restored</p></li>
-<li><p><strong>should_power_on</strong> (<em>bool</em>) – Defaults to <cite>False</cite></p></li>
-<li><p><strong>should_restore_tags</strong> (<em>bool</em>) – Defaults to <cite>False</cite></p></li>
-<li><p><strong>wait</strong> (<em>bool</em>) – Return once complete Defaults to <cite>False</cite></p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>dict – List of errors if any occurred during the restore</p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py function">
-<dt id="rubrik_polaris.lib.compute.submit_compute_restore_gce">
-<code class="sig-prename descclassname"><span class="pre">rubrik_polaris.lib.compute.</span></code><code class="sig-name descname"><span class="pre">submit_compute_restore_gce</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snapshot_id</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.lib.compute.submit_compute_restore_gce" title="Permalink to this definition">¶</a></dt>
-<dd><p>Submits a Restore of a GCE instance</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>snapshot_id</strong> (<em>str</em>) – Snapshot ID to be restored</p></li>
-<li><p><strong>should_power_on</strong> (<em>bool</em>) – Defaults to <cite>False</cite></p></li>
-<li><p><strong>should_restore_tags</strong> (<em>bool</em>) – Defaults to <cite>False</cite></p></li>
-<li><p><strong>wait</strong> (<em>bool</em>) – Return once complete Defaults to <cite>False</cite></p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>dict – List of errors if any occurred during the restore</p>
-</dd>
-</dl>
-</dd></dl>
-</div>
+        <section id="module-rubrik_polaris.compute">
+<span id="compute-functions"></span><h1>Compute Functions<a class="headerlink" href="#module-rubrik_polaris.compute" title="Permalink to this headline">¶</a></h1>
+</section>
 
       </article>
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="storage_functions.html">
-              <div class="page-info">
-                <div class="context">
-                  <span>Next</span>
-                </div>
-                <div class="title">Storage Functions</div>
-              </div>
-              <svg><use href="#svg-arrow-right"></use></svg>
-            </a>
-          <a class="prev-page" href="account_functions.html">
-              <svg><use href="#svg-arrow-right"></use></svg>
-              <div class="page-info">
-                <div class="context">
-                  <span>Previous</span>
-                </div>
-                
-                <div class="title">Account Functions</div>
-                
-              </div>
-            </a>
+          
+          
         </div>
 
         <div class="related-information">
-              Copyright &#169; 2021, Rubrik Inc
+              Copyright &#169; 
             |
             Built with <a href="https://www.sphinx-doc.org/">Sphinx</a>
               and

@@ -39,8 +39,11 @@ extensions = [
     'sphinx.ext.coverage',
     'sphinx.ext.napoleon',
     'myst_parser',
-    'sphinx_copybutton'
+    'sphinx_copybutton',
+    'sphinx_autopackagesummary'
 ]
+
+autosummary_generate = True
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']

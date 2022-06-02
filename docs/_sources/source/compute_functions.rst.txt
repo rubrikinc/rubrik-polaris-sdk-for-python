@@ -1,7 +1,7 @@
 Compute Functions
 =================
 
-.. automodule:: rubrik_polaris.lib.compute
+.. automodule:: rubrik_polaris.compute
    :members:
    :undoc-members:
    :show-inheritance:
