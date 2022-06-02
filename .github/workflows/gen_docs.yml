@@ -6,6 +6,10 @@ jobs:
   docs:
     runs-on: ubuntu-latest
     steps:
+     - name: Install Python dependencies
+      uses: py-actions/py-dependency-install@v3
+      with:
+        path: "docsrc/requirements.txt"
     - uses: actions/checkout@master
     - uses: ammaraskar/sphinx-action@master
       with:
