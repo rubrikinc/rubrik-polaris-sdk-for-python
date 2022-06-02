@@ -27,7 +27,6 @@ extensions = [
     'sphinx.ext.autosummary',
     'sphinx.ext.coverage',
     'sphinx.ext.napoleon',
-    'numpydoc',
     'myst_parser',
     'sphinx_copybutton',
     'sphinx_autopackagesummary'
