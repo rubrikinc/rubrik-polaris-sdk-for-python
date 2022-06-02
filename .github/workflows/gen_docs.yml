@@ -9,5 +9,4 @@ jobs:
     - uses: actions/checkout@master
     - uses: ammaraskar/sphinx-action@master
       with:
-        build-command: "sphinx-build docsrc -b html"
         docs-folder: "docs/"
