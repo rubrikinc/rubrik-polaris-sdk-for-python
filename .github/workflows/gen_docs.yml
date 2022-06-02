@@ -8,7 +8,7 @@ jobs:
     steps:
     - uses: py-actions/py-dependency-install@v3
       with:
-        path: "docsrc/requirements.txt"
+        path: "../docsrc/requirements.txt"
     - uses: actions/checkout@master
     - uses: ammaraskar/sphinx-action@master
       with:
