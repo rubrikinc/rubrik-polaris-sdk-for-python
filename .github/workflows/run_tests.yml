@@ -8,7 +8,7 @@ on:
       - '**'
 
 
-name: python tests
+name: Run Linters
 jobs:
   build:
     runs-on: ${{ matrix.os }}
