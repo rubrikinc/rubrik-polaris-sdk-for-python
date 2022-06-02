@@ -3,3 +3,5 @@ Sphinx==3.5.2
 furo==2021.2.28b28
 sphinx-copybutton==0.3.1
 myst-parser==0.13.5
+numpydoc
+
