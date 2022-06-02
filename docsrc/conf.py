@@ -1,17 +1,6 @@
-# Configuration file for the Sphinx documentation builder.
-#
-# This file only contains a selection of the most common options. For a full
-# list of options see the documentation:
-# https://www.sphinx-doc.org/en/master/usage/configuration.html
-
-# -- Path setup --------------------------------------------------------------
-
-# If extensions (or modules to document with autodoc) are in another directory,
-# add these directories to sys.path here. If the directory is relative to the
-# documentation root, use os.path.abspath to make it absolute, like shown here.
-#
 import os
 import sys
+
 sys.path.insert(0, os.path.abspath('..'))
 
 
@@ -38,12 +27,22 @@ extensions = [
     'sphinx.ext.autosummary',
     'sphinx.ext.coverage',
     'sphinx.ext.napoleon',
+    'numpydoc',
     'myst_parser',
     'sphinx_copybutton',
     'sphinx_autopackagesummary'
 ]
 
 autosummary_generate = True
+autoclass_content = 'init'
+
+autodoc_default_options = {
+    'members': '',
+    'member-order': 'bysource',
+    'special-members': '',
+    'undoc-members': False,
+    'exclude-members': ''
+}
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -58,6 +57,7 @@ source_suffix = ['.rst', '.md']
 
 
 # -- Options for HTML output -------------------------------------------------
+
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
@@ -75,5 +75,4 @@ html_style = 'rubrik.css'
 
 html_theme_options = {
     'navigation_with_keys': True,
-    #'announcement': '<em>This is a BETA version!</em>'
 }

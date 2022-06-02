@@ -1,8 +1,0 @@
-Account Functions
-==============
-
-.. automodule:: rubrik_polaris.accounts
-   :members:
-   :undoc-members:
-   :show-inheritance:
-

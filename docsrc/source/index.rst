@@ -1,8 +1,9 @@
 Reference
 =========
+.. rubric:: Modules
 
 .. autosummary::
-    :toctree: .
+    :toctree: _autosummary
     :recursive:
 
    rubrik_polaris.common.core

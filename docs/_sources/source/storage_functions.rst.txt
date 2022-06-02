@@ -1,7 +1,0 @@
-Storage Functions
-=================
-
-.. automodule:: rubrik_polaris.storage
-   :members:
-   :undoc-members:
-   :show-inheritance:
