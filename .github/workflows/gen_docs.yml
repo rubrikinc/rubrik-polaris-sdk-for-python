@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
-    - uses: py-actions/py-dependency-install@v3
+    - uses: py-actions/py-dependency-install@master
       with:
         path: "docsrc/requirements.txt"
     - uses: ammaraskar/sphinx-action@master
