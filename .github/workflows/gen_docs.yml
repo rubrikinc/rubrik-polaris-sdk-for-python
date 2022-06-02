@@ -9,5 +9,5 @@ jobs:
     - uses: actions/checkout@master
     - uses: ammaraskar/sphinx-action@master
       with:
-        build-command: "sphinx-build -b html docsrc/ _build -w /tmp/sphinx.log "
+        build-command: "sphinx-build -b html ../docsrc/ _build -w /tmp/sphinx.log "
         docs-folder: "docs/"
