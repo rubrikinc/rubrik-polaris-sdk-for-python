@@ -6,7 +6,7 @@ jobs:
   docs:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
+    - uses: actions/checkout@master
     - uses: py-actions/py-dependency-install@v3
       with:
         path: "docsrc/requirements.txt"
