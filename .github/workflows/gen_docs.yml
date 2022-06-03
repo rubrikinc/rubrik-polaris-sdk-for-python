@@ -18,6 +18,4 @@ jobs:
         pre-build-command: python -m pip install -r docsrc/requirements.txt
         build-command: "sphinx-build -b html ../docsrc/ _build -w /tmp/sphinx.log "
         docs-folder: "docs/"
-    - name: Create Pull Request
-        uses: peter-evans/create-pull-request@master
 
