@@ -7,6 +7,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
+    - uses: actions/setup-python@v3
+      with:
+        python-version: '3.9'
+        architecture: 'x64'
     - uses: py-actions/py-dependency-install@master
       with:
         path: "docsrc/requirements.txt"
