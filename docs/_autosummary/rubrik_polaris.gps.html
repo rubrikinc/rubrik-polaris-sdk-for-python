@@ -1,0 +1,508 @@
+<!doctype html>
+<html class="no-js">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/><link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" />
+
+    <link rel="shortcut icon" href="../_static/rubrik.ico"/><meta name="generator" content="sphinx-3.5.2, furo 2021.02.28.beta28"/>
+        <title>rubrik_polaris.gps package - Python documentation</title>
+      <link rel="stylesheet" href="../_static/rubrik.css">
+    <link rel="stylesheet" href="../_static/pygments.css">
+    <link media="(prefers-color-scheme: dark)" rel="stylesheet" href="../_static/pygments_dark.css">
+    
+
+
+<style>
+  :root {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+  }
+
+  /* For allowing end-user-specific overrides */
+  .override-light {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  .override-dark {
+    --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+  }
+</style><link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" href="../_static/styles/furo-extensions.css?digest=d391b54134226e4196576da3bdb6dddb7e05ba2b"></head>
+  <body dir="">
+    
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+      stroke-width="1.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+      <path stroke="none" d="M0 0h24v24H0z"/>
+      <line x1="4" y1="6" x2="20" y2="6" />
+      <line x1="10" y1="12" x2="20" y2="12" />
+      <line x1="6" y1="18" x2="20" y2="18" />
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+      class="feather feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+      class="feather feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">Python  documentation</div></a>
+    </div>
+    <div class="header-right">
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand centered" href="../index.html">
+  
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo" src="../_static/rubrik.png" alt="Logo"/>
+  </div>
+  
+  <span class="sidebar-brand-text">Python  documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html">
+  <input class="sidebar-search" placeholder=Search name="q">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../source/index.html">Reference</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Other</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Change Log</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/rubrikinc/rubrik-polaris-sdk-for-python">GitHub Repository</a></li>
+</ul>
+
+</div>
+</div>
+      </div>
+      
+    </div>
+  </aside>
+  <main class="main">
+    <div class="content">
+      <article role="main">
+        <label class="toc-overlay-icon toc-content-icon" for="__toc">
+          <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+        </label>
+        <div class="section" id="rubrik-polaris-gps-package">
+<h1>rubrik_polaris.gps package<a class="headerlink" href="#rubrik-polaris-gps-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-rubrik_polaris.gps.cluster">
+<span id="rubrik-polaris-gps-cluster-module"></span><h2>rubrik_polaris.gps.cluster module<a class="headerlink" href="#module-rubrik_polaris.gps.cluster" title="Permalink to this headline">¶</a></h2>
+<p>Constants</p>
+<dl class="py data">
+<dt id="rubrik_polaris.gps.cluster.ERROR_MESSAGES">
+<code class="sig-prename descclassname"><span class="pre">rubrik_polaris.gps.cluster.</span></code><code class="sig-name descname"><span class="pre">ERROR_MESSAGES</span></code><em class="property"> <span class="pre">=</span> <span class="pre">{'INVALID_FIELD_TYPE':</span> <span class="pre">"'{}'</span> <span class="pre">is</span> <span class="pre">an</span> <span class="pre">invalid</span> <span class="pre">value</span> <span class="pre">for</span> <span class="pre">'{}'.</span> <span class="pre">Value</span> <span class="pre">must</span> <span class="pre">be</span> <span class="pre">in</span> <span class="pre">{}.",</span> <span class="pre">'INVALID_FILTER':</span> <span class="pre">"'{}'</span> <span class="pre">is</span> <span class="pre">an</span> <span class="pre">invalid</span> <span class="pre">filter</span> <span class="pre">type."}</span></em><a class="headerlink" href="#rubrik_polaris.gps.cluster.ERROR_MESSAGES" title="Permalink to this definition">¶</a></dt>
+<dd><p>Collection of methods for GPS clusters.</p>
+</dd></dl>
+<dl class="py function">
+<dt id="rubrik_polaris.gps.cluster.list_clusters">
+<code class="sig-prename descclassname"><span class="pre">rubrik_polaris.gps.cluster.</span></code><code class="sig-name descname"><span class="pre">list_clusters</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">first</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">after</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filters</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sort_by</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">enumerate</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sort_order</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">enumerate</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.gps.cluster.list_clusters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieves a list of available clusters.
+:param after: The next page cursor to retrieve the next set of results.
+:param first: Number of results to retrieve in the response.
+:param filters: Filters the cluster result. Supported fields of class ClusterFilterInput.
+:param sort_by: Sorts the result using ClusterSortByEnum.
+:param sort_order: Sorting orders ASC or DESC.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>List of clusters.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>iterator</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ValueError</strong> – If input is invalid</p></li>
+<li><p><a class="reference internal" href="rubrik_polaris.html#rubrik_polaris.exceptions.RequestException" title="rubrik_polaris.exceptions.RequestException"><strong>RequestException</strong></a> – If the query to Polaris returned an error.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+</div>
+<div class="section" id="module-rubrik_polaris.gps.files">
+<span id="rubrik-polaris-gps-files-module"></span><h2>rubrik_polaris.gps.files module<a class="headerlink" href="#module-rubrik_polaris.gps.files" title="Permalink to this headline">¶</a></h2>
+<p>Collection of methods for gps files.</p>
+<dl class="py function">
+<dt id="rubrik_polaris.gps.files.get_snapshot_files">
+<code class="sig-prename descclassname"><span class="pre">rubrik_polaris.gps.files.</span></code><code class="sig-name descname"><span class="pre">get_snapshot_files</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snapshot_id</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">first</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">after</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">search_prefix</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.gps.files.get_snapshot_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve the list of the available files that can be downloaded.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>first</strong> (<em>int</em>) – Number of results to retrieve in the response.</p></li>
+<li><p><strong>after</strong> (<em>str</em>) – The next page cursor to retrieve the next set of results.</p></li>
+<li><p><strong>path</strong> (<em>str</em>) – The path of the folder to list the sub-files.
+If not provided the root directory files will be returned.</p></li>
+<li><p><strong>search_prefix</strong> (<em>str</em>) – Provide a keyword to search in the file names.</p></li>
+<li><p><strong>snapshot_id</strong> (<em>str</em>) – The Snapshot ID of the file that needs to be downloaded.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Dictionary containing list of files</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><a class="reference internal" href="rubrik_polaris.html#rubrik_polaris.exceptions.RequestException" title="rubrik_polaris.exceptions.RequestException"><strong>RequestException</strong></a> – If the query to Polaris returned an error</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py function">
+<dt id="rubrik_polaris.gps.files.request_download_snapshot_files">
+<code class="sig-prename descclassname"><span class="pre">rubrik_polaris.gps.files.</span></code><code class="sig-name descname"><span class="pre">request_download_snapshot_files</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snapshot_id</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">paths</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta_type_filter</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">enumerate</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">next_snapshot_fid</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.gps.files.request_download_snapshot_files" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>snapshot_id</strong> (<em>str</em>) – The Snapshot ID of the file that needs to be downloaded.</p></li>
+<li><p><strong>paths</strong> (<em>array</em>) – List of paths to download.</p></li>
+<li><p><strong>delta_type_filter</strong> (<em>enumerate</em>) – DeltaTypeEnum filter</p></li>
+<li><p><strong>next_snapshot_fid</strong> (<em>str</em>) – The next Snapshot FID.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Dictionary containing list of files</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>ValueError</strong> – If input is invalid</p></li>
+<li><p><a class="reference internal" href="rubrik_polaris.html#rubrik_polaris.exceptions.RequestException" title="rubrik_polaris.exceptions.RequestException"><strong>RequestException</strong></a> – If the query to Polaris returned an error</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+</div>
+<div class="section" id="module-rubrik_polaris.gps.sla">
+<span id="rubrik-polaris-gps-sla-module"></span><h2>rubrik_polaris.gps.sla module<a class="headerlink" href="#module-rubrik_polaris.gps.sla" title="Permalink to this headline">¶</a></h2>
+<p>Constants</p>
+<dl class="py data">
+<dt id="rubrik_polaris.gps.sla.ERROR_MESSAGES">
+<code class="sig-prename descclassname"><span class="pre">rubrik_polaris.gps.sla.</span></code><code class="sig-name descname"><span class="pre">ERROR_MESSAGES</span></code><em class="property"> <span class="pre">=</span> <span class="pre">{'INVALID_FIELD_TYPE':</span> <span class="pre">"'{}'</span> <span class="pre">is</span> <span class="pre">an</span> <span class="pre">invalid</span> <span class="pre">value</span> <span class="pre">for</span> <span class="pre">'{}'.</span> <span class="pre">Value</span> <span class="pre">must</span> <span class="pre">be</span> <span class="pre">in</span> <span class="pre">{}."}</span></em><a class="headerlink" href="#rubrik_polaris.gps.sla.ERROR_MESSAGES" title="Permalink to this definition">¶</a></dt>
+<dd><p>Collection of methods for GPS SLAs.</p>
+</dd></dl>
+<dl class="py function">
+<dt id="rubrik_polaris.gps.sla.list_sla_domains">
+<code class="sig-prename descclassname"><span class="pre">rubrik_polaris.gps.sla.</span></code><code class="sig-name descname"><span class="pre">list_sla_domains</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">after</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">first</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filters</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sort_by</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">enumerate</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sort_order</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">enumerate</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_protected_object_count</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.gps.sla.list_sla_domains" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>after</strong> – The next page cursor to retrieve the next set of results.</p></li>
+<li><p><strong>first</strong> – Number of results to retrieve in the response.</p></li>
+<li><p><strong>filters</strong> – Filters the SLA result. Supported fields of class GlobalSlaQueryFilterInputField.</p></li>
+<li><p><strong>sort_by</strong> – Sorts the result using SLAQuerySortByFieldEnum.</p></li>
+<li><p><strong>sort_order</strong> – Sorting orders ASC or DESC.</p></li>
+<li><p><strong>show_protected_object_count</strong> – A Boolean option to return data with protected object count.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>List of SLAs.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>iterator</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>ValueError</strong> – If input is invalid</p></li>
+<li><p><a class="reference internal" href="rubrik_polaris.html#rubrik_polaris.exceptions.RequestException" title="rubrik_polaris.exceptions.RequestException"><strong>RequestException</strong></a> – If the query to Polaris returned an error.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+</div>
+<div class="section" id="module-rubrik_polaris.gps.vm">
+<span id="rubrik-polaris-gps-vm-module"></span><h2>rubrik_polaris.gps.vm module<a class="headerlink" href="#module-rubrik_polaris.gps.vm" title="Permalink to this headline">¶</a></h2>
+<p>Collection of methods for live mount of a virtual machine.</p>
+<dl class="py function">
+<dt id="rubrik_polaris.gps.vm.create_vm_livemount">
+<code class="sig-prename descclassname"><span class="pre">rubrik_polaris.gps.vm.</span></code><code class="sig-name descname"><span class="pre">create_vm_livemount</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snapshot_fid</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">host_id</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vm_name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">disable_network</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remove_network_devices</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">power_on</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keep_mac_addresses</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_store_name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">create_data_store_only</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vlan</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">should_recover_tags</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.gps.vm.create_vm_livemount" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform a live mount of a virtual machine snapshot.
+:param snapshot_fid: The Snapshot FID of the snapshot.
+:param host_id: The Host ID.
+:param vm_name: The VM Name.
+:param disable_network: Whether to disable network.
+:param remove_network_devices: Whether to remove network devices.
+:param power_on: Whether to power on.
+:param keep_mac_addresses: Whether to keep MAC address.
+:param data_store_name: Name of the data store.
+:param create_data_store_only: Whether to create data store.
+:param vlan: VLAN ID.
+:param should_recover_tags: Whether to recover tags.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Dictionary containing live mount information</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><a class="reference internal" href="rubrik_polaris.html#rubrik_polaris.exceptions.RequestException" title="rubrik_polaris.exceptions.RequestException"><strong>RequestException</strong></a> – If the query to Polaris returned an error</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py function">
+<dt id="rubrik_polaris.gps.vm.create_vm_snapshot">
+<code class="sig-prename descclassname"><span class="pre">rubrik_polaris.gps.vm.</span></code><code class="sig-name descname"><span class="pre">create_vm_snapshot</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snapshot_id</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sla_id</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.gps.vm.create_vm_snapshot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create snapshot of a system.
+:param snapshot_id: The Snapshot ID of the snapshot that needs to be created.
+:param sla_id: The SLA ID of the snapshot that needs to be created.</p>
+<blockquote>
+<div><dl class="simple">
+<dt>Returns:</dt><dd><p>dict: Dictionary containing snapshot information.</p>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><a class="reference internal" href="rubrik_polaris.html#rubrik_polaris.exceptions.RequestException" title="rubrik_polaris.exceptions.RequestException"><strong>RequestException</strong></a> – If the query to Polaris returned an error</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py function">
+<dt id="rubrik_polaris.gps.vm.list_vsphere_hosts">
+<code class="sig-prename descclassname"><span class="pre">rubrik_polaris.gps.vm.</span></code><code class="sig-name descname"><span class="pre">list_vsphere_hosts</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">first</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">after</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filters</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sort_by</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">enumerate</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sort_order</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">enumerate</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.gps.vm.list_vsphere_hosts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieves a list of available Vsphere hosts.
+:param after: The next page cursor to retrieve the next set of results.
+:param first: Number of results to retrieve in the response.
+:param filters: Filters the SLA result. Supported fields of class GlobalSlaQueryFilterInputField.
+:param sort_by: Sorts the result using HierarchySortByField.
+:param sort_order: Sorting orders ASC or DESC.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Dictionary containing list of Vsphere hosts.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ValueError</strong> – If input is invalid</p></li>
+<li><p><a class="reference internal" href="rubrik_polaris.html#rubrik_polaris.exceptions.RequestException" title="rubrik_polaris.exceptions.RequestException"><strong>RequestException</strong></a> – If the query to Polaris returned an error.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py function">
+<dt id="rubrik_polaris.gps.vm.export_vm_snapshot">
+<code class="sig-prename descclassname"><span class="pre">rubrik_polaris.gps.vm.</span></code><code class="sig-name descname"><span class="pre">export_vm_snapshot</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.gps.vm.export_vm_snapshot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Export a snapshot of a virtual machine.
+:param <a href="#id1"><span class="problematic" id="id2">id_</span></a>: The object ID.
+:param config: Configuration parameters for exporting snapshot.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Dictionary containing snapshot information.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ValueError</strong> – If input is invalid</p></li>
+<li><p><a class="reference internal" href="rubrik_polaris.html#rubrik_polaris.exceptions.RequestException" title="rubrik_polaris.exceptions.RequestException"><strong>RequestException</strong></a> – If the query to Polaris returned an error</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py function">
+<dt id="rubrik_polaris.gps.vm.list_vsphere_datastores">
+<code class="sig-prename descclassname"><span class="pre">rubrik_polaris.gps.vm.</span></code><code class="sig-name descname"><span class="pre">list_vsphere_datastores</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">host_id</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">first</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">after</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filters</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sort_by</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">enumerate</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sort_order</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">enumerate</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.gps.vm.list_vsphere_datastores" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieves a list of datastores on a Vsphere host.
+:param host_id: The Host ID.
+:param after: The next page cursor to retrieve the next set of results.
+:param first: Number of results to retrieve in the response.
+:param filters: Filters the SLA result. Supported fields of class GlobalSlaQueryFilterInputField.
+:param sort_by: Sorts the result using HierarchySortByField.
+:param sort_order: Sorting orders ASC or DESC.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Dictionary containing list of Vsphere datastores.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ValueError</strong> – If input is invalid</p></li>
+<li><p><a class="reference internal" href="rubrik_polaris.html#rubrik_polaris.exceptions.RequestException" title="rubrik_polaris.exceptions.RequestException"><strong>RequestException</strong></a> – If the query to Polaris returned an error.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py function">
+<dt id="rubrik_polaris.gps.vm.get_async_request_result">
+<code class="sig-prename descclassname"><span class="pre">rubrik_polaris.gps.vm.</span></code><code class="sig-name descname"><span class="pre">get_async_request_result</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">request_id</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cluster_id</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.gps.vm.get_async_request_result" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieves the result of an asynchronous request. These requests can be triggered by calling functions such as
+export_vm_snapshot, create_vm_livemount, request_download_snapshot_files or create_vm_snapshot.
+:param request_id: The ID of the asynchronous request.
+:param cluster_id: The ID of the cluster where the request was made.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Dictionary containing the result of the request.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ValueError</strong> – If input is invalid</p></li>
+<li><p><a class="reference internal" href="rubrik_polaris.html#rubrik_polaris.exceptions.RequestException" title="rubrik_polaris.exceptions.RequestException"><strong>RequestException</strong></a> – If the query to Polaris returned an error.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py function">
+<dt id="rubrik_polaris.gps.vm.recover_vsphere_vm_files">
+<code class="sig-prename descclassname"><span class="pre">rubrik_polaris.gps.vm.</span></code><code class="sig-name descname"><span class="pre">recover_vsphere_vm_files</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snapshot_id</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cluster_id</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">restore_config</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">,</span> </span><span class="pre">list</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">destination_object_id</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">should_use_agent</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">should_restore_x_attrs</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_errors</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.gps.vm.recover_vsphere_vm_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>Recover files from a snapshot back into a Vsphere VM.
+:param snapshot_id: ID of the snapshot from which to recover files.
+:param cluster_id: ID of the cluster where the snapshot resides.
+:param restore_config: List or dict of type RestorePathPairInput.
+:param destination_object_id: ID of the object where the files will be restored into. If not provided, Rubrik will use</p>
+<blockquote>
+<div><p>the snapshots object.</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>should_use_agent</strong> – Whether to use an agent.</p></li>
+<li><p><strong>should_restore_x_attrs</strong> – Whether to preserve custom attributes of the machine.</p></li>
+<li><p><strong>ignore_errors</strong> – Whether to ignore errors.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Dictionary containing recovery request ID.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>ValueError</strong> – If input is invalid</p></li>
+<li><p><a class="reference internal" href="rubrik_polaris.html#rubrik_polaris.exceptions.RequestException" title="rubrik_polaris.exceptions.RequestException"><strong>RequestException</strong></a> – If the query to Polaris returned an error</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+</div>
+<div class="section" id="module-rubrik_polaris.gps">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-rubrik_polaris.gps" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+      </article>
+      <footer>
+        
+        <div class="related-pages">
+          
+          
+        </div>
+
+        <div class="related-information">
+              Copyright &#169; 
+            |
+            Built with <a href="https://www.sphinx-doc.org/">Sphinx</a>
+              and
+              <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+              <a href="https://github.com/pradyunsg/furo">Furo theme</a>.
+            |
+            <a class="muted-link" href="../_sources/_autosummary/rubrik_polaris.gps.rst.txt"
+               rel="nofollow">
+              Show Source
+            </a>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            Contents
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">rubrik_polaris.gps package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-rubrik_polaris.gps.cluster">rubrik_polaris.gps.cluster module</a></li>
+<li><a class="reference internal" href="#module-rubrik_polaris.gps.files">rubrik_polaris.gps.files module</a></li>
+<li><a class="reference internal" href="#module-rubrik_polaris.gps.sla">rubrik_polaris.gps.sla module</a></li>
+<li><a class="reference internal" href="#module-rubrik_polaris.gps.vm">rubrik_polaris.gps.vm module</a></li>
+<li><a class="reference internal" href="#module-rubrik_polaris.gps">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </main>
+</div>
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/main.js?digest=e931d09b2a40c1bb82b542effe772014573baf67"></script></body>
+</html>
