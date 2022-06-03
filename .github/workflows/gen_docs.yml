@@ -14,6 +14,12 @@ jobs:
     - uses: py-actions/py-dependency-install@master
       with:
         path: "docsrc/requirements.txt"
+    - name: Get Python Version
+       run: |
+         echo "PYVER=${python -v}" >> $GITHUB_ENV
+    - name: Print Python Version
+       run: |
+          echo "${{ env.PYVER }}"
     - uses: ammaraskar/sphinx-action@master
       with:
         build-command: "sphinx-build -b html ../docsrc/ _build -w /tmp/sphinx.log "
