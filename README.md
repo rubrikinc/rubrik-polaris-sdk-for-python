@@ -28,3 +28,6 @@ $ python setup.py install
 
 ## Documentation
 [Here](https://rubrikinc.github.io/rubrik-polaris-sdk-for-python/index.html)
+
+## Sample Code
+[Here](https://github.com/rubrikinc/rubrik-polaris-sdk-for-python/blob/beta/sample/polaris_client.py)
