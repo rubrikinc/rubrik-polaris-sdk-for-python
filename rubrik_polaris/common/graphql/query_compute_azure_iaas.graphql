@@ -43,18 +43,6 @@ query RubrikPolarisSDKRequest($first: Int, $after: String, $sortBy: AzureNativeV
   }
 }
 
-fragment AzureCommonResourceGroupFragment on AzureNativeResourceGroupSlaAssignment {
-  slaAssignment
-  configuredSlaDomain {
-    id
-    name
-  }
-  effectiveSlaDomain {
-    id
-    name
-  }
-}
-
 fragment AzureResourceGroupFragment on AzureNativeResourceGroup {
   id
   name
