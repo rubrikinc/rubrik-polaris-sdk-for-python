@@ -16,3 +16,4 @@ jobs:
       with:
         build-command: "sphinx-build -b html ../docsrc/ _build -w /tmp/sphinx.log "
         docs-folder: "docs/"
+    - run: pip list
