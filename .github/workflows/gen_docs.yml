@@ -30,6 +30,8 @@ jobs:
         add-paths: docs/*
         delete-branch: true
         title: Documentation Update
+        commit-message: Automatic Documentation Update
+        branch-name: automatic-documentation-update
         labels: documentation, python, polaris
     - name: Check outputs
       if: ${{ steps.cpr.outputs.pull-request-number }}
