@@ -1,0 +1,15 @@
+@import 'styles/furo.css';
+
+.sidebar-logo {
+    margin: 20px auto;
+}
+
+
+dl.function {
+    margin-bottom: 80px;
+}
+
+dl.function > dt {
+    background-color: #f8f8f8;
+    border-top: 2px solid #d8d8d8;
+}
