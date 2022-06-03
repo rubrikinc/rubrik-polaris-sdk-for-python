@@ -27,6 +27,7 @@ extensions = [
     'sphinx.ext.autosummary',
     'sphinx.ext.coverage',
     'sphinx.ext.napoleon',
+    'myst_parser',
     'sphinx_copybutton',
     'sphinx_autopackagesummary'
 ]
