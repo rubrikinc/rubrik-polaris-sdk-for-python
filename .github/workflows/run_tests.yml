@@ -7,7 +7,7 @@ on:
     branches:
       - '**'
 
-name: python tests
+name: Python Tests
 jobs:
   build:
     runs-on: ${{ matrix.os }}

@@ -2,7 +2,8 @@ name: "Generate Documentation"
 on:
   push:
     branches:
-      test
+      - beta
+      - test
 
 jobs:
   docs:
