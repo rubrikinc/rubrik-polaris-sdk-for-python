@@ -8,6 +8,8 @@ jobs:
     steps:
     - uses: actions/checkout@master
     - uses: actions/setup-python@master
+      with:
+        python-version: '3.x'
     - run: python -m pip install -r docsrc/requirements.txt
     - run: pip list
     - uses: ammaraskar/sphinx-action@master
