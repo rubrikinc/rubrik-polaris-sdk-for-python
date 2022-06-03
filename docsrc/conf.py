@@ -26,6 +26,7 @@ master_doc = 'index'
 extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.autosummary',
+    'sphinx.ext.githubpages',
     'sphinx.ext.coverage',
     'sphinx.ext.napoleon',
     'myst_parser',
