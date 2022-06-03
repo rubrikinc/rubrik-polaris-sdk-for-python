@@ -9,7 +9,7 @@ on:
       - '**'
 
 
-name: Run Jobs
+# name: Run Jobs
   jobs:
     docs:
       runs-on: ubuntu-latest
