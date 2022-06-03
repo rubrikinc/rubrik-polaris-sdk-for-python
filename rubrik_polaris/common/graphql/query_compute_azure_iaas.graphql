@@ -6,7 +6,6 @@ query RubrikPolarisSDKRequest($first: Int, $after: String, $sortBy: AzureNativeV
         name
         resourceGroup {
           ...AzureResourceGroupFragment
-          ...AzureCommonResourceGroupFragment
         }
         region
         vnetName
