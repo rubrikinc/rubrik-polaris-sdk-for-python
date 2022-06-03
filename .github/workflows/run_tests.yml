@@ -19,7 +19,7 @@ name: Run Tests
     python-version: [ '3.8' ]
     name: python ${{ matrix.python-version }} - ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v2
+        uses: actions/checkout@v2
         - name: Initialize python ${{ matrix.python-version }}
           uses: actions/setup-python@v2
           with:
