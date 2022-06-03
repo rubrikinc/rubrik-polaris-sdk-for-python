@@ -3,14 +3,6 @@ on:
 - push
 
 jobs:
-  - name: Get Python Version
-      id: one
-      run: |
-        echo "PYVER=${python -v}" >> $GITHUB_ENV
-  - name: Print Python Version
-      id: two
-      run: |
-        echo "${{ env.PYVER }}"
   docs:
     runs-on: ubuntu-latest
     steps:
@@ -19,9 +11,7 @@ jobs:
       with:
         python-version: '3.9'
         architecture: 'x64'
-    - uses: py-actions/py-dependency-install@master
-      with:
-        path: "docsrc/requirements.txt"
+    - run: pip install -r docsrc/requirements.txt
     - uses: ammaraskar/sphinx-action@master
       with:
         build-command: "sphinx-build -b html ../docsrc/ _build -w /tmp/sphinx.log "
