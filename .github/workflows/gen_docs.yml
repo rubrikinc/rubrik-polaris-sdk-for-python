@@ -21,10 +21,7 @@ jobs:
         build-command: "sphinx-build -b html ../docsrc/ _build -w /tmp/sphinx.log"
         docs-folder: "docsrc/"
     - name: Move HTML
-      run: rsync docsrc/_build/* docs/
-    - name: Remove File
-      uses: JesseTG/rm@v1.0.2
-      with:
-        path: docsrc/_build
+      run: rsync -avzh docsrc/_build/* docs/
     - name: Update Pull Request
       uses: stefanzweifel/git-auto-commit-action@v4
+      file_pattern: docs/*
