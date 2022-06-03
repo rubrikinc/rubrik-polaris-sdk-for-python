@@ -20,7 +20,7 @@
 
 
 """
-Collection of methods that interact with Polaris primitives.
+Collection of functions that interact with Polaris primitives.
 """
 ERROR_MESSAGES = {
     'INVALID_FIELD_TYPE': "'{}' is an invalid value for '{}'. Value must be in {}.",
