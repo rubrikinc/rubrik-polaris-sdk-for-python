@@ -10,6 +10,7 @@ jobs:
     steps:
     - name: Checkout Branch
       uses: actions/checkout@master
+    - name: Git Status
       run: git status
     - name: Setup Python
       uses: actions/setup-python@master
