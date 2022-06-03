@@ -12,10 +12,10 @@ on:
 name: Run Tests
   jobs:
     build:
-    runs-on: ${{ matrix.os }}
-    strategy:
-    matrix:
-    os: [ uuntu-latest, macos-latest, windows-latest ]
+      runs-on: ${{ matrix.os }}
+        strategy:
+          matrix:
+            os: [ uuntu-latest, macos-latest, windows-latest ]
     python-version: [ '3.8' ]
     name: python ${{ matrix.python-version }} - ${{ matrix.os }}
     steps:
