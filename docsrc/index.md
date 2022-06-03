@@ -7,12 +7,8 @@ hide-toc: false
 
 ```{toctree}
 :hidden:
-
-
-quickstart
 source/index
 ```
-
 
 ```{toctree}
 :caption: Other
