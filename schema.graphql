@@ -24,6 +24,8 @@ interface AwsNativeAccountDescendantType {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "A sequential list of this object's physical ancestors."
     physicalPath: [PathNode!]!
     "The SLA Domain assignment type for this object."
@@ -53,6 +55,8 @@ interface AwsNativeAccountLogicalChildType {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "A sequential list of this object's physical ancestors."
     physicalPath: [PathNode!]!
     "The SLA Domain assignment type for this object."
@@ -99,6 +103,8 @@ interface Blueprint {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "A sequential list of this object's physical ancestors."
     physicalPath: [PathNode!]!
     "resource mapping status of the Blueprint"
@@ -179,6 +185,8 @@ interface BlueprintNew {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "A sequential list of this object's physical ancestors."
     physicalPath: [PathNode!]!
     "blueprint remote RPO lag info"
@@ -218,6 +226,8 @@ interface CassandraKeyspaceDescendantType {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "A sequential list of this object's physical ancestors."
     physicalPath: [PathNode!]!
     "The SLA Domain assignment type for this object."
@@ -247,6 +257,8 @@ interface CassandraKeyspacePhysicalChildType {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "A sequential list of this object's physical ancestors."
     physicalPath: [PathNode!]!
     "The SLA Domain assignment type for this object."
@@ -276,6 +288,8 @@ interface CassandraSourceDescendantType {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "A sequential list of this object's physical ancestors."
     physicalPath: [PathNode!]!
     "The SLA Domain assignment type for this object."
@@ -305,6 +319,8 @@ interface CassandraSourcePhysicalChildType {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "A sequential list of this object's physical ancestors."
     physicalPath: [PathNode!]!
     "The SLA Domain assignment type for this object."
@@ -341,6 +357,8 @@ interface CdmHierarchyObject {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -423,6 +441,8 @@ interface CdmHierarchySnappableNew {
     oldestSnapshot: CdmSnapshot
     "The number of on-demand snapshots."
     onDemandSnapshotCount: Int!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "A sequential list of this object's physical ancestors."
     physicalPath: [PathNode!]!
     "The source cluster of this object. Returned as a data location because there is no guarantee that Polaris has knowledge about the source cluster."
@@ -508,6 +528,8 @@ interface Db2InstanceDescendantType {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -553,6 +575,8 @@ interface Db2InstancePhysicalChildType {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -605,6 +629,8 @@ interface ExchangeDagDescendantType {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -651,6 +677,8 @@ interface ExchangeServerDescendantType {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -696,6 +724,8 @@ interface FailoverClusterAppDescendantType {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -741,6 +771,8 @@ interface FailoverClusterAppPhysicalChildType {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -786,6 +818,8 @@ interface FailoverClusterTopLevelDescendantType {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -831,6 +865,8 @@ interface FilesetTemplateDescendantType {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -876,6 +912,8 @@ interface FilesetTemplatePhysicalChildType {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -915,6 +953,8 @@ interface GcpNativeProjectDescendantType {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "A sequential list of this object's physical ancestors."
     physicalPath: [PathNode!]!
     "The SLA Domain assignment type for this object."
@@ -944,6 +984,8 @@ interface GcpNativeProjectLogicalChildType {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "A sequential list of this object's physical ancestors."
     physicalPath: [PathNode!]!
     "The SLA Domain assignment type for this object."
@@ -998,6 +1040,8 @@ interface HierarchyObject {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "A sequential list of this object's physical ancestors."
     physicalPath: [PathNode!]!
     "The SLA Domain assignment type for this object."
@@ -1028,6 +1072,8 @@ interface HierarchySnappable {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "A sequential list of this object's physical ancestors."
     physicalPath: [PathNode!]!
     "The SLA Domain assignment type for this object."
@@ -1063,6 +1109,8 @@ interface HostFailoverClusterDescendantType {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -1108,6 +1156,8 @@ interface HostFailoverClusterPhysicalChildType {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -1153,6 +1203,8 @@ interface HostShareDescendantType {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -1198,6 +1250,8 @@ interface HostSharePhysicalChildType {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -1243,6 +1297,8 @@ interface HyperVClusterDescendantType {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -1288,6 +1344,8 @@ interface HyperVClusterLogicalChildType {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -1333,6 +1391,8 @@ interface HyperVSCVMMDescendantType {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -1378,6 +1438,8 @@ interface HyperVSCVMMLogicalChildType {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -1423,6 +1485,8 @@ interface HyperVServerDescendantType {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -1468,6 +1532,8 @@ interface HyperVServerLogicalChildType {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -1513,6 +1579,8 @@ interface HyperVTopLevelDescendantType {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -1552,6 +1620,8 @@ interface K8sClusterDescendant {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "A sequential list of this object's physical ancestors."
     physicalPath: [PathNode!]!
     "The SLA Domain assignment type for this object."
@@ -1587,6 +1657,8 @@ interface ManagedVolumeDescendantType {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -1632,6 +1704,8 @@ interface ManagedVolumeMountDescendantType {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -1677,6 +1751,8 @@ interface ManagedVolumeMountPhysicalChildType {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -1722,6 +1798,8 @@ interface ManagedVolumePhysicalChildType {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -1761,6 +1839,8 @@ interface MongodbDatabaseDescendantType {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "A sequential list of this object's physical ancestors."
     physicalPath: [PathNode!]!
     "The SLA Domain assignment type for this object."
@@ -1790,6 +1870,8 @@ interface MongodbDatabasePhysicalChildType {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "A sequential list of this object's physical ancestors."
     physicalPath: [PathNode!]!
     "The SLA Domain assignment type for this object."
@@ -1819,6 +1901,8 @@ interface MongodbSourceDescendantType {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "A sequential list of this object's physical ancestors."
     physicalPath: [PathNode!]!
     "The SLA Domain assignment type for this object."
@@ -1848,6 +1932,8 @@ interface MongodbSourcePhysicalChildType {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "A sequential list of this object's physical ancestors."
     physicalPath: [PathNode!]!
     "The SLA Domain assignment type for this object."
@@ -1883,6 +1969,8 @@ interface MssqlAvailabilityGroupDescendantType {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -1928,6 +2016,8 @@ interface MssqlAvailabilityGroupLogicalChildType {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -1973,6 +2063,8 @@ interface MssqlInstanceDescendantType {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -2018,6 +2110,8 @@ interface MssqlInstanceLogicalChildType {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -2063,6 +2157,8 @@ interface MssqlTopLevelDescendantType {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -2108,6 +2204,8 @@ interface NasNamespaceDescendantType {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -2153,6 +2251,8 @@ interface NasNamespaceLogicalChildType {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -2198,6 +2298,8 @@ interface NasShareDescendantType {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -2243,6 +2345,8 @@ interface NasShareLogicalChildType {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -2288,6 +2392,8 @@ interface NasSystemDescendantType {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -2333,6 +2439,8 @@ interface NasSystemLogicalChildType {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -2378,6 +2486,8 @@ interface NasVolumeDescendantType {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -2423,6 +2533,8 @@ interface NasVolumeLogicalChildType {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -2468,6 +2580,8 @@ interface NutanixClusterDescendantType {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -2513,6 +2627,8 @@ interface NutanixClusterLogicalChildType {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -2599,6 +2715,8 @@ interface O365OrgDescendant {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "A sequential list of this object's physical ancestors."
     physicalPath: [PathNode!]!
     "The SLA Domain assignment type for this object."
@@ -2650,6 +2768,8 @@ interface O365UserDescendant {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "A sequential list of this object's physical ancestors."
     physicalPath: [PathNode!]!
     "The SLA Domain assignment type for this object."
@@ -2694,6 +2814,8 @@ interface OracleDataGuardGroupDescendantType {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -2739,6 +2861,8 @@ interface OracleDataGuardGroupLogicalChildType {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -2784,6 +2908,8 @@ interface OracleHostDescendantType {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -2829,6 +2955,8 @@ interface OracleHostLogicalChildType {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -2874,6 +3002,8 @@ interface OracleRacDescendantType {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -2919,6 +3049,8 @@ interface OracleRacLogicalChildType {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -2964,6 +3096,8 @@ interface OracleTopLevelDescendantType {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -3009,6 +3143,8 @@ interface PhysicalHostDescendantType {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -3054,6 +3190,8 @@ interface PhysicalHostPhysicalChildType {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -3094,6 +3232,8 @@ interface PolarisHierarchyObject {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "A sequential list of this object's physical ancestors."
     physicalPath: [PathNode!]!
     "The SLA Domain assignment type for this object."
@@ -3132,6 +3272,8 @@ interface PolarisHierarchySnappable {
     oldestSnapshot: PolarisSnapshot
     "The number of on-demand snapshots."
     onDemandSnapshotCount: Int!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "A sequential list of this object's physical ancestors."
     physicalPath: [PathNode!]!
     "The SLA Domain assignment type for this object."
@@ -3280,6 +3422,8 @@ interface SapHanaSystemDescendantType {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -3325,6 +3469,8 @@ interface SapHanaSystemPhysicalChildType {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -3419,6 +3565,8 @@ interface VSphereComputeClusterDescendantType {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -3464,6 +3612,8 @@ interface VSphereComputeClusterPhysicalChildType {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -3509,6 +3659,8 @@ interface VSphereDatacenterDescendantType {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -3554,6 +3706,8 @@ interface VSphereDatacenterLogicalChildType {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -3599,6 +3753,8 @@ interface VSphereDatacenterPhysicalChildType {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -3644,6 +3800,8 @@ interface VSphereFolderDescendantType {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -3689,6 +3847,8 @@ interface VSphereFolderLogicalChildType {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -3734,6 +3894,8 @@ interface VSphereHostDescendantType {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -3779,6 +3941,8 @@ interface VSphereHostPhysicalChildType {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -3824,6 +3988,8 @@ interface VSphereResourcePoolDescendantType {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -3869,6 +4035,8 @@ interface VSphereResourcePoolPhysicalChildType {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -3914,6 +4082,8 @@ interface VSphereTagCategoryDescendantType {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -3959,6 +4129,8 @@ interface VSphereTagCategoryTagChildType {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -4004,6 +4176,8 @@ interface VSphereTagDescendantType {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -4049,6 +4223,8 @@ interface VSphereTagTagChildType {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -4094,6 +4270,8 @@ interface VSphereVCenterDescendantType {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -4139,6 +4317,8 @@ interface VSphereVCenterLogicalChildType {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -4184,6 +4364,8 @@ interface VSphereVCenterPhysicalChildType {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -4229,6 +4411,8 @@ interface VSphereVCenterTagChildType {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -4278,6 +4462,8 @@ interface VcdCatalogDescendantType {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -4323,6 +4509,8 @@ interface VcdCatalogLogicalChildType {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -4368,6 +4556,8 @@ interface VcdDescendantType {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -4413,6 +4603,8 @@ interface VcdLogicalChildType {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -4458,6 +4650,8 @@ interface VcdOrgDescendantType {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -4503,6 +4697,8 @@ interface VcdOrgLogicalChildType {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -4548,6 +4744,8 @@ interface VcdOrgVdcDescendantType {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -4593,6 +4791,8 @@ interface VcdOrgVdcLogicalChildType {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -4638,6 +4838,8 @@ interface VcdTopLevelDescendantType {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -4683,6 +4885,8 @@ interface VcdVappLogicalChildType {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -4728,6 +4932,8 @@ interface VsphereDatastoreClusterDescendantType {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -4773,6 +4979,8 @@ interface VsphereDatastoreClusterPhysicalChildType {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -4818,6 +5026,8 @@ interface WindowsClusterDescendantType {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -4863,6 +5073,8 @@ interface WindowsClusterLogicalChildType {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -6262,6 +6474,8 @@ type AwsNativeAccount implements HierarchyObject & PolarisHierarchyObject {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "A sequential list of this object's physical ancestors."
     physicalPath: [PathNode!]!
     "Count of RDS Instances in the account."
@@ -6350,6 +6564,8 @@ type AwsNativeEbsVolume implements AwsNativeAccountDescendantType & AwsNativeAcc
     oldestSnapshot: PolarisSnapshot
     "The number of on-demand snapshots."
     onDemandSnapshotCount: Int!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "A sequential list of this object's physical ancestors."
     physicalPath: [PathNode!]!
     "Name of the region. Some examples are: US_EAST_1, AP_EAST_1. This field cannot be null or empty string and will be mapped directly to available regions for EBS volume on cloud(AWS). For more information, see https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html#concepts-available-regions."
@@ -6522,6 +6738,8 @@ type AwsNativeEc2Instance implements AwsNativeAccountDescendantType & AwsNativeA
     oldestSnapshot: PolarisSnapshot
     "The number of on-demand snapshots."
     onDemandSnapshotCount: Int!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Name of the Operating System (OS) for the Instance. Some examples are: Linux, Windows. This field cannot be null or empty string but can be Undefined in case it is not currently supported.List of supported OS: Linux, Windows."
     osType: OsTypeEnum!
     "A sequential list of this object's physical ancestors."
@@ -6714,6 +6932,8 @@ type AwsNativeRdsInstance implements AwsNativeAccountDescendantType & AwsNativeA
     oldestSnapshot: PolarisSnapshot
     "The number of on-demand snapshots."
     onDemandSnapshotCount: Int!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "A sequential list of this object's physical ancestors."
     physicalPath: [PathNode!]!
     "Name of Availability Zone(AZ) associated with RDS Instance."
@@ -7333,6 +7553,8 @@ type AzureNativeManagedDisk implements HierarchyObject & PolarisHierarchyObject 
     oldestSnapshot: PolarisSnapshot
     "The number of on-demand snapshots."
     onDemandSnapshotCount: Int!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Type of the Operating System (OS) installed on the Managed Disk."
     osType: AzureNativeVmOsType!
     "A sequential list of this object's physical ancestors."
@@ -7499,6 +7721,8 @@ type AzureNativeResourceGroup implements HierarchyObject & PolarisHierarchyObjec
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "A sequential list of this object's physical ancestors."
     physicalPath: [PathNode!]!
     "A list of mappings between protected object types and SLA Domains."
@@ -7652,6 +7876,8 @@ type AzureNativeSubscription implements HierarchyObject & PolarisHierarchyObject
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "A sequential list of this object's physical ancestors."
     physicalPath: [PathNode!]!
     "List of Azure region specifications associated with the subscription."
@@ -7754,6 +7980,8 @@ type AzureNativeVirtualMachine implements HierarchyObject & PolarisHierarchyObje
     oldestSnapshot: PolarisSnapshot
     "The number of on-demand snapshots."
     onDemandSnapshotCount: Int!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Type of the Operating System (OS) installed on the virtual machine (VM)."
     osType: AzureNativeVmOsType!
     "A sequential list of this object's physical ancestors."
@@ -8042,6 +8270,8 @@ type AzureSqlDatabaseDb implements HierarchyObject & PolarisHierarchyObject & Po
     oldestSnapshot: PolarisSnapshot
     "The number of on-demand snapshots."
     onDemandSnapshotCount: Int!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Persistent storage configured for storing backups. None represents that persistent storage has not been configured."
     persistentStorage: PersistentStorage
     "A sequential list of this object's physical ancestors."
@@ -8184,6 +8414,8 @@ type AzureSqlDatabaseServer implements HierarchyObject & PolarisHierarchyObject 
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "A sequential list of this object's physical ancestors."
     physicalPath: [PathNode!]!
     "Azure region where the Azure SQL Database Server is located."
@@ -8268,6 +8500,8 @@ type AzureSqlManagedInstanceDatabase implements HierarchyObject & PolarisHierarc
     oldestSnapshot: PolarisSnapshot
     "The number of on-demand snapshots."
     onDemandSnapshotCount: Int!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Persistent storage configured for storing backups. None represents that persistent storage has not been configured."
     persistentStorage: PersistentStorage
     "A sequential list of this object's physical ancestors."
@@ -8410,6 +8644,8 @@ type AzureSqlManagedInstanceServer implements HierarchyObject & PolarisHierarchy
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "A sequential list of this object's physical ancestors."
     physicalPath: [PathNode!]!
     "Azure region where the Azure SQL Managed Instance Server is located."
@@ -9304,6 +9540,8 @@ type CassandraColumnFamily implements CassandraKeyspaceDescendantType & Cassandr
     objectType: HierarchyObjectTypeEnum!
     "The oldest snapshot of this snappable."
     oldestSnapshot: MosaicSnapshot
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "A sequential list of this object's physical ancestors."
     physicalPath: [PathNode!]!
     "Date that effective SLA was assigned / inherited."
@@ -9436,6 +9674,8 @@ type CassandraKeyspace implements CassandraSourceDescendantType & CassandraSourc
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "List of physical children."
     physicalChildConnection(
         "Returns the elements in the list that come after the specified cursor."
@@ -9597,6 +9837,8 @@ type CassandraSource implements HierarchyObject & PolarisHierarchyObject {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "List of physical children."
     physicalChildConnection(
         "Returns the elements in the list that come after the specified cursor."
@@ -11760,6 +12002,8 @@ type CreateRecoveryPlanReply implements HierarchyObject {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "A sequential list of this object's physical ancestors."
     physicalPath: [PathNode!]!
     "The SLA Domain assignment type for this object."
@@ -12272,6 +12516,8 @@ type Db2Database implements CdmHierarchyObject & CdmHierarchySnappableNew & Db2I
     oldestSnapshot: CdmSnapshot
     "The number of on-demand snapshots."
     onDemandSnapshotCount: Int!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -12413,6 +12659,8 @@ type Db2Instance implements CdmHierarchyObject & HierarchyObject {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -13162,6 +13410,8 @@ type Ec2Blueprint implements Blueprint & HierarchyObject & HierarchySnappable & 
     oldestSnapshot: PolarisSnapshot
     "The number of on-demand snapshots."
     onDemandSnapshotCount: Int!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "A sequential list of this object's physical ancestors."
     physicalPath: [PathNode!]!
     rmStatus: AppBlueprintRmStatusEnum!
@@ -13468,6 +13718,8 @@ type ExchangeDag implements CdmHierarchyObject & HierarchyObject {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -13616,6 +13868,8 @@ type ExchangeDatabase implements CdmHierarchyObject & CdmHierarchySnappableNew &
     oldestSnapshot: CdmSnapshot
     "The number of on-demand snapshots."
     onDemandSnapshotCount: Int!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -13780,6 +14034,8 @@ type ExchangeServer implements CdmHierarchyObject & HierarchyObject & PhysicalHo
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -13947,6 +14203,8 @@ type FailoverClusterApp implements CdmHierarchyObject & FailoverClusterTopLevelD
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -14895,6 +15153,8 @@ type FilesetTemplate implements CdmHierarchyObject & HierarchyObject {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     osType: FilesetOSType!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
@@ -15390,6 +15650,8 @@ type GcpNativeDisk implements GcpNativeProjectDescendantType & GcpNativeProjectL
     oldestSnapshot: PolarisSnapshot
     "The number of on-demand snapshots."
     onDemandSnapshotCount: Int!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "A sequential list of this object's physical ancestors."
     physicalPath: [PathNode!]!
     projectId: String!
@@ -15550,6 +15812,8 @@ type GcpNativeGceInstance implements GcpNativeProjectDescendantType & GcpNativeP
     oldestSnapshot: PolarisSnapshot
     "The number of on-demand snapshots."
     onDemandSnapshotCount: Int!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "A sequential list of this object's physical ancestors."
     physicalPath: [PathNode!]!
     "GCP project ID."
@@ -15741,6 +16005,8 @@ type GcpNativeProject implements HierarchyObject & PolarisHierarchyObject {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     organizationName: String!
     "A sequential list of this object's physical ancestors."
     physicalPath: [PathNode!]!
@@ -16567,6 +16833,8 @@ type HostFailoverCluster implements CdmHierarchyObject & FailoverClusterTopLevel
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -16749,6 +17017,8 @@ type HostShare implements CdmHierarchyObject & HierarchyObject & PhysicalHostDes
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -17122,6 +17392,8 @@ type HyperVCluster implements CdmHierarchyObject & HierarchyObject & HyperVSCVMM
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -17285,6 +17557,8 @@ type HyperVSCVMM implements CdmHierarchyObject & HierarchyObject & HyperVTopLeve
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -17427,6 +17701,8 @@ type HyperVServer implements CdmHierarchyObject & HierarchyObject & HyperVCluste
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -17581,6 +17857,8 @@ type HyperVVirtualMachine implements CdmHierarchyObject & CdmHierarchySnappableN
     oldestSnapshot: CdmSnapshot
     "The number of on-demand snapshots."
     onDemandSnapshotCount: Int!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -18245,6 +18523,8 @@ type K8sCluster implements HierarchyObject & PolarisHierarchyObject {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "A sequential list of this object's physical ancestors."
     physicalPath: [PathNode!]!
     "Range of ports that are allowed to be accessed."
@@ -18347,6 +18627,8 @@ type K8sNamespace implements HierarchyObject & HierarchySnappable & K8sClusterDe
     oldestSnapshot: PolarisSnapshot
     "The number of on-demand snapshots."
     onDemandSnapshotCount: Int!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "A sequential list of this object's physical ancestors."
     physicalPath: [PathNode!]!
     resouceVersion: String!
@@ -18750,6 +19032,8 @@ type LinuxFileset implements CdmHierarchyObject & CdmHierarchySnappableNew & Fai
     oldestSnapshot: CdmSnapshot
     "The number of on-demand snapshots."
     onDemandSnapshotCount: Int!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     pathExceptions: [String!]!
     pathExcluded: [String!]!
     pathIncluded: [String!]!
@@ -19374,6 +19658,8 @@ type ManagedVolume implements CdmHierarchyObject & CdmHierarchySnappableNew & Hi
     oldestSnapshot: CdmSnapshot
     "The number of on-demand snapshots."
     onDemandSnapshotCount: Int!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -19654,6 +19940,8 @@ type ManagedVolumeMount implements CdmHierarchyObject & HierarchyObject & Manage
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -20153,6 +20441,8 @@ type MongodbCollection implements HierarchyObject & MongodbDatabaseDescendantTyp
     objectType: HierarchyObjectTypeEnum!
     "The oldest snapshot of this snappable."
     oldestSnapshot: MosaicSnapshot
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "A sequential list of this object's physical ancestors."
     physicalPath: [PathNode!]!
     "The SLA Domain assignment type for this object."
@@ -20263,6 +20553,8 @@ type MongodbDatabase implements HierarchyObject & MongodbSourceDescendantType & 
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "List of physical children."
     physicalChildConnection(
         "Returns the elements in the list that come after the specified cursor."
@@ -20409,6 +20701,8 @@ type MongodbSource implements HierarchyObject & PolarisHierarchyObject {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "List of physical children."
     physicalChildConnection(
         "Returns the elements in the list that come after the specified cursor."
@@ -20972,6 +21266,8 @@ type MssqlAvailabilityGroup implements CdmHierarchyObject & HierarchyObject & Ms
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -21210,6 +21506,8 @@ type MssqlDatabase implements CdmHierarchyObject & CdmHierarchySnappableNew & Hi
     oldestSnapshot: CdmSnapshot
     "The number of on-demand snapshots."
     onDemandSnapshotCount: Int!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -21683,6 +21981,8 @@ type MssqlInstance implements CdmHierarchyObject & HierarchyObject & MssqlTopLev
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -26198,6 +26498,8 @@ type NasFileset implements CdmHierarchyObject & CdmHierarchySnappableNew & Hiera
     oldestSnapshot: CdmSnapshot
     "The number of on-demand snapshots."
     onDemandSnapshotCount: Int!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "The exceptions to the fileset's exclusion rules."
     pathsExceptions: [String!]!
     "The paths to be excluded from the fileset's inclusion rules."
@@ -26319,6 +26621,8 @@ type NasNamespace implements CdmHierarchyObject & HierarchyObject & NasSystemDes
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -26463,6 +26767,8 @@ type NasShare implements CdmHierarchyObject & HierarchyObject & NasNamespaceDesc
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -26586,6 +26892,8 @@ type NasSystem implements CdmHierarchyObject & HierarchyObject {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     osVersion: String
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
@@ -26752,6 +27060,8 @@ type NasVolume implements CdmHierarchyObject & HierarchyObject & NasNamespaceDes
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -27189,6 +27499,8 @@ type NutanixCluster implements CdmHierarchyObject & HierarchyObject {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -27494,6 +27806,8 @@ type NutanixVm implements CdmHierarchyObject & CdmHierarchySnappableNew & Hierar
     oldestSnapshot: CdmSnapshot
     "The number of on-demand snapshots."
     onDemandSnapshotCount: Int!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Guest operating system type of the virtual machine. This field will be set to null if not provided by Nutanix."
     osType: GuestOsTypeEnum
     "Mapping from objectID to pending object deletion status."
@@ -27782,6 +28096,8 @@ type O365Calendar implements HierarchyObject & HierarchySnappable & O365OrgDesce
     oldestSnapshot: PolarisSnapshot
     "The number of on-demand snapshots."
     onDemandSnapshotCount: Int!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "A sequential list of this object's physical ancestors."
     physicalPath: [PathNode!]!
     "The SLA Domain assignment type for this object."
@@ -28025,6 +28341,8 @@ type O365Group implements HierarchyObject & O365OrgDescendant & PolarisHierarchy
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "A sequential list of this object's physical ancestors."
     physicalPath: [PathNode!]!
     "The SLA Domain assignment type for this object."
@@ -28105,6 +28423,8 @@ type O365Mailbox implements HierarchyObject & HierarchySnappable & O365OrgDescen
     oldestSnapshot: PolarisSnapshot
     "The number of on-demand snapshots."
     onDemandSnapshotCount: Int!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "A sequential list of this object's physical ancestors."
     physicalPath: [PathNode!]!
     "The SLA Domain assignment type for this object."
@@ -28249,6 +28569,8 @@ type O365Onedrive implements HierarchyObject & HierarchySnappable & O365OrgDesce
     oldestSnapshot: PolarisSnapshot
     "The number of on-demand snapshots."
     onDemandSnapshotCount: Int!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "A sequential list of this object's physical ancestors."
     physicalPath: [PathNode!]!
     "The SLA Domain assignment type for this object."
@@ -28447,6 +28769,8 @@ type O365Org implements HierarchyObject & PolarisHierarchyObject {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     past1DayMailboxComplianceCount: Int!
     past1DayMailboxOutOfComplianceCount: Int!
     past1DayOnedriveComplianceCount: Int!
@@ -28589,6 +28913,8 @@ type O365SharepointDrive implements HierarchyObject & HierarchySnappable & O365O
     oldestSnapshot: PolarisSnapshot
     "The number of on-demand snapshots."
     onDemandSnapshotCount: Int!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     parentId: String!
     "A sequential list of this object's physical ancestors."
     physicalPath: [PathNode!]!
@@ -28728,6 +29054,8 @@ type O365SharepointList implements HierarchyObject & HierarchySnappable & O365Or
     oldestSnapshot: PolarisSnapshot
     "The number of on-demand snapshots."
     onDemandSnapshotCount: Int!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     parentId: String!
     "A sequential list of this object's physical ancestors."
     physicalPath: [PathNode!]!
@@ -28885,6 +29213,8 @@ type O365Site implements HierarchyObject & HierarchySnappable & O365OrgDescendan
     oldestSnapshot: PolarisSnapshot
     "The number of on-demand snapshots."
     onDemandSnapshotCount: Int!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     parentId: String!
     "A sequential list of this object's physical ancestors."
     physicalPath: [PathNode!]!
@@ -29080,6 +29410,8 @@ type O365Teams implements HierarchyObject & HierarchySnappable & O365OrgDescenda
     oldestSnapshot: PolarisSnapshot
     "The number of on-demand snapshots."
     onDemandSnapshotCount: Int!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     orgID: String!
     "A sequential list of this object's physical ancestors."
     physicalPath: [PathNode!]!
@@ -29276,6 +29608,8 @@ type O365User implements HierarchyObject & O365OrgDescendant & PolarisHierarchyO
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "A sequential list of this object's physical ancestors."
     physicalPath: [PathNode!]!
     "The SLA Domain assignment type for this object."
@@ -29604,6 +29938,8 @@ type OracleDataGuardGroup implements CdmHierarchyObject & CdmHierarchySnappableN
     oldestSnapshot: CdmSnapshot
     "The number of on-demand snapshots."
     onDemandSnapshotCount: Int!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "The Pluggable Databases of an Oracle Data Guard Group."
     pdbs: [OraclePdb!]!
     "Mapping from objectID to pending object deletion status."
@@ -29802,6 +30138,8 @@ type OracleDatabase implements CdmHierarchyObject & CdmHierarchySnappableNew & H
     oldestSnapshot: CdmSnapshot
     "The number of on-demand snapshots."
     onDemandSnapshotCount: Int!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "The Pluggable Databases of an Oracle database."
     pdbs: [OraclePdb!]!
     "Mapping from objectID to pending object deletion status."
@@ -30266,6 +30604,8 @@ type OracleHost implements CdmHierarchyObject & HierarchyObject & OracleTopLevel
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -30686,6 +31026,8 @@ type OracleRac implements CdmHierarchyObject & HierarchyObject & OracleTopLevelD
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -31193,6 +31535,8 @@ type PhysicalHost implements CdmHierarchyObject & Db2InstanceDescendantType & Db
     objectType: HierarchyObjectTypeEnum!
     "The Oracle User details of this Physical Host."
     oracleUserDetails: OracleUserDetails
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     osName: String
     "The OS Type of this Physical Host"
     osType: GuestOsTypeEnum
@@ -38131,6 +38475,8 @@ type RecoveryPlan implements HierarchyObject {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "A sequential list of this object's physical ancestors."
     physicalPath: [PathNode!]!
     "The SLA Domain assignment type for this object."
@@ -38855,6 +39201,8 @@ type SapHanaDatabase implements CdmHierarchyObject & CdmHierarchySnappableNew & 
     oldestSnapshot: CdmSnapshot
     "The number of on-demand snapshots."
     onDemandSnapshotCount: Int!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -39216,6 +39564,8 @@ type SapHanaSystem implements CdmHierarchyObject & HierarchyObject {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -39605,6 +39955,8 @@ type ShareFileset implements CdmHierarchyObject & CdmHierarchySnappableNew & Fil
     oldestSnapshot: CdmSnapshot
     "The number of on-demand snapshots."
     onDemandSnapshotCount: Int!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     pathExceptions: [String!]!
     pathExcluded: [String!]!
     pathIncluded: [String!]!
@@ -40111,6 +40463,8 @@ type SnapMirrorCloud implements CdmHierarchyObject & CdmHierarchySnappableNew & 
     oldestSnapshot: CdmSnapshot
     "The number of on-demand snapshots."
     onDemandSnapshotCount: Int!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -42255,6 +42609,8 @@ type UpdateRecoveryPlanReply implements HierarchyObject {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "A sequential list of this object's physical ancestors."
     physicalPath: [PathNode!]!
     "The SLA Domain assignment type for this object."
@@ -42776,6 +43132,8 @@ type VSphereBlueprint implements Blueprint & CdmHierarchyObject & CdmHierarchySn
     oldestSnapshot: CdmSnapshot
     "The number of on-demand snapshots."
     onDemandSnapshotCount: Int!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -42890,6 +43248,8 @@ type VSphereBlueprintNew implements BlueprintNew & HierarchyObject {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "A sequential list of this object's physical ancestors."
     physicalPath: [PathNode!]!
     platform: BlueprintPlatformEnum!
@@ -42955,6 +43315,8 @@ type VSphereComputeCluster implements CdmHierarchyObject & HierarchyObject & VSp
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -43108,6 +43470,8 @@ type VSphereDatacenter implements CdmHierarchyObject & HierarchyObject & VSphere
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -43236,6 +43600,8 @@ type VSphereDatastore implements CdmHierarchyObject & HierarchyObject & VSphereC
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -43333,6 +43699,8 @@ type VSphereFolder implements CdmHierarchyObject & HierarchyObject & VSphereData
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -43435,6 +43803,8 @@ type VSphereHost implements CdmHierarchyObject & HierarchyObject & VSphereComput
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -43597,6 +43967,8 @@ type VSphereNetwork implements CdmHierarchyObject & HierarchyObject & VSphereCom
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -43683,6 +44055,8 @@ type VSphereResourcePool implements CdmHierarchyObject & HierarchyObject & VSphe
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -43788,6 +44162,8 @@ type VSphereTag implements CdmHierarchyObject & HierarchyObject & VSphereTagCate
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -43853,6 +44229,8 @@ type VSphereTagCategory implements CdmHierarchyObject & HierarchyObject & VSpher
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -43995,6 +44373,8 @@ type VSphereVCenter implements CdmHierarchyObject & HierarchyObject {
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -44293,6 +44673,8 @@ type VSphereVm implements CdmHierarchyObject & CdmHierarchySnappableNew & Hierar
     oldestSnapshot: CdmSnapshot
     "The number of on-demand snapshots."
     onDemandSnapshotCount: Int!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     parentSnappableIdOpt: UUID
     parentSnappableTypeOpt: String
     "Mapping from objectID to pending object deletion status."
@@ -44638,6 +45020,8 @@ type Vcd implements CdmHierarchyObject & HierarchyObject & VcdTopLevelDescendant
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -44715,6 +45099,8 @@ type VcdCatalog implements CdmHierarchyObject & HierarchyObject & VcdDescendantT
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -44832,6 +45218,8 @@ type VcdOrg implements CdmHierarchyObject & HierarchyObject & VcdDescendantType 
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -44949,6 +45337,8 @@ type VcdOrgVdc implements CdmHierarchyObject & HierarchyObject & VcdDescendantTy
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -45110,6 +45500,8 @@ type VcdVapp implements CdmHierarchyObject & CdmHierarchySnappableNew & Hierarch
     oldestSnapshot: CdmSnapshot
     "The number of on-demand snapshots."
     onDemandSnapshotCount: Int!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -45230,6 +45622,8 @@ type VcdVimServer implements CdmHierarchyObject & HierarchyObject & VcdDescendan
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -45990,6 +46384,8 @@ type VolumeGroup implements CdmHierarchyObject & CdmHierarchySnappableNew & Hier
     oldestSnapshot: CdmSnapshot
     "The number of on-demand snapshots."
     onDemandSnapshotCount: Int!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -46339,6 +46735,8 @@ type VsphereDatastoreCluster implements CdmHierarchyObject & HierarchyObject & V
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -46565,6 +46963,8 @@ type WindowsCluster implements CdmHierarchyObject & HierarchyObject & MssqlTopLe
     numSnappableDescendants: Int!
     "The type of this object."
     objectType: HierarchyObjectTypeEnum!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     "Mapping from objectID to pending object deletion status."
     pendingObjectDeletionStatus: PendingSnapshotsOfObjectDeletion
     "SLA Domain assignment of the object during the process of being communicated over to Rubrik CDM."
@@ -46694,6 +47094,8 @@ type WindowsFileset implements CdmHierarchyObject & CdmHierarchySnappableNew & F
     oldestSnapshot: CdmSnapshot
     "The number of on-demand snapshots."
     onDemandSnapshotCount: Int!
+    "The organizations of the hierarchy object."
+    org: [Org!]!
     pathExceptions: [String!]!
     pathExcluded: [String!]!
     pathIncluded: [String!]!
@@ -51933,6 +52335,8 @@ enum HierarchyFilterField {
     O365_SPECIFIC_TYPE
     "Filter by software version of the cluster."
     ON_OR_ABOVE_CLUSTER_VERSION
+    "Filter by organization ID."
+    ORGANIZATION_ID
     "Filter physical hosts by OS name."
     OS_NAME
     "Filter physical hosts by OS type."
