@@ -1,5 +1,5 @@
 query RubrikPolarisSDKRequest($day: String!, $timezone: String!) {
-    policyObjConnection(day: $day, timezone: $timezone) {
+    policyObjs(day: $day, timezone: $timezone) {
         edges {
             node {
                 snapshotFid
