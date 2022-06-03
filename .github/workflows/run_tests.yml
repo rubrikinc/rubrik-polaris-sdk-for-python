@@ -13,8 +13,7 @@ on:
   jobs:
     docs:
       runs-on: ubuntu-latest
-        - name: Generate Documentation
-          uses: ammaraskar/sphinx-action@master
+        - uses: ammaraskar/sphinx-action@master
           with:
             pre-build-command: python -m pip install -r docsrc/requirements.txt
             build-command: "sphinx-build -b html ../docsrc/ _build -w /tmp/sphinx.log "
