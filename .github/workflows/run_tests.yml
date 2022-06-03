@@ -1,12 +1,10 @@
 on:
-  push:
-    branches:
-      - master
-      - beta
   pull_request:
     branches:
       - master
       - beta
+    paths-ignore:
+      - 'docs/*'
 
 name: Python Tests
 jobs:
