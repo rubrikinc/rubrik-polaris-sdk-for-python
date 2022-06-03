@@ -5,6 +5,7 @@ on:
       - beta
   pull_request:
     branches:
+      - master
       - beta
 
 name: Python Tests
