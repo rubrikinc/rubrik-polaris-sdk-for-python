@@ -19,8 +19,10 @@ jobs:
       with:
         pre-build-command: python -m pip install -r docsrc/requirements.txt
         build-command: "sphinx-build -b html ../docsrc/ _build -w /tmp/sphinx.log"
-        docs-folder: "docs_build/"
+        docs-folder: "docsrc/"
     - name: Move HTML
-      run: rsync docs_build/* docs/
+      run: rsync docsrc/_build/* docs/
+    - name: Remove _build
+      run: rm -rf docsrc/_build
     - name: Update Pull Request
       uses: stefanzweifel/git-auto-commit-action@v4
