@@ -5,7 +5,7 @@ on:
       - beta
   pull_request:
     branches:
-      - '**'
+      - beta
 
 name: Python Tests
 jobs:
