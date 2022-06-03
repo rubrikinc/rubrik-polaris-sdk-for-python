@@ -1,5 +1,5 @@
 ---
-hide-toc: true
+hide-toc: false
 ---
 
 ```{include} ../README.md
@@ -7,6 +7,7 @@ hide-toc: true
 
 ```{toctree}
 :hidden:
+
 
 quickstart
 source/index

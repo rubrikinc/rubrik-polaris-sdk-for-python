@@ -1,31 +1,18 @@
 Reference
 =========
+.. rubric:: Modules
 
 .. autosummary::
+    :toctree: _autosummary
+    :recursive:
 
-   rubrik_polaris.lib.common.core
-   rubrik_polaris.lib.accounts
-   rubrik_polaris.lib.appflows
-   rubrik_polaris.lib.cluster
-   rubrik_polaris.lib.compute
-   rubrik_polaris.lib.gps
-   rubrik_polaris.lib.k8s
-   rubrik_polaris.lib.radar
-   rubrik_polaris.lib.sonar
-   rubrik_polaris.lib.storage
-
-
-.. toctree::
-   :hidden:
-
-    core_functions
-    account_functions
-    appflows_functions
-    cluster_functions
-    compute_functions
-    gps_functions
-    k8s_functions
-    radar_functions
-    sonar_functions
-    storage_functions
-
+   rubrik_polaris.common.core
+   rubrik_polaris.accounts
+   rubrik_polaris.appflows
+   rubrik_polaris.cluster
+   rubrik_polaris.compute
+   rubrik_polaris.gps
+   rubrik_polaris.k8s
+   rubrik_polaris.radar
+   rubrik_polaris.sonar
+   rubrik_polaris.storage

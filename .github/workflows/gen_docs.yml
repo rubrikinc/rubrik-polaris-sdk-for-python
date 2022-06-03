@@ -1,0 +1,29 @@
+name: "Generate Documentation"
+on:
+  push:
+    branches:
+      - beta
+      - test
+
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Branch
+      uses: actions/checkout@master
+    - name: Setup Python
+      uses: actions/setup-python@master
+      with:
+        python-version: '3.x'
+    - name: Generate Documentation
+      uses: ammaraskar/sphinx-action@master
+      with:
+        pre-build-command: python -m pip install -r docsrc/requirements.txt
+        build-command: "sphinx-build -b html ../docsrc/ _build -w /tmp/sphinx.log"
+        docs-folder: "docsrc/"
+    - name: Move HTML
+      run: rsync -avzh docsrc/_build/* docs/
+    - name: Update Pull Request
+      uses: stefanzweifel/git-auto-commit-action@v4
+      with:
+        file_pattern: docs/*
