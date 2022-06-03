@@ -6,7 +6,7 @@ permalink: /index.html
 
 This project provides a Python package that makes it easy to interact with the Rubrik Polaris API.
 
-The SDK has been tested against Python 3.6.4.
+The SDK has been tested against Python 3.8.x
 
 Currently available in beta branch!
 
@@ -27,7 +27,4 @@ $ python setup.py install
 ```
 
 ## Documentation
-
-## Example
-
-## Additional Links
+[Here](https://rubrikinc.github.io/rubrik-polaris-sdk-for-python/index.html)
