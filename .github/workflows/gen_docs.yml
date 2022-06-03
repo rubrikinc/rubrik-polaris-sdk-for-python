@@ -8,6 +8,7 @@ jobs:
     steps:
     - uses: actions/checkout@master
     - run: python -m pip install -r docsrc/requirements.txt
+    - run: pip list
     - uses: ammaraskar/sphinx-action@master
       with:
         build-command: "sphinx-build -b html ../docsrc/ _build -w /tmp/sphinx.log "
