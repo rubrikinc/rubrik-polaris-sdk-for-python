@@ -25,14 +25,14 @@ Collection of functions that manipulate AzureVM compute components
 
 
 def get_compute_object_ids_azure(self, match_all=True, **kwargs):
-    """Retrieves all AWS EC2 object IDs that match query
+    """Retrieves all Azure VM object IDs that match query
 
     Args:
         match_all (bool): Set to false to match ANY defined criteria
         kwargs (str): Any top level object from the get_compute_ec2 call
 
     Returns:
-        list: List of all the EC2 object id's
+        list: List of all the VM object id's
 
     Raises:
         RequestException: If the query to Polaris returned an error
