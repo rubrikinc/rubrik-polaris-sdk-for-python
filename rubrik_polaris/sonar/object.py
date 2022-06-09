@@ -116,7 +116,7 @@ def get_sensitive_hits(self, search_time_period: int = 7, object_name=None):
 
             sonar_object_detail = self.get_sensitive_hits_object_list(day=past_search_day.strftime("%Y-%m-%d"),
                                                                       timezone="UTC")
-            for sonar_object in sonar_object_detail["data"]["policyObjConnection"]["edges"]:
+            for sonar_object in sonar_object_detail["data"]["policyObjs"]["edges"]:
                 if object_name:
                     if sonar_object["node"]["snappable"]["name"] == object_name:
                         object_details["snappable_id"] = sonar_object["node"]["snappable"]["id"]
