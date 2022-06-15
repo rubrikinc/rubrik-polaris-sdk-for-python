@@ -1,11 +1,11 @@
-query RubrikPolarisSDKRequest($after: String, $first: Int, $filter: [GlobalSlaFilterInput!], $sortBy: SLAQuerySortByFieldEnum, $sortOrder: SLAQuerySortByOrderEnum, $showProtectedObjectCount: Boolean) {
+query RubrikPolarisSDKRequest($after: String, $first: Int, $filter: [GlobalSlaFilterInput!], $sortBy: SLAQuerySortByFieldEnum, $sortOrder: SLAQuerySortByOrderEnum, $shouldShowProtectedObjectCount: Boolean) {
   globalSlaConnection(
     after: $after
     first: $first
     filter: $filter
     sortBy: $sortBy
     sortOrder: $sortOrder
-    showProtectedObjectCount: $showProtectedObjectCount
+    shouldShowProtectedObjectCount: $shouldShowProtectedObjectCount
   ) {
     edges {
       node {
@@ -28,7 +28,7 @@ query RubrikPolarisSDKRequest($after: String, $first: Int, $filter: [GlobalSlaFi
               }
             }
           }
-          replicationSpecV2 {
+          replicationSpecsV2 {
             cluster {
               id
               name
@@ -120,8 +120,8 @@ query RubrikPolarisSDKRequest($after: String, $first: Int, $filter: [GlobalSlaFi
             duration
             unit
           }
-          archivalSpecList {
-            targetMapping {
+          archivalSpecs {
+            storageSetting {
               id
               name
               groupType
@@ -146,7 +146,7 @@ query RubrikPolarisSDKRequest($after: String, $first: Int, $filter: [GlobalSlaFi
               }
             }
           }
-          replicationSpecV2 {
+          replicationSpecsV2 {
             cluster {
               id
               name
@@ -254,7 +254,7 @@ query RubrikPolarisSDKRequest($after: String, $first: Int, $filter: [GlobalSlaFi
               logRetentionSeconds
             }
           }
-          objectTypeList
+          objectTypes
         }
       }
     }

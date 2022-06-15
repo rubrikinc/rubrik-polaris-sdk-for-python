@@ -48,7 +48,7 @@ def test_logging_output(mocker, caplog):
 
     for index, log_message in log_entries.items():
         assert caplog.records[index].message == log_message
-    
+
 @pytest.mark.parametrize('logging_level', ["debug", "critical", "error", "warning", "info"])
 def test_logging_level(mocker, caplog, logging_level):
 
@@ -63,7 +63,7 @@ def test_logging_level(mocker, caplog, logging_level):
     rubrik = rubrik_cdm.Connect("10.0.1.1", "user", "password", enable_logging=True, logging_level=logging_level)
 
     rubrik.cluster_version()
-    
+
     # Validate the logging level
     set_logging = {
             "debug": logging.DEBUG,
@@ -72,5 +72,5 @@ def test_logging_level(mocker, caplog, logging_level):
             "warning": logging.WARNING,
             "info": logging.INFO,
         }
-        
+
     assert caplog.records[0].levelno == set_logging[logging_level]

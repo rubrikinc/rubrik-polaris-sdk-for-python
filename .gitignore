@@ -1,6 +1,8 @@
 .DS_Store
 
 .graphqlconfig
+schema.graphql
+docsrc/_build
 
 
 # Byte-compiled / optimized / DLL files

@@ -1,4 +1,4 @@
-query RubrikPolarisSDKRequest($cloud_account_features: CloudAccountFeatureEnum! ) {
+query RubrikPolarisSDKRequest($cloud_account_features: CloudAccountFeature! ) {
     allAzureCloudAccountTenants(feature: $cloud_account_features, includeSubscriptionDetails: true){
         azureCloudAccountTenantRubrikId
         domainName

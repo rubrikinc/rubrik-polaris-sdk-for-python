@@ -193,7 +193,7 @@ def _azure_subscription_ids(self, test_variable=None):
 
 def _cdm_cluster_id_validation(self, test_variable=None):
     if not test_variable:
-        raise ValidationException("cdm_cluster_id not specified: ".format(test_variable))
+        raise ValidationException("cdm_cluster_id not specified: {}".format(test_variable))
     if not _uuid_validation(test_variable=test_variable):
         raise ValidationException("{} is not a UUID".format(test_variable))
     return test_variable
@@ -211,6 +211,17 @@ def _host_list_validation(self, test_variable=None):
 def _rbs_port_ranges_validation(self, test_variable=None):
     if not test_variable:
         raise ValidationException("rbs_port_ranges not specified : {}".format(test_variable))
+
+    for k in ['portMin', 'portMax']:
+        v = test_variable.get(k)
+        if v is None or not isinstance(v, int):
+            raise ValidationException("rbs_port_ranges['{}'] must be an int: {}".format(k, test_variable))
+    return test_variable
+
+
+def _user_port_ranges_validation(self, test_variable=None):
+    if not test_variable:
+        raise ValidationException("user_port_ranges not specified : {}".format(test_variable))
 
     for k in ['portMin', 'portMax']:
         v = test_variable.get(k)
@@ -271,7 +282,7 @@ def to_boolean(self, value):
     if isinstance(value, str):
         if value.lower() == 'true':
             return True
-        elif value.lower() == 'false':
+        if value.lower() == 'false':
             return False
     raise ValueError(ERROR_MESSAGES['INVALID_BOOLEAN'])
 

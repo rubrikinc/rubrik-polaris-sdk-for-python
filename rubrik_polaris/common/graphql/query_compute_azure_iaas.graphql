@@ -1,12 +1,11 @@
-query RubrikPolarisSDKRequest($first: Int, $after: String, $sortBy: AzureNativeVirtualMachineSortFieldsEnum, $sortOrder: HierarchySortOrder, $filters: AzureNativeVirtualMachineFilters) {
-  azureNativeVirtualMachineConnection(first: $first, after: $after, sortBy: $sortBy, sortOrder: $sortOrder, virtualMachineFilters: $filters) {
+query RubrikPolarisSDKRequest($first: Int, $after: String, $sortBy: AzureNativeVirtualMachineSortFields, $sortOrder: HierarchySortOrder, $filters: AzureNativeVirtualMachineFilters) {
+  azureNativeVirtualMachines(first: $first, after: $after, sortBy: $sortBy, sortOrder: $sortOrder, virtualMachineFilters: $filters) {
     edges {
       node {
         id
         name
         resourceGroup {
           ...AzureResourceGroupFragment
-          ...AzureCommonResourceGroupFragment
         }
         region
         vnetName
@@ -44,27 +43,14 @@ query RubrikPolarisSDKRequest($first: Int, $after: String, $sortBy: AzureNativeV
   }
 }
 
-fragment AzureCommonResourceGroupFragment on AzureNativeCommonResourceGroupWithSla {
-  id
-  name
-  subscription {
-    id
-    name
-    status
-    nativeId
-    __typename
-  }
-  __typename
-}
-
 fragment AzureResourceGroupFragment on AzureNativeResourceGroup {
   id
   name
   subscription {
     id
     name
-    status
-    nativeId
+    azureSubscriptionStatus
+    azureSubscriptionNativeId
     __typename
   }
   __typename

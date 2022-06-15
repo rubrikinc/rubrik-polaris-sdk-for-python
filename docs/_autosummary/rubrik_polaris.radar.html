@@ -1,0 +1,351 @@
+<!doctype html>
+<html class="no-js">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/><link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" />
+
+    <link rel="shortcut icon" href="../_static/rubrik.ico"/><meta name="generator" content="sphinx-3.5.2, furo 2021.02.28.beta28"/>
+        <title>rubrik_polaris.radar package - Python documentation</title>
+      <link rel="stylesheet" href="../_static/rubrik.css">
+    <link rel="stylesheet" href="../_static/pygments.css">
+    <link media="(prefers-color-scheme: dark)" rel="stylesheet" href="../_static/pygments_dark.css">
+    
+
+
+<style>
+  :root {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+  }
+
+  /* For allowing end-user-specific overrides */
+  .override-light {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  .override-dark {
+    --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+  }
+</style><link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" href="../_static/styles/furo-extensions.css?digest=d391b54134226e4196576da3bdb6dddb7e05ba2b"></head>
+  <body dir="">
+    
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+      stroke-width="1.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+      <path stroke="none" d="M0 0h24v24H0z"/>
+      <line x1="4" y1="6" x2="20" y2="6" />
+      <line x1="10" y1="12" x2="20" y2="12" />
+      <line x1="6" y1="18" x2="20" y2="18" />
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+      class="feather feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+      class="feather feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">Python  documentation</div></a>
+    </div>
+    <div class="header-right">
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand centered" href="../index.html">
+  
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo" src="../_static/rubrik.png" alt="Logo"/>
+  </div>
+  
+  <span class="sidebar-brand-text">Python  documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html">
+  <input class="sidebar-search" placeholder=Search name="q">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul>
+<li class="toctree-l1"><a class="reference internal" href="../source/index.html">Reference</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Other</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Change Log</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/rubrikinc/rubrik-polaris-sdk-for-python">GitHub Repository</a></li>
+</ul>
+
+</div>
+</div>
+      </div>
+      
+    </div>
+  </aside>
+  <main class="main">
+    <div class="content">
+      <article role="main">
+        <label class="toc-overlay-icon toc-content-icon" for="__toc">
+          <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+        </label>
+        <div class="section" id="rubrik-polaris-radar-package">
+<h1>rubrik_polaris.radar package<a class="headerlink" href="#rubrik-polaris-radar-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-rubrik_polaris.radar.anomaly">
+<span id="rubrik-polaris-radar-anomaly-module"></span><h2>rubrik_polaris.radar.anomaly module<a class="headerlink" href="#module-rubrik_polaris.radar.anomaly" title="Permalink to this headline">¶</a></h2>
+<p>Collection of methods for analysis.</p>
+<dl class="py function">
+<dt id="rubrik_polaris.radar.anomaly.get_analysis_status">
+<code class="sig-prename descclassname"><span class="pre">rubrik_polaris.radar.anomaly.</span></code><code class="sig-name descname"><span class="pre">get_analysis_status</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">activity_series_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cluster_id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.radar.anomaly.get_analysis_status" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve the analysis status result.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>activity_series_id</strong> – The ID of the Polaris Event Series.</p></li>
+<li><p><strong>cluster_id</strong> – Cluster UUID for analysis.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Dictionary containing download link</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><a class="reference internal" href="rubrik_polaris.html#rubrik_polaris.exceptions.RequestException" title="rubrik_polaris.exceptions.RequestException"><strong>RequestException</strong></a> – If the query to Polaris returned an error</p>
+</dd>
+</dl>
+</dd></dl>
+</div>
+<div class="section" id="module-rubrik_polaris.radar.csv">
+<span id="rubrik-polaris-radar-csv-module"></span><h2>rubrik_polaris.radar.csv module<a class="headerlink" href="#module-rubrik_polaris.radar.csv" title="Permalink to this headline">¶</a></h2>
+<p>Collection of methods to obtain csv results.</p>
+<dl class="py function">
+<dt id="rubrik_polaris.radar.csv.get_csv_result">
+<code class="sig-prename descclassname"><span class="pre">rubrik_polaris.radar.csv.</span></code><code class="sig-name descname"><span class="pre">get_csv_result</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cluster_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snapshot_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snappable_id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.radar.csv.get_csv_result" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve the download link for the Radar CSV analyzed file .</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cluster_id</strong> (<em>str</em>) – Cluster ID for analysis.</p></li>
+<li><p><strong>snapshot_id</strong> (<em>str</em>) – Snapshot ID for analysis.</p></li>
+<li><p><strong>snappable_id</strong> (<em>str</em>) – Snappable(Object) ID for analysis.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Dictionary containing download link</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>ValueError</strong> – If input is invalid</p></li>
+<li><p><a class="reference internal" href="rubrik_polaris.html#rubrik_polaris.exceptions.RequestException" title="rubrik_polaris.exceptions.RequestException"><strong>RequestException</strong></a> – If the query to Polaris returned an error</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+</div>
+<div class="section" id="module-rubrik_polaris.radar.ioc">
+<span id="rubrik-polaris-radar-ioc-module"></span><h2>rubrik_polaris.radar.ioc module<a class="headerlink" href="#module-rubrik_polaris.radar.ioc" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="rubrik_polaris.radar.ioc.trigger_ioc_scan">
+<code class="sig-prename descclassname"><span class="pre">rubrik_polaris.radar.ioc.</span></code><code class="sig-name descname"><span class="pre">trigger_ioc_scan</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">object_ids</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cluster_id</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indicators_of_compromise</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">,</span> </span><span class="pre">list</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scan_name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_matches_per_snapshot</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snapshot_scan_limit</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maximum_file_size_to_scan</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">minimum_file_size_to_scan</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path_to_include</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path_to_exclude</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path_to_exempt</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">requested_hash_types</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.radar.ioc.trigger_ioc_scan" title="Permalink to this definition">¶</a></dt>
+<dd><p>Triggers an Radar IOC scan on multiple systems for specified IOC’s in a cluster.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>object_ids</strong> (<em>str|list</em>) – ID/ID’s of objects to scan.</p></li>
+<li><p><strong>cluster_id</strong> (<em>str</em>) – Cluster ID on which to run the IOC scan.</p></li>
+<li><p><strong>indicators_of_compromise</strong> (<em>dict|list</em>) – Indicators to scan for. Provide a single object or list of
+objects of type <cite>IndicatorOfCompromiseInput</cite>.</p></li>
+<li><p><strong>scan_name</strong> (<em>str</em>) – Name of the scan to trigger.</p></li>
+<li><p><strong>max_matches_per_snapshot</strong> (<em>int</em>) – Maximum number of matches per snapshot, per IOC.
+Scanning for an IOC within a snapshot
+will terminate once this many matches have been detected.</p></li>
+<li><p><strong>snapshot_scan_limit</strong> (<em>dict</em>) – Limit which snapshots to include in the malware scan.
+Provide input object of type <cite>MalwareScanSnapshotLimitInput</cite></p></li>
+<li><p><strong>maximum_file_size_to_scan</strong> (<em>int</em>) – Maximum size of file in bytes that will be included in scan.</p></li>
+<li><p><strong>minimum_file_size_to_scan</strong> (<em>int</em>) – Minimum size of file in bytes that will be included in scan.</p></li>
+<li><p><strong>path_to_include</strong> (<em>str|list</em>) – Paths that will be included in the scan.</p></li>
+<li><p><strong>path_to_exclude</strong> (<em>str|list</em>) – Paths that will be excluded from the scan.</p></li>
+<li><p><strong>path_to_exempt</strong> (<em>str|list</em>) – Paths that will be exempted from exclusion in the scan.</p></li>
+<li><p><strong>requested_hash_types</strong> (<em>str|list</em>) – <cite>HashTypeEnum</cite> type enum value.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Dictionary containing the scan results</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>ValueError</strong> – If input is invalid</p></li>
+<li><p><a class="reference internal" href="rubrik_polaris.html#rubrik_polaris.exceptions.RequestException" title="rubrik_polaris.exceptions.RequestException"><strong>RequestException</strong></a> – If the query to Polaris returned an error</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py function">
+<dt id="rubrik_polaris.radar.ioc.get_ioc_scan_list">
+<code class="sig-prename descclassname"><span class="pre">rubrik_polaris.radar.ioc.</span></code><code class="sig-name descname"><span class="pre">get_ioc_scan_list</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cluster_id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.radar.ioc.get_ioc_scan_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the list of Radar IOC scans on a cluster.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>cluster_id</strong> (<em>str</em>) – Cluster ID whose IOC scans are to be listed.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Dictionary containing the list of IOC scans</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>ValueError</strong> – If input is invalid</p></li>
+<li><p><a class="reference internal" href="rubrik_polaris.html#rubrik_polaris.exceptions.RequestException" title="rubrik_polaris.exceptions.RequestException"><strong>RequestException</strong></a> – If the query to Polaris returned an error</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py function">
+<dt id="rubrik_polaris.radar.ioc.get_ioc_scan_result">
+<code class="sig-prename descclassname"><span class="pre">rubrik_polaris.radar.ioc.</span></code><code class="sig-name descname"><span class="pre">get_ioc_scan_result</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scan_id</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cluster_id</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.radar.ioc.get_ioc_scan_result" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve the results of a Radar IOC scan.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>scan_id</strong> (<em>str</em>) – IOC scan ID.</p></li>
+<li><p><strong>cluster_id</strong> (<em>str</em>) – Cluster ID on which IOC scan was ran.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Dictionary containing the scan results</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>ValueError</strong> – If input is invalid</p></li>
+<li><p><a class="reference internal" href="rubrik_polaris.html#rubrik_polaris.exceptions.RequestException" title="rubrik_polaris.exceptions.RequestException"><strong>RequestException</strong></a> – If the query to Polaris returned an error</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+</div>
+<div class="section" id="module-rubrik_polaris.radar">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-rubrik_polaris.radar" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+      </article>
+      <footer>
+        
+        <div class="related-pages">
+          
+          
+        </div>
+
+        <div class="related-information">
+              Copyright &#169; 
+            |
+            Built with <a href="https://www.sphinx-doc.org/">Sphinx</a>
+              and
+              <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+              <a href="https://github.com/pradyunsg/furo">Furo theme</a>.
+            |
+            <a class="muted-link" href="../_sources/_autosummary/rubrik_polaris.radar.rst.txt"
+               rel="nofollow">
+              Show Source
+            </a>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            Contents
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">rubrik_polaris.radar package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-rubrik_polaris.radar.anomaly">rubrik_polaris.radar.anomaly module</a></li>
+<li><a class="reference internal" href="#module-rubrik_polaris.radar.csv">rubrik_polaris.radar.csv module</a></li>
+<li><a class="reference internal" href="#module-rubrik_polaris.radar.ioc">rubrik_polaris.radar.ioc module</a></li>
+<li><a class="reference internal" href="#module-rubrik_polaris.radar">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </main>
+</div>
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/main.js?digest=e931d09b2a40c1bb82b542effe772014573baf67"></script></body>
+</html>

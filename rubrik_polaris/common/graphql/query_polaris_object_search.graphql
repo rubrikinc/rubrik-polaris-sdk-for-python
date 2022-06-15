@@ -134,7 +134,7 @@ query RubrikPolarisSDKRequest($first: Int!, $filter: [Filter!]!, $sortBy: Hierar
             name
           }
         }
-        ... on GcpNativeGCEInstance {
+        ... on GcpNativeGceInstance {
           id
           gcpZone: zone
           gcpNativeProject {

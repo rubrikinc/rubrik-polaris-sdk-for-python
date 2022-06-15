@@ -1,5 +1,5 @@
-mutation RubrikPolarisSDKRequest($azure_tenant_domain_name: String!, $azure_cloud_type: AzureCloudTypeEnum!, $azure_regions: [AzureCloudAccountRegionEnum!]!, $feature: AddAzureCloudAccountFeatureInputWithoutOauth!, $subscription_name: String!, $subscription_id: String! ){
-    addAzureCloudAccountWithoutOAuth(input: {
+mutation RubrikPolarisSDKRequest($azure_tenant_domain_name: String!, $azure_cloud_type: AzureCloudType!, $azure_regions: [AzureCloudAccountRegion!]!, $feature: AddAzureCloudAccountFeatureInputWithoutOauth!, $subscription_name: String!, $subscription_id: String! ){
+    addAzureCloudAccountWithoutOauth(input: {
         tenantDomainName: $azure_tenant_domain_name,
         azureCloudType: $azure_cloud_type,
         subscriptions: {

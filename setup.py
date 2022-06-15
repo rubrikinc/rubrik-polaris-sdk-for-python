@@ -6,9 +6,10 @@ import setuptools
 
 
 name = 'Rubrik Polaris SDK for Python'
-version = '2021.01.08'
-release = '2021.01.08-beta'
+version = '2022.05.27'
+release = '2022.05.27-beta'
 author = 'Rubrik Inc'
+license = 'MIT'
 copyright = '{}, {}'.format(datetime.now().year, author)
 
 
@@ -23,10 +24,12 @@ setuptools.setup(
     name=name,
     version=version,
     author=author,
+    license=license,
     description='A Python package for interacting with the Rubrik Polaris API.',
     long_description=long_description,
     long_description_content_type='text/markdown',
     url='https://github.com/rubrikinc/rubrik-polaris-sdk-for-python',
+    keywords='rubrik polaris cdm api',
     packages=setuptools.find_packages(exclude=['tests']),
     classifiers=[
         'Intended Audience :: Information Technology',
