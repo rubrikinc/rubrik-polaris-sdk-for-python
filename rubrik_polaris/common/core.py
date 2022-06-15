@@ -406,9 +406,9 @@ def list_event_series(self, activity_status=None, activity_type=None, object_nam
         if cluster_id:
             filters_['cluster'] = {"id": cluster_id}
         if start_date:
-            filters_['lastUpdated_gt'] = start_date
+            filters_['lastUpdatedGt'] = start_date
         if end_date:
-            filters_['lastUpdated_lt'] = end_date
+            filters_['lastUpdatedLt'] = end_date
 
         variables = {
             "first": first,
