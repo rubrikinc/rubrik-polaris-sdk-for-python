@@ -330,7 +330,7 @@ def get_report_data(self, object_type=[], cluster_ids=[]):
                 },
             },
         }
-        response = self._query(query_name, variables)
+        response = self._query_paginated(query_name, variables)
         return response
     except Exception:
         raise
