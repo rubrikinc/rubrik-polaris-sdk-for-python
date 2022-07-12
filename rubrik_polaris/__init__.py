@@ -17,3 +17,16 @@
 #  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 #  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 #  DEALINGS IN THE SOFTWARE.
+"""Instantiates Polaris connection context
+Args:
+    domain (str): Polaris domain identifier.
+    username (str): Polaris username
+    password (str): Polaris password
+    root_domain (str): Polaris root domain only if not *.my.rubrik.com
+    insecure (bool): Allow unverified SSL keys
+    json_keyfile (str): Service account credential file (used exclusive of first 4 options.
+Returns:
+    object: Polaris connection context
+Raises:
+    RequestException: If the query to Polaris returned an error
+"""
