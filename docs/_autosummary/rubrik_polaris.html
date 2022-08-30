@@ -1267,7 +1267,7 @@ list – The complete set of AppFlows blueprints in a list of dictionaries.</p>
 <code class="sig-name descname"><span class="pre">validate_id</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id_</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.rubrik_polaris.PolarisClient.validate_id" title="Permalink to this definition">¶</a></dt>
 <dd><p>Performs validation for ID
 :param field_name: The field name for which validation is performed.
-:param <a href="#id1"><span class="problematic" id="id2">id_</span></a>: ID to validate.</p>
+:param <a href="#id3"><span class="problematic" id="id4">id_</span></a>: ID to validate.</p>
 <p>Returns: return without any error.</p>
 <p>Raises: ValueError exception</p>
 </dd></dl>
@@ -1782,7 +1782,7 @@ If not provided the root directory files will be returned.</p></li>
 <dt id="rubrik_polaris.rubrik_polaris.PolarisClient.export_vm_snapshot">
 <code class="sig-name descname"><span class="pre">export_vm_snapshot</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.rubrik_polaris.PolarisClient.export_vm_snapshot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Export a snapshot of a virtual machine.
-:param <a href="#id3"><span class="problematic" id="id4">id_</span></a>: The object ID.
+:param <a href="#id5"><span class="problematic" id="id6">id_</span></a>: The object ID.
 :param config: Configuration parameters for exporting snapshot.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -2286,6 +2286,30 @@ Provide input object of type <cite>MalwareScanSnapshotLimitInput</cite></p></li>
 </div>
 <div class="section" id="module-rubrik_polaris">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-rubrik_polaris" title="Permalink to this headline">¶</a></h2>
+<p>Instantiates Polaris connection context
+:param domain: Polaris domain identifier.
+:type domain: str
+:param username: Polaris username
+:type username: str
+:param password: Polaris password
+:type password: str
+:param root_domain: Polaris root domain only if not <a href="#id1"><span class="problematic" id="id2">*</span></a>.my.rubrik.com
+:type root_domain: str
+:param insecure: Allow unverified SSL keys
+:type insecure: bool
+:param json_keyfile: Service account credential file (used exclusive of first 4 options.
+:type json_keyfile: str</p>
+<dl class="field-list simple">
+<dt class="field-odd">returns</dt>
+<dd class="field-odd"><p>Polaris connection context</p>
+</dd>
+<dt class="field-even">rtype</dt>
+<dd class="field-even"><p>object</p>
+</dd>
+<dt class="field-odd">raises RequestException</dt>
+<dd class="field-odd"><p>If the query to Polaris returned an error</p>
+</dd>
+</dl>
 </div>
 </div>
 
