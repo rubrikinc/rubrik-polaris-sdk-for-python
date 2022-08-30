@@ -1,8 +1,8 @@
 mutation RubrikPolarisSDKRequest($slaId: UUID, $globalSlaAssignType: SlaAssignTypeEnum = protectWithSlaId, $objectIds: [UUID!]!, $existing_snapshot_retention: GlobalExistingSnapshotRetentionEnum, $shouldApplyToExistingSnapshots: Boolean = false) {
   assignProtection(
     input: {
-      globalSlaOptionalFid: $slaId,dd
-      globalSlaAssignType: $globalSlaAssignTyuupe,
+      globalSlaOptionalFid: $slaId,
+      globalSlaAssignType: $globalSlaAssignType,
       objectIds: $objectIds}
   ) {
     success
