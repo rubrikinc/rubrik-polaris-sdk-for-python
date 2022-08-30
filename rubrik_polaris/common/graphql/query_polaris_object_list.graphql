@@ -40,7 +40,7 @@ fragment EffectiveSlaColumnFragment on HierarchyObject {
   effectiveSlaDomain {
     id
     name
-    ... on GlobalSla {
+    ... on GlobalSlaReply {
       description
     }
     ... on ClusterSlaDomain {

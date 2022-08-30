@@ -1,9 +1,9 @@
 query RubrikPolarisSDKRequest($filter: [GlobalSlaFilterInput!]) {
-  globalSlaConnection(filter: $filter) {
+  slaDomains (filter: $filter) {
     edges {
       node {
         name
-        ... on GlobalSla {
+        ... on GlobalSlaReply {
           id
         }
       }

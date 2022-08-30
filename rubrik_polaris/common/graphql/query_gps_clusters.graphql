@@ -88,7 +88,7 @@ fragment ClusterGlobalManagerFragment on Cluster {
 
 fragment LambdaFeatureHistoryFragment on Cluster {
   lambdaFeatureHistory {
-    wasRadarEverEnabled
-    wasSonarEverEnabled
+    wasRansomwareInvestigationEverEnabled
+    wasSensitiveDataDiscoveryEverEnabled
   }
 }
