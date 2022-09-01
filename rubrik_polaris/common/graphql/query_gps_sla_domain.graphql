@@ -1,5 +1,5 @@
 query RubrikPolarisSDKRequest($after: String, $first: Int, $filter: [GlobalSlaFilterInput!], $sortBy: SLAQuerySortByFieldEnum, $sortOrder: SLAQuerySortByOrderEnum, $shouldShowProtectedObjectCount: Boolean) {
-  globalSlaConnection(
+  slaDomains(
     after: $after
     first: $first
     filter: $filter
@@ -112,7 +112,7 @@ query RubrikPolarisSDKRequest($after: String, $first: Int, $filter: [GlobalSlaFi
             }
           }
         }
-        ... on GlobalSla {
+        ... on GlobalSlaReply {
           id
           description
           protectedObjectCount
