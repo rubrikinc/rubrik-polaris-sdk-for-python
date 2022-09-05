@@ -21,7 +21,7 @@ query RubrikPolarisSDKRequest($first: Int, $after: String, $sortBy: AzureNativeV
               name
             }
           }
-          ... on GlobalSla {
+          ... on GlobalSlaReply {
               id
               name
           }

@@ -36,7 +36,7 @@ query RubrikPolarisSDKRequest($snappableId: String!, $first: Int, $after: String
                 name
               }
             }
-            ... on GlobalSla {
+            ... on GlobalSlaReply {
               id
             }
           }
@@ -86,7 +86,7 @@ query RubrikPolarisSDKRequest($snappableId: String!, $first: Int, $after: String
                 name
               }
             }
-            ... on GlobalSla {
+            ... on GlobalSlaReply {
               id
             }
           }

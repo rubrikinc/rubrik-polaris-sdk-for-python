@@ -20,7 +20,7 @@ query RubrikPolarisSDKRequest($first: Int, $after: String, $sortBy: GcpNativeGce
               name
             }
           }
-          ... on GlobalSla {
+          ... on GlobalSlaReply {
             id
             name
           }
