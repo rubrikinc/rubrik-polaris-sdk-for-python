@@ -43,7 +43,7 @@ def add_account_aws(self, aws_regions=[], all=False, aws_profiles=[], aws_access
         RequestException: If the query to Polaris returned an error
 
     Examples:
-        >>> rubrik.add_account_aws(aws_regions = ["us-east-1"], profiles = ["milanese"], cloud_account_features = ["CLOUD_NATIVE_PROTECTION"])
+        >>> rubrik.add_account_aws(aws_regions = ["us-east-1"], aws_profiles = ["milanese"], cloud_account_features = ["CLOUD_NATIVE_PROTECTION"])
         >>> rubrik.add_account_aws(aws_regions = ["us-east-1"], aws_access_key_id='blah', aws_secret_access_key='blah', cloud_account_features = ["CLOUD_NATIVE_PROTECTION"])
         >>> rubrik.add_account_aws(aws_regions = ["us-west-2"], all = True , cloud_account_features = ["CLOUD_NATIVE_PROTECTION"])
 

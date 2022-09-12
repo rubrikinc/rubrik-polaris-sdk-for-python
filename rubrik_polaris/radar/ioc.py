@@ -56,7 +56,7 @@ def trigger_ioc_scan(self, object_ids: Union[str, List[str]], cluster_id: str,
        path_to_include (str|list): Paths that will be included in the scan.
        path_to_exclude (str|list): Paths that will be excluded from the scan.
        path_to_exempt (str|list): Paths that will be exempted from exclusion in the scan.
-       requested_hash_types (str|list): `HashTypeEnum` type enum value.
+       requested_hash_types (str|list): `HashType` type enum value.
 
    Returns:
        dict: Dictionary containing the scan results
@@ -124,7 +124,7 @@ def trigger_ioc_scan(self, object_ids: Union[str, List[str]], cluster_id: str,
         if requested_hash_types:
             if not isinstance(requested_hash_types, list):
                 requested_hash_types = [requested_hash_types]
-            supported_hash_types = self.get_enum_values(name="HashTypeEnum")
+            supported_hash_types = self.get_enum_values(name="HashType")
             if not set(requested_hash_types).issubset(supported_hash_types):
                 raise ValueError(
                     ERROR_MESSAGES['INVALID_FIELD_TYPE'].format(requested_hash_types, 'requested_hash_types',
