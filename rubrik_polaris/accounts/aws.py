@@ -104,7 +104,7 @@ def _add_account_aws_commit(self, aws_regions=None, cloud_account_features=None,
         "aws_account_name": " : ".join(account_name_list),
         "aws_regions": aws_regions,
         "external_id": account_initiate_result['externalId'],
-        "feature_versions": account_initiate_result['featureVersionList'],
+        "feature_versions": account_initiate_result['featureVersions'],
         "stack_name": account_initiate_result['stackName'],
         "cloud_account_action": self.cloud_account_action,
         "cloud_account_features": self.cloud_account_features
