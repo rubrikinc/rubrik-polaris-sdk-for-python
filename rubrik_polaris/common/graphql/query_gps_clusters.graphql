@@ -1,4 +1,4 @@
-query RubrikPolarisSDKRequest($first: Int, $after: String, $filter: ClusterFilterInput, $sortBy: ClusterSortByEnum, $sortOrder: SortOrderEnum) {
+query RubrikPolarisSDKRequest($first: Int, $after: String, $filter: ClusterFilterInput, $sortBy: ClusterSortByEnum, $sortOrder: SortOrder) {
   clusterConnection(
     filter: $filter
     sortBy: $sortBy

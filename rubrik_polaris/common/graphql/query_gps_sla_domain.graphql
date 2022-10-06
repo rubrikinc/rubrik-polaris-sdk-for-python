@@ -1,4 +1,4 @@
-query RubrikPolarisSDKRequest($after: String, $first: Int, $filter: [GlobalSlaFilterInput!], $sortBy: SLAQuerySortByFieldEnum, $sortOrder: SLAQuerySortByOrderEnum, $shouldShowProtectedObjectCount: Boolean) {
+query RubrikPolarisSDKRequest($after: String, $first: Int, $filter: [GlobalSlaFilterInput!], $sortBy: SlaQuerySortByField, $sortOrder: SortOrder, $shouldShowProtectedObjectCount: Boolean) {
   slaDomains(
     after: $after
     first: $first

@@ -1,4 +1,4 @@
-query RubrikPolarisSDKRequest($first: Int!, $filter: SnappableFilterInput, $after: String, $sortBy: SnappableSortByEnum, $sortOrder: SortOrderEnum) {
+query RubrikPolarisSDKRequest($first: Int!, $filter: SnappableFilterInput, $after: String, $sortBy: SnappableSortByEnum, $sortOrder: SortOrder) {
   snappableConnection(first: $first, filter: $filter, after: $after, sortBy: $sortBy, sortOrder: $sortOrder) {
     edges {
       cursor
