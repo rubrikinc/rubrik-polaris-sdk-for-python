@@ -12,7 +12,7 @@ query RubrikPolarisSDKRequest($hostId: UUID!, $first: Int, $after: String, $filt
                 node {
                     id
                     ...HierarchyObjectNameColumnFragment
-                    ... on VSphereDatastore {
+                    ... on VsphereDatastore {
                         capacity
                         isLocal
                         freeSpace

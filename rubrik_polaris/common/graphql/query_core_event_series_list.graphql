@@ -1,4 +1,4 @@
-query RubrikPolarisSDKRequest($after: String, $filters: ActivitySeriesFilterInput, $first: Int, $sortBy: ActivitySeriesSortByEnum, $sortOrder: SortOrderEnum) {
+query RubrikPolarisSDKRequest($after: String, $filters: ActivitySeriesFilter, $first: Int, $sortBy: ActivitySeriesSortField, $sortOrder: SortOrder) {
     activitySeriesConnection(after: $after, first: $first, filters: $filters, sortBy: $sortBy, sortOrder: $sortOrder) {
         edges {
             node {
