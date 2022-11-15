@@ -1,5 +1,5 @@
 mutation RubrikPolarisSDKRequest($kupr_cluster_id: UUID!) {
-    refreshK8sCluster(k8sClusterRefreshRequest: {
+    refreshK8sCluster(input: {
         k8sClusterId:  $kupr_cluster_id
     }){
         taskchainId
