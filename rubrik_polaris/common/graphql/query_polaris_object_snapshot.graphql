@@ -1,6 +1,6 @@
 query RubrikPolarisSDKRequest($snappableId: String!, $first: Int, $after: String, $snapshotFilter: [SnapshotQueryFilterInput!], $sortBy: SnapshotQuerySortByField, $sortOrder: SortOrder, $timeRange: TimeRangeInput) {
   snapshotsListConnection: snapshotOfASnappableConnection(
-    snappableId: $snappableId
+    workloadId: $snappableId
     first: $first
     after: $after
     snapshotFilter: $snapshotFilter

@@ -17,7 +17,7 @@ query RubrikPolarisSDKRequest($id: UUID!) {
             name
         }
         protectionDate
-        reportSnappable {
+        reportSnappable : reportWorkload {
             id
             logicalBytes
             physicalBytes

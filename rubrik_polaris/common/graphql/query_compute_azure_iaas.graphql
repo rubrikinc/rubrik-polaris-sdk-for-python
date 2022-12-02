@@ -1,4 +1,4 @@
-query RubrikPolarisSDKRequest($first: Int, $after: String, $sortBy: AzureNativeVirtualMachineSortFields, $sortOrder: HierarchySortOrder, $filters: AzureNativeVirtualMachineFilters) {
+query RubrikPolarisSDKRequest($first: Int, $after: String, $sortBy: AzureNativeVirtualMachineSortFields, $sortOrder: SortOrder, $filters: AzureNativeVirtualMachineFilters) {
   azureNativeVirtualMachines(first: $first, after: $after, sortBy: $sortBy, sortOrder: $sortOrder, virtualMachineFilters: $filters) {
     edges {
       node {
