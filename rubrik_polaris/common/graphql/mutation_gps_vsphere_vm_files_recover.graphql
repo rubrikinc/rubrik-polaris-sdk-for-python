@@ -1,5 +1,5 @@
 mutation RubrikPolarisSDKRequest($clusterUuid: UUID!, $id: String!, $config: RestoreFilesJobConfigInput!) {
-    vsphereVMRecoverFilesNew(clusterUuid: $clusterUuid, id: $id, config: $config) {
+    vsphereVmRecoverFilesNew(input: { clusterUuid: $clusterUuid, id: $id, config: $config }) {
         id
     }
 }

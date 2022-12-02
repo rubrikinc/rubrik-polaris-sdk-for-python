@@ -1,15 +1,15 @@
 mutation RubrikPolarisSDKRequest(
     $snapshotFid: UUID!
     $paths: [String!]!
-    $deltaTypeFilter: [DeltaTypeEnum!]
+    $deltaTypeFilter: [DeltaType!]
     $nextSnapshotFid: UUID
   ) {
-    vsphereVMDownloadSnapshotFiles(
+    vsphereVmDownloadSnapshotFiles(input: {
       snapshotFid: $snapshotFid
       paths: $paths
       deltaTypeFilter: $deltaTypeFilter
       nextSnapshotFid: $nextSnapshotFid
-    ) {
+    }) {
       id
       status
       links {
@@ -18,3 +18,4 @@ mutation RubrikPolarisSDKRequest(
       }
     }
   }
+

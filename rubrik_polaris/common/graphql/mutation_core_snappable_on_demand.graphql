@@ -1,11 +1,11 @@
 mutation RubrikPolarisSDKRequest($slaId: String!, $objectIds: [UUID!]!) {
-  takeOnDemandSnapshot(slaId: $slaId, snappableIds: $objectIds) {
+  takeOnDemandSnapshot(input: {slaId: $slaId, workloadIds: $objectIds}) {
     taskchainUuids {
-      snappableId
+      workloadId
       taskchainUuid
     }
     errors {
-      snappableId
+      workloadId
       error
     }
   }

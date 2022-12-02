@@ -1,4 +1,4 @@
-query RubrikPolarisSDKRequest($first: Int!, $after: String, $filter: [Filter!]!, $sortBy: HierarchySortByField, $sortOrder: HierarchySortOrder) {
+query RubrikPolarisSDKRequest($first: Int!, $after: String, $filter: [Filter!]!, $sortBy: HierarchySortByField, $sortOrder: SortOrder) {
     vSphereVmNewConnection(filter: $filter, first: $first, after: $after, sortBy: $sortBy, sortOrder: $sortOrder) {
         edges {
             node {
@@ -25,7 +25,7 @@ query RubrikPolarisSDKRequest($first: Int!, $after: String, $filter: [Filter!]!,
                     scheduledCount
                     totalCount
                 }
-                reportSnappable {
+                reportSnappable : reportWorkload {
                     id
                     archiveStorage
                     physicalBytes
