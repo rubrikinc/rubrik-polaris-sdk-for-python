@@ -23,16 +23,28 @@
 Collection of functions that manipulate vSphere compute components
 """
 
-
 def get_compute_object_ids_vsphere(self, match_all=True, **kwargs):
     """Retrieves all vSphere objects that match query
 
     Arguments:
         match_all {bool} -- Set to false to match ANY defined criteria
         kwargs {} -- Any top level object from the get_compute_ec2 call
+    Raises:
+        RequestException: If the query to Polaris returned an error
     """
     try:
-        return self._get_object_ids_instances(self.get_instances_vsphere(), kwargs, match_all=match_all)
+        object_ids = []
+        num_criteria = len(kwargs)
+        for instance in self.get_compute_vsphere():
+            num_unmatched_criteria = num_criteria
+            for key in kwargs:
+                if key in instance and instance[key] == kwargs[key]:
+                    num_unmatched_criteria -= 1
+            if match_all and num_unmatched_criteria == 0:
+                object_ids.append(instance['id'])
+            elif not match_all and num_criteria > num_unmatched_criteria >= 1:
+                object_ids.append(instance['id'])
+        return object_ids
     except Exception:
         raise
 
