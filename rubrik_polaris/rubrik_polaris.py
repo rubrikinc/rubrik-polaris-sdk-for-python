@@ -54,7 +54,7 @@ class PolarisClient:
         submit_compute_restore_ec2
     from .compute.azurevm import get_compute_object_ids_azure, get_compute_azure, submit_compute_restore_azure
     from .compute.gce import get_compute_object_ids_gce, get_compute_gce, submit_compute_restore_gce
-    from .compute.vsphere import get_compute_vsphere, get_compute_object_ids_vsphere, get_compute_vsphere_list
+    from .compute.vsphere import get_compute_vsphere
     from .storage.ebs import get_storage_object_ids_ebs, get_storage_ebs
     from .common.graphql import get_enum_values
     from .cluster import get_cdm_cluster_location, get_cdm_cluster_connection_status
