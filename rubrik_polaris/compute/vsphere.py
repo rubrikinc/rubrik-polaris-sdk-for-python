@@ -67,3 +67,23 @@ def get_compute_vsphere(self):
         return self._query(query_name, variables)
     except Exception:
         raise
+
+
+def get_compute_vsphere_list(self, filter=None):
+    """Retrieves all VMware VM object details (Under development)
+
+    Returns:
+        dict: details of VMware VM objects
+
+    Raises:
+        RequestException: If the query to Polaris returned an error
+    """
+    try:
+        query_name = "compute_vmware_vsphere_list"
+        # self._validate(
+        #     query_name=query_name
+        # )
+        variables = {"filter": filter, "first": 500}
+        return self._query(query_name, variables)
+    except Exception:
+        raise
