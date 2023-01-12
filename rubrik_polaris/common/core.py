@@ -375,19 +375,19 @@ def list_event_series(self, activity_status=None, activity_type=None, object_nam
         if activity_status:
             activity_status = [x.strip() for x in activity_status.split(',')]
             filters_['lastActivityStatus'] = self.check_enum(value=activity_status, field_name="activity_status",
-                                                             enum_name="ActivityStatusEnum")
+                                                             enum_name="EventStatus")
         if activity_type:
             activity_type = [x.strip() for x in activity_type.split(',')]
             filters_['lastActivityType'] = self.check_enum(value=activity_type, field_name="activity_type",
-                                                           enum_name="ActivityTypeEnum")
+                                                           enum_name="EventType")
         if object_type:
             object_type = [x.strip() for x in object_type.split(',')]
             filters_['objectType'] = self.check_enum(value=object_type, field_name="object_type",
-                                                     enum_name="ActivityObjectTypeEnum")
+                                                     enum_name="EventObjectType")
         if severity:
             severity = [x.strip() for x in severity.split(',')]
             filters_['severity'] = self.check_enum(value=severity, field_name="severity",
-                                                   enum_name="ActivitySeverityEnum")
+                                                   enum_name="EventSeverity")
         if cluster_id:
             cluster_id = [x.strip() for x in cluster_id.split(',')]
 
@@ -404,11 +404,11 @@ def list_event_series(self, activity_status=None, activity_type=None, object_nam
         if object_name:
             filters_['objectName'] = object_name
         if cluster_id:
-            filters_['cluster'] = {"id": cluster_id}
+            filters_['clusterId'] = cluster_id
         if start_date:
-            filters_['lastUpdatedGt'] = start_date
+            filters_['lastUpdatedTimeGt'] = start_date
         if end_date:
-            filters_['lastUpdatedLt'] = end_date
+            filters_['lastUpdatedTimeLt'] = end_date
 
         variables = {
             "first": first,

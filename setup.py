@@ -6,8 +6,8 @@ import setuptools
 
 
 name = 'Rubrik Polaris SDK for Python'
-version = '2022.05.27'
-release = '2022.05.27-beta'
+version = '2023.01.12'
+release = '2023.01.12-beta'
 author = 'Rubrik Inc'
 license = 'MIT'
 copyright = '{}, {}'.format(datetime.now().year, author)
