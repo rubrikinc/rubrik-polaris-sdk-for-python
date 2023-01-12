@@ -71,7 +71,7 @@ def list_clusters(self, first: int = None, after: str = None, filters: dict = No
             variables['sortBy'] = sort_by
 
         if sort_order:
-            supported_sla_sort_order = self.get_enum_values(name="SortOrderEnum")
+            supported_sla_sort_order = self.get_enum_values(name="SortOrder")
             if sort_order not in supported_sla_sort_order:
                 raise ValueError(
                     ERROR_MESSAGES['INVALID_FIELD_TYPE'].format(sort_order, 'sort_order', supported_sla_sort_order))

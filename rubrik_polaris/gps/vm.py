@@ -167,7 +167,7 @@ def list_vsphere_hosts(self, first: int, after: str = None, filters: list = None
             variables['sortBy'] = sort_by
 
         if sort_order:
-            supported_sla_sort_order = self.get_enum_values(name="HierarchySortOrder")
+            supported_sla_sort_order = self.get_enum_values(name="SortOrder")
             if sort_order not in supported_sla_sort_order:
                 raise ValueError(
                     ERROR_MESSAGES['INVALID_FIELD_TYPE'].format(sort_order, 'sort_order', supported_sla_sort_order))
@@ -268,7 +268,7 @@ def list_vsphere_datastores(self, host_id: str, first: int = None, after: str = 
             variables['sortBy'] = sort_by
 
         if sort_order:
-            supported_sla_sort_order = self.get_enum_values(name="HierarchySortOrder")
+            supported_sla_sort_order = self.get_enum_values(name="SortOrder")
             if sort_order not in supported_sla_sort_order:
                 raise ValueError(
                     ERROR_MESSAGES['INVALID_FIELD_TYPE'].format(sort_order, 'sort_order', supported_sla_sort_order))

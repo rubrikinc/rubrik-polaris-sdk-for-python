@@ -51,7 +51,7 @@ def get_csv_download(self, snapshot_id, snappable_id, filters=None):
         if filters:
             if filters.get("fileType"):
                 file_type = filters.get("fileType")
-                file_type_enum = self.get_enum_values(name="FileCountTypeEnum")
+                file_type_enum = self.get_enum_values(name="FileCountType")
                 if file_type not in file_type_enum:
                     raise ValueError(ERROR_MESSAGES['INVALID_FIELD_TYPE'].format(file_type, "file type", file_type_enum))
 

@@ -396,7 +396,7 @@ def list_event_series(self, activity_status=None, activity_type=None, object_nam
             raise ValueError(ERROR_MESSAGES['INVALID_FIELD_TYPE'].format(
                     sort_by, "sort_by", sort_by_enum))
 
-        sort_order_enum = self.get_enum_values("SortOrderEnum")
+        sort_order_enum = self.get_enum_values("SortOrder")
         if sort_order and sort_order not in sort_order_enum:
             raise ValueError(ERROR_MESSAGES['INVALID_FIELD_TYPE'].format(
                 sort_order, "sort_order", sort_order_enum))
