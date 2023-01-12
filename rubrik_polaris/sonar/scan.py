@@ -109,7 +109,7 @@ def get_on_demand_scan_result(self, crawl_id, filters):
             raise ValueError(ERROR_MESSAGES['MISSING_PARAMETERS_IN_SCAN_RESULT'])
 
         file_type = filters.get('fileType')
-        file_type_enum = self.get_enum_values(name="FileCountTypeEnum")
+        file_type_enum = self.get_enum_values(name="FileCountType")
         if file_type not in file_type_enum:
             raise ValueError(ERROR_MESSAGES['INVALID_FILE_TYPE'].format(file_type, file_type_enum))
 
