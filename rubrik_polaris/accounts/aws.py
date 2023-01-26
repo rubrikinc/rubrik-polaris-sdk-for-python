@@ -78,7 +78,10 @@ def _add_account_aws(self, aws_regions=[], cloud_account_features=None, profile=
         account_name_list.append(profile)
 
     try:
-        account_initiate_result = _add_account_aws_initiate(self, cloud_account_features=cloud_account_features, account_name_list=account_name_list, aws_account_id=aws_account_id)['initiateResponse']
+        resp = _add_account_aws_initiate(self, cloud_account_features=cloud_account_features, account_name_list=account_name_list, aws_account_id=aws_account_id)
+        account_initiate_result = resp['initiateResponse']
+        if not account_initiate_result:
+            raise Exception("Failed to add account: {}".format(resp['validateResponse']))
         account_commit_result = _add_account_aws_commit(self, cloud_account_features=cloud_account_features, account_name_list=account_name_list, aws_account_id=aws_account_id, account_initiate_result=account_initiate_result, aws_regions=aws_regions)
     except Exception:
         raise
