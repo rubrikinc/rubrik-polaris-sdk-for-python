@@ -391,7 +391,7 @@ def list_event_series(self, activity_status=None, activity_type=None, object_nam
         if cluster_id:
             cluster_id = [x.strip() for x in cluster_id.split(',')]
 
-        sort_by_enum = self.get_enum_values("ActivitySeriesSortByEnum")
+        sort_by_enum = self.get_enum_values("ActivitySeriesSortField")
         if sort_by and sort_by not in sort_by_enum:
             raise ValueError(ERROR_MESSAGES['INVALID_FIELD_TYPE'].format(
                     sort_by, "sort_by", sort_by_enum))
