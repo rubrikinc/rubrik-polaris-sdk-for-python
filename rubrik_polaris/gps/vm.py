@@ -95,6 +95,77 @@ def create_vm_livemount(self, snapshot_fid: str, host_id: str = None, vm_name: s
     except Exception:
         raise
 
+def create_vm_livemount_v2(self, snappable_id: str, should_recover_tags: bool, power_on: bool, keep_mac_addresses: bool,
+                           remove_network_devices: bool, host_id: str = None, cluster_id: str = None, resource_pool_id: str = None,
+                           snapshot_fid: str = None, vm_name: str = None, vnic_bindings: dict = None, recovery_point: str = None):
+    """
+    Perform a live mount of a virtual machine snapshot.
+        When the snapshot ID is passed without a timestamp, this endpoint triggers a live mount using the given snapshot ID.
+        When this endpoint is passed a recovery point or a recovery point and snapshot ID, the endpoint triggers a live mount using the point in time (PIT) for recovery.
+        Calling this endpoint without a recovery point or a snapshot ID triggers a PIT live mount that uses the most recent time or snapshot available.
+    Args:
+        snappable_id: The snappable ID.
+        should_recover_tags: Whether to recover tags.
+        power_on: Whether to power on.
+        keep_mac_addresses: Whether to keep MAC addresses.
+        remove_network_devices: Whether to remove network interfaces from the VM.
+        host_id: ID of the ESXi host to mount the new VM on.
+        cluster_id: ID of the compute cluster where the new VM will be mounted.
+        resource_pool_id: ID of the resource pool where the new VM will be mounted.
+        snapshot_fid: ID of the snapshot to recover.
+        vm_name: Name of the new VM.
+        vnic_bindings: List of network bindings for vNIC of the VM. e.g.:
+            [
+              {
+                "backingNetworkInfo": {
+                  "moid": <string>,
+                  "name": <string>
+                },
+                "networkDeviceInfo": {
+                  "key": <int>,
+                  "name": <string>
+                }
+              }
+            ]
+        recovery_point: Point in time to recover to, e.g.: "2023-03-04T05:06:07.890"
+    """
+    try:
+        snappable_id = self.validate_id(snappable_id, "snappable_id")
+
+        query_name = "gps_vm_livemount_v2"
+        variables = {
+            'snappableId': snappable_id
+        }
+        variables['shouldRecoverTags'] = self.to_boolean(should_recover_tags)
+        variables['keepMacAddresses'] = self.to_boolean(keep_mac_addresses)
+        variables['powerOn'] = self.to_boolean(power_on)
+        variables['removeNetworkDevices'] = self.to_boolean(remove_network_devices)
+
+        if host_id:
+            variables['hostId'] = host_id
+
+        if cluster_id:
+            variables['clusterId'] = cluster_id
+
+        if resource_pool_id:
+            variables['resourcePoolId'] = resource_pool_id
+
+        if snapshot_fid:
+            variables['snapshotFid'] = snapshot_fid
+
+        if vm_name:
+            variables['vmName'] = vm_name
+
+        if vnic_bindings:
+            variables['vNicBindings'] = vnic_bindings
+
+        if recovery_point:
+            variables['recoveryPoint'] = recovery_point
+
+        response = self._named_raw_query(query_name=query_name, variables=variables)
+        return response
+    except Exception:
+        raise
 
 def create_vm_snapshot(self, snapshot_id: str, sla_id: str = None):
     """
