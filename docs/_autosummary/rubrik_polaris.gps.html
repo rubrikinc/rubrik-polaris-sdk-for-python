@@ -294,6 +294,55 @@ If not provided the root directory files will be returned.</p></li>
 </dl>
 </dd></dl>
 <dl class="py function">
+<dt id="rubrik_polaris.gps.vm.create_vm_livemount_v2">
+<code class="sig-prename descclassname"><span class="pre">rubrik_polaris.gps.vm.</span></code><code class="sig-name descname"><span class="pre">create_vm_livemount_v2</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snappable_id</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">should_recover_tags</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">power_on</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keep_mac_addresses</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remove_network_devices</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">host_id</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cluster_id</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resource_pool_id</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snapshot_fid</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vm_name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vnic_bindings</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">recovery_point</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.gps.vm.create_vm_livemount_v2" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Perform a live mount of a virtual machine snapshot.</dt><dd><p>When the snapshot ID is passed without a timestamp, this endpoint triggers a live mount using the given snapshot ID.
+When this endpoint is passed a recovery point or a recovery point and snapshot ID, the endpoint triggers a live mount using the point in time (PIT) for recovery.
+Calling this endpoint without a recovery point or a snapshot ID triggers a PIT live mount that uses the most recent time or snapshot available.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>snappable_id</strong> – The snappable ID.</p></li>
+<li><p><strong>should_recover_tags</strong> – Whether to recover tags.</p></li>
+<li><p><strong>power_on</strong> – Whether to power on.</p></li>
+<li><p><strong>keep_mac_addresses</strong> – Whether to keep MAC addresses.</p></li>
+<li><p><strong>remove_network_devices</strong> – Whether to remove network interfaces from the VM.</p></li>
+<li><p><strong>host_id</strong> – ID of the ESXi host to mount the new VM on.</p></li>
+<li><p><strong>cluster_id</strong> – ID of the compute cluster where the new VM will be mounted.</p></li>
+<li><p><strong>resource_pool_id</strong> – ID of the resource pool where the new VM will be mounted.</p></li>
+<li><p><strong>snapshot_fid</strong> – ID of the snapshot to recover.</p></li>
+<li><p><strong>vm_name</strong> – Name of the new VM.</p></li>
+<li><p><strong>vnic_bindings</strong> – <p>List of network bindings for vNIC of the VM. e.g.:
+[</p>
+<blockquote>
+<div><dl>
+<dt>{</dt><dd><dl class="simple">
+<dt>“backingNetworkInfo”: {</dt><dd><p>“moid”: &lt;string&gt;,
+“name”: &lt;string&gt;</p>
+</dd>
+</dl>
+<p>},
+“networkDeviceInfo”: {</p>
+<blockquote>
+<div><p>”key”: &lt;int&gt;,
+“name”: &lt;string&gt;</p>
+</div></blockquote>
+<p>}</p>
+</dd>
+</dl>
+<p>}</p>
+</div></blockquote>
+<p>]</p>
+</p></li>
+<li><p><strong>recovery_point</strong> – Point in time to recover to, e.g.: “2023-03-04T05:06:07.890”</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py function">
 <dt id="rubrik_polaris.gps.vm.create_vm_snapshot">
 <code class="sig-prename descclassname"><span class="pre">rubrik_polaris.gps.vm.</span></code><code class="sig-name descname"><span class="pre">create_vm_snapshot</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snapshot_id</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sla_id</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rubrik_polaris.gps.vm.create_vm_snapshot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create snapshot of a system.

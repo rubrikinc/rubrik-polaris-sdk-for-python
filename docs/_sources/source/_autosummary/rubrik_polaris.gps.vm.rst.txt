@@ -1,4 +1,4 @@
-rubrik\_polaris.gps.vm
+﻿rubrik\_polaris.gps.vm
 ======================
 
 .. automodule:: rubrik_polaris.gps.vm
@@ -14,6 +14,7 @@ rubrik\_polaris.gps.vm
    .. autosummary::
    
       create_vm_livemount
+      create_vm_livemount_v2
       create_vm_snapshot
       export_vm_snapshot
       get_async_request_result
