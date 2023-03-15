@@ -67,7 +67,7 @@ class PolarisClient:
     from .radar.csv import get_csv_result
     from .sonar.csv import get_csv_download, get_csv_result_download
     from .gps.files import get_snapshot_files, request_download_snapshot_files
-    from .gps.vm import create_vm_snapshot, create_vm_livemount, list_vsphere_hosts, export_vm_snapshot, \
+    from .gps.vm import create_vm_snapshot, create_vm_livemount, create_vm_livemount_v2, list_vsphere_hosts, export_vm_snapshot, \
         list_vsphere_datastores, get_async_request_result, recover_vsphere_vm_files
     from .gps.sla import list_sla_domains
     from .gps.cluster import list_clusters
