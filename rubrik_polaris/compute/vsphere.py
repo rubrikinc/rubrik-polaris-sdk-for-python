@@ -37,7 +37,7 @@ def get_compute_object_ids_vsphere(self, match_all=True, **kwargs):
         raise
 
 
-def get_compute_vsphere(self):
+def get_compute_vsphere(self, vmid=None):
     """Retrieves all VMware VM object details (Under development)
 
     Returns:
@@ -46,12 +46,22 @@ def get_compute_vsphere(self):
     Raises:
         RequestException: If the query to Polaris returned an error
     """
-    try:
-        query_name = "compute_vmware_vsphere"
-        # self._validate(
-        #     query_name=query_name
-        # )
-        variables = {"filter": [], "first": 500}
+    if vmid:
+        query_name = "compute_vmware_vsphere_detail"
+        self._validate(
+            query_name=query_name
+        )
+        variables = {"object_id": vmid}
         return self._query(query_name, variables)
-    except Exception:
-        raise
+    else:
+        try:
+            query_name = "compute_vmware_vsphere"
+            # self._validate(
+            #     query_name=query_name
+            # )
+            variables = {"filter": [], "first": 500}
+            return self._query(query_name, variables)
+        except Exception:
+            raise
+
+

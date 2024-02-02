@@ -53,9 +53,7 @@ setuptools.setup(
         'httplib2 <1dev, >=0.15.0'
     ],
     include_package_data=True,
-    data_files = [
-        ('rubrik_polaris/graphql', glob('rubrik_polaris/common/graphql/*'))
-    ],
+    package_data={'rubrik_polaris/graphql': ['common/graphql/*.graphql']},
     tests_require=[
         'pytest'
     ],

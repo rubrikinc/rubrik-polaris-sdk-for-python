@@ -24,6 +24,7 @@ Collection of methods that interact with the raw GraphQL.
 """
 
 import re
+import sys
 
 def _build_graphql_maps(self):
     from os import listdir
