@@ -36,8 +36,12 @@ def _build_graphql_maps(self):
     file_mutation_prefix = 'mutation'
     file_suffix = '.graphql'
 
-    graphql_files = [f for f in listdir(self._data_path)
+    try:
+        graphql_files = [f for f in listdir(self._data_path)
                      if isfile(join(self._data_path, f)) and f.endswith(file_suffix)]
+    except:
+        print("Unexpected error:", sys.exc_info()[0])
+        raise
 
     for f in graphql_files:
         query_name = f.replace(file_suffix, '')
