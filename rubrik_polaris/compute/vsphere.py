@@ -46,22 +46,21 @@ def get_compute_vsphere(self, vmid=None):
     Raises:
         RequestException: If the query to Polaris returned an error
     """
-    if vmid:
-        query_name = "compute_vmware_vsphere_detail"
-        self._validate(
-            query_name=query_name
-        )
-        variables = {"object_id": vmid}
-        return self._query(query_name, variables)
-    else:
-        try:
-            query_name = "compute_vmware_vsphere"
-            # self._validate(
-            #     query_name=query_name
-            # )
-            variables = {"filter": [], "first": 500}
+    try:
+        if vmid:
+            query_name = "compute_vmware_vsphere_detail"
+            self._validate(
+                query_name=query_name
+            )
+            variables = {"object_id": vmid}
             return self._query(query_name, variables)
-        except Exception:
-            raise
+        query_name = "compute_vmware_vsphere"
+        # self._validate(
+        #     query_name=query_name
+        # )
+        variables = {"filter": [], "first": 500}
+        return self._query(query_name, variables)
+    except Exception:
+        raise
 
 
