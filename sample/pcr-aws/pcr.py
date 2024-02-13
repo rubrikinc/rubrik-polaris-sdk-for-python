@@ -1,5 +1,14 @@
 #! /usr/bin/env python3
-import argparse, base64, boto3, docker, json, logging, os, pprint, subprocess, sys
+import argparse
+import base64
+import boto3
+import docker
+import json
+import logging
+import os
+import pprint
+import subprocess
+import sys
 from rubrik_polaris.rubrik_polaris import PolarisClient
 
 pp = pprint.PrettyPrinter(indent=2)
@@ -33,7 +42,7 @@ try:
 ### Instantiate with username/password
         rubrik = PolarisClient(domain=args.domain, username=args.username, password=args.password, root_domain=args.root_domain,
                                       insecure=args.insecure)
-        
+
 except Exception as err:
     print(err)
     sys.exit(1)
@@ -45,7 +54,7 @@ rscEcrClient = boto3.client('ecr', region_name="us-east-1")
 # Setup Docker client
 
 dockerClient = docker.from_env()
-docker_api_client = docker.APIClient(base_url='unix://var/run/docker.sock') 
+docker_api_client = docker.APIClient(base_url='unix://var/run/docker.sock')
 
 # Get Exocompute Bundle (containers)
 
@@ -80,7 +89,7 @@ print("")
 
 try:
     rscEcrToken = rscEcrClient.get_authorization_token(registryIds=[rscRepoFqdn.split('.')[0]])
-except Exception as err: 
+except Exception as err:
     print("Error: Unable to get RSC ECR token.")
     print(err)
     sys.exit(1)
@@ -103,27 +112,25 @@ for bundleImages in exoTaskImageBundle['data']['exotaskImageBundle']['bundleImag
 #       CLI example: "docker pull <Rubrik_ECR_AWS_Account_ID>.dkr.ecr.us-east-1.amazonaws.com/<build_image_name>:<tag>"
         print("Pulling " + bundleImages['name'] + " with tag " + bundleImages['tag'])
         try:
-          #response = dockerClient.images.pull(rscRepoFqdn + '/' + bundleImages['name'], tag=bundleImages['tag'])
-          for line in docker_api_client.pull(rscRepoFqdn + '/' + bundleImages['name'], tag=bundleImages['tag'], stream=True, auth_config=rsc_auth_config_payload, decode=True):
-            print(line)
-            logging.info(json.dumps(line, indent=2))
+            for line in docker_api_client.pull(rscRepoFqdn + '/' + bundleImages['name'], tag=bundleImages['tag'], stream=True, auth_config=rsc_auth_config_payload, decode=True):
+                print(line)
+                logging.info(json.dumps(line, indent=2))
 
         except Exception as err:
-          print("Error: Image pull failed for " + bundleImages['name'] + " with tag " + bundleImages['tag'])
-          print(err)
-          sys.exit(1)
+            print("Error: Image pull failed for " + bundleImages['name'] + " with tag " + bundleImages['tag'])
+            print(err)
+            sys.exit(1)
     elif bundleImages['sha']:
 #       CLI example: "docker pull <Rubrik_ECR_AWS_Account_ID>.dkr.ecr.us-east-1.amazonaws.com/<build_image_name>@sha256:<sha>"
         print("Pulling " + bundleImages['name'] + " with sha " + bundleImages['sha'])
         try:
-          #response = dockerClient.images.pull(rscRepoFqdn + '/' + bundleImages['name'], tag="sha256:" + bundleImages['sha'])
-          for line in docker_api_client.pull(rscRepoFqdn + '/' + bundleImages['name'], tag="sha256:" + bundleImages['sha'], stream=True, auth_config=rsc_auth_config_payload, decode=True):
-            print(line)
-            logging.info(json.dumps(line, indent=2))
+            for line in docker_api_client.pull(rscRepoFqdn + '/' + bundleImages['name'], tag="sha256:" + bundleImages['sha'], stream=True, auth_config=rsc_auth_config_payload, decode=True):
+                print(line)
+                logging.info(json.dumps(line, indent=2))
         except Exception as err:
-          print("Error: Image pull failed for " + bundleImages['name'] + " with sha " + bundleImages['sha'])
-          print(err)
-          sys.exit(1)
+            print("Error: Image pull failed for " + bundleImages['name'] + " with sha " + bundleImages['sha'])
+            print(err)
+            sys.exit(1)
     else:
         print("Error: No tag or sha found for " + bundleImages['name'] + " in " + rscRepoFqdn + " bundle.")
         sys.exit(1)
@@ -136,19 +143,19 @@ for bundleImages in exoTaskImageBundle['data']['exotaskImageBundle']['bundleImag
     if bundleImages['tag']:
         print("Scanning " + bundleImages['name'] + " with tag " + bundleImages['tag'])
         try:
-          print("<Insert Image Scanning Tool Here>")
+            print("<Insert Image Scanning Tool Here>")
         except Exception as err:
-          print("Error: Image scanning failed for " + bundleImages['name'] + " with tag " + bundleImages['tag'])
-          print(err)
-          sys.exit(1)
+            print("Error: Image scanning failed for " + bundleImages['name'] + " with tag " + bundleImages['tag'])
+            print(err)
+            sys.exit(1)
     elif bundleImages['sha']:
         print("Scanning " + bundleImages['name'] + " with sha " + bundleImages['sha'])
         try:
-          print("<Insert Image Scanning Tool Here>")
+            print("<Insert Image Scanning Tool Here>")
         except Exception as err:
-          print("Error: Image scanning failed for " + bundleImages['name'] + " with sha " + bundleImages['sha'])
-          print(err)
-          sys.exit(1)
+            print("Error: Image scanning failed for " + bundleImages['name'] + " with sha " + bundleImages['sha'])
+            print(err)
+            sys.exit(1)
     else:
         print("Error: No tag or sha found for " + bundleImages['name'] + " in " + rscRepoFqdn + " bundle.")
         sys.exit(1)
@@ -160,7 +167,7 @@ customerEcrClient = boto3.client('ecr', region_name=pcrRegion)
 # Get customer PCR token
 # CLI Example "aws ecr get-authorization-token --region <customer_ecr_region>"
 try:
-      customerEcrToken = customerEcrClient.get_authorization_token(registryIds=[pcrFqdn.split('.')[0]])
+    customerEcrToken = customerEcrClient.get_authorization_token(registryIds=[pcrFqdn.split('.')[0]])
 except Exception as err:
     print("Error: Unable to get customer PCR token.")
     print(err)
@@ -171,7 +178,7 @@ try:
     username, password = base64.b64decode(customerEcrToken['authorizationData'][0]['authorizationToken']).decode('utf-8').split(":")
     customer_auth_config_payload = { 'username': username, 'password': password }
     customerEcr = dockerClient.login(username=username, password=password, registry=customerEcrToken['authorizationData'][0]['proxyEndpoint'].replace("https://", ""), reauth=True)
-except Exception as err:    
+except Exception as err:
     print("Error: Unable to login to customer PCR")
     print(err)
     sys.exit(1)
@@ -203,41 +210,41 @@ for bundleImages in exoTaskImageBundle['data']['exotaskImageBundle']['bundleImag
         print("Tagging and pushing " + bundleImages['name'] + " with tag " + bundleImages['tag'])
         # CLI Example "docker image tag <Rubrik_ECR_AWS_Account_ID>.dkr.ecr.us-east-1.amazonaws.com/<build_image_name>:<tag><customer_pcr_url>/<build_image_name>:<tag>"
         try:
-          docker_api_client.tag(rscRepoFqdn + '/' + bundleImages['name'] + ":" + bundleImages['tag'], pcrFqdn + '/' + bundleImages['name'] + ":" + bundleImages['tag'])
+            docker_api_client.tag(rscRepoFqdn + '/' + bundleImages['name'] + ":" + bundleImages['tag'], pcrFqdn + '/' + bundleImages['name'] + ":" + bundleImages['tag'])
         except Exception as err:
-          print("Error: Image tag failed for " + bundleImages['name'] + " with tag " + bundleImages['tag'])
-          print(err)
-          sys.exit(1)
+            print("Error: Image tag failed for " + bundleImages['name'] + " with tag " + bundleImages['tag'])
+            print(err)
+            sys.exit(1)
         print("Pushing " + bundleImages['name'] + " with tag " + bundleImages['tag'])
         # CLI Example "docker push <customer_pcr_url>/<build_image_name>:<tag>"
         try:
-          for line in docker_api_client.push(pcrFqdn + '/' + bundleImages['name'], tag=bundleImages['tag'], stream=True, auth_config=customer_auth_config_payload, decode=True):
-            print(line)
-            logging.info(json.dumps(line, indent=2))
+            for line in docker_api_client.push(pcrFqdn + '/' + bundleImages['name'], tag=bundleImages['tag'], stream=True, auth_config=customer_auth_config_payload, decode=True):
+                print(line)
+                logging.info(json.dumps(line, indent=2))
         except Exception as err:
-          print("Error: Image push failed for " + bundleImages['name'] + " with tag " + bundleImages['tag'])
-          print(err)
-          sys.exit(1)
+            print("Error: Image push failed for " + bundleImages['name'] + " with tag " + bundleImages['tag'])
+            print(err)
+            sys.exit(1)
     elif bundleImages['sha']:
         print("Tagging and pushing " + bundleImages['name'] + " with sha " + bundleImages['sha'])
-        # CLI Example "docker image tag <Rubrik_ECR_AWS_Account_ID>.dkr.ecr.us-east-1.amazonaws.com/<build_image_name>@sha256:<sha> <customer_pcr_url>/<build_image_name>"       
+        # CLI Example "docker image tag <Rubrik_ECR_AWS_Account_ID>.dkr.ecr.us-east-1.amazonaws.com/<build_image_name>@sha256:<sha> <customer_pcr_url>/<build_image_name>"
         try:
-          docker_api_client.tag(rscRepoFqdn + '/' + bundleImages['name'] + "@sha256:" + bundleImages['sha'], pcrFqdn + '/' + bundleImages['name'] )
+            docker_api_client.tag(rscRepoFqdn + '/' + bundleImages['name'] + "@sha256:" + bundleImages['sha'], pcrFqdn + '/' + bundleImages['name'] )
         except Exception as err:
-          print("Error: Image tag failed for " + bundleImages['name'] + " with sha " + bundleImages['sha'])
-          print(err)
-          sys.exit(1)
+            print("Error: Image tag failed for " + bundleImages['name'] + " with sha " + bundleImages['sha'])
+            print(err)
+            sys.exit(1)
         print("Pushing " + bundleImages['name'] + " with sha " + bundleImages['sha'])
         # CLI Example "docker push <customer_pcr_url>/<build_image_name>@sha256:<sha>"
         try:
-          for line in docker_api_client.push(pcrFqdn + '/' + bundleImages['name'], stream=True, auth_config=customer_auth_config_payload, decode=True):
-              print(line)
-              logging.info(json.dumps(line, indent=2))
+            for line in docker_api_client.push(pcrFqdn + '/' + bundleImages['name'], stream=True, auth_config=customer_auth_config_payload, decode=True):
+                print(line)
+                logging.info(json.dumps(line, indent=2))
         except Exception as err:
-          print("Error: Image push failed for " + bundleImages['name'] + " with sha " + bundleImages['sha'])
-          print(err)
-          sys.exit(1) 
-        
+            print("Error: Image push failed for " + bundleImages['name'] + " with sha " + bundleImages['sha'])
+            print(err)
+            sys.exit(1)
+
 #Accept Container Bundle
 variables = {
   "input": {
@@ -245,8 +252,8 @@ variables = {
     "bundleVersion": "{}".format(exoTaskImageBundle['data']['exotaskImageBundle']['bundleVersion'])
   }
 }
-exoTaskImageBundle = rubrik._query_raw(raw_query='mutation SetBundleApprovalStatus($input: SetBundleApprovalStatusInput!) {setBundleApprovalStatus(input: $input)}', 
-                                      operation_name=None, 
+exoTaskImageBundle = rubrik._query_raw(raw_query='mutation SetBundleApprovalStatus($input: SetBundleApprovalStatusInput!) {setBundleApprovalStatus(input: $input)}',
+                                      operation_name=None,
 #                                      variables={'"input": {"approvalStatus": "ACCEPTED","bundleVersion": {}}'.format(exoTaskImageBundle['data']['exotaskImageBundle']['bundleVersion'])},
                                       variables=variables,
                                       timeout=60)
