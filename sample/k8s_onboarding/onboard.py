@@ -125,8 +125,8 @@ def _kubectl_apply(ctx: str, url: str):
 
 
 @retry(stop=stop_after_delay(600),
-       wait=wait_exponential(multiplier=1, min=1, max=10),
-       reraise=True)
+        wait=wait_exponential(multiplier=1, min=1, max=10),
+        reraise=True)
 def _refresh_k8s_cluster(k8s_cluster_id: uuid.UUID):
     resp = rubrik.refresh_k8s_cluster(k8s_cluster_id, wait=True)
     if resp['status'] == 'FAILED':
