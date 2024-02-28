@@ -1,0 +1,25 @@
+query VSphereVMsListQuery($first: Int!, $after: String, $filter: [Filter!]!,  $sortBy: HierarchySortByField, $sortOrder: HierarchySortOrder) {
+    vSphereVmNewConnection(
+        filter: $filter
+        first: $first
+        after: $after
+        sortBy: $sortBy
+        sortOrder: $sortOrder
+    ) {
+        edges {
+            cursor
+            node {
+                resourceSpec {
+                    networkInterfaces {
+                        macAddress,
+                        v4Addresses
+                    }
+                }
+                id
+
+            }
+            __typename
+        }
+    }
+}
+
