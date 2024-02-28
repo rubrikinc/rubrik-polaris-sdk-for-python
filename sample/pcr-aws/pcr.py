@@ -218,6 +218,7 @@ for bundleImages in exoTaskImageBundle['data']['exotaskImageBundle']['bundleImag
             print(err)
             sys.exit(1)
         print("Pushing " + bundleImages['name'] + " with tag " + bundleImages['tag'])
+
         # CLI Example "docker push <customer_pcr_url>/<build_image_name>:<bundle_version>"
         try:
             for line in docker_api_client.push(pcrFqdn + '/' + bundleImages['name'], tag=exoTaskImageBundle['data']['exotaskImageBundle']['bundleVersion'], stream=True, auth_config=customer_auth_config_payload, decode=True):
@@ -237,6 +238,7 @@ for bundleImages in exoTaskImageBundle['data']['exotaskImageBundle']['bundleImag
             print(err)
             sys.exit(1)
         print("Pushing " + bundleImages['name'] + " with sha " + bundleImages['sha'])
+
         # CLI Example "docker push <customer_pcr_url>/<build_image_name>:<bundle_version>"
         try:
             for line in docker_api_client.push(pcrFqdn + '/' + bundleImages['name'], tag=exoTaskImageBundle['data']['exotaskImageBundle']['bundleVersion'], stream=True, auth_config=customer_auth_config_payload, decode=True):
