@@ -209,37 +209,37 @@ for bundleImages in exoTaskImageBundle['data']['exotaskImageBundle']['bundleImag
                                     imageTagMutability='IMMUTABLE')
 
     if bundleImages['tag']:
-        print("Tagging and pushing " + bundleImages['name'] + " with tag " + bundleImages['tag'])
-        # CLI Example "docker image tag <Rubrik_ECR_AWS_Account_ID>.dkr.ecr.us-east-1.amazonaws.com/<build_image_name>:<tag><customer_pcr_url>/<build_image_name>:<tag>"
+        print("Tagging and pushing " + bundleImages['name'] + " with tag " + bundleImages['tag'] + " to " + bundleImages['name'] + " with version tag " + exoTaskImageBundle['data']['exotaskImageBundle']['bundleVersion'])
+        # CLI Example "docker image tag <Rubrik_ECR_AWS_Account_ID>.dkr.ecr.us-east-1.amazonaws.com/<build_image_name>:<tag><customer_pcr_url>/<build_image_name>:<bundle_version>"
         try:
-            docker_api_client.tag(rscRepoFqdn + '/' + bundleImages['name'] + ":" + bundleImages['tag'], pcrFqdn + '/' + bundleImages['name'] + ":" + bundleImages['tag'])
+            docker_api_client.tag(rscRepoFqdn + '/' + bundleImages['name'] + ":" + bundleImages['tag'], pcrFqdn + '/' + bundleImages['name'] + ":" + exoTaskImageBundle['data']['exotaskImageBundle']['bundleVersion'])
         except Exception as err:
             print("Error: Image tag failed for " + bundleImages['name'] + " with tag " + bundleImages['tag'])
             print(err)
             sys.exit(1)
         print("Pushing " + bundleImages['name'] + " with tag " + bundleImages['tag'])
-        # CLI Example "docker push <customer_pcr_url>/<build_image_name>:<tag>"
+        # CLI Example "docker push <customer_pcr_url>/<build_image_name>:<bundle_version>"
         try:
-            for line in docker_api_client.push(pcrFqdn + '/' + bundleImages['name'], tag=bundleImages['tag'], stream=True, auth_config=customer_auth_config_payload, decode=True):
+            for line in docker_api_client.push(pcrFqdn + '/' + bundleImages['name'], tag=exoTaskImageBundle['data']['exotaskImageBundle']['bundleVersion'], stream=True, auth_config=customer_auth_config_payload, decode=True):
                 print(line)
                 logging.info(json.dumps(line, indent=2))
         except Exception as err:
-            print("Error: Image push failed for " + bundleImages['name'] + " with tag " + bundleImages['tag'])
+            print("Error: Image push failed for " + bundleImages['name'] + " with tag " + exoTaskImageBundle['data']['exotaskImageBundle']['bundleVersion'])
             print(err)
             sys.exit(1)
     elif bundleImages['sha']:
-        print("Tagging and pushing " + bundleImages['name'] + " with sha " + bundleImages['sha'])
-        # CLI Example "docker image tag <Rubrik_ECR_AWS_Account_ID>.dkr.ecr.us-east-1.amazonaws.com/<build_image_name>@sha256:<sha> <customer_pcr_url>/<build_image_name>"
+        print("Tagging and pushing " + bundleImages['name'] + " with sha " + bundleImages['sha'] + " to " + bundleImages['name'] + " with version tag " + exoTaskImageBundle['data']['exotaskImageBundle']['bundleVersion'])
+        # CLI Example "docker image tag <Rubrik_ECR_AWS_Account_ID>.dkr.ecr.us-east-1.amazonaws.com/<build_image_name>@sha256:<sha> <customer_pcr_url>/<build_image_name>:<bundle_version>"
         try:
-            docker_api_client.tag(rscRepoFqdn + '/' + bundleImages['name'] + "@sha256:" + bundleImages['sha'], pcrFqdn + '/' + bundleImages['name'] )
+            docker_api_client.tag(rscRepoFqdn + '/' + bundleImages['name'] + "@sha256:" + bundleImages['sha'], pcrFqdn + '/' + bundleImages['name'] +  ":" + exoTaskImageBundle['data']['exotaskImageBundle']['bundleVersion'])
         except Exception as err:
             print("Error: Image tag failed for " + bundleImages['name'] + " with sha " + bundleImages['sha'])
             print(err)
             sys.exit(1)
         print("Pushing " + bundleImages['name'] + " with sha " + bundleImages['sha'])
-        # CLI Example "docker push <customer_pcr_url>/<build_image_name>@sha256:<sha>"
+        # CLI Example "docker push <customer_pcr_url>/<build_image_name>:<bundle_version>"
         try:
-            for line in docker_api_client.push(pcrFqdn + '/' + bundleImages['name'], stream=True, auth_config=customer_auth_config_payload, decode=True):
+            for line in docker_api_client.push(pcrFqdn + '/' + bundleImages['name'], tag=exoTaskImageBundle['data']['exotaskImageBundle']['bundleVersion'], stream=True, auth_config=customer_auth_config_payload, decode=True):
                 print(line)
                 logging.info(json.dumps(line, indent=2))
         except Exception as err:
