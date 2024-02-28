@@ -20,6 +20,7 @@ parser.add_argument('-u', '--username', dest='username', help="Polaris UserName"
 parser.add_argument('-d', '--domain', dest='domain', help="Polaris Domain", default=None)
 parser.add_argument('-k', '--keyfile', dest='json_keyfile', help="JSON Keyfile", default=None)
 parser.add_argument('-r', '--root', dest='root_domain', help="Polaris Root Domain", default=None)
+parser.add_argument('--profile', dest='profile', help="AWS Profile", default=None, required=True)
 parser.add_argument('--insecure', help='Deactivate SSL Verification', action="store_true")
 parser.add_argument('--pcrFqdn', dest='pcrFqdn', help='Private Container Registry URL', default=None, required=True)
 parser.add_argument('--debug', help="Print lots of debugging statements", action="store_const", dest="loglevel", const=logging.DEBUG, default=logging.WARNING)
@@ -49,7 +50,8 @@ except Exception as err:
 
 # Login to AWS ECR
 
-rscEcrClient = boto3.client('ecr', region_name="us-east-1")
+rscEcrSession = boto3.Session(profile_name=args.profile)
+rscEcrClient = rscEcrSession.client('ecr', region_name="us-east-1")
 
 # Setup Docker client
 
@@ -162,8 +164,8 @@ for bundleImages in exoTaskImageBundle['data']['exotaskImageBundle']['bundleImag
 print("")
 
 #Login to customer PCR
-
-customerEcrClient = boto3.client('ecr', region_name=pcrRegion)
+customerEcrSession = boto3.Session(profile_name=args.profile)
+customerEcrClient = customerEcrSession.client('ecr', region_name=pcrRegion)
 # Get customer PCR token
 # CLI Example "aws ecr get-authorization-token --region <customer_ecr_region>"
 try:
