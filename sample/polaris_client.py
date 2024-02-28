@@ -95,6 +95,8 @@ except Exception as err:
 
 ### Returns all objectIDs matching arbitrary available inputs. ec2 tags have special treatment
 # pp.pprint(rubrik.get_compute_object_ids_ec2(tags = {"Name": "Puppet Master"}))
+# pp.pprint(rubrik.get_compute_object_ids_vsphere(name="O365-003"))
+# pp.pprint(rubrik.get_compute_vsphere(filter=[{"field": "NAME", "texts": ["100gb-centos-001"]}]))
 # pp.pprint(rubrik.get_compute_object_ids_azure(region = "EastUS2"))
 # pp.pprint(rubrik.get_compute_object_ids_gce(region = "us-west1"))
 
