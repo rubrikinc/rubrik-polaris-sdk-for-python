@@ -259,3 +259,7 @@ exoTaskImageBundle = rubrik._query_raw(raw_query='mutation SetBundleApprovalStat
 #                                      variables={'"input": {"approvalStatus": "ACCEPTED","bundleVersion": {}}'.format(exoTaskImageBundle['data']['exotaskImageBundle']['bundleVersion'])},
                                       variables=variables,
                                       timeout=60)
+
+print()
+print()
+print("Bundle " + exoTaskImageBundle['data']['setBundleApprovalStatus']['bundleVersion'] + " has been accepted.")
