@@ -15,12 +15,16 @@ pp = pprint.PrettyPrinter(indent=2)
 #logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
 
 parser = argparse.ArgumentParser()
-parser.add_argument('-p', '--password', dest='password', help="Polaris Password", default=None)
-parser.add_argument('-u', '--username', dest='username', help="Polaris UserName", default=None)
+parser.add_argument('-a', '--awsaccountid', dest='awsAccountId', help="AWS Account ID used to download images from Rubrik ECR", default=None)
 parser.add_argument('-d', '--domain', dest='domain', help="Polaris Domain", default=None)
+parser.add_argument('-e', '--exocomputeid', dest='exocomputeAccountId', help="Exocompute Account ID in Polaris/RSC", default=None)
 parser.add_argument('-k', '--keyfile', dest='json_keyfile', help="JSON Keyfile", default=None)
+parser.add_argument('-p', '--password', dest='password', help="Polaris Password", default=None)
 parser.add_argument('-r', '--root', dest='root_domain', help="Polaris Root Domain", default=None)
-parser.add_argument('--profile', dest='profile', help="AWS Profile", default=None, required=True)
+parser.add_argument('-s', '--setprivatecontainercegistry', action="store_true", dest='setPcr', help="Sets the Private Container Registry", default=None)
+parser.add_argument('-u', '--username', dest='username', help="Polaris UserName", default=None)
+parser.add_argument('-v', '--verbose', help="Be verbose", action="store_const", dest="loglevel", const=logging.INFO)
+parser.add_argument('--debug', help="Print lots of debugging statements", action="store_const", dest="loglevel", const=logging.DEBUG, default=logging.WARNING)
 parser.add_argument('--insecure', help='Deactivate SSL Verification', action="store_true")
 parser.add_argument('--pcrFqdn', dest='pcrFqdn', help='Private Container Registry URL', default=None, required=True)
 parser.add_argument('--debug', help="Print lots of debugging statements", action="store_const", dest="loglevel", const=logging.DEBUG, default=logging.WARNING)
@@ -30,6 +34,9 @@ args = parser.parse_args()
 pcrFqdn = args.pcrFqdn
 
 logging.basicConfig(level=args.loglevel)
+
+if args.setPcr and not (args.exocomputeAccountId and args.exocomputeAccountId):
+    parser.error('--setprivatecontainercegistry specified, however --awsaccountid or --exocomputeid not specified.')
 
 if not (args.json_keyfile or (args.username and args.password and args.domain)):
     parser.error('Login credentials not specified. You must specify either a JSON keyfile or a username, password, and domain.')
@@ -47,6 +54,28 @@ try:
 except Exception as err:
     print(err)
     sys.exit(1)
+
+# Set Private Container Registry (white list AWS account to download images)
+if args.setPcr:
+  variables = {
+    "input": {
+      "exocomputeAccountId": args.exocomputeAccountId,
+      "registryUrl": pcrFqdn,
+      "pcrAwsImagePullDetails": {
+        "awsNativeId": args.awsAccountId
+      }
+    }
+  }
+
+  try:
+      setPrivateContainerRegistry = rubrik._query_raw(raw_query='mutation SetPrivateContainerRegistry($input: SetPrivateContainerRegistryInput!) {setPrivateContainerRegistry(input: $input)}',
+                                        operation_name=None,
+                                        variables=variables,
+                                        timeout=60)
+  except Exception as err:
+      print("Error: Unable to retrieve set the private container registry.")
+      print(err)
+      sys.exit(1)
 
 # Login to AWS ECR
 
