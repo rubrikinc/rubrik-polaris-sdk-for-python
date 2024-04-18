@@ -26,9 +26,10 @@ parser.add_argument('-u', '--username', dest='username', help="Polaris UserName"
 parser.add_argument('-v', '--verbose', help="Be verbose", action="store_const", dest="loglevel", const=logging.INFO)
 parser.add_argument('--debug', help="Print lots of debugging statements", action="store_const", dest="loglevel", const=logging.DEBUG, default=logging.WARNING)
 parser.add_argument('--insecure', help='Deactivate SSL Verification', action="store_true")
+parser.add_argument('--pcrAuth', dest='pcrAuth', help='Set to "ECR" to use ECR based private container registry. Set to "PWD" to use username/password based private container registry', default="ECR", required=False, choices=['ECR', 'PWD'])
 parser.add_argument('--pcrFqdn', dest='pcrFqdn', help='Private Container Registry URL', default=None, required=True)
-parser.add_argument('--debug', help="Print lots of debugging statements", action="store_const", dest="loglevel", const=logging.DEBUG, default=logging.WARNING)
-parser.add_argument('-v', '--verbose', help="Be verbose", action="store_const", dest="loglevel", const=logging.INFO)
+parser.add_argument('--pcrPassword', dest='pcrPassword', help='Password for the private container registry.', default=None, required=False)
+parser.add_argument('--pcrUsername', dest='pcrUsername', help='Username for the private container registry.', default=None, required=False)
 
 args = parser.parse_args()
 pcrFqdn = args.pcrFqdn
@@ -38,6 +39,9 @@ logging.basicConfig(level=args.loglevel)
 if args.setPcr and not (args.exocomputeAccountId and args.exocomputeAccountId):
     parser.error('--setprivatecontainercegistry specified, however --awsaccountid or --exocomputeid not specified.')
 
+if args.pcrAuth == "PWD" and not (args.pcrPassword and args.pcrUsername):
+    parser.error('Username/Password authentication to private container registry specified, however, --pcrPassword or --pcrUsername not specified.')
+    
 if not (args.json_keyfile or (args.username and args.password and args.domain)):
     parser.error('Login credentials not specified. You must specify either a JSON keyfile or a username, password, and domain.')
 
@@ -192,41 +196,61 @@ for bundleImages in exoTaskImageBundle['data']['exotaskImageBundle']['bundleImag
         sys.exit(1)
 print("")
 
+#Login to customer PCR on ECR if configured
+if args.pcrAuth == "ECR":
   customerEcrSession = boto3.Session()
   customerEcrClient = customerEcrSession.client('ecr', region_name=pcrRegion)
+  # Get customer PCR token
+  # CLI Example "aws ecr get-authorization-token --region <customer_ecr_region>"
+  try:
+      customerEcrToken = customerEcrClient.get_authorization_token(registryIds=[pcrFqdn.split('.')[0]])
+  except Exception as err:
+      print("Error: Unable to get customer PCR token.")
+      print(err)
+      sys.exit(1)
 
-# CLI Example "aws ecr get-login-password --region <customer_ecr_region> | docker login --username AWS --password-stdin <customer_pcr_url>"
-try:
-    username, password = base64.b64decode(customerEcrToken['authorizationData'][0]['authorizationToken']).decode('utf-8').split(":")
-    customer_auth_config_payload = { 'username': username, 'password': password }
-    customerEcr = dockerClient.login(username=username, password=password, registry=customerEcrToken['authorizationData'][0]['proxyEndpoint'].replace("https://", ""), reauth=True)
-except Exception as err:
-    print("Error: Unable to login to customer PCR")
-    print(err)
-    sys.exit(1)
+    # CLI Example "aws ecr get-login-password --region <customer_ecr_region> | docker login --username AWS --password-stdin <customer_pcr_url>"
+  try:
+      username, password = base64.b64decode(customerEcrToken['authorizationData'][0]['authorizationToken']).decode('utf-8').split(":")
+      customer_auth_config_payload = { 'username': username, 'password': password }
+      customerEcr = dockerClient.login(username=username, password=password, registry=customerEcrToken['authorizationData'][0]['proxyEndpoint'].replace("https://", ""), reauth=True)
+  except Exception as err:
+      print("Error: Unable to login to customer PCR on ECR")
+      print(err)
+      sys.exit(1)
+elif args.pcrAuth == "PWD":
+    # Login to customer PCR on non ECR
+    customer_auth_config_payload = { 'username': args.pcrUsername, 'password': args.pcrPassword }
+    try:
+        customerEcr = dockerClient.login(username=args.pcrUsername, password=args.pcrPassword, registry=pcrFqdn, reauth=True)
+    except Exception as err:
+        print("Error: Unable to login to customer PCR on non-ECR")
+        print(err)
+        sys.exit(1)
 
 # Create Repos, Tag and push images to customer PCR
 
 # Determine if repository exists and create if it does not.
 # CLI example: "aws ecr describe-repositories --region <customer_ecr_region>"
 
-pcrRepositories = customerEcrClient.describe_repositories()
 for bundleImages in exoTaskImageBundle['data']['exotaskImageBundle']['bundleImages']:
     print("")
-    repoExists = False
-    for repo in pcrRepositories['repositories']:
-        if repo['repositoryName'] == bundleImages['name']:
-            print("Repository " + bundleImages['name'] + " already exists in " + pcrFqdn + ". Skipping create" )
-            repoExists = True
-            break
-# If repo does not exist, create it.
-    if not repoExists:
-        # CLI example: "aws ecr create-repository --repository-name <build_image_name> --region <customer_ecr_region> --image-scanning-configuration scanOnPush=true --encryption-configuration encryptionType=AES256 --image-tag-mutability IMMUTABLE"
-        print("Creating repository " + bundleImages['name'] + " in " + pcrFqdn)
-        customerEcrClient.create_repository(repositoryName=bundleImages['name'],
-                                    imageScanningConfiguration={'scanOnPush': True},
-                                    encryptionConfiguration={'encryptionType': 'AES256'},
-                                    imageTagMutability='IMMUTABLE')
+    if args.pcrAuth == "ECR":
+        pcrRepositories = customerEcrClient.describe_repositories()
+        repoExists = False
+        for repo in pcrRepositories['repositories']:
+            if repo['repositoryName'] == bundleImages['name']:
+                print("Repository " + bundleImages['name'] + " already exists in " + pcrFqdn + ". Skipping create" )
+                repoExists = True
+                break
+        # If repo does not exist, create it.
+            if not repoExists:
+                # CLI example: "aws ecr create-repository --repository-name <build_image_name> --region <customer_ecr_region> --image-scanning-configuration scanOnPush=true --encryption-configuration encryptionType=AES256 --image-tag-mutability IMMUTABLE"
+                print("Creating repository " + bundleImages['name'] + " in " + pcrFqdn)
+                customerEcrClient.create_repository(repositoryName=bundleImages['name'],
+                                            imageScanningConfiguration={'scanOnPush': True},
+                                            encryptionConfiguration={'encryptionType': 'AES256'},
+                                            imageTagMutability='IMMUTABLE')
 
     if bundleImages['tag']:
         print("Tagging and pushing " + bundleImages['name'] + " with tag " + bundleImages['tag'] + " to " + bundleImages['name'] + " with version tag " + exoTaskImageBundle['data']['exotaskImageBundle']['bundleVersion'])
