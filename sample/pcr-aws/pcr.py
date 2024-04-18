@@ -50,7 +50,7 @@ except Exception as err:
 
 # Login to AWS ECR
 
-rscEcrSession = boto3.Session(profile_name=args.profile)
+rscEcrSession = boto3.Session()
 rscEcrClient = rscEcrSession.client('ecr', region_name="us-east-1")
 
 # Setup Docker client
@@ -163,17 +163,8 @@ for bundleImages in exoTaskImageBundle['data']['exotaskImageBundle']['bundleImag
         sys.exit(1)
 print("")
 
-#Login to customer PCR
-customerEcrSession = boto3.Session(profile_name=args.profile)
-customerEcrClient = customerEcrSession.client('ecr', region_name=pcrRegion)
-# Get customer PCR token
-# CLI Example "aws ecr get-authorization-token --region <customer_ecr_region>"
-try:
-    customerEcrToken = customerEcrClient.get_authorization_token(registryIds=[pcrFqdn.split('.')[0]])
-except Exception as err:
-    print("Error: Unable to get customer PCR token.")
-    print(err)
-    sys.exit(1)
+  customerEcrSession = boto3.Session()
+  customerEcrClient = customerEcrSession.client('ecr', region_name=pcrRegion)
 
 # CLI Example "aws ecr get-login-password --region <customer_ecr_region> | docker login --username AWS --password-stdin <customer_pcr_url>"
 try:
