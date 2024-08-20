@@ -360,9 +360,8 @@ variables = {
     "bundleVersion": "{}".format(exoTaskImageBundle['data']['exotaskImageBundle']['bundleVersion'])
   }
 }
-exoTaskImageBundle = rubrik._query_raw(raw_query='mutation SetBundleApprovalStatus($input: SetBundleApprovalStatusInput!) {setBundleApprovalStatus(input: $input)}',
+SetBundleApprovalStatus = rubrik._query_raw(raw_query='mutation SetBundleApprovalStatus($input: SetBundleApprovalStatusInput!) {setBundleApprovalStatus(input: $input)}',
                                       operation_name=None,
-#                                      variables={'"input": {"approvalStatus": "ACCEPTED","bundleVersion": {}}'.format(exoTaskImageBundle['data']['exotaskImageBundle']['bundleVersion'])},
                                       variables=variables,
                                       timeout=60)
 
@@ -370,4 +369,4 @@ logging.debug(json.dumps(exoTaskImageBundle, indent=2))
 
 print()
 print()
-print("Bundle " + exoTaskImageBundle['data']['setBundleApprovalStatus']['bundleVersion'] + " has been accepted.")
+print("Bundle " + exoTaskImageBundle['data']['exotaskImageBundle']['bundleVersion'] + " has been accepted.")
