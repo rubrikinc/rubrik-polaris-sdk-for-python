@@ -198,7 +198,7 @@ for bundleImages in exoTaskImageBundle['data']['exotaskImageBundle']['bundleImag
         try:
             for line in docker_api_client.pull(rscRepoFqdn + '/' + bundleImages['name'], tag=bundleImages['tag'], stream=True, auth_config=rsc_auth_config_payload, decode=True):
                 print(line)
-                logging.info(json.dumps(line, indent=2))
+                logging.debug(json.dumps(line, indent=2))
 
         except Exception as err:
             print("Error: Image pull failed for " + bundleImages['name'] + " with tag " + bundleImages['tag'])
@@ -210,7 +210,7 @@ for bundleImages in exoTaskImageBundle['data']['exotaskImageBundle']['bundleImag
         try:
             for line in docker_api_client.pull(rscRepoFqdn + '/' + bundleImages['name'], tag="sha256:" + bundleImages['sha'], stream=True, auth_config=rsc_auth_config_payload, decode=True):
                 print(line)
-                logging.info(json.dumps(line, indent=2))
+                logging.debug(json.dumps(line, indent=2))
         except Exception as err:
             print("Error: Image pull failed for " + bundleImages['name'] + " with sha " + bundleImages['sha'])
             print(err)
@@ -316,7 +316,7 @@ for bundleImages in exoTaskImageBundle['data']['exotaskImageBundle']['bundleImag
         try:
             for line in docker_api_client.push(pcrFqdn + '/' + bundleImages['name'], tag=exoTaskImageBundle['data']['exotaskImageBundle']['bundleVersion'], stream=True, auth_config=customer_auth_config_payload, decode=True):
                 print(line)
-                logging.info(json.dumps(line, indent=2))
+                logging.debug(json.dumps(line, indent=2))
         except Exception as err:
             print("Error: Image push failed for " + bundleImages['name'] + " with tag " + exoTaskImageBundle['data']['exotaskImageBundle']['bundleVersion'])
             print(err)
@@ -336,11 +336,13 @@ for bundleImages in exoTaskImageBundle['data']['exotaskImageBundle']['bundleImag
         try:
             for line in docker_api_client.push(pcrFqdn + '/' + bundleImages['name'], tag=exoTaskImageBundle['data']['exotaskImageBundle']['bundleVersion'], stream=True, auth_config=customer_auth_config_payload, decode=True):
                 print(line)
-                logging.info(json.dumps(line, indent=2))
+                logging.debug(json.dumps(line, indent=2))
         except Exception as err:
             print("Error: Image push failed for " + bundleImages['name'] + " with sha " + bundleImages['sha'])
             print(err)
             sys.exit(1)
+
+logging.debug(json.dumps(exoTaskImageBundle, indent=2))
 
 #Accept Container Bundle
 variables = {
@@ -354,6 +356,8 @@ exoTaskImageBundle = rubrik._query_raw(raw_query='mutation SetBundleApprovalStat
 #                                      variables={'"input": {"approvalStatus": "ACCEPTED","bundleVersion": {}}'.format(exoTaskImageBundle['data']['exotaskImageBundle']['bundleVersion'])},
                                       variables=variables,
                                       timeout=60)
+
+logging.debug(json.dumps(exoTaskImageBundle, indent=2))
 
 print()
 print()
