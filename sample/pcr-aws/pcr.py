@@ -284,25 +284,34 @@ elif args.pcrAuth == "PWD":
 
 for bundleImages in exoTaskImageBundle['data']['exotaskImageBundle']['bundleImages']:
     print("")
+    if not pcrFqdn.partition('/')[2]:
+        pcrRepoName = bundleImages['name']
+    else:
+        pcrRepoName = pcrFqdn.partition('/')[2] + '/' + bundleImages['name']
+    logging.debug("pcrAuth is " + args.pcrAuth)
     if args.pcrAuth == "ECR":
         pcrRepositories = customerEcrClient.describe_repositories()
         repoExists = False
+        logging.debug("PCR Repositories:")
+        # logging.debug(pp.pprint(pcrRepositories))
         for repo in pcrRepositories['repositories']:
-            if repo['repositoryName'] == bundleImages['name']:
-                print("Repository " + bundleImages['name'] + " already exists in " + pcrFqdn + ". Skipping create" )
+            logging.debug("repo name: " + repo['repositoryName'])
+            logging.debug("bundleImages name:" + bundleImages['name'])
+            if repo['repositoryUri'] == pcrFqdn + '/' + bundleImages['name']:
+                print("Repository " + pcrFqdn + '/' + bundleImages['name'] + " already exists in " + pcrFqdn + ". Skipping create" )
                 repoExists = True
                 break
         # If repo does not exist, create it.
-            if not repoExists:
-                # CLI example: "aws ecr create-repository --repository-name <build_image_name> --region <customer_ecr_region> --image-scanning-configuration scanOnPush=true --encryption-configuration encryptionType=AES256 --image-tag-mutability IMMUTABLE"
-                print("Creating repository " + bundleImages['name'] + " in " + pcrFqdn)
-                customerEcrClient.create_repository(repositoryName=bundleImages['name'],
-                                            imageScanningConfiguration={'scanOnPush': True},
-                                            encryptionConfiguration={'encryptionType': 'AES256'},
-                                            imageTagMutability='IMMUTABLE')
+        if not repoExists:
+            # CLI example: "aws ecr create-repository --repository-name <build_image_name> --region <customer_ecr_region> --image-scanning-configuration scanOnPush=true --encryption-configuration encryptionType=AES256 --image-tag-mutability IMMUTABLE"
+            print("Creating repository: " + pcrRepoName)
+            customerEcrClient.create_repository(repositoryName=pcrRepoName,
+                                        imageScanningConfiguration={'scanOnPush': True},
+                                        encryptionConfiguration={'encryptionType': 'AES256'},
+                                        imageTagMutability='IMMUTABLE')
 
     if bundleImages['tag']:
-        print("Tagging and pushing " + bundleImages['name'] + " with tag " + bundleImages['tag'] + " to " + bundleImages['name'] + " with version tag " + exoTaskImageBundle['data']['exotaskImageBundle']['bundleVersion'])
+        print("Tagging and pushing " + bundleImages['name'] + " with tag " + bundleImages['tag'] + " to " + pcrFqdn + '/' + bundleImages['name'] + " with version tag " + exoTaskImageBundle['data']['exotaskImageBundle']['bundleVersion'])
         # CLI Example "docker image tag <Rubrik_ECR_AWS_Account_ID>.dkr.ecr.us-east-1.amazonaws.com/<build_image_name>:<tag><customer_pcr_url>/<build_image_name>:<bundle_version>"
         try:
             docker_api_client.tag(rscRepoFqdn + '/' + bundleImages['name'] + ":" + bundleImages['tag'], pcrFqdn + '/' + bundleImages['name'] + ":" + exoTaskImageBundle['data']['exotaskImageBundle']['bundleVersion'])
@@ -322,7 +331,7 @@ for bundleImages in exoTaskImageBundle['data']['exotaskImageBundle']['bundleImag
             print(err)
             sys.exit(1)
     elif bundleImages['sha']:
-        print("Tagging and pushing " + bundleImages['name'] + " with sha " + bundleImages['sha'] + " to " + bundleImages['name'] + " with version tag " + exoTaskImageBundle['data']['exotaskImageBundle']['bundleVersion'])
+        print("Tagging and pushing " + bundleImages['name'] + " with sha " + bundleImages['sha'] + " to " + pcrFqdn + '/' + bundleImages['name'] + " with version tag " + exoTaskImageBundle['data']['exotaskImageBundle']['bundleVersion'])
         # CLI Example "docker image tag <Rubrik_ECR_AWS_Account_ID>.dkr.ecr.us-east-1.amazonaws.com/<build_image_name>@sha256:<sha> <customer_pcr_url>/<build_image_name>:<bundle_version>"
         try:
             docker_api_client.tag(rscRepoFqdn + '/' + bundleImages['name'] + "@sha256:" + bundleImages['sha'], pcrFqdn + '/' + bundleImages['name'] +  ":" + exoTaskImageBundle['data']['exotaskImageBundle']['bundleVersion'])
