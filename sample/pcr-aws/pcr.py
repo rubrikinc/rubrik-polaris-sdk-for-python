@@ -97,16 +97,25 @@ for awsCloudAccount in allAwsExocomputeConfigs['data']['allAwsExocomputeConfigs'
         print(err)
         sys.exit(1)
 
-# Login to AWS ECR
+    print("Getting currently approved PCR bundle version numbers")
+    variables = {
+      "input": {
+        "exocomputeAccountId": awsCloudAccount['awsCloudAccount']['id']
+      }
+    }
 
-rscEcrSession = boto3.Session()
-rscEcrClient = rscEcrSession.client('ecr', region_name="us-east-1")
+    try:
+        privateContainerRegistry = rubrik._query_raw(raw_query='query PrivateContainerRegistry($input: PrivateContainerRegistryInput!) {privateContainerRegistry(input: $input) {pcrDetails {registryUrl imagePullDetails {... on PcrAwsImagePullDetails {awsNativeId}}} pcrLatestApprovedBundleVersion}}',
+                                          operation_name=None,
+                                          variables=variables,
+                                          timeout=60)
 
-# Setup Docker client
+    except Exception as err:
+        print("Error: Unable to get the private container registry information for exocompute account: " + awsCloudAccount['awsCloudAccount']['accountName'])
+        print(err)
+        sys.exit(1)
 
-dockerClient = docker.from_env()
-docker_api_client = docker.APIClient(base_url='unix://var/run/docker.sock')
-
+    print("Current approved bundle version for AWS account " +  awsCloudAccount['awsCloudAccount']['accountName'] + "is: " + privateContainerRegistry['data']['privateContainerRegistry']['pcrLatestApprovedBundleVersion'])
 # Get Exocompute Bundle (containers)
 
 variables = {
@@ -129,6 +138,13 @@ logging.debug("")
 logging.debug(json.dumps(exoTaskImageBundle, indent=2))
 logging.debug("")
 
+print("New bundle version is: " + exoTaskImageBundle['data']['exotaskImageBundle']['bundleVersion'])
+
+# Exit if new bundle version is the same or lower than the current approved bundle version
+if privateContainerRegistry['data']['privateContainerRegistry']['pcrLatestApprovedBundleVersion'] >= exoTaskImageBundle['data']['exotaskImageBundle']['bundleVersion']:
+    print("New bundle version is the same or lower than the current approved bundle version. Exiting.")
+    sys.exit(0)
+    
 region = exoTaskImageBundle['data']['exotaskImageBundle']['repoUrl'].split('.')[3]
 print("")
 print("Region: " + region)
@@ -137,6 +153,17 @@ print ("Repo URL: " + rscRepoFqdn)
 pcrRegion= args.pcrFqdn.split('.')[3]
 print("PCR Region: " + pcrRegion)
 print("")
+
+
+# Login to AWS ECR
+
+rscEcrSession = boto3.Session()
+rscEcrClient = rscEcrSession.client('ecr', region_name=region)
+
+# Setup Docker client
+
+dockerClient = docker.from_env()
+docker_api_client = docker.APIClient(base_url='unix://var/run/docker.sock')
 
 # Login to RSC ECR
 # Requires that the RSC setPrivateContainerRegistry GraphQL mutation has been run to set the registry URL in RSC.
