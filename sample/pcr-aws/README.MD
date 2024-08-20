@@ -12,4 +12,4 @@ This script downloads the images that are used for Rubrik Security Cloud Exocomp
 1. [Install the Docker engine](https://docs.docker.com/engine/install/).
 1. Run `docker run hello-world` to verify that the Docker engine is working properly.
 1. Make sure that you have enough space on your local system to download the images. Images will be downloaded to the default local Docker registry.
-1. Run `python3 ./pcr.py --keyfile <path to keyfile> --pcrFqdn <FQDN_of_the_private_container_registry> --profile <Name_of_the_AWS_profile_with_the_private_container_registry>`
+1. If required create a [service account](https://docs.rubrik.com/en-us/saas/saas/service_account.html) in RSC and save the credential file (key file).
