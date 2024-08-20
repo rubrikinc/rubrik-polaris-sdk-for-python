@@ -36,7 +36,7 @@ pcrFqdn = args.pcrFqdn
 logging.basicConfig(level=args.loglevel)
 
 if args.pcrAuth == "PWD" and not (args.pcrPassword and args.pcrUsername):
-    parser.error('Username/Password authentication to private container registry specified, however, --pcrPassword or --pcrUsername not specified.')
+    parser.error('Username/Password authentication to private container registry specified (--pcrAuth PWD), however, --pcrPassword or --pcrUsername not specified.')
     
 if not (args.json_keyfile or (args.username and args.password and args.domain)):
     parser.error('Login credentials not specified. You must specify either a JSON keyfile or a username, password, and domain.')
