@@ -23,6 +23,7 @@ parser.add_argument('-r', '--root', dest='root_domain', help="Polaris Root Domai
 parser.add_argument('-u', '--username', dest='username', help="Polaris UserName", default=None)
 parser.add_argument('-v', '--verbose', help="Be verbose", action="store_const", dest="loglevel", const=logging.INFO)
 parser.add_argument('--debug', help="Print lots of debugging statements", action="store_const", dest="loglevel", const=logging.DEBUG, default=logging.WARNING)
+parser.add_argument('--eksVersion', dest='eksVersion', help='Version of EKS cluster being used for Exocompute', default='1.27', required=True)
 parser.add_argument('--insecure', help='Deactivate SSL Verification', action="store_true")
 parser.add_argument('--pcrAuth', dest='pcrAuth', help='Set to "ECR" to use ECR based private container registry. Set to "PWD" to use username/password based private container registry', default="ECR", required=False, choices=['ECR', 'PWD'])
 parser.add_argument('--pcrFqdn', dest='pcrFqdn', help='Private Container Registry URL', default=None, required=True)
@@ -108,10 +109,16 @@ docker_api_client = docker.APIClient(base_url='unix://var/run/docker.sock')
 
 # Get Exocompute Bundle (containers)
 
+variables = {
+  "input": {
+    "eksVersion": args.eksVersion
+  }
+}
+
 try:
     exoTaskImageBundle = rubrik._query_raw(raw_query='query ExotaskImageBundle { exotaskImageBundle {bundleVersion repoUrl bundleImages {name tag sha}}}',
                                       operation_name=None,
-                                      variables={},
+                                      variables=variables,
                                       timeout=60)
 except Exception as err:
     print("Error: Unable to retrieve exotaskImageBundle")
