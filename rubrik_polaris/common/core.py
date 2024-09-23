@@ -290,11 +290,9 @@ def get_event_series_list(self, object_type=[], status=[], activity_type=[], sev
                 "lastActivityStatus": status,
                 "lastActivityType": activity_type,
                 "severity": severity,
-                "cluster": {
-                    "id": cluster_ids,
-                },
-                "lastUpdated_gt": start_time,
-                "lastUpdated_lt": end_time,
+                "clusterId": cluster_ids,
+                "lastUpdatedTimeGt": start_time,
+                "lastUpdatedTimeLt": end_time,
                 "objectName": ""
             }
         }

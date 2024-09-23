@@ -4,32 +4,37 @@ import pprint
 import sys
 from rubrik_polaris.rubrik_polaris import PolarisClient
 
-
 pp = pprint.PrettyPrinter(indent=4)
 
-parser = argparse.ArgumentParser()
-parser.add_argument('-p', '--password', dest='password', help="Polaris Password", default=None)
-parser.add_argument('-u', '--username', dest='username', help="Polaris UserName", default=None)
-parser.add_argument('-d', '--domain', dest='domain', help="Polaris Domain", default=None)
-parser.add_argument('-k', '--keyfile', dest='json_keyfile', help="JSON Keyfile", default=None)
-parser.add_argument('-r', '--root', dest='root_domain', help="Polaris Root Domain", default=None)
-parser.add_argument('--insecure', help='Deactivate SSL Verification', action="store_true")
+def build_arg_parser():
+    """Parse command-line arguments for Polaris client."""
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-p', '--password', dest='password', help="Polaris Password", default=None)
+    parser.add_argument('-u', '--username', dest='username', help="Polaris UserName", default=None)
+    parser.add_argument('-d', '--domain', dest='domain', help="Polaris Domain", default=None)
+    parser.add_argument('-k', '--keyfile', dest='json_keyfile', help="JSON Keyfile", default=None)
+    parser.add_argument('-r', '--root', dest='root_domain', help="Polaris Root Domain", default=None)
+    parser.add_argument('--insecure', help='Deactivate SSL Verification', action="store_true")
 
-args = parser.parse_args()
+    return parser
 
-try:
+def create_polaris_client(args):
+    """Create and return a PolarisClient based on provided arguments."""
+    try:
+        if args.json_keyfile:
+            rubrik = PolarisClient(json_keyfile=args.json_keyfile, insecure=args.insecure)
+        else:
+            rubrik = PolarisClient(domain=args.domain, username=args.username, password=args.password,
+                                   root_domain=args.root_domain, insecure=args.insecure)
+        return rubrik
 
-### Instantiate with json keyfile
-    if args.json_keyfile:
-        rubrik = PolarisClient(json_keyfile=args.json_keyfile, insecure=args.insecure)
-    else:
-### Instantiate with username/password
-        rubrik = PolarisClient(domain=args.domain, username=args.username, password=args.password, root_domain=args.root_domain,
-                                       insecure=args.insecure)
+    except Exception as err:
+        print(f"Error creating PolarisClient: {err}")
+        sys.exit(1)
 
-except Exception as err:
-    print(err)
-    sys.exit(1)
+if __name__ == "__main__":
+    args = build_arg_parser().parse_args()
+    rubrik = create_polaris_client(args)
 
 ### Get GCP SA
 # pp.pprint(rubrik.get_account_gcp_default_sa())
@@ -120,13 +125,6 @@ except Exception as err:
 # pp.pprint(rubrik.get_accounts_gcp())
 # pp.pprint(rubrik.get_accounts_azure())
 # pp.pprint(rubrik.update_account_aws())
-
-### Event interface
-# end_time = datetime.datetime.now().isoformat()
-# start_time = (datetime.datetime.now() - datetime.timedelta(days=1)).isoformat()
-# todays_failed_events = rubrik.get_event_series_list(cluster_ids=['603109f2-eb30-4da8-9389-911d66abb524'], status=["Failure"], start_time=start_time, end_time=end_time)
-# todays_failed_events = rubrik.get_event_series_list(start_time=start_time, end_time=end_time)
-# print("Returned events : {}".format(len(todays_failed_events)))
 
 ### Basic event summaries
 # summary = {}
