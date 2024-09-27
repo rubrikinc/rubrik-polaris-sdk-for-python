@@ -275,8 +275,10 @@ def get_event_series_list(self, object_type=[], status=[], activity_type=[],
         activity_type (list): List of Activity Types
         severity (list): List of severities
         cluster_ids (list): List of Cluster IDs (UUID)
-        start_time (datetime): Timestamp to start return set from
-        end_time (datetime): Timestamp to end return set from
+        start_time (datetime): Filter in all events created or updated
+                               after this datetime
+        end_time (datetime): Filter in all events created or updated
+                             before this datetime
 
     Returns:
         list: A list of dictionaries of Event Data
