@@ -264,7 +264,9 @@ def get_snapshots(self, snappable_id=None, recovery_point=None):
         raise
 
 
-def get_event_series_list(self, object_type=[], status=[], activity_type=[], severity=[], cluster_ids=[], start_time=None, end_time = None):
+def get_event_series_list(self, object_type=[], status=[], activity_type=[],
+                          severity=[], cluster_ids=[], start_time=None,
+                          end_time=None):
     """Retrieve Events from Polaris
 
     Args:
@@ -273,8 +275,8 @@ def get_event_series_list(self, object_type=[], status=[], activity_type=[], sev
         activity_type (list): List of Activity Types
         severity (list): List of severities
         cluster_ids (list): List of Cluster IDs (UUID)
-        start_date (datetime): Timestamp to start return set from
-        end_date (datetime): Timestamp to end return set from
+        start_time (datetime): Timestamp to start return set from
+        end_time (datetime): Timestamp to end return set from
 
     Returns:
         list: A list of dictionaries of Event Data
