@@ -357,7 +357,10 @@ logging.debug(json.dumps(exoTaskImageBundle, indent=2))
 variables = {
   "input": {
     "approvalStatus": "ACCEPTED",
-    "bundleVersion": "{}".format(exoTaskImageBundle['data']['exotaskImageBundle']['bundleVersion'])
+    "bundleVersion": "{}".format(exoTaskImageBundle['data']['exotaskImageBundle']['bundleVersion']),
+    "bundleMetadata": {
+        "eksVersion": args.eksVersion
+    }
   }
 }
 SetBundleApprovalStatus = rubrik._query_raw(raw_query='mutation SetBundleApprovalStatus($input: SetBundleApprovalStatusInput!) {setBundleApprovalStatus(input: $input)}',
