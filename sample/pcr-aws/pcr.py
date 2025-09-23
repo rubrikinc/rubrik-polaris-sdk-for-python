@@ -37,7 +37,7 @@ logging.basicConfig(level=args.loglevel)
 
 if args.pcrAuth == "PWD" and not (args.pcrPassword and args.pcrUsername):
     parser.error('Username/Password authentication to private container registry specified (--pcrAuth PWD), however, --pcrPassword or --pcrUsername not specified.')
-    
+
 if not (args.json_keyfile or (args.username and args.password and args.domain)):
     parser.error('Login credentials not specified. You must specify either a JSON keyfile or a username, password, and domain.')
 
@@ -75,47 +75,47 @@ logging.debug(json.dumps(allAwsExocomputeConfigs, indent=2))
 
 # Make sure that all repos are authorized to pull images from Rubrik ECR.
 for awsCloudAccount in allAwsExocomputeConfigs['data']['allAwsExocomputeConfigs']:
-  if awsCloudAccount['awsCloudAccount']['nativeId'] == args.awsAccountId:
-    print("Setting private container registry for AWS account " + awsCloudAccount['awsCloudAccount']['accountName'])
-    variables = {
-      "input": {
-        "exocomputeAccountId": awsCloudAccount['awsCloudAccount']['id'],
-        "registryUrl": pcrFqdn,
-        "pcrAwsImagePullDetails": {
-          "awsNativeId": args.awsAccountId
+    if awsCloudAccount['awsCloudAccount']['nativeId'] == args.awsAccountId:
+        print("Setting private container registry for AWS account " + awsCloudAccount['awsCloudAccount']['accountName'])
+        variables = {
+            "input": {
+              "exocomputeAccountId": awsCloudAccount['awsCloudAccount']['id'],
+              "registryUrl": pcrFqdn,
+              "pcrAwsImagePullDetails": {
+                "awsNativeId": args.awsAccountId
+              }
+            }
         }
-      }
-    }
 
-    try:
-        setPrivateContainerRegistry = rubrik._query_raw(raw_query='mutation SetPrivateContainerRegistry($input: SetPrivateContainerRegistryInput!) {setPrivateContainerRegistry(input: $input)}',
-                                          operation_name=None,
-                                          variables=variables,
-                                          timeout=60)
-    except Exception as err:
-        print("Error: Unable to set the private container registry.")
-        print(err)
-        sys.exit(1)
+        try:
+            setPrivateContainerRegistry = rubrik._query_raw(raw_query='mutation SetPrivateContainerRegistry($input: SetPrivateContainerRegistryInput!) {setPrivateContainerRegistry(input: $input)}',
+                                            operation_name=None,
+                                            variables=variables,
+                                            timeout=60)
+        except Exception as err:
+            print("Error: Unable to set the private container registry.")
+            print(err)
+            sys.exit(1)
 
-    print("Getting currently approved PCR bundle version numbers")
-    variables = {
-      "input": {
-        "exocomputeAccountId": awsCloudAccount['awsCloudAccount']['id']
-      }
-    }
+        print("Getting currently approved PCR bundle version numbers")
+        variables = {
+        "input": {
+          "exocomputeAccountId": awsCloudAccount['awsCloudAccount']['id']
+          }
+        }
 
-    try:
-        privateContainerRegistry = rubrik._query_raw(raw_query='query PrivateContainerRegistry($input: PrivateContainerRegistryInput!) {privateContainerRegistry(input: $input) {pcrDetails {registryUrl imagePullDetails {... on PcrAwsImagePullDetails {awsNativeId}}} pcrLatestApprovedBundleVersion}}',
-                                          operation_name=None,
-                                          variables=variables,
-                                          timeout=60)
+        try:
+            privateContainerRegistry = rubrik._query_raw(raw_query='query PrivateContainerRegistry($input: PrivateContainerRegistryInput!) {privateContainerRegistry(input: $input) {pcrDetails {registryUrl imagePullDetails {... on PcrAwsImagePullDetails {awsNativeId}}} pcrLatestApprovedBundleVersion}}',
+                                            operation_name=None,
+                                            variables=variables,
+                                            timeout=60)
 
-    except Exception as err:
-        print("Error: Unable to get the private container registry information for exocompute account: " + awsCloudAccount['awsCloudAccount']['accountName'])
-        print(err)
-        sys.exit(1)
+        except Exception as err:
+            print("Error: Unable to get the private container registry information for exocompute account: " + awsCloudAccount['awsCloudAccount']['accountName'])
+            print(err)
+            sys.exit(1)
 
-    print("Current approved bundle version for AWS account " +  awsCloudAccount['awsCloudAccount']['accountName'] + "is: " + privateContainerRegistry['data']['privateContainerRegistry']['pcrLatestApprovedBundleVersion'])
+        print("Current approved bundle version for AWS account " +  awsCloudAccount['awsCloudAccount']['accountName'] + "is: " + privateContainerRegistry['data']['privateContainerRegistry']['pcrLatestApprovedBundleVersion'])
 # Get Exocompute Bundle (containers)
 
 variables = {
@@ -144,7 +144,7 @@ print("New bundle version is: " + exoTaskImageBundle['data']['exotaskImageBundle
 if privateContainerRegistry['data']['privateContainerRegistry']['pcrLatestApprovedBundleVersion'] >= exoTaskImageBundle['data']['exotaskImageBundle']['bundleVersion']:
     print("New bundle version is the same or lower than the current approved bundle version. Exiting.")
     sys.exit(0)
-    
+
 region = exoTaskImageBundle['data']['exotaskImageBundle']['repoUrl'].split('.')[3]
 print("")
 print("Region: " + region)
@@ -245,28 +245,30 @@ for bundleImages in exoTaskImageBundle['data']['exotaskImageBundle']['bundleImag
         sys.exit(1)
 print("")
 
+customer_auth_config_payload = None
+
 #Login to customer PCR on ECR if configured
 if args.pcrAuth == "ECR":
-  customerEcrSession = boto3.Session()
-  customerEcrClient = customerEcrSession.client('ecr', region_name=pcrRegion)
-  # Get customer PCR token
-  # CLI Example "aws ecr get-authorization-token --region <customer_ecr_region>"
-  try:
-      customerEcrToken = customerEcrClient.get_authorization_token(registryIds=[pcrFqdn.split('.')[0]])
-  except Exception as err:
-      print("Error: Unable to get customer PCR token.")
-      print(err)
-      sys.exit(1)
+    customerEcrSession = boto3.Session()
+    customerEcrClient = customerEcrSession.client('ecr', region_name=pcrRegion)
+    # Get customer PCR token
+    # CLI Example "aws ecr get-authorization-token --region <customer_ecr_region>"
+    try:
+        customerEcrToken = customerEcrClient.get_authorization_token(registryIds=[pcrFqdn.split('.')[0]])
+    except Exception as err:
+        print("Error: Unable to get customer PCR token.")
+        print(err)
+        sys.exit(1)
 
-    # CLI Example "aws ecr get-login-password --region <customer_ecr_region> | docker login --username AWS --password-stdin <customer_pcr_url>"
-  try:
-      username, password = base64.b64decode(customerEcrToken['authorizationData'][0]['authorizationToken']).decode('utf-8').split(":")
-      customer_auth_config_payload = { 'username': username, 'password': password }
-      customerEcr = dockerClient.login(username=username, password=password, registry=customerEcrToken['authorizationData'][0]['proxyEndpoint'].replace("https://", ""), reauth=True)
-  except Exception as err:
-      print("Error: Unable to login to customer PCR on ECR")
-      print(err)
-      sys.exit(1)
+      # CLI Example "aws ecr get-login-password --region <customer_ecr_region> | docker login --username AWS --password-stdin <customer_pcr_url>"
+    try:
+        username, password = base64.b64decode(customerEcrToken['authorizationData'][0]['authorizationToken']).decode('utf-8').split(":")
+        customer_auth_config_payload = { 'username': username, 'password': password }
+        customerEcr = dockerClient.login(username=username, password=password, registry=customerEcrToken['authorizationData'][0]['proxyEndpoint'].replace("https://", ""), reauth=True)
+    except Exception as err:
+        print("Error: Unable to login to customer PCR on ECR")
+        print(err)
+        sys.exit(1)
 elif args.pcrAuth == "PWD":
     # Login to customer PCR on non ECR
     customer_auth_config_payload = { 'username': args.pcrUsername, 'password': args.pcrPassword }
@@ -288,15 +290,15 @@ for bundleImages in exoTaskImageBundle['data']['exotaskImageBundle']['bundleImag
         pcrRepoName = bundleImages['name']
     else:
         pcrRepoName = pcrFqdn.partition('/')[2] + '/' + bundleImages['name']
-    logging.debug("pcrAuth is " + args.pcrAuth)
+    logging.debug("pcrAuth is %s", args.pcrAuth)
     if args.pcrAuth == "ECR":
         pcrRepositories = customerEcrClient.describe_repositories()
         repoExists = False
         logging.debug("PCR Repositories:")
         # logging.debug(pp.pprint(pcrRepositories))
         for repo in pcrRepositories['repositories']:
-            logging.debug("repo name: " + repo['repositoryName'])
-            logging.debug("bundleImages name:" + bundleImages['name'])
+            logging.debug("repo name: %s", repo['repositoryName'])
+            logging.debug("bundleImages name: %s", bundleImages['name'])
             if repo['repositoryUri'] == pcrFqdn + '/' + bundleImages['name']:
                 print("Repository " + pcrFqdn + '/' + bundleImages['name'] + " already exists in " + pcrFqdn + ". Skipping create" )
                 repoExists = True

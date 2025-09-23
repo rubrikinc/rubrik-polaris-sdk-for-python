@@ -12,7 +12,7 @@ from polaris_client import build_arg_parser, create_polaris_client
 pp = pprint.PrettyPrinter(indent=4)
 
 
-def get_todays_failed_events(client, cluster_ids=None):
+def get_todays_failed_events(rubrik, cluster_ids=None):
     """Fetch and return today's failed events for the passed clusters."""
     end_time = datetime.datetime.now().isoformat()
     start_time = (datetime.datetime.now() - datetime.timedelta(

@@ -16,6 +16,7 @@ def test_unit_header(rubrik):
 
 
 def test_validate_release_version_matches_user_agent_version(rubrik):
+    release_version = None
     with open("setup.py") as fp:
         for line_number, line_content in enumerate(fp):
             if "version" in line_content:

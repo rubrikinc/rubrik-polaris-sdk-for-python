@@ -340,8 +340,6 @@ def _destroy_aws_stack(self, stack_region, stack_name, profile='', aws_id=None, 
         waiter.wait(StackName=stack_name)
     except WaiterError as e:
         raise Exception('Failed to delete stack: {}\n{}'.format(stack_name, e))
-    else:
-        return
 
 
 def delete_account_aws(self, profiles=[], all=False, aws_access_key_id=None, aws_secret_access_key=None):
