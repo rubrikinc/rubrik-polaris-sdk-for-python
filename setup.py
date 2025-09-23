@@ -49,7 +49,7 @@ setuptools.setup(
         'google-api-python-client',
         'oauth2client',
         'six>=1.13.0',
-        'pyasn1<0.5.0,>=0.4.6',
+        'pyasn1>=0.6.1',
         'httplib2 <1dev, >=0.15.0'
     ],
     include_package_data=True,
