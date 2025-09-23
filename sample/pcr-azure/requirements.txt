@@ -1,0 +1,2 @@
+azure-cli==2.39.0
+docker==7.1.0
