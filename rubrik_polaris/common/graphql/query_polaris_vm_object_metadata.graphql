@@ -4,6 +4,7 @@ query RubrikPolarisSDKRequest($id: UUID!) {
         authorizedOperations
         name
         isRelic
+        defaultAddress
         effectiveSlaDomain {
             ...EffectiveSLADomainFragment
         }

@@ -44,6 +44,12 @@ query RubrikPolarisSDKRequest($first: Int, $after: String, $filter: [Filter!]!) 
           scheduledCount
           totalCount
         }
+        resourceSpec {
+                    networkInterfaces {
+                        macAddress,
+                        v4Addresses
+                    }
+                }
         reportSnappable : reportWorkload {
           id
           archiveStorage

@@ -17,6 +17,12 @@ query RubrikPolarisSDKRequest($object_id: UUID!) {
       name
     }
     protectionDate
+    resourceSpec {
+                    networkInterfaces {
+                        macAddress,
+                        v4Addresses
+                    }
+                }
     reportSnappable : reportWorkload {
       id
       logicalBytes

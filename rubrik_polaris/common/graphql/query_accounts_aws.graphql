@@ -1,4 +1,11 @@
 query RubrikPolarisSDKRequest($awsNativeProtectionFeature: AwsNativeProtectionFeature = EC2, $filter: String = "" ) {
+    anomalyResults{
+        edges {
+            node {
+                
+            }
+        }
+    }
     awsNativeAccounts(awsNativeProtectionFeature: $awsNativeProtectionFeature, accountFilters: {
         nameSubstringFilter: {
             nameSubstring: $filter
