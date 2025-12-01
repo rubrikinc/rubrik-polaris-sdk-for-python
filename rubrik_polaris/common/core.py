@@ -264,7 +264,9 @@ def get_snapshots(self, snappable_id=None, recovery_point=None):
         raise
 
 
-def get_event_series_list(self, object_type=[], status=[], activity_type=[], severity=[], cluster_ids=[], start_time=None, end_time = None):
+def get_event_series_list(self, object_type=[], status=[], activity_type=[],
+                          severity=[], cluster_ids=[], start_time=None,
+                          end_time=None):
     """Retrieve Events from Polaris
 
     Args:
@@ -273,8 +275,10 @@ def get_event_series_list(self, object_type=[], status=[], activity_type=[], sev
         activity_type (list): List of Activity Types
         severity (list): List of severities
         cluster_ids (list): List of Cluster IDs (UUID)
-        start_date (datetime): Timestamp to start return set from
-        end_date (datetime): Timestamp to end return set from
+        start_time (datetime): Filter in all events created or updated
+                               after this datetime
+        end_time (datetime): Filter in all events created or updated
+                             before this datetime
 
     Returns:
         list: A list of dictionaries of Event Data
@@ -290,11 +294,9 @@ def get_event_series_list(self, object_type=[], status=[], activity_type=[], sev
                 "lastActivityStatus": status,
                 "lastActivityType": activity_type,
                 "severity": severity,
-                "cluster": {
-                    "id": cluster_ids,
-                },
-                "lastUpdated_gt": start_time,
-                "lastUpdated_lt": end_time,
+                "clusterId": cluster_ids,
+                "lastUpdatedTimeGt": start_time,
+                "lastUpdatedTimeLt": end_time,
                 "objectName": ""
             }
         }
@@ -330,7 +332,7 @@ def get_report_data(self, object_type=[], cluster_ids=[]):
                 },
             },
         }
-        response = self._query(query_name, variables)
+        response = self._query_paginated(query_name, variables)
         return response
     except Exception:
         raise
@@ -375,28 +377,28 @@ def list_event_series(self, activity_status=None, activity_type=None, object_nam
         if activity_status:
             activity_status = [x.strip() for x in activity_status.split(',')]
             filters_['lastActivityStatus'] = self.check_enum(value=activity_status, field_name="activity_status",
-                                                             enum_name="ActivityStatusEnum")
+                                                             enum_name="EventStatus")
         if activity_type:
             activity_type = [x.strip() for x in activity_type.split(',')]
             filters_['lastActivityType'] = self.check_enum(value=activity_type, field_name="activity_type",
-                                                           enum_name="ActivityTypeEnum")
+                                                           enum_name="EventType")
         if object_type:
             object_type = [x.strip() for x in object_type.split(',')]
             filters_['objectType'] = self.check_enum(value=object_type, field_name="object_type",
-                                                     enum_name="ActivityObjectTypeEnum")
+                                                     enum_name="EventObjectType")
         if severity:
             severity = [x.strip() for x in severity.split(',')]
             filters_['severity'] = self.check_enum(value=severity, field_name="severity",
-                                                   enum_name="ActivitySeverityEnum")
+                                                   enum_name="EventSeverity")
         if cluster_id:
             cluster_id = [x.strip() for x in cluster_id.split(',')]
 
-        sort_by_enum = self.get_enum_values("ActivitySeriesSortByEnum")
+        sort_by_enum = self.get_enum_values("ActivitySeriesSortField")
         if sort_by and sort_by not in sort_by_enum:
             raise ValueError(ERROR_MESSAGES['INVALID_FIELD_TYPE'].format(
                     sort_by, "sort_by", sort_by_enum))
 
-        sort_order_enum = self.get_enum_values("SortOrderEnum")
+        sort_order_enum = self.get_enum_values("SortOrder")
         if sort_order and sort_order not in sort_order_enum:
             raise ValueError(ERROR_MESSAGES['INVALID_FIELD_TYPE'].format(
                 sort_order, "sort_order", sort_order_enum))
@@ -404,11 +406,11 @@ def list_event_series(self, activity_status=None, activity_type=None, object_nam
         if object_name:
             filters_['objectName'] = object_name
         if cluster_id:
-            filters_['cluster'] = {"id": cluster_id}
+            filters_['clusterId'] = cluster_id
         if start_date:
-            filters_['lastUpdated_gt'] = start_date
+            filters_['lastUpdatedTimeGt'] = start_date
         if end_date:
-            filters_['lastUpdated_lt'] = end_date
+            filters_['lastUpdatedTimeLt'] = end_date
 
         variables = {
             "first": first,

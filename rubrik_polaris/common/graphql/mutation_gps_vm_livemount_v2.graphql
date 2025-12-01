@@ -1,0 +1,42 @@
+mutation RubrikPolarisSDKRequest(
+  $snappableId: String!
+  $hostId: String
+  $clusterId: String
+  $resourcePoolId: String
+  $snapshotFid: String
+  $shouldRecoverTags: Boolean!
+  $keepMacAddresses: Boolean!
+  $powerOn: Boolean!
+  $removeNetworkDevices: Boolean!
+  $vmName: String
+  $vNicBindings: [VmwareVnicBindingInfoV2Input!]
+  $recoveryPoint: DateTime
+) {
+  vsphereVmInitiateLiveMountV2(
+    input: {
+      id: $snappableId
+      config: {
+        hostId: $hostId
+        resourcePoolId: $resourcePoolId
+        clusterId: $clusterId
+        shouldRecoverTags: $shouldRecoverTags
+        vNicBindings: $vNicBindings
+        requiredRecoveryParameters: {
+          snapshotId: $snapshotFid
+          recoveryPoint: $recoveryPoint
+        }
+        mountExportSnapshotJobCommonOptionsV2: {
+          keepMacAddresses: $keepMacAddresses
+          powerOn: $powerOn
+          removeNetworkDevices: $removeNetworkDevices
+          vmName: $vmName
+        }
+        shouldMigrateImmediately: false
+      }
+    }
+  ) {
+    id
+    status
+    __typename
+  }
+}

@@ -1,4 +1,4 @@
-query RubrikPolarisSDKRequest($id: UUID!, $snapshotGroupBy: CdmSnapshotGroupByEnum!, $missedSnapshotGroupBy: MissedSnapshotGroupByEnum!, $timeRange: TimeRangeInput!, $timezoneOffset: Float!, $clusterConnected: Boolean!) {
+query RubrikPolarisSDKRequest($id: UUID!, $snapshotGroupBy: CdmSnapshotGroupByEnum!, $missedSnapshotGroupBy: MissedSnapshotGroupByTime!, $timeRange: TimeRangeInput!, $timezoneOffset: Float!, $clusterConnected: Boolean!) {
   snappable: vSphereVmNew(fid: $id) {
     id
     missedSnapshotGroupByConnection(

@@ -61,7 +61,7 @@ def list_sla_domains(self, after: str = None, first: int = None, filters: list =
             for sla_filter in filters:
                 if sla_filter.get("field", "") == "OBJECT_TYPE":
                     object_types = sla_filter.get("objectTypeList", [])
-                    supported_object_types = self.get_enum_values(name="SLAObjectTypeEnum")
+                    supported_object_types = self.get_enum_values(name="SlaObjectType")
                     if not set(object_types).issubset(supported_object_types):
                         raise ValueError(ERROR_MESSAGES['INVALID_FIELD_TYPE'].format(object_types, "object types", supported_object_types))
             variables['filter'] = filters
@@ -70,14 +70,14 @@ def list_sla_domains(self, after: str = None, first: int = None, filters: list =
             variables['after'] = after.strip()
 
         if sort_by:
-            supported_sla_sort_by = self.get_enum_values(name="SLAQuerySortByFieldEnum")
+            supported_sla_sort_by = self.get_enum_values(name="SlaQuerySortByField")
             if sort_by not in supported_sla_sort_by:
                 raise ValueError(ERROR_MESSAGES['INVALID_FIELD_TYPE'].format(sort_by, 'sort_by', supported_sla_sort_by))
 
             variables['sortBy'] = sort_by
 
         if sort_order:
-            supported_sla_sort_order = self.get_enum_values(name="SLAQuerySortByOrderEnum")
+            supported_sla_sort_order = self.get_enum_values(name="SortOrder")
             if sort_order not in supported_sla_sort_order:
                 raise ValueError(
                     ERROR_MESSAGES['INVALID_FIELD_TYPE'].format(sort_order, 'sort_order', supported_sla_sort_order))

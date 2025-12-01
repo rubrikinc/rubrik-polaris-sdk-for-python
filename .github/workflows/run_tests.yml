@@ -74,6 +74,7 @@ jobs:
         # W0703 - broad-except
         # W0706 - try-except-raise
         # W0707 - raise-missing-from
+        # W0719 - broad-exception-raised
         # W1510 - subprocess-run-check
         # W1514 - unspecified-encoding
         run: |
@@ -124,6 +125,7 @@ jobs:
             -d W0703 \
             -d W0706 \
             -d W0707 \
+            -d W0719 \
             -d W1510 \
             -d W1514
         shell: bash

@@ -1,4 +1,4 @@
-query RubrikPolarisSDKRequest($hostId: UUID!, $first: Int, $after: String, $filter: [Filter!], $sortBy: HierarchySortByField, $sortOrder: HierarchySortOrder) {
+query RubrikPolarisSDKRequest($hostId: UUID!, $first: Int, $after: String, $filter: [Filter!], $sortBy: HierarchySortByField, $sortOrder: SortOrder) {
     vSphereHost(fid: $hostId) {
         descendantConnection(
             first: $first
@@ -12,7 +12,7 @@ query RubrikPolarisSDKRequest($hostId: UUID!, $first: Int, $after: String, $filt
                 node {
                     id
                     ...HierarchyObjectNameColumnFragment
-                    ... on VSphereDatastore {
+                    ... on VsphereDatastore {
                         capacity
                         isLocal
                         freeSpace

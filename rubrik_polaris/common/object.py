@@ -63,7 +63,7 @@ def list_vm_objects(self, filters: list = None, first=20, sort_by: str = None,
         if sort_by:
             sort_by = self.check_enum(value=sort_by, field_name='sort_by', enum_name='HierarchySortByField')
         if sort_order:
-            sort_order = self.check_enum(value=sort_order, field_name='sort_order', enum_name='HierarchySortOrder')
+            sort_order = self.check_enum(value=sort_order, field_name='sort_order', enum_name='SortOrder')
 
         query_name = "polaris_vm_object_list"
         variables = {"first": first, "filter": filters}
@@ -110,7 +110,7 @@ def search_object(self, filters: list = None, first: int = 20, sort_by: str = No
         if sort_by:
             sort_by = self.check_enum(value=sort_by, field_name='sort_by', enum_name='HierarchySortByField')
         if sort_order:
-            sort_order = self.check_enum(value=sort_order, field_name='sort_order', enum_name='HierarchySortOrder')
+            sort_order = self.check_enum(value=sort_order, field_name='sort_order', enum_name='SortOrder')
 
         query_name = "polaris_object_search"
         variables = {
@@ -194,7 +194,7 @@ def get_object_snapshot(self, object_id, snapshot_group_by, missed_snapshot_grou
 
         missed_snapshot_group_by = self.check_enum(value=missed_snapshot_group_by,
                                                    field_name='missed_snapshot_group_by',
-                                                   enum_name='MissedSnapshotGroupByEnum')
+                                                   enum_name='MissedSnapshotGroupByTime')
 
         if not isinstance(cluster_connected, bool):
             raise ValueError(ERROR_MESSAGES['INVALID_CLUSTER_CONNECTED'].format(cluster_connected))
@@ -246,7 +246,7 @@ def list_objects(self, first=20, type_filter=None, sort_by=None, sort_order=None
         if sort_by:
             sort_by = self.check_enum(value=sort_by, field_name='sort_by', enum_name="HierarchySortByField")
         if sort_order:
-            sort_order = self.check_enum(value=sort_order, field_name='sort_order', enum_name="HierarchySortOrder")
+            sort_order = self.check_enum(value=sort_order, field_name='sort_order', enum_name="SortOrder")
 
         type_filter_ = []
         if type_filter:
@@ -300,7 +300,7 @@ def list_object_snapshots(self, object_id, first=20, snapshot_filter=None, sort_
         if sort_by:
             sort_by = self.check_enum(value=sort_by, field_name='sort_by', enum_name="SnapshotQuerySortByField")
         if sort_order:
-            sort_order = self.check_enum(value=sort_order, field_name='sort_order', enum_name="SortOrderEnum")
+            sort_order = self.check_enum(value=sort_order, field_name='sort_order', enum_name="SortOrder")
 
         if (start_date and not end_date) or (end_date and not start_date):
             raise ValueError(ERROR_MESSAGES['DATES_REQUIRED'])

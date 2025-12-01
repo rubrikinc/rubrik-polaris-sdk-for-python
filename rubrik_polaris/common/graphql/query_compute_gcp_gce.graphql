@@ -1,4 +1,4 @@
-query RubrikPolarisSDKRequest($first: Int, $after: String, $sortBy: GcpNativeGceInstanceSortFields, $sortOrder: HierarchySortOrder, $filters: GcpNativeGceInstanceFilters) {
+query RubrikPolarisSDKRequest($first: Int, $after: String, $sortBy: GcpNativeGceInstanceSortFields, $sortOrder: SortOrder, $filters: GcpNativeGceInstanceFilters) {
   gcpNativeGceInstances(first: $first, after: $after, sortBy: $sortBy, sortOrder: $sortOrder, gceInstanceFilters: $filters) {
     edges {
       node {
@@ -20,7 +20,7 @@ query RubrikPolarisSDKRequest($first: Int, $after: String, $sortBy: GcpNativeGce
               name
             }
           }
-          ... on GlobalSla {
+          ... on GlobalSlaReply {
             id
             name
           }

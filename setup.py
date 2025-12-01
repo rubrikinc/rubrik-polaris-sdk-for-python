@@ -6,8 +6,8 @@ import setuptools
 
 
 name = 'Rubrik Polaris SDK for Python'
-version = '2022.05.27'
-release = '2022.05.27-beta'
+version = '2023.01.12'
+release = '2023.01.12-beta'
 author = 'Rubrik Inc'
 license = 'MIT'
 copyright = '{}, {}'.format(datetime.now().year, author)
@@ -45,11 +45,11 @@ setuptools.setup(
         'zulu',
         'boto3',
         'botocore',
-        'google-auth<2.0dev,>=1.21.1',
+        'google-auth<3.0dev,>=2.14.1',
         'google-api-python-client',
         'oauth2client',
         'six>=1.13.0',
-        'pyasn1<0.5.0,>=0.4.6',
+        'pyasn1>=0.6.1',
         'httplib2 <1dev, >=0.15.0'
     ],
     include_package_data=True,

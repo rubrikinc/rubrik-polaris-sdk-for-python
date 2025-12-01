@@ -145,22 +145,25 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="../../_autosummary/rubrik_polaris.gps.html#rubrik_polaris.gps.vm.create_vm_livemount" title="rubrik_polaris.gps.vm.create_vm_livemount"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_vm_livemount</span></code></a>(self, snapshot_fid[, …])</p></td>
 <td><p>Perform a live mount of a virtual machine snapshot.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../_autosummary/rubrik_polaris.gps.html#rubrik_polaris.gps.vm.create_vm_snapshot" title="rubrik_polaris.gps.vm.create_vm_snapshot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_vm_snapshot</span></code></a>(self, snapshot_id[, sla_id])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="../../_autosummary/rubrik_polaris.gps.html#rubrik_polaris.gps.vm.create_vm_livemount_v2" title="rubrik_polaris.gps.vm.create_vm_livemount_v2"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_vm_livemount_v2</span></code></a>(self, snappable_id, …)</p></td>
+<td><p>Perform a live mount of a virtual machine snapshot.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../_autosummary/rubrik_polaris.gps.html#rubrik_polaris.gps.vm.create_vm_snapshot" title="rubrik_polaris.gps.vm.create_vm_snapshot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_vm_snapshot</span></code></a>(self, snapshot_id[, sla_id])</p></td>
 <td><p>Create snapshot of a system.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../_autosummary/rubrik_polaris.gps.html#rubrik_polaris.gps.vm.export_vm_snapshot" title="rubrik_polaris.gps.vm.export_vm_snapshot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">export_vm_snapshot</span></code></a>(self, config, id_)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="../../_autosummary/rubrik_polaris.gps.html#rubrik_polaris.gps.vm.export_vm_snapshot" title="rubrik_polaris.gps.vm.export_vm_snapshot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">export_vm_snapshot</span></code></a>(self, config, id_)</p></td>
 <td><p>Export a snapshot of a virtual machine.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../_autosummary/rubrik_polaris.gps.html#rubrik_polaris.gps.vm.get_async_request_result" title="rubrik_polaris.gps.vm.get_async_request_result"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_async_request_result</span></code></a>(self, request_id, …)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../_autosummary/rubrik_polaris.gps.html#rubrik_polaris.gps.vm.get_async_request_result" title="rubrik_polaris.gps.vm.get_async_request_result"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_async_request_result</span></code></a>(self, request_id, …)</p></td>
 <td><p>Retrieves the result of an asynchronous request.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../_autosummary/rubrik_polaris.gps.html#rubrik_polaris.gps.vm.list_vsphere_datastores" title="rubrik_polaris.gps.vm.list_vsphere_datastores"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_vsphere_datastores</span></code></a>(self, host_id[, …])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="../../_autosummary/rubrik_polaris.gps.html#rubrik_polaris.gps.vm.list_vsphere_datastores" title="rubrik_polaris.gps.vm.list_vsphere_datastores"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_vsphere_datastores</span></code></a>(self, host_id[, …])</p></td>
 <td><p>Retrieves a list of datastores on a Vsphere host.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../_autosummary/rubrik_polaris.gps.html#rubrik_polaris.gps.vm.list_vsphere_hosts" title="rubrik_polaris.gps.vm.list_vsphere_hosts"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_vsphere_hosts</span></code></a>(self, first[, after, …])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../_autosummary/rubrik_polaris.gps.html#rubrik_polaris.gps.vm.list_vsphere_hosts" title="rubrik_polaris.gps.vm.list_vsphere_hosts"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_vsphere_hosts</span></code></a>(self, first[, after, …])</p></td>
 <td><p>Retrieves a list of available Vsphere hosts.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../_autosummary/rubrik_polaris.gps.html#rubrik_polaris.gps.vm.recover_vsphere_vm_files" title="rubrik_polaris.gps.vm.recover_vsphere_vm_files"><code class="xref py py-obj docutils literal notranslate"><span class="pre">recover_vsphere_vm_files</span></code></a>(self, snapshot_id, …)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="../../_autosummary/rubrik_polaris.gps.html#rubrik_polaris.gps.vm.recover_vsphere_vm_files" title="rubrik_polaris.gps.vm.recover_vsphere_vm_files"><code class="xref py py-obj docutils literal notranslate"><span class="pre">recover_vsphere_vm_files</span></code></a>(self, snapshot_id, …)</p></td>
 <td><p>Recover files from a snapshot back into a Vsphere VM. :param snapshot_id: ID of the snapshot from which to recover files. :param cluster_id: ID of the cluster where the snapshot resides. :param restore_config: List or dict of type RestorePathPairInput. :param destination_object_id: ID of the object where the files will be restored into. If not provided, Rubrik will use                               the snapshots object. :param should_use_agent: Whether to use an agent. :param should_restore_x_attrs: Whether to preserve custom attributes of the machine. :param ignore_errors: Whether to ignore errors.</p></td>
 </tr>
 </tbody>

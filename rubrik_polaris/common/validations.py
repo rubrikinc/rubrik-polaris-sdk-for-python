@@ -95,7 +95,7 @@ def _snapshot_id_validation(self, test_variable=None):
 
 
 def _aws_regions_validation(self, test_variable=None):
-    regions = self.get_enum_values(name="AwsNativeRegionEnum")
+    regions = self.get_enum_values(name="AwsNativeRegion")
     if not test_variable or test_variable not in regions:
         raise ValidationException("{} not found, valid regions are {}".format(test_variable, list(regions)))
     return test_variable
@@ -103,7 +103,7 @@ def _aws_regions_validation(self, test_variable=None):
 
 def _aws_instance_type_validation(self, test_variable=None):
     instance_details = self.get_compute_ec2(object_id=self.snapshot_details['snappableId'])
-    instance_types = self.get_enum_values(name="AwsNativeEc2InstanceTypeEnum")
+    instance_types = self.get_enum_values(name="AwsNativeEc2InstanceType")
     if not test_variable or test_variable not in instance_types:
         self.instance_type = instance_details['instanceType']
 
@@ -148,28 +148,28 @@ def _use_replica_validation(self, test_variable=None):
 
 
 def _azure_cloud_type_validation(self, test_variable=None):
-    test = self.get_enum_values(name="AzureCloudTypeEnum")
+    test = self.get_enum_values(name="AzureCloudType")
     if not test_variable or test_variable not in test:
         raise ValidationException("{} not found, valid cloud types are {}".format(test_variable, list(test)))
     return test_variable
 
 
 def _azure_regions_validation(self, test_variable=None):
-    test = self.get_enum_values(name="AzureCloudAccountRegionEnum")
+    test = self.get_enum_values(name="AzureCloudAccountRegion")
     if not test_variable or test_variable not in test:
         raise ValidationException("{} not found, valid regions are {}".format(test_variable, list(test)))
     return test_variable
 
 
 def _cloud_account_action_validation(self, test_variable=None):
-    test = self.get_enum_values(name="CloudAccountActionEnum")
+    test = self.get_enum_values(name="CloudAccountAction")
     if not test_variable or test_variable not in test:
         raise ValidationException("{} not found, valid features are {}".format(test_variable, list(test)))
     return test_variable
 
 
 def _cloud_account_features_validation(self, test_variable=None):
-    test = self.get_enum_values(name="CloudAccountFeatureEnum")
+    test = self.get_enum_values(name="CloudAccountFeature")
     if not test_variable or test_variable not in test:
         raise ValidationException("{} not found, valid features are {}".format(test_variable, list(test)))
     return test_variable

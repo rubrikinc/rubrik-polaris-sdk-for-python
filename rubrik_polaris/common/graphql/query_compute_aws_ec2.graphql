@@ -28,7 +28,7 @@ query RubrikPolarisSDKRequest($first: Int, $after: String, $filters: AwsNativeEc
             }
             __typename
           }
-          ... on GlobalSla {
+          ... on GlobalSlaReply {
             id
             name
           }

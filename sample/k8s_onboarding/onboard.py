@@ -99,7 +99,7 @@ def main(raw_data: pd.DataFrame, rubrik: PolarisClient, dry_run: bool = True):
     # Request refresh
     for k8s_cluster_id in to_refresh.keys():
         print(f"refreshing k8s cluster id {k8s_cluster_id}")
-        _refresh_k8s_cluster(k8s_cluster_id)
+        _refresh_k8s_cluster(rubrik, k8s_cluster_id)
 
         # The refresh can be successful even if the cluster wasn't connected so we need to
         # check the status explicitly afterwards
@@ -125,9 +125,9 @@ def _kubectl_apply(ctx: str, url: str):
 
 
 @retry(stop=stop_after_delay(600),
-       wait=wait_exponential(multiplier=1, min=1, max=10),
-       reraise=True)
-def _refresh_k8s_cluster(k8s_cluster_id: uuid.UUID):
+        wait=wait_exponential(multiplier=1, min=1, max=10),
+        reraise=True)
+def _refresh_k8s_cluster(rubrik: PolarisClient, k8s_cluster_id: uuid.UUID):
     resp = rubrik.refresh_k8s_cluster(k8s_cluster_id, wait=True)
     if resp['status'] == 'FAILED':
         raise Exception("refresh of k8s cluster with id {} failed:\n{}".format(k8s_cluster_id, resp))

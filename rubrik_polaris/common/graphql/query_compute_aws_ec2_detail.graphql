@@ -19,7 +19,7 @@ query RubrikPolarisSDKRequest($object_id: UUID!) {
         }
         __typename
       }
-      ... on GlobalSla {
+      ... on GlobalSlaReply {
         id
         __typename
       }

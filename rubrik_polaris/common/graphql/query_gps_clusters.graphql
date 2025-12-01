@@ -1,4 +1,4 @@
-query RubrikPolarisSDKRequest($first: Int, $after: String, $filter: ClusterFilterInput, $sortBy: ClusterSortByEnum, $sortOrder: SortOrderEnum) {
+query RubrikPolarisSDKRequest($first: Int, $after: String, $filter: ClusterFilterInput, $sortBy: ClusterSortByEnum, $sortOrder: SortOrder) {
   clusterConnection(
     filter: $filter
     sortBy: $sortBy
@@ -88,7 +88,7 @@ fragment ClusterGlobalManagerFragment on Cluster {
 
 fragment LambdaFeatureHistoryFragment on Cluster {
   lambdaFeatureHistory {
-    wasRadarEverEnabled
-    wasSonarEverEnabled
+    wasRansomwareInvestigationEverEnabled
+    wasSensitiveDataDiscoveryEverEnabled
   }
 }

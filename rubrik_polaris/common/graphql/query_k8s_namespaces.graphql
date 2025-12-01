@@ -5,7 +5,7 @@ query RubrikPolarisSDKRequest($filter: [Filter!]) {
         edges {
             node {
               id,
-              k8sClusterID,
+              k8sClusterId,
               namespaceName,
               isRelic,
               configuredSlaDomain{

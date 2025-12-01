@@ -167,7 +167,8 @@ def _get_access_token_basic(self):
             json=payload,
             headers=headers,
             verify=self._verify,
-            proxies=self._proxies
+            proxies=self._proxies,
+            timeout=30
         )
 
         del payload
@@ -195,7 +196,8 @@ def _get_access_token_basic(self):
             json=payload,
             headers=headers,
             verify=self._verify,
-            proxies=self._proxies
+            proxies=self._proxies,
+            timeout=30
         )
 
         response_json = response.json()
@@ -235,7 +237,8 @@ def _get_access_token_keyfile(self, json_key=None):
             json=payload,
             headers=headers,
             verify=self._verify,
-            proxies=self._proxies
+            proxies=self._proxies,
+            timeout=30
         )
 
         response_json = response.json()

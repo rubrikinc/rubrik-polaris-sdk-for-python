@@ -43,7 +43,7 @@ def add_account_aws(self, aws_regions=[], all=False, aws_profiles=[], aws_access
         RequestException: If the query to Polaris returned an error
 
     Examples:
-        >>> rubrik.add_account_aws(aws_regions = ["us-east-1"], profiles = ["milanese"], cloud_account_features = ["CLOUD_NATIVE_PROTECTION"])
+        >>> rubrik.add_account_aws(aws_regions = ["us-east-1"], aws_profiles = ["milanese"], cloud_account_features = ["CLOUD_NATIVE_PROTECTION"])
         >>> rubrik.add_account_aws(aws_regions = ["us-east-1"], aws_access_key_id='blah', aws_secret_access_key='blah', cloud_account_features = ["CLOUD_NATIVE_PROTECTION"])
         >>> rubrik.add_account_aws(aws_regions = ["us-west-2"], all = True , cloud_account_features = ["CLOUD_NATIVE_PROTECTION"])
 
@@ -78,7 +78,10 @@ def _add_account_aws(self, aws_regions=[], cloud_account_features=None, profile=
         account_name_list.append(profile)
 
     try:
-        account_initiate_result = _add_account_aws_initiate(self, cloud_account_features=cloud_account_features, account_name_list=account_name_list, aws_account_id=aws_account_id)['initiateResponse']
+        resp = _add_account_aws_initiate(self, cloud_account_features=cloud_account_features, account_name_list=account_name_list, aws_account_id=aws_account_id)
+        account_initiate_result = resp['initiateResponse']
+        if not account_initiate_result:
+            raise Exception("Failed to add account: {}".format(resp['validateResponse']))
         account_commit_result = _add_account_aws_commit(self, cloud_account_features=cloud_account_features, account_name_list=account_name_list, aws_account_id=aws_account_id, account_initiate_result=account_initiate_result, aws_regions=aws_regions)
     except Exception:
         raise
@@ -104,7 +107,7 @@ def _add_account_aws_commit(self, aws_regions=None, cloud_account_features=None,
         "aws_account_name": " : ".join(account_name_list),
         "aws_regions": aws_regions,
         "external_id": account_initiate_result['externalId'],
-        "feature_versions": account_initiate_result['featureVersionList'],
+        "feature_versions": account_initiate_result['featureVersions'],
         "stack_name": account_initiate_result['stackName'],
         "cloud_account_action": self.cloud_account_action,
         "cloud_account_features": self.cloud_account_features
@@ -337,8 +340,6 @@ def _destroy_aws_stack(self, stack_region, stack_name, profile='', aws_id=None, 
         waiter.wait(StackName=stack_name)
     except WaiterError as e:
         raise Exception('Failed to delete stack: {}\n{}'.format(stack_name, e))
-    else:
-        return
 
 
 def delete_account_aws(self, profiles=[], all=False, aws_access_key_id=None, aws_secret_access_key=None):

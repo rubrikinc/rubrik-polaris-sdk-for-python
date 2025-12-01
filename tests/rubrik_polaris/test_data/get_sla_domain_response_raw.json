@@ -1,10 +1,10 @@
 {
   "data": {
-    "globalSlaConnection": {
+    "slaDomains": {
       "edges": [
         {
           "node": {
-            "name": "Bronzecd",
+            "name": "Bronze",
             "id": "00000000-0000-0000-0000-000000000002",
             "description": "Rubrik default Bronze level SLA Domain policy",
             "protectedObjectCount": 0,

@@ -27,7 +27,19 @@ import logging
 from .exceptions import RequestException
 from .logger import logging_setup
 
-
+"""Instantiates Polaris connection context
+Args:
+    domain (str): Polaris domain identifier.
+    username (str): Polaris username
+    password (str): Polaris password
+    root_domain (str): Polaris root domain only if not *.my.rubrik.com
+    insecure (bool): Allow unverified SSL keys
+    json_keyfile (str): Service account credential file (used exclusive of first 4 options.
+Returns:
+    object: Polaris connection context
+Raises:
+    RequestException: If the query to Polaris returned an error
+"""
 class PolarisClient:
     # Public
     from .common.core import get_sla_domains, submit_on_demand, submit_assign_sla, get_task_status, \
@@ -55,7 +67,7 @@ class PolarisClient:
     from .radar.csv import get_csv_result
     from .sonar.csv import get_csv_download, get_csv_result_download
     from .gps.files import get_snapshot_files, request_download_snapshot_files
-    from .gps.vm import create_vm_snapshot, create_vm_livemount, list_vsphere_hosts, export_vm_snapshot, \
+    from .gps.vm import create_vm_snapshot, create_vm_livemount, create_vm_livemount_v2, list_vsphere_hosts, export_vm_snapshot, \
         list_vsphere_datastores, get_async_request_result, recover_vsphere_vm_files
     from .gps.sla import list_sla_domains
     from .gps.cluster import list_clusters

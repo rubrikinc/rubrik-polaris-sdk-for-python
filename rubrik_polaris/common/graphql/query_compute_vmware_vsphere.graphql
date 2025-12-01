@@ -44,7 +44,7 @@ query RubrikPolarisSDKRequest($first: Int, $after: String, $filter: [Filter!]!) 
           scheduledCount
           totalCount
         }
-        reportSnappable {
+        reportSnappable : reportWorkload {
           id
           archiveStorage
           physicalBytes

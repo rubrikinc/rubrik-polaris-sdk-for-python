@@ -2,7 +2,7 @@ query RubrikPolarisSDKRequest($polaris_id: UUID!) {
     k8sNamespace(
         fid: $polaris_id
     )   {
-        k8sClusterID
+        k8sClusterId
         namespaceName
         clusterScoped
         apiVersion
@@ -43,7 +43,7 @@ query RubrikPolarisSDKRequest($polaris_id: UUID!) {
             name
             objectType
         }
-        numSnappableDescendants
+        numWorkloadDescendants
         newestSnapshot{
             id
             date

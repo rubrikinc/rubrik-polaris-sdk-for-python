@@ -1,4 +1,4 @@
-query RubrikPolarisSDKRequest($first: Int!, $filter: [Filter!]!, $sortBy: HierarchySortByField, $sortOrder: HierarchySortOrder, $after: String) {
+query RubrikPolarisSDKRequest($first: Int!, $filter: [Filter!]!, $sortBy: HierarchySortByField, $sortOrder: SortOrder, $after: String) {
   globalSearchResults(
     first: $first
     filter: $filter
@@ -16,7 +16,7 @@ query RubrikPolarisSDKRequest($first: Int!, $filter: [Filter!]!, $sortBy: Hierar
           name
           objectType
         }
-        ... on VSphereVm {
+        ... on VsphereVm {
           cluster {
             ...ClusterFragment
           }
@@ -71,12 +71,6 @@ query RubrikPolarisSDKRequest($first: Int!, $filter: [Filter!]!, $sortBy: Hierar
           }
           primaryClusterLocation {
             id
-          }
-          isRelic
-        }
-        ... on Blueprint {
-          cluster {
-            ...ClusterFragment
           }
           isRelic
         }
@@ -164,7 +158,7 @@ fragment EffectiveSlaColumnFragment on HierarchyObject {
   effectiveSlaDomain {
     id
     name
-    ... on GlobalSla {
+    ... on GlobalSlaReply {
       description
     }
     ... on ClusterSlaDomain {

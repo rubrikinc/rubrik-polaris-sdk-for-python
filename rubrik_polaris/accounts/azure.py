@@ -76,7 +76,8 @@ def set_account_azure_default_sa(
         azure_app_tenant_id=None,
         azure_app_name=None,
         azure_tenant_domain_name=None,
-        azure_cloud_type='AZUREPUBLICCLOUD'):
+        azure_cloud_type='AZUREPUBLICCLOUD',
+        should_replace=False):
     """Set default SA for Azure
     Args:
         azure_app_id (str):  Client ID of the Application
@@ -103,7 +104,8 @@ def set_account_azure_default_sa(
             "azure_app_tenant_id": azure_app_tenant_id,
             "azure_app_name": azure_app_name,
             "azure_tenant_domain_name": azure_tenant_domain_name,
-            "azure_cloud_type": self.azure_cloud_type
+            "azure_cloud_type": self.azure_cloud_type,
+            "should_replace": should_replace
         }
         _request = self._query(self.mutation_name, _variables)
         return _request
