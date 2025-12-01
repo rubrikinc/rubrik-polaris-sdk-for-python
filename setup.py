@@ -30,7 +30,7 @@ setuptools.setup(
     long_description_content_type='text/markdown',
     url='https://github.com/rubrikinc/rubrik-polaris-sdk-for-python',
     keywords='rubrik polaris cdm api',
-    packages=setuptools.find_packages(exclude=['tests']),
+    packages=setuptools.find_packages(exclude=['tests']) + ['rubrik_polaris.graphql'],
     classifiers=[
         'Intended Audience :: Information Technology',
         'Intended Audience :: System Administrators',
@@ -56,6 +56,12 @@ setuptools.setup(
     data_files = [
         ('rubrik_polaris/graphql', glob('rubrik_polaris/common/graphql/*'))
     ],
+    package_dir={
+        "rubrik_polaris.graphql": "rubrik_polaris/common/graphql"
+    },
+    package_data={
+        "rubrik_polaris.graphql": ["*.graphql"],
+    },
     tests_require=[
         'pytest'
     ],
