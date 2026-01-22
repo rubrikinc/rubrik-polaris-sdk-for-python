@@ -24,9 +24,9 @@ jobs:
       - name: install CI dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install pylint mypy
+          pip install pipenv pylint mypy
       - name: install SDK
-        run: python setup.py install
+        run: pipenv install -e . --skip-lock
       - name: lint - pylint
         # Disabled linters:
         # R0801 - duplicate-code
@@ -133,5 +133,5 @@ jobs:
         run: python -m mypy --strict $(git ls-files '*.py') || true
       - name: unit tests
         run: |
-          pip install -r tests/requirements.txt
-          pytest tests/rubrik_polaris
+          pipenv install --skip-lock pytest requests_mock
+          pipenv run pytest tests/rubrik_polaris
