@@ -24,9 +24,9 @@ jobs:
       - name: install CI dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install pipenv pylint mypy
-      - name: install SDK
-        run: pipenv install -e . --skip-lock
+          pip install pipenv
+      - name: install SDK and dev dependencies
+        run: pipenv install --dev --skip-lock
       - name: lint - pylint
         # Disabled linters:
         # R0801 - duplicate-code
@@ -78,7 +78,7 @@ jobs:
         # W1510 - subprocess-run-check
         # W1514 - unspecified-encoding
         run: |
-          python -m pylint $(git ls-files '*.py') \
+          pipenv run pylint $(git ls-files '*.py') \
             -d R0801 \
             -d R0913 \
             -d R0914 \
@@ -130,8 +130,6 @@ jobs:
             -d W1514
         shell: bash
       - name: lint - mypy
-        run: python -m mypy --strict $(git ls-files '*.py') || true
+        run: pipenv run mypy --strict $(git ls-files '*.py') || true
       - name: unit tests
-        run: |
-          pipenv install --skip-lock pytest requests_mock
-          pipenv run pytest tests/rubrik_polaris
+        run: pipenv run pytest tests/rubrik_polaris
