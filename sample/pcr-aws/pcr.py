@@ -163,7 +163,7 @@ rscEcrClient = rscEcrSession.client('ecr', region_name=region)
 # Setup Docker client
 
 dockerClient = docker.from_env()
-docker_api_client = docker.APIClient(base_url='unix://var/run/docker.sock')
+docker_api_client = dockerClient.api
 
 # Login to RSC ECR
 # Requires that the RSC setPrivateContainerRegistry GraphQL mutation has been run to set the registry URL in RSC.
