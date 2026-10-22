@@ -1,0 +1,2 @@
+docker==7.1.0
+google-auth[requests]==2.29.0
