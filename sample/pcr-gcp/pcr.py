@@ -3,6 +3,7 @@ import argparse
 import docker
 import json
 import logging
+import re
 import sys
 from google.oauth2 import service_account
 from google.auth.transport.requests import Request
@@ -213,9 +214,14 @@ def get_bundle_version(image_bundle):
     return image_bundle['data']['exotaskImageBundle']['gcpImages']['bundleVersion']
 
 
+def parse_bundle_version(version):
+    # Compare numerically so that e.g. 1.10 sorts after 1.9.
+    return tuple(int(part) for part in re.findall(r'\d+', version))
+
+
 def compare_bundle_versions(current_version, new_version):
     # No bundle has been approved yet on the first run.
-    if current_version and current_version >= new_version:
+    if current_version and parse_bundle_version(current_version) >= parse_bundle_version(new_version):
         print(
             'New bundle version is the same or lower than the current approved '
             'bundle version. Exiting.'
@@ -422,7 +428,7 @@ def main():
     gcp_projects = get_gcp_account_details(rubrik)
     for entry in gcp_projects['data']['allGcpCloudAccountProjectsByFeature']:
         project = entry['project']
-        if project['projectId'] == args.gcp_project_native_id:
+        if project and project['projectId'] == args.gcp_project_native_id:
             cloud_account_id = project['id']
             cloud_account_name = project['name']
             break
